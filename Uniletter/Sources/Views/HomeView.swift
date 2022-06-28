@@ -26,6 +26,18 @@ class HomeView: UIView {
         return collectionView
     }()
     
+    lazy var gradientView: UIView = {
+        let view = UIView()
+        
+        return view
+    }()
+    
+    lazy var writeButton: UIButton = {
+        let button = UIButton()
+        
+        return button
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
@@ -42,13 +54,19 @@ class HomeView: UIView {
     }
     
     func addViews() {
-        addSubview(collectionView)
+        [collectionView, gradientView].forEach { addSubview($0) }
     }
     
     func setLayout() {
         collectionView.snp.makeConstraints {
-            $0.top.bottom.equalTo(safeAreaLayoutGuide)
+            $0.top.equalTo(safeAreaLayoutGuide)
+            $0.bottom.equalToSuperview()
             $0.left.right.equalTo(safeAreaLayoutGuide).inset(20)
+        }
+        
+        gradientView.snp.makeConstraints {
+            $0.left.right.bottom.equalToSuperview()
+            $0.height.equalTo(100)
         }
     }
 }

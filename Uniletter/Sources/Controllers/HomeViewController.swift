@@ -8,7 +8,7 @@
 import UIKit
 
 class HomeViewController: UIViewController {
-
+    
     let homeView = HomeView()
     let eventManager = EventManager.shared
     
@@ -19,8 +19,12 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavigationBar()
-        setController()
+        setViewController()
         fetchEvents()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        addGradientLayer()
     }
     
     func configureNavigationBar() {
@@ -29,21 +33,15 @@ class HomeViewController: UIViewController {
         
         let topLogo = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 20))
         topLogo.setBackgroundImage(UIImage(named: "UniletterLabel"), for: .normal)
-
         topLogo.addTarget(self, action: #selector(didTaplogo), for: .touchUpInside)
-        self.navigationItem.leftBarButtonItems = [spaceBarButtonItem, UIBarButtonItem(customView: topLogo)]
-//        let logo = UIBarButtonItem(
-//            image: UIImage(named: "UniletterLabel")?.resizeImage(width: 80, height: 20).withRenderingMode(.alwaysOriginal),
-//            style: .done,
-//            target: self,
-//            action: #selector(didTaplogo))
-//        self.navigationItem.leftBarButtonItem = logo
         
         let myInfo = UIBarButtonItem(
             image: UIImage(systemName: "person")?.withRenderingMode(.alwaysOriginal),
             style: .done,
             target: self,
             action: #selector(gotoInfo))
+        
+        self.navigationItem.leftBarButtonItems = [spaceBarButtonItem, UIBarButtonItem(customView: topLogo)]
         self.navigationItem.rightBarButtonItem = myInfo
         
         let navigationBarLayer = self.navigationController?.navigationBar.layer
@@ -52,9 +50,17 @@ class HomeViewController: UIViewController {
         navigationBarLayer?.shadowOffset = CGSize(width: 0, height: 2.0)
     }
     
-    func setController() {
+    func setViewController() {
         homeView.collectionView.dataSource = self
         homeView.collectionView.delegate = self
+    }
+    
+    func addGradientLayer() {
+        let gradient: CAGradientLayer = CAGradientLayer()
+        gradient.colors = [UIColor.white.withAlphaComponent(0).cgColor, UIColor.white.cgColor]
+        gradient.locations = [0.0, 0.7, 1.0]
+        gradient.frame = homeView.gradientView.bounds
+        homeView.gradientView.layer.addSublayer(gradient)
     }
     
     func fetchEvents() {

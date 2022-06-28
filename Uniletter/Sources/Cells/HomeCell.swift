@@ -40,15 +40,12 @@ class HomeCell: UICollectionViewCell {
         let intDDay = Int(text) ?? 0
         let dday: String
         
-        if intDDay == 0 {
-            dday = "D-day"
-        }
-        else if intDDay < 0 {
-            dday = "마감"
+        if intDDay < 0 {
             homeCellView.dday.configuration?.baseBackgroundColor = UIColor.customColor(.darkGray)
+            dday = "마감"
         } else {
-            //homeCellView.dday.configuration?.baseBackgroundColor = UIColor.customColor(.blueGreen)
-            dday = "D-\(intDDay)"
+            homeCellView.dday.configuration?.baseBackgroundColor = UIColor.customColor(.blueGreen)
+            dday = intDDay == 0 ? "D-day" : "D-\(intDDay)"
         }
         
         var attributedString = AttributedString(dday)
