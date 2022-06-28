@@ -15,6 +15,7 @@ class HomeCellView: UIView {
         imageView.layer.cornerRadius = 12
         imageView.layer.borderColor = CGColor.customColor(.lightGray)
         imageView.layer.borderWidth = 1
+        imageView.clipsToBounds = true
         
         return imageView
     }()

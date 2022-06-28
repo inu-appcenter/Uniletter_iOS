@@ -18,6 +18,7 @@ class HomeView: UIView {
         let width = (UIScreen.main.bounds.width - margin * 2 - itemSpacing) / 2
         let height = width * 2
         layout.itemSize = CGSize(width: width, height: height)
+        layout.sectionInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(HomeCell.self, forCellWithReuseIdentifier: HomeCell.identifier)
@@ -46,7 +47,8 @@ class HomeView: UIView {
     
     func setLayout() {
         collectionView.snp.makeConstraints {
-            $0.edges.equalTo(safeAreaLayoutGuide).inset(20)
+            $0.top.bottom.equalTo(safeAreaLayoutGuide)
+            $0.left.right.equalTo(safeAreaLayoutGuide).inset(20)
         }
     }
 }

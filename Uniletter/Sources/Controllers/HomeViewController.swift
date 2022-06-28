@@ -24,12 +24,20 @@ class HomeViewController: UIViewController {
     }
     
     func configureNavigationBar() {
-        let logo = UIBarButtonItem(
-            image: UIImage(named: "Logo2")?.withRenderingMode(.alwaysOriginal),
-            style: .done,
-            target: self,
-            action: #selector(didTaplogo))
-        self.navigationItem.leftBarButtonItem = logo
+        let spaceBarButtonItem = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
+        spaceBarButtonItem.width = 15
+        
+        let topLogo = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 20))
+        topLogo.setBackgroundImage(UIImage(named: "UniletterLabel"), for: .normal)
+
+        topLogo.addTarget(self, action: #selector(didTaplogo), for: .touchUpInside)
+        self.navigationItem.leftBarButtonItems = [spaceBarButtonItem, UIBarButtonItem(customView: topLogo)]
+//        let logo = UIBarButtonItem(
+//            image: UIImage(named: "UniletterLabel")?.resizeImage(width: 80, height: 20).withRenderingMode(.alwaysOriginal),
+//            style: .done,
+//            target: self,
+//            action: #selector(didTaplogo))
+//        self.navigationItem.leftBarButtonItem = logo
         
         let myInfo = UIBarButtonItem(
             image: UIImage(systemName: "person")?.withRenderingMode(.alwaysOriginal),
@@ -37,6 +45,11 @@ class HomeViewController: UIViewController {
             target: self,
             action: #selector(gotoInfo))
         self.navigationItem.rightBarButtonItem = myInfo
+        
+        let navigationBarLayer = self.navigationController?.navigationBar.layer
+        navigationBarLayer?.shadowColor = CGColor.customColor(.lightGray)
+        navigationBarLayer?.shadowOpacity = 0.2
+        navigationBarLayer?.shadowOffset = CGSize(width: 0, height: 2.0)
     }
     
     func setController() {
