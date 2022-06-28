@@ -27,6 +27,7 @@
 		7681D584286A09DD0081C644 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7681D583286A09DD0081C644 /* HomeViewModel.swift */; };
 		7681D587286A1FFA0081C644 /* EventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7681D586286A1FFA0081C644 /* EventManager.swift */; };
 		7681D58A286A29970081C644 /* DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7681D589286A29970081C644 /* DateFormatter.swift */; };
+		76E96489286B6F4700D5299A /* UIImage++Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E96488286B6F4700D5299A /* UIImage++Extensions.swift */; };
 		C121D76BA9F2532F8061C2E1 /* Pods_Uniletter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B9E2AEF628539C36D2C3D4F /* Pods_Uniletter.framework */; };
 /* End PBXBuildFile section */
 
@@ -55,6 +56,7 @@
 		7681D583286A09DD0081C644 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		7681D586286A1FFA0081C644 /* EventManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventManager.swift; sourceTree = "<group>"; };
 		7681D589286A29970081C644 /* DateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatter.swift; sourceTree = "<group>"; };
+		76E96488286B6F4700D5299A /* UIImage++Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage++Extensions.swift"; sourceTree = "<group>"; };
 		88AC0E121F52EB04C04A31F4 /* Pods-Uniletter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Uniletter.release.xcconfig"; path = "Target Support Files/Pods-Uniletter/Pods-Uniletter.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -144,7 +146,7 @@
 				7681D57E2869F0E50081C644 /* ViewModels */,
 				7681D57B2869ECC20081C644 /* Models */,
 				7681D5782869D2220081C644 /* Networking */,
-				7681D571286993590081C644 /* extensions */,
+				7681D571286993590081C644 /* Extensions */,
 				7681D56E28698E890081C644 /* Cells */,
 				765BCA142868CA240098BBF2 /* Views */,
 				765BCA132868CA200098BBF2 /* Controllers */,
@@ -170,13 +172,14 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
-		7681D571286993590081C644 /* extensions */ = {
+		7681D571286993590081C644 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
 				7681D5742869AD780081C644 /* UlButton++Extensions.swift */,
 				7681D5762869B4420081C644 /* UIColor++Extensions.swift */,
+				76E96488286B6F4700D5299A /* UIImage++Extensions.swift */,
 			);
-			path = extensions;
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		7681D5782869D2220081C644 /* Networking */ = {
@@ -357,6 +360,7 @@
 				7616B813286B50A000935257 /* MyPageViewController.swift in Sources */,
 				765DCDB32868DCD300961EA8 /* HomeView.swift in Sources */,
 				7681D584286A09DD0081C644 /* HomeViewModel.swift in Sources */,
+				76E96489286B6F4700D5299A /* UIImage++Extensions.swift in Sources */,
 				765BC9FD2868C00C0098BBF2 /* AppDelegate.swift in Sources */,
 				7681D5802869F1870081C644 /* HomeCellView.swift in Sources */,
 				765BC9FF2868C00C0098BBF2 /* SceneDelegate.swift in Sources */,
