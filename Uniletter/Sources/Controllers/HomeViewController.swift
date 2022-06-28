@@ -28,21 +28,25 @@ class HomeViewController: UIViewController {
     }
     
     func configureNavigationBar() {
-        let spaceBarButtonItem = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
-        spaceBarButtonItem.width = 15
-        
         let topLogo = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 20))
         topLogo.setBackgroundImage(UIImage(named: "UniletterLabel"), for: .normal)
         topLogo.addTarget(self, action: #selector(didTaplogo), for: .touchUpInside)
         
+        let config = UIImage.SymbolConfiguration(weight: .bold)
         let myInfo = UIBarButtonItem(
-            image: UIImage(systemName: "person")?.withRenderingMode(.alwaysOriginal),
+            image: UIImage(systemName: "person", withConfiguration: config)?.withRenderingMode(.alwaysOriginal),
             style: .done,
             target: self,
             action: #selector(gotoInfo))
         
-        self.navigationItem.leftBarButtonItems = [spaceBarButtonItem, UIBarButtonItem(customView: topLogo)]
-        self.navigationItem.rightBarButtonItem = myInfo
+        self.navigationItem.leftBarButtonItems = [
+            spacingItem(15),
+            UIBarButtonItem(customView: topLogo)
+        ]
+        self.navigationItem.rightBarButtonItems = [
+            spacingItem(10),
+            myInfo
+        ]
         
         let navigationBarLayer = self.navigationController?.navigationBar.layer
         navigationBarLayer?.shadowColor = CGColor.customColor(.lightGray)
@@ -57,8 +61,11 @@ class HomeViewController: UIViewController {
     
     func addGradientLayer() {
         let gradient: CAGradientLayer = CAGradientLayer()
-        gradient.colors = [UIColor.white.withAlphaComponent(0).cgColor, UIColor.white.cgColor]
-        gradient.locations = [0.0, 0.7, 1.0]
+        gradient.colors = [
+            UIColor(red: 1, green: 1, blue: 1, alpha: 0).cgColor,
+            UIColor(red: 1, green: 1, blue: 1, alpha: 0.6).cgColor,
+            UIColor.white.cgColor
+        ]
         gradient.frame = homeView.gradientView.bounds
         homeView.gradientView.layer.addSublayer(gradient)
     }
