@@ -26,6 +26,27 @@ class HomeView: UIView {
         return collectionView
     }()
     
+    lazy var gradientView: UIView = {
+        let view = UIView()
+        
+        return view
+    }()
+    
+    lazy var writeButton: UIButton = {
+        var config = UIButton.Configuration.filled()
+        config.baseBackgroundColor = UIColor.customColor(.lightBlue)
+        config.cornerStyle = .capsule
+        
+        let button = UIButton()
+        button.configuration = config
+        button.layer.shadowColor = UIColor.lightGray.cgColor
+        button.layer.shadowOpacity = 1.0
+        button.layer.shadowOffset = CGSize(width: 3, height: 3)
+        button.setImage(UIImage(named: "Pencil"), for: .normal)
+        
+        return button
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
@@ -42,13 +63,25 @@ class HomeView: UIView {
     }
     
     func addViews() {
-        addSubview(collectionView)
+        [collectionView, gradientView, writeButton].forEach { addSubview($0) }
     }
     
     func setLayout() {
         collectionView.snp.makeConstraints {
-            $0.top.bottom.equalTo(safeAreaLayoutGuide)
+            $0.top.equalTo(safeAreaLayoutGuide)
+            $0.bottom.equalToSuperview()
             $0.left.right.equalTo(safeAreaLayoutGuide).inset(20)
+        }
+        
+        gradientView.snp.makeConstraints {
+            $0.left.right.bottom.equalToSuperview()
+            $0.height.equalTo(150)
+        }
+        
+        writeButton.snp.makeConstraints {
+            $0.bottom.equalToSuperview().offset(-50)
+            $0.right.equalToSuperview().offset(-20)
+            $0.width.height.equalTo(60)
         }
     }
 }

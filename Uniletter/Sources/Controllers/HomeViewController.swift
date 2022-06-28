@@ -8,7 +8,7 @@
 import UIKit
 
 class HomeViewController: UIViewController {
-
+    
     let homeView = HomeView()
     let eventManager = EventManager.shared
     
@@ -19,32 +19,34 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavigationBar()
-        setController()
+        setViewController()
         fetchEvents()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        addGradientLayer()
+    }
+    
     func configureNavigationBar() {
-        let spaceBarButtonItem = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
-        spaceBarButtonItem.width = 15
-        
         let topLogo = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 20))
         topLogo.setBackgroundImage(UIImage(named: "UniletterLabel"), for: .normal)
-
         topLogo.addTarget(self, action: #selector(didTaplogo), for: .touchUpInside)
-        self.navigationItem.leftBarButtonItems = [spaceBarButtonItem, UIBarButtonItem(customView: topLogo)]
-//        let logo = UIBarButtonItem(
-//            image: UIImage(named: "UniletterLabel")?.resizeImage(width: 80, height: 20).withRenderingMode(.alwaysOriginal),
-//            style: .done,
-//            target: self,
-//            action: #selector(didTaplogo))
-//        self.navigationItem.leftBarButtonItem = logo
         
+        let config = UIImage.SymbolConfiguration(weight: .bold)
         let myInfo = UIBarButtonItem(
-            image: UIImage(systemName: "person")?.withRenderingMode(.alwaysOriginal),
+            image: UIImage(systemName: "person", withConfiguration: config)?.withRenderingMode(.alwaysOriginal),
             style: .done,
             target: self,
             action: #selector(gotoInfo))
-        self.navigationItem.rightBarButtonItem = myInfo
+        
+        self.navigationItem.leftBarButtonItems = [
+            spacingItem(15),
+            UIBarButtonItem(customView: topLogo)
+        ]
+        self.navigationItem.rightBarButtonItems = [
+            spacingItem(10),
+            myInfo
+        ]
         
         let navigationBarLayer = self.navigationController?.navigationBar.layer
         navigationBarLayer?.shadowColor = CGColor.customColor(.lightGray)
@@ -52,9 +54,20 @@ class HomeViewController: UIViewController {
         navigationBarLayer?.shadowOffset = CGSize(width: 0, height: 2.0)
     }
     
-    func setController() {
+    func setViewController() {
         homeView.collectionView.dataSource = self
         homeView.collectionView.delegate = self
+    }
+    
+    func addGradientLayer() {
+        let gradient: CAGradientLayer = CAGradientLayer()
+        gradient.colors = [
+            UIColor(red: 1, green: 1, blue: 1, alpha: 0).cgColor,
+            UIColor(red: 1, green: 1, blue: 1, alpha: 0.6).cgColor,
+            UIColor.white.cgColor
+        ]
+        gradient.frame = homeView.gradientView.bounds
+        homeView.gradientView.layer.addSublayer(gradient)
     }
     
     func fetchEvents() {
