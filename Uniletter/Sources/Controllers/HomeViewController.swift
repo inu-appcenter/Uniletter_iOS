@@ -18,7 +18,7 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureNavigationBar()
+        setNavigationBar()
         setViewController()
         fetchEvents()
     }
@@ -27,10 +27,9 @@ class HomeViewController: UIViewController {
         addGradientLayer()
     }
     
-    func configureNavigationBar() {
+    func setNavigationBar() {
         let topLogo = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 20))
         topLogo.setBackgroundImage(UIImage(named: "UniletterLabel"), for: .normal)
-        topLogo.addTarget(self, action: #selector(didTaplogo), for: .touchUpInside)
         
         let config = UIImage.SymbolConfiguration(weight: .bold)
         let myInfo = UIBarButtonItem(
@@ -41,11 +40,11 @@ class HomeViewController: UIViewController {
         
         self.navigationItem.leftBarButtonItems = [
             spacingItem(15),
-            UIBarButtonItem(customView: topLogo)
+            UIBarButtonItem(customView: topLogo),
         ]
         self.navigationItem.rightBarButtonItems = [
             spacingItem(10),
-            myInfo
+            myInfo,
         ]
         
         let navigationBarLayer = self.navigationController?.navigationBar.layer
@@ -75,15 +74,10 @@ class HomeViewController: UIViewController {
             API.getEvents() { events in
                 self.eventManager.events = events
                 DispatchQueue.main.async {
-                    self.eventManager.formatEndAt()
                     self.homeView.collectionView.reloadData()
                 }
             }
         }
-    }
-    
-    @objc func didTaplogo() {
-        // TODO: 최상단 이동 후 리로드
     }
     
     @objc func gotoInfo() {
@@ -108,5 +102,10 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         return cell
     }
     
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let eventDetailViewController = EventDetailViewController()
+        eventDetailViewController.index = indexPath.row
+        
+        self.navigationController?.pushViewController(eventDetailViewController, animated: true)
+    }
 }
