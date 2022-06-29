@@ -8,7 +8,7 @@
 import UIKit
 
 class HomeViewController: UIViewController {
-    
+    // Test
     let homeView = HomeView()
     let eventManager = EventManager.shared
     
