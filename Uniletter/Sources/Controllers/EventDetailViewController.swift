@@ -12,7 +12,7 @@ class EventDetailViewController: UIViewController {
 
     let eventDetailView = EventDetailView()
     var index: Int = 0
-    let eventManager = EventManager.shared
+    let viewModel = EventDetailViewModel()
     
     override func loadView() {
         view = eventDetailView
@@ -20,8 +20,13 @@ class EventDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel.eventLoad(index)
         setNavigationBar()
         setViewController()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        convertProfileImageToCircle()
     }
     
     func setNavigationBar() {
@@ -43,7 +48,53 @@ class EventDetailViewController: UIViewController {
     }
     
     func setViewController() {
+        eventDetailView.profileImageView.image = viewModel.profileImage
+        eventDetailView.nicknameLabel.text = viewModel.nickname
+        eventDetailView.dateWroteLabel.text = viewModel.dateWrote
+        eventDetailView.mainImageView.image = viewModel.mainImage
+        eventDetailView.titleTextView.text = viewModel.title
+        eventDetailView.categoryContentsLabel.text = viewModel.categoryContent
+        eventDetailView.startContentsLabel.text = viewModel.startContent
+        eventDetailView.endContentsLabel.text = viewModel.endContent
+        eventDetailView.targetContentsLabel.text = viewModel.target
+        eventDetailView.contactContentsLabel.text = viewModel.contact
+        eventDetailView.linkContentsLabel.text = viewModel.link
+        eventDetailView.bodyContentsLabel.text = viewModel.body
+        eventDetailView.viewsLabel.text = viewModel.views
+        eventDetailView.likeAndCommentsLabel.text = viewModel.likeAndComments
+        updateDDay()
+    }
+    
+    func updateDDay() {
+        let dday = viewModel.dday
+        let ddayText: String
+        let buttonText: String
         
+        if dday < 0 {
+            eventDetailView.ddayButton.configuration?.baseBackgroundColor = UIColor.customColor(.darkGray)
+            eventDetailView.notificationButton.backgroundColor = UIColor.customColor(.darkGray)
+            
+            ddayText = "마감"
+            buttonText = "마감"
+        } else {
+            eventDetailView.ddayButton.configuration?.baseBackgroundColor = UIColor.customColor(.blueGreen)
+            eventDetailView.notificationButton.backgroundColor = UIColor.customColor(.blueGreen)
+            
+            ddayText = dday == 0 ? "D-day" : "D-\(dday)"
+            buttonText = "알림 신청"
+        }
+        
+        var ddayAttributed = AttributedString(ddayText)
+        ddayAttributed.font = .systemFont(ofSize: 13)
+        
+        eventDetailView.ddayButton.configuration?.attributedTitle = ddayAttributed
+        eventDetailView.notificationButton.setTitle(buttonText, for: .normal)
+    }
+    
+    func convertProfileImageToCircle() {
+        let imageView = eventDetailView.profileImageView
+        imageView.layer.cornerRadius = imageView.frame.height / 2
+        imageView.clipsToBounds = true
     }
 
     @objc func bookmarkButtonDidTap(_ sender: UIButton) {

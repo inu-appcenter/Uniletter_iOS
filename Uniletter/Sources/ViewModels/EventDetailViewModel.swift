@@ -28,7 +28,7 @@ class EventDetailViewModel {
     }
     
     var dateWrote: String {
-        let dateStr = event.startAt
+        let dateStr = event.createdAt
         return subDateString(dateStr)
     }
     
@@ -45,8 +45,8 @@ class EventDetailViewModel {
         return event.title
     }
     
-    var dday: String {
-        return caculateDDay(event.endAt)
+    var dday: Int {
+        return Int(caculateDDay(event.endAt)) ?? 0
     }
     
     var categoryContent: String {
@@ -55,10 +55,41 @@ class EventDetailViewModel {
     
     var startContent: String {
         let date = subDateString(event.startAt)
-        let time = subTimeString(event.startAt)
+        let time = convertTime(event.startAt)
+        
         return "\(date) - \(time)"
     }
     
+    var endContent: String {
+        let date = subDateString(event.endAt)
+        let time = convertTime(event.endAt)
+        
+        return "\(date) - \(time)"
+    }
+    
+    var target: String {
+        return event.target
+    }
+    
+    var contact: String {
+        return event.contact ?? ""
+    }
+    
+    var link: String {
+        return event.location ?? ""
+    }
+    
+    var body: String {
+        return event.body
+    }
+    
+    var views: String {
+        return "\(event.views)회"
+    }
+    
+    var likeAndComments: String {
+        return "저장\(event.likes) ∙ 댓글 \(event.comments)개"
+    }
     
     func eventLoad(_ index: Int) {
         event = EventManager.shared.events[index]

@@ -22,12 +22,4 @@ class EventManager {
     func infoOfEvent(_ index: Int) -> Event {
         return events[index]
     }
-    
-    func formatStartAt() {
-        
-    }
-    
-    func formatEndAt() {
-        
-    }
 }

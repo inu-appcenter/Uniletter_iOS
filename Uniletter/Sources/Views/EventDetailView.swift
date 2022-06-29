@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import MarqueeLabel
 import SnapKit
 
 class EventDetailView : UIView {
@@ -39,12 +40,14 @@ class EventDetailView : UIView {
     
     lazy var mainImageView = UIImageView()
     
-    lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = .boldSystemFont(ofSize: 18)
-        label.numberOfLines = 3
+    lazy var titleTextView: UITextView = {
+        let textView = UITextView()
+        textView.isUserInteractionEnabled = false
+        textView.font = .boldSystemFont(ofSize: 20)
+        textView.textContainer.lineFragmentPadding = 0
+        textView.textContainerInset = .zero
         
-        return label
+        return textView
     }()
     
     /// 원 모양을 생성 동시에 하기 위해 버튼으로 구현
@@ -61,44 +64,44 @@ class EventDetailView : UIView {
         return button
     }()
     
-    lazy var categoryLabel: DetailLabel = {
-        let label = DetailLabel()
-        label.text = "카테고리"
+    lazy var categoryLabel: UILabel = {
+        let label = UILabel()
+        label.changeDetail("카테고리")
         
         return label
     }()
     
-    lazy var startLabel: DetailLabel = {
-        let label = DetailLabel()
-        label.text = "시작일시"
+    lazy var startLabel: UILabel = {
+        let label = UILabel()
+        label.changeDetail("시작일시")
         
         return label
     }()
     
-    lazy var endLabel: DetailLabel = {
-        let label = DetailLabel()
-        label.text = "마감일시"
+    lazy var endLabel: UILabel = {
+        let label = UILabel()
+        label.changeDetail("마감일시")
         
         return label
     }()
     
-    lazy var targetLabel: DetailLabel = {
-        let label = DetailLabel()
-        label.text = "모집대상"
+    lazy var targetLabel: UILabel = {
+        let label = UILabel()
+        label.changeDetail("모집대상")
         
         return label
     }()
     
-    lazy var contactLabel: DetailLabel = {
-        let label = DetailLabel()
-        label.text = "문의사항"
+    lazy var contactLabel: UILabel = {
+        let label = UILabel()
+        label.changeDetail("문의사항")
         
         return label
     }()
     
-    lazy var linkLabel: DetailLabel = {
-        let label = DetailLabel()
-        label.text = "신청링크"
+    lazy var linkLabel: UILabel = {
+        let label = UILabel()
+        label.changeDetail("신청링크")
         
         return label
     }()
@@ -109,13 +112,36 @@ class EventDetailView : UIView {
     
     lazy var endContentsLabel = DetailContesntsLabel()
     
-    lazy var targetContentsLabel = DetailContesntsLabel()
+    lazy var targetContentsLabel: MarqueeLabel = {
+        let label = MarqueeLabel()
+        label.font = .systemFont(ofSize: 16)
+        label.speed = .duration(20)
+        
+        return label
+    }()
     
-    lazy var contactContentsLabel = DetailContesntsLabel()
+    lazy var contactContentsLabel: MarqueeLabel = {
+        let label = MarqueeLabel()
+        label.font = .systemFont(ofSize: 16)
+        label.speed = .duration(20)
+        
+        return label
+    }()
     
-    lazy var linkContentsLabel = DetailContesntsLabel()
+    lazy var linkContentsLabel: MarqueeLabel = {
+        let label = MarqueeLabel()
+        label.font = .systemFont(ofSize: 16)
+        label.speed = .duration(20)
+        
+        return label
+    }()
     
-    lazy var bodyTitleLabel = DetailLabel()
+    lazy var bodyTitleLabel: UILabel = {
+        let label = UILabel()
+        label.changeDetail("상세내용")
+        
+        return label
+    }()
     
     lazy var bodyContentsLabel: UILabel = {
         let label = UILabel()
@@ -196,7 +222,7 @@ class EventDetailView : UIView {
             moreButton,
             mainImageView,
             intervalView1,
-            titleLabel,
+            titleTextView,
             ddayButton,
             categoryLabel,
             categoryContentsLabel,
@@ -272,20 +298,21 @@ class EventDetailView : UIView {
             $0.height.equalTo(8)
         }
         
-        titleLabel.snp.makeConstraints {
-            $0.top.equalTo(intervalView1.snp.bottom).offset(25)
+        titleTextView.snp.makeConstraints {
+            $0.top.equalTo(intervalView1.snp.bottom).offset(20)
             $0.left.equalToSuperview().offset(20)
-            $0.right.equalTo(ddayButton.snp.left).offset(-4)
+            $0.right.equalTo(ddayButton.snp.left).offset(-10)
+            $0.height.equalTo(60)
         }
         
         ddayButton.snp.makeConstraints {
-            $0.top.equalTo(titleLabel)
+            $0.top.equalTo(titleTextView)
             $0.right.equalToSuperview().offset(-20)
             $0.height.equalTo(23)
         }
         
         categoryLabel.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(20)
+            $0.top.equalTo(intervalView1.snp.bottom).offset(80)
             $0.left.equalToSuperview().offset(20)
         }
         
@@ -301,7 +328,7 @@ class EventDetailView : UIView {
         
         startContentsLabel.snp.makeConstraints {
             $0.top.equalTo(startLabel)
-            $0.left.equalTo(startLabel.snp.right).offset(20)
+            $0.left.equalTo(categoryContentsLabel)
         }
         
         endLabel.snp.makeConstraints {
@@ -311,7 +338,7 @@ class EventDetailView : UIView {
         
         endContentsLabel.snp.makeConstraints {
             $0.top.equalTo(endLabel)
-            $0.left.equalTo(endLabel.snp.right).offset(20)
+            $0.left.equalTo(categoryContentsLabel)
         }
         
         targetLabel.snp.makeConstraints {
@@ -321,7 +348,8 @@ class EventDetailView : UIView {
         
         targetContentsLabel.snp.makeConstraints {
             $0.top.equalTo(targetLabel)
-            $0.left.equalTo(targetLabel.snp.right).offset(20)
+            $0.left.equalTo(categoryContentsLabel)
+            $0.right.equalToSuperview().offset(-20)
         }
         
         contactLabel.snp.makeConstraints {
@@ -331,7 +359,8 @@ class EventDetailView : UIView {
         
         contactContentsLabel.snp.makeConstraints {
             $0.top.equalTo(contactLabel)
-            $0.left.equalTo(contactLabel.snp.right).offset(20)
+            $0.left.equalTo(categoryContentsLabel)
+            $0.right.equalToSuperview().offset(-20)
         }
         
         linkLabel.snp.makeConstraints {
@@ -341,7 +370,8 @@ class EventDetailView : UIView {
         
         linkContentsLabel.snp.makeConstraints {
             $0.top.equalTo(linkLabel)
-            $0.left.equalTo(linkLabel.snp.right).offset(20)
+            $0.left.equalTo(categoryContentsLabel)
+            $0.right.equalToSuperview().offset(-20)
         }
         
         intervalView2.snp.makeConstraints {
@@ -356,7 +386,7 @@ class EventDetailView : UIView {
         }
         
         bodyContentsLabel.snp.makeConstraints {
-            $0.top.equalTo(bodyTitleLabel).offset(25)
+            $0.top.equalTo(bodyTitleLabel.snp.bottom).offset(25)
             $0.left.right.equalToSuperview().inset(20)
         }
         
@@ -377,5 +407,9 @@ class EventDetailView : UIView {
             $0.centerY.equalTo(eyeImageView)
             $0.right.equalToSuperview().offset(-20)
         }
+        
+        targetLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        contactLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        linkLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
 }
