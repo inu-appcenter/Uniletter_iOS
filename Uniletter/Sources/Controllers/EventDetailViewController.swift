@@ -11,6 +11,7 @@ import Kingfisher
 class EventDetailViewController: UIViewController {
 
     let eventDetailView = EventDetailView()
+    var index: Int = 0
     let eventManager = EventManager.shared
     
     override func loadView() {
@@ -42,20 +43,7 @@ class EventDetailViewController: UIViewController {
     }
     
     func setViewController() {
-        let url = URL(string: eventManager.events[0].imageURL)!
-        eventDetailView.mainImageView.kf.setImage(with: url)
         
-        eventDetailView.bodyContentsLabel.text =
-        """
-        zzzzasfsdafasdfsf
-        asdfsdafwef
-        weafwefweafwefwef
-        awfefawfew
-        fewfwefawefw
-        fawfawefawefwefawf
-        """
-        eventDetailView.viewsLabel.text = "1234회"
-        eventDetailView.likeAndCommentsLabel.text = "zzzzzzzzzz"
     }
 
     @objc func bookmarkButtonDidTap(_ sender: UIButton) {

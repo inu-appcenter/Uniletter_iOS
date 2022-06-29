@@ -12,17 +12,7 @@ class EventDetailView : UIView {
     
     lazy var scrollView = UIScrollView()
     
-    /// 원 모양을 생성 동시에 하기 위해 버튼으로 구현
-    lazy var profileImage: UIButton = {
-        var config = UIButton.Configuration.plain()
-        config.cornerStyle = .capsule
-        
-        let button = UIButton()
-        button.configuration = config
-        button.isUserInteractionEnabled = false
-        
-        return button
-    }()
+    lazy var profileImageView = UIImageView()
     
     lazy var nicknameLabel: UILabel = {
         let label = UILabel()
@@ -200,7 +190,7 @@ class EventDetailView : UIView {
     
     func addViews() {
         [
-            profileImage,
+            profileImageView,
             nicknameLabel,
             dateWroteLabel,
             moreButton,
@@ -248,29 +238,29 @@ class EventDetailView : UIView {
             $0.height.equalTo(50)
         }
         
-        profileImage.snp.makeConstraints {
+        profileImageView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(25)
             $0.left.equalToSuperview().offset(20)
             $0.width.height.equalTo(32)
         }
         
         nicknameLabel.snp.makeConstraints {
-            $0.top.equalTo(profileImage)
-            $0.left.equalTo(profileImage.snp.right).offset(8)
+            $0.top.equalTo(profileImageView)
+            $0.left.equalTo(profileImageView.snp.right).offset(8)
         }
         
         dateWroteLabel.snp.makeConstraints {
-            $0.bottom.equalTo(profileImage)
-            $0.left.equalTo(profileImage.snp.right).offset(8)
+            $0.bottom.equalTo(profileImageView)
+            $0.left.equalTo(profileImageView.snp.right).offset(8)
         }
         
         moreButton.snp.makeConstraints {
-            $0.top.equalTo(profileImage)
+            $0.top.equalTo(profileImageView)
             $0.right.equalToSuperview().offset(-20)
         }
         
         mainImageView.snp.makeConstraints {
-            $0.top.equalTo(profileImage.snp.bottom).offset(15)
+            $0.top.equalTo(profileImageView.snp.bottom).offset(15)
             $0.left.right.equalToSuperview().inset(20)
             $0.width.equalTo(notificationButton)
             $0.height.equalTo(mainImageView.snp.width).multipliedBy(sqrt(2))

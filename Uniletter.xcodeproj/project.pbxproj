@@ -23,7 +23,7 @@
 		7681D57D2869ECDF0081C644 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7681D57C2869ECDF0081C644 /* Event.swift */; };
 		7681D5802869F1870081C644 /* HomeCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7681D57F2869F1870081C644 /* HomeCellView.swift */; };
 		7681D5822869F46A0081C644 /* ServiceAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7681D5812869F46A0081C644 /* ServiceAPI.swift */; };
-		7681D584286A09DD0081C644 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7681D583286A09DD0081C644 /* HomeViewModel.swift */; };
+		7681D584286A09DD0081C644 /* EventDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7681D583286A09DD0081C644 /* EventDetailViewModel.swift */; };
 		7681D587286A1FFA0081C644 /* EventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7681D586286A1FFA0081C644 /* EventManager.swift */; };
 		7681D58A286A29970081C644 /* DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7681D589286A29970081C644 /* DateFormatter.swift */; };
 		76E96489286B6F4700D5299A /* UIImage++Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E96488286B6F4700D5299A /* UIImage++Extensions.swift */; };
@@ -56,7 +56,7 @@
 		7681D57C2869ECDF0081C644 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		7681D57F2869F1870081C644 /* HomeCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCellView.swift; sourceTree = "<group>"; };
 		7681D5812869F46A0081C644 /* ServiceAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceAPI.swift; sourceTree = "<group>"; };
-		7681D583286A09DD0081C644 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		7681D583286A09DD0081C644 /* EventDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailViewModel.swift; sourceTree = "<group>"; };
 		7681D586286A1FFA0081C644 /* EventManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventManager.swift; sourceTree = "<group>"; };
 		7681D589286A29970081C644 /* DateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatter.swift; sourceTree = "<group>"; };
 		76E96488286B6F4700D5299A /* UIImage++Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage++Extensions.swift"; sourceTree = "<group>"; };
@@ -213,7 +213,7 @@
 		7681D57E2869F0E50081C644 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				7681D583286A09DD0081C644 /* HomeViewModel.swift */,
+				7681D583286A09DD0081C644 /* EventDetailViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -383,7 +383,7 @@
 				765BCA012868C00C0098BBF2 /* LaunchViewController.swift in Sources */,
 				7616B813286B50A000935257 /* MyPageViewController.swift in Sources */,
 				765DCDB32868DCD300961EA8 /* HomeView.swift in Sources */,
-				7681D584286A09DD0081C644 /* HomeViewModel.swift in Sources */,
+				7681D584286A09DD0081C644 /* EventDetailViewModel.swift in Sources */,
 				76E96489286B6F4700D5299A /* UIImage++Extensions.swift in Sources */,
 				765BC9FD2868C00C0098BBF2 /* AppDelegate.swift in Sources */,
 				7681D5802869F1870081C644 /* HomeCellView.swift in Sources */,
