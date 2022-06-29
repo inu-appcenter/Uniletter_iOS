@@ -30,7 +30,6 @@ class HomeViewController: UIViewController {
     func setNavigationBar() {
         let topLogo = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 20))
         topLogo.setBackgroundImage(UIImage(named: "UniletterLabel"), for: .normal)
-        topLogo.addTarget(self, action: #selector(didTaplogo), for: .touchUpInside)
         
         let config = UIImage.SymbolConfiguration(weight: .bold)
         let myInfo = UIBarButtonItem(
@@ -82,10 +81,6 @@ class HomeViewController: UIViewController {
         }
     }
     
-    @objc func didTaplogo() {
-        // TODO: 최상단 이동 후 리로드
-    }
-    
     @objc func gotoInfo() {
         // TODO: 내 정보 표시
         let myPageViewController = MyPageViewController()
@@ -108,5 +103,9 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         return cell
     }
     
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let eventDetailViewController = EventDetailViewController()
+        
+        self.navigationController?.pushViewController(eventDetailViewController, animated: true)
+    }
 }

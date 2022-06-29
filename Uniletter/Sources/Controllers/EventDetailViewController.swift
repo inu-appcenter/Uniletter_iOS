@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class EventDetailViewController: UIViewController {
 
@@ -18,6 +19,8 @@ class EventDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setNavigationBar()
+        setViewController()
     }
     
     func setNavigationBar() {
@@ -29,7 +32,8 @@ class EventDetailViewController: UIViewController {
         bookmarkButton.addTarget(self, action: #selector(bookmarkButtonDidTap(_:)), for: .touchUpInside)
         
         let moreButton = UIButton(frame: CGRect(x: 0, y: 0, width: 14, height: 20))
-        moreButton.setImage(UIImage(systemName: "ellipsis.vertical.bubble.fill"), for: .normal)
+        moreButton.setImage(UIImage(systemName: "ellipsis"), for: .normal)
+        moreButton.tintColor = .black
         
         self.navigationItem.rightBarButtonItems = [
             UIBarButtonItem(customView: moreButton),
@@ -37,12 +41,26 @@ class EventDetailViewController: UIViewController {
         ]
     }
     
-    func setviewController() {
+    func setViewController() {
+        let url = URL(string: eventManager.events[0].imageURL)!
+        eventDetailView.mainImageView.kf.setImage(with: url)
         
+        eventDetailView.bodyContentsLabel.text =
+        """
+        zzzzasfsdafasdfsf
+        asdfsdafwef
+        weafwefweafwefwef
+        awfefawfew
+        fewfwefawefw
+        fawfawefawefwefawf
+        """
+        eventDetailView.viewsLabel.text = "1234회"
+        eventDetailView.likeAndCommentsLabel.text = "zzzzzzzzzz"
     }
 
     @objc func bookmarkButtonDidTap(_ sender: UIButton) {
         guard let button = self.navigationItem.rightBarButtonItems?[1] else {
+            print("찾을 수 없음.")
             return
         }
         button.isSelected = !button.isSelected

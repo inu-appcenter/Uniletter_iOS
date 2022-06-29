@@ -10,11 +10,7 @@ import SnapKit
 
 class EventDetailView : UIView {
     
-    lazy var scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        
-        return scrollView
-    }()
+    lazy var scrollView = UIScrollView()
     
     /// 원 모양을 생성 동시에 하기 위해 버튼으로 구현
     lazy var profileImage: UIButton = {
@@ -45,24 +41,20 @@ class EventDetailView : UIView {
     
     lazy var moreButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "ellipsis.vertical.bubble.fill"), for: .normal)
+        button.setImage(UIImage(systemName: "ellipsis"), for: .normal)
+        button.tintColor = .black
         
         return button
     }()
     
-    lazy var mainImageView: UIImageView = {
-        let imageView = UIImageView()
-        
-        return imageView
-    }()
+    lazy var mainImageView = UIImageView()
     
-    lazy var titleTextView: UITextView = {
-        let textView = UITextView()
-        textView.isUserInteractionEnabled = false
-        textView.font = .boldSystemFont(ofSize: 18)
-        textView.textContainer.lineFragmentPadding = 0
+    lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = .boldSystemFont(ofSize: 18)
+        label.numberOfLines = 3
         
-        return textView
+        return label
     }()
     
     /// 원 모양을 생성 동시에 하기 위해 버튼으로 구현
@@ -143,20 +135,26 @@ class EventDetailView : UIView {
         return label
     }()
     
-    /// 조회수 아이콘을 위해 버튼으로 구현
-    lazy var hitsButton: UIButton = {
-        let button = UIButton()
-        button.tintColor = UIColor.customColor(.lightGray)
-        button.setImage(UIImage(systemName: "eye"), for: .normal)
-        button.isUserInteractionEnabled = false
+    lazy var eyeImageView: UIImageView = {
+        let imageview = UIImageView()
+        imageview.tintColor = UIColor.customColor(.darkGray)
+        imageview.image = UIImage(systemName: "eye")
         
-        return button
+        return imageview
+    }()
+    
+    lazy var viewsLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 14)
+        label.textColor = UIColor.customColor(.darkGray)
+        
+        return label
     }()
     
     lazy var likeAndCommentsLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 14)
-        label.textColor = UIColor.customColor(.lightGray)
+        label.textColor = UIColor.customColor(.darkGray)
         
         return label
     }()
@@ -187,6 +185,7 @@ class EventDetailView : UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        backgroundColor = .white
         
         addViews()
     }
@@ -207,7 +206,7 @@ class EventDetailView : UIView {
             moreButton,
             mainImageView,
             intervalView1,
-            titleTextView,
+            titleLabel,
             ddayButton,
             categoryLabel,
             categoryContentsLabel,
@@ -224,7 +223,8 @@ class EventDetailView : UIView {
             intervalView2,
             bodyTitleLabel,
             bodyContentsLabel,
-            hitsButton,
+            eyeImageView,
+            viewsLabel,
             likeAndCommentsLabel,
         ]
             .forEach { scrollView.addSubview($0) }
@@ -244,12 +244,13 @@ class EventDetailView : UIView {
         
         notificationButton.snp.makeConstraints {
             $0.bottom.equalTo(safeAreaLayoutGuide).offset(-15)
-            $0.left.right.equalTo(safeAreaLayoutGuide)
+            $0.left.right.equalToSuperview().inset(20)
+            $0.height.equalTo(50)
         }
         
         profileImage.snp.makeConstraints {
             $0.top.equalToSuperview().offset(25)
-            $0.left.equalToSuperview()
+            $0.left.equalToSuperview().offset(20)
             $0.width.height.equalTo(32)
         }
         
@@ -265,12 +266,13 @@ class EventDetailView : UIView {
         
         moreButton.snp.makeConstraints {
             $0.top.equalTo(profileImage)
-            $0.right.equalToSuperview()
+            $0.right.equalToSuperview().offset(-20)
         }
         
         mainImageView.snp.makeConstraints {
             $0.top.equalTo(profileImage.snp.bottom).offset(15)
-            $0.left.right.equalToSuperview()
+            $0.left.right.equalToSuperview().inset(20)
+            $0.width.equalTo(notificationButton)
             $0.height.equalTo(mainImageView.snp.width).multipliedBy(sqrt(2))
         }
         
@@ -280,22 +282,21 @@ class EventDetailView : UIView {
             $0.height.equalTo(8)
         }
         
-        titleTextView.snp.makeConstraints {
+        titleLabel.snp.makeConstraints {
             $0.top.equalTo(intervalView1.snp.bottom).offset(25)
-            $0.left.equalToSuperview()
+            $0.left.equalToSuperview().offset(20)
             $0.right.equalTo(ddayButton.snp.left).offset(-4)
-            $0.height.equalTo(50)
         }
         
         ddayButton.snp.makeConstraints {
-            $0.top.equalTo(titleTextView)
-            $0.left.equalToSuperview()
+            $0.top.equalTo(titleLabel)
+            $0.right.equalToSuperview().offset(-20)
             $0.height.equalTo(23)
         }
         
         categoryLabel.snp.makeConstraints {
-            $0.top.equalTo(titleTextView.snp.bottom).offset(20)
-            $0.left.equalToSuperview()
+            $0.top.equalTo(titleLabel.snp.bottom).offset(20)
+            $0.left.equalToSuperview().offset(20)
         }
         
         categoryContentsLabel.snp.makeConstraints {
@@ -305,7 +306,7 @@ class EventDetailView : UIView {
         
         startLabel.snp.makeConstraints {
             $0.top.equalTo(categoryLabel.snp.bottom).offset(20)
-            $0.left.equalToSuperview()
+            $0.left.equalToSuperview().offset(20)
         }
         
         startContentsLabel.snp.makeConstraints {
@@ -315,7 +316,7 @@ class EventDetailView : UIView {
         
         endLabel.snp.makeConstraints {
             $0.top.equalTo(startLabel.snp.bottom).offset(20)
-            $0.left.equalToSuperview()
+            $0.left.equalToSuperview().offset(20)
         }
         
         endContentsLabel.snp.makeConstraints {
@@ -325,7 +326,7 @@ class EventDetailView : UIView {
         
         targetLabel.snp.makeConstraints {
             $0.top.equalTo(endLabel.snp.bottom).offset(20)
-            $0.left.equalToSuperview()
+            $0.left.equalToSuperview().offset(20)
         }
         
         targetContentsLabel.snp.makeConstraints {
@@ -335,7 +336,7 @@ class EventDetailView : UIView {
         
         contactLabel.snp.makeConstraints {
             $0.top.equalTo(targetLabel.snp.bottom).offset(20)
-            $0.left.equalToSuperview()
+            $0.left.equalToSuperview().offset(20)
         }
         
         contactContentsLabel.snp.makeConstraints {
@@ -345,7 +346,7 @@ class EventDetailView : UIView {
         
         linkLabel.snp.makeConstraints {
             $0.top.equalTo(contactLabel.snp.bottom).offset(20)
-            $0.left.equalToSuperview()
+            $0.left.equalToSuperview().offset(20)
         }
         
         linkContentsLabel.snp.makeConstraints {
@@ -361,22 +362,30 @@ class EventDetailView : UIView {
         
         bodyTitleLabel.snp.makeConstraints {
             $0.top.equalTo(intervalView2.snp.bottom).offset(20)
-            $0.left.equalToSuperview()
+            $0.left.equalToSuperview().offset(20)
         }
         
         bodyContentsLabel.snp.makeConstraints {
             $0.top.equalTo(bodyTitleLabel).offset(25)
-            $0.left.right.equalToSuperview()
+            $0.left.right.equalToSuperview().inset(20)
         }
         
-        hitsButton.snp.makeConstraints {
-            $0.top.equalTo(bodyContentsLabel).offset(20)
-            $0.left.equalToSuperview()
+        eyeImageView.snp.makeConstraints {
+            $0.top.equalTo(bodyContentsLabel.snp.bottom).offset(20)
+            $0.bottom.equalToSuperview().offset(-40)
+            $0.left.equalToSuperview().offset(20)
+            $0.width.equalTo(18)
+            $0.height.equalTo(15)
+        }
+        
+        viewsLabel.snp.makeConstraints {
+            $0.centerY.equalTo(eyeImageView)
+            $0.left.equalTo(eyeImageView.snp.right).offset(5)
         }
         
         likeAndCommentsLabel.snp.makeConstraints {
-            $0.top.equalTo(bodyContentsLabel).offset(20)
-            $0.right.equalToSuperview()
+            $0.centerY.equalTo(eyeImageView)
+            $0.right.equalToSuperview().offset(-20)
         }
     }
 }
