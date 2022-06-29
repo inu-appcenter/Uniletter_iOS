@@ -20,7 +20,7 @@ class HomeCell: UICollectionViewCell {
         
         homeCellView.frame = contentView.frame
         contentView.addSubview(homeCellView)
-        homeCellView.bookmark.addTarget(self, action: #selector(didTapBookmarkButton(_:)), for: .touchUpInside)
+        homeCellView.bookmarkButton.addTarget(self, action: #selector(didTapBookmarkButton(_:)), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
@@ -28,39 +28,36 @@ class HomeCell: UICollectionViewCell {
     }
     
     func setUI(_ event: Event) {
-        homeCellView.title.text = event.title
+        homeCellView.titleTextView.text = event.title
         updateDDay(event.endAt)
-        homeCellView.category.text = event.category
+        homeCellView.categoryLabel.text = event.category
         
         let url = URL(string: event.imageURL)!
-        homeCellView.poster.kf.setImage(with: url, options: [.cacheMemoryOnly])
+        homeCellView.posterImageView.kf.setImage(with: url, options: [.cacheMemoryOnly])
     }
     
-    func updateDDay(_ text: String) {
-        let intDDay = Int(text) ?? 0
+    func updateDDay(_ dateStr: String) {
+        let intDDay = Int(caculateDDay(dateStr)) ?? 0
         let dday: String
         
-        if intDDay == 0 {
-            dday = "D-day"
-        }
-        else if intDDay < 0 {
+        if intDDay < 0 {
+            homeCellView.ddayButton.configuration?.baseBackgroundColor = UIColor.customColor(.darkGray)
             dday = "마감"
-            homeCellView.dday.configuration?.baseBackgroundColor = UIColor.customColor(.darkGray)
         } else {
-            //homeCellView.dday.configuration?.baseBackgroundColor = UIColor.customColor(.blueGreen)
-            dday = "D-\(intDDay)"
+            homeCellView.ddayButton.configuration?.baseBackgroundColor = UIColor.customColor(.blueGreen)
+            dday = intDDay == 0 ? "D-day" : "D-\(intDDay)"
         }
         
         var attributedString = AttributedString(dday)
         attributedString.font = .systemFont(ofSize: 13)
         
-        homeCellView.dday.configuration?.attributedTitle = attributedString
+        homeCellView.ddayButton.configuration?.attributedTitle = attributedString
     }
     
     @objc func didTapBookmarkButton(_ sender: UIButton) {
-        homeCellView.bookmark.isSelected = !homeCellView.bookmark.isSelected
+        homeCellView.bookmarkButton.isSelected = !homeCellView.bookmarkButton.isSelected
         
-        homeCellView.bookmark.tintColor = homeCellView.bookmark.isSelected
+        homeCellView.bookmarkButton.tintColor = homeCellView.bookmarkButton.isSelected
         ? UIColor.customColor(.yellow)
         : UIColor.customColor(.lightGray)
     }

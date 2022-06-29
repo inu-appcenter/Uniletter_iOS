@@ -1,5 +1,5 @@
 //
-//  UIColor++Extensions.swift
+//  Colors++Extensions.swift
 //  Uniletter
 //
 //  Created by 권오준 on 2022/06/27.
@@ -12,6 +12,7 @@ enum Colors {
     case darkGray
     case blueGreen
     case yellow
+    case lightBlue
 }
 
 extension UIColor {
@@ -21,6 +22,7 @@ extension UIColor {
         case .darkGray: return #colorLiteral(red: 0.5019607843, green: 0.5019607843, blue: 0.5019607843, alpha: 1)
         case .blueGreen: return #colorLiteral(red: 0, green: 0.7294117647, blue: 0.6823529412, alpha: 1)
         case .yellow: return #colorLiteral(red: 1, green: 0.7803921569, blue: 0.2352941176, alpha: 1)
+        case .lightBlue: return #colorLiteral(red: 0.8078431373, green: 0.9568627451, blue: 0.9450980392, alpha: 1)
         }
     }
 }
@@ -32,6 +34,7 @@ extension CGColor {
         case .darkGray: return #colorLiteral(red: 0.5019607843, green: 0.5019607843, blue: 0.5019607843, alpha: 1).cgColor
         case .blueGreen: return #colorLiteral(red: 0, green: 0.7294117647, blue: 0.6823529412, alpha: 1).cgColor
         case .yellow: return #colorLiteral(red: 1, green: 0.7803921569, blue: 0.2352941176, alpha: 1).cgColor
+        case .lightBlue: return #colorLiteral(red: 0.8078431373, green: 0.9568627451, blue: 0.9450980392, alpha: 1).cgColor
         }
     }
 }

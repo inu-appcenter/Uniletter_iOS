@@ -8,6 +8,7 @@ target 'Uniletter' do
   pod "SnapKit"
   pod "Alamofire"
   pod "Kingfisher"
+  pod "MarqueeLabel"
 
   # Pods for Uniletter
 

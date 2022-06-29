@@ -1,24 +1,28 @@
 PODS:
   - Alamofire (5.6.1)
   - Kingfisher (7.2.4)
+  - MarqueeLabel (4.3.0)
   - SnapKit (5.6.0)
 
 DEPENDENCIES:
   - Alamofire
   - Kingfisher
+  - MarqueeLabel
   - SnapKit
 
 SPEC REPOS:
   trunk:
     - Alamofire
     - Kingfisher
+    - MarqueeLabel
     - SnapKit
 
 SPEC CHECKSUMS:
   Alamofire: 87bd8c952f9a4454320fce00d9cc3de57bcadaf5
   Kingfisher: 2457be2121734e69e54a2312ecc0150eb9ae70b3
+  MarqueeLabel: 02f5ac8fd6877c94564556cb93fa86c70c08baeb
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
 
-PODFILE CHECKSUM: 0e53ea1d40f7bfd6a9a06cedfe9acd2762e7502d
+PODFILE CHECKSUM: 0102075112575dc505f117269ffd2d627bbdbd53
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3

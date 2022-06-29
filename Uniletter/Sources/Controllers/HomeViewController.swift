@@ -8,7 +8,7 @@
 import UIKit
 
 class HomeViewController: UIViewController {
-
+    
     let homeView = HomeView()
     let eventManager = EventManager.shared
     
@@ -18,30 +18,55 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureNavigationBar()
-        setController()
+        setNavigationBar()
+        setViewController()
         fetchEvents()
     }
     
-    func configureNavigationBar() {
-        let logo = UIBarButtonItem(
-            image: UIImage(named: "Logo2")?.withRenderingMode(.alwaysOriginal),
-            style: .done,
-            target: self,
-            action: #selector(didTaplogo))
-        self.navigationItem.leftBarButtonItem = logo
+    override func viewDidAppear(_ animated: Bool) {
+        addGradientLayer()
+    }
+    
+    func setNavigationBar() {
+        let topLogo = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 20))
+        topLogo.setBackgroundImage(UIImage(named: "UniletterLabel"), for: .normal)
         
+        let config = UIImage.SymbolConfiguration(weight: .bold)
         let myInfo = UIBarButtonItem(
-            image: UIImage(systemName: "person")?.withRenderingMode(.alwaysOriginal),
+            image: UIImage(systemName: "person", withConfiguration: config)?.withRenderingMode(.alwaysOriginal),
             style: .done,
             target: self,
             action: #selector(gotoInfo))
-        self.navigationItem.rightBarButtonItem = myInfo
+        
+        self.navigationItem.leftBarButtonItems = [
+            spacingItem(15),
+            UIBarButtonItem(customView: topLogo),
+        ]
+        self.navigationItem.rightBarButtonItems = [
+            spacingItem(10),
+            myInfo,
+        ]
+        
+        let navigationBarLayer = self.navigationController?.navigationBar.layer
+        navigationBarLayer?.shadowColor = CGColor.customColor(.lightGray)
+        navigationBarLayer?.shadowOpacity = 0.2
+        navigationBarLayer?.shadowOffset = CGSize(width: 0, height: 2.0)
     }
     
-    func setController() {
+    func setViewController() {
         homeView.collectionView.dataSource = self
         homeView.collectionView.delegate = self
+    }
+    
+    func addGradientLayer() {
+        let gradient: CAGradientLayer = CAGradientLayer()
+        gradient.colors = [
+            UIColor(red: 1, green: 1, blue: 1, alpha: 0).cgColor,
+            UIColor(red: 1, green: 1, blue: 1, alpha: 0.6).cgColor,
+            UIColor.white.cgColor
+        ]
+        gradient.frame = homeView.gradientView.bounds
+        homeView.gradientView.layer.addSublayer(gradient)
     }
     
     func fetchEvents() {
@@ -49,15 +74,10 @@ class HomeViewController: UIViewController {
             API.getEvents() { events in
                 self.eventManager.events = events
                 DispatchQueue.main.async {
-                    self.eventManager.formatEndAt()
                     self.homeView.collectionView.reloadData()
                 }
             }
         }
-    }
-    
-    @objc func didTaplogo() {
-        // TODO: 최상단 이동 후 리로드
     }
     
     @objc func gotoInfo() {
@@ -82,5 +102,10 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         return cell
     }
     
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let eventDetailViewController = EventDetailViewController()
+        eventDetailViewController.index = indexPath.row
+        
+        self.navigationController?.pushViewController(eventDetailViewController, animated: true)
+    }
 }
