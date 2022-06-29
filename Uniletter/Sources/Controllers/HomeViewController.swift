@@ -74,7 +74,6 @@ class HomeViewController: UIViewController {
             API.getEvents() { events in
                 self.eventManager.events = events
                 DispatchQueue.main.async {
-                    self.eventManager.formatEndAt()
                     self.homeView.collectionView.reloadData()
                 }
             }

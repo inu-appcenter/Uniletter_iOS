@@ -36,8 +36,8 @@ class HomeCell: UICollectionViewCell {
         homeCellView.posterImageView.kf.setImage(with: url, options: [.cacheMemoryOnly])
     }
     
-    func updateDDay(_ text: String) {
-        let intDDay = Int(text) ?? 0
+    func updateDDay(_ dateStr: String) {
+        let intDDay = Int(caculateDDay(dateStr)) ?? 0
         let dday: String
         
         if intDDay < 0 {
