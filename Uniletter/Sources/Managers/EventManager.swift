@@ -23,6 +23,10 @@ class EventManager {
         return events[index]
     }
     
+    func formatStartAt() {
+        
+    }
+    
     func formatEndAt() {
         let dday = events.map { $0.endAt }
         if dday.count > 0 {

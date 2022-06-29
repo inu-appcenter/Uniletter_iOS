@@ -29,6 +29,9 @@
 		76E96489286B6F4700D5299A /* UIImage++Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E96488286B6F4700D5299A /* UIImage++Extensions.swift */; };
 		76E9648B286B8F6400D5299A /* UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E9648A286B8F6400D5299A /* UI.swift */; };
 		76FCB543286B955F00AC4F70 /* Colors++Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FCB542286B955F00AC4F70 /* Colors++Extensions.swift */; };
+		76FCB545286C253900AC4F70 /* EventDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FCB544286C253900AC4F70 /* EventDetailViewController.swift */; };
+		76FCB547286C254B00AC4F70 /* EventDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FCB546286C254B00AC4F70 /* EventDetailView.swift */; };
+		76FCB54C286C35DE00AC4F70 /* DetailLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FCB54B286C35DE00AC4F70 /* DetailLabel.swift */; };
 		C121D76BA9F2532F8061C2E1 /* Pods_Uniletter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B9E2AEF628539C36D2C3D4F /* Pods_Uniletter.framework */; };
 /* End PBXBuildFile section */
 
@@ -59,6 +62,9 @@
 		76E96488286B6F4700D5299A /* UIImage++Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage++Extensions.swift"; sourceTree = "<group>"; };
 		76E9648A286B8F6400D5299A /* UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UI.swift; sourceTree = "<group>"; };
 		76FCB542286B955F00AC4F70 /* Colors++Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Colors++Extensions.swift"; sourceTree = "<group>"; };
+		76FCB544286C253900AC4F70 /* EventDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailViewController.swift; sourceTree = "<group>"; };
+		76FCB546286C254B00AC4F70 /* EventDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailView.swift; sourceTree = "<group>"; };
+		76FCB54B286C35DE00AC4F70 /* DetailLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailLabel.swift; sourceTree = "<group>"; };
 		88AC0E121F52EB04C04A31F4 /* Pods-Uniletter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Uniletter.release.xcconfig"; path = "Target Support Files/Pods-Uniletter/Pods-Uniletter.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -117,6 +123,7 @@
 				765BCA112868CA1B0098BBF2 /* LoginViewController.swift */,
 				765DCDB02868DBF800961EA8 /* HomeViewController.swift */,
 				7616B812286B50A000935257 /* MyPageViewController.swift */,
+				76FCB544286C253900AC4F70 /* EventDetailViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -126,6 +133,7 @@
 			children = (
 				765DCDB22868DCD300961EA8 /* HomeView.swift */,
 				7681D57F2869F1870081C644 /* HomeCellView.swift */,
+				76FCB546286C254B00AC4F70 /* EventDetailView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -143,6 +151,7 @@
 		765BCA162868CA840098BBF2 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				76FCB54A286C35AD00AC4F70 /* CustomUI */,
 				7681D588286A297F0081C644 /* Utilities */,
 				7681D585286A1FE50081C644 /* Managers */,
 				7681D57E2869F0E50081C644 /* ViewModels */,
@@ -224,6 +233,14 @@
 				76E9648A286B8F6400D5299A /* UI.swift */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		76FCB54A286C35AD00AC4F70 /* CustomUI */ = {
+			isa = PBXGroup;
+			children = (
+				76FCB54B286C35DE00AC4F70 /* DetailLabel.swift */,
+			);
+			path = CustomUI;
 			sourceTree = "<group>";
 		};
 		B02123CBA263BFA8ADC1249E /* Pods */ = {
@@ -356,8 +373,10 @@
 				7681D5752869AD780081C644 /* UlButton++Extensions.swift in Sources */,
 				7681D57D2869ECDF0081C644 /* Event.swift in Sources */,
 				765DCDB12868DBF800961EA8 /* HomeViewController.swift in Sources */,
+				76FCB545286C253900AC4F70 /* EventDetailViewController.swift in Sources */,
 				76FCB543286B955F00AC4F70 /* Colors++Extensions.swift in Sources */,
 				7681D5822869F46A0081C644 /* ServiceAPI.swift in Sources */,
+				76FCB54C286C35DE00AC4F70 /* DetailLabel.swift in Sources */,
 				7681D57028698EC60081C644 /* HomeCell.swift in Sources */,
 				765BCA122868CA1B0098BBF2 /* LoginViewController.swift in Sources */,
 				7681D57A2869D2300081C644 /* Address.swift in Sources */,
@@ -369,6 +388,7 @@
 				765BC9FD2868C00C0098BBF2 /* AppDelegate.swift in Sources */,
 				7681D5802869F1870081C644 /* HomeCellView.swift in Sources */,
 				765BC9FF2868C00C0098BBF2 /* SceneDelegate.swift in Sources */,
+				76FCB547286C254B00AC4F70 /* EventDetailView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

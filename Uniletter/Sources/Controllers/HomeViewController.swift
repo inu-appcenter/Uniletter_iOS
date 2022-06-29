@@ -18,7 +18,7 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureNavigationBar()
+        setNavigationBar()
         setViewController()
         fetchEvents()
     }
@@ -27,7 +27,7 @@ class HomeViewController: UIViewController {
         addGradientLayer()
     }
     
-    func configureNavigationBar() {
+    func setNavigationBar() {
         let topLogo = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 20))
         topLogo.setBackgroundImage(UIImage(named: "UniletterLabel"), for: .normal)
         topLogo.addTarget(self, action: #selector(didTaplogo), for: .touchUpInside)
@@ -41,11 +41,11 @@ class HomeViewController: UIViewController {
         
         self.navigationItem.leftBarButtonItems = [
             spacingItem(15),
-            UIBarButtonItem(customView: topLogo)
+            UIBarButtonItem(customView: topLogo),
         ]
         self.navigationItem.rightBarButtonItems = [
             spacingItem(10),
-            myInfo
+            myInfo,
         ]
         
         let navigationBarLayer = self.navigationController?.navigationBar.layer

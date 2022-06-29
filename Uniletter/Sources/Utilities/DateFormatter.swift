@@ -7,14 +7,24 @@
 
 import Foundation
 
-func caculateDDay(_ endAt: String) -> String {
-    let str = endAt.prefix(10)
+func subDateString(_ dateStr: String) -> String {
+    return String(dateStr.prefix(10))
+}
+
+func formatStringToDate(_ dateStr: String) -> Date {
+    let str = subDateString(dateStr)
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "yyyy-MM-dd"
+
+    let date = dateFormatter.date(from: String(str)) ?? Date()
     
-    let endDate = dateFormatter.date(from: String(str)) ?? Date()
+    return date
+}
+
+func caculateDDay(_ endAt: String) -> String {
+    let endAt = formatStringToDate(endAt)
     let now = Date()
-    let interval = endDate.timeIntervalSince(now)
+    let interval = endAt.timeIntervalSince(now)
     let dday = Int(interval / 86400) + 1
     
     return "\(dday)"
