@@ -37,7 +37,7 @@ class MyPageViewController: UIViewController {
         let label = UILabel()
 
         label.text = "사용자"
-        label.font = UIFont(name: "Noto Sans KR", size: 16)
+        label.font = .systemFont(ofSize: 16)
         
         return label
     }()
@@ -45,7 +45,7 @@ class MyPageViewController: UIViewController {
     let grayBar: UIView = {
         let view = UIView()
 
-        view.backgroundColor = #colorLiteral(red: 0.918249011, green: 0.9182489514, blue: 0.9182489514, alpha: 1)
+        view.backgroundColor = UIColor.customColor(.lightGray)
         
         return view
     }()
@@ -58,7 +58,7 @@ class MyPageViewController: UIViewController {
         
         btn.configuration = config
         btn.setTitle("수정하기", for: .normal)
-        btn.tintColor = #colorLiteral(red: 0.918249011, green: 0.9182489514, blue: 0.9182489514, alpha: 1)
+        btn.tintColor = UIColor.customColor(.lightGray)
         
         btn.addTarget(self, action: #selector(changeBtnClicked), for: .touchUpInside)
         return btn
