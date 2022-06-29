@@ -7,14 +7,58 @@
 
 import Foundation
 
-func caculateDDay(_ endAt: String) -> String {
-    let str = endAt.prefix(10)
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "yyyy-MM-dd"
+/// 받아온 날짜 년-월-일 구하기
+func subDateString(_ dateStr: String) -> String {
+    return String(dateStr.prefix(10))
+}
+
+/// 받아온 날짜 시간-분 구하기
+func subTimeString(_ dateStr: String) -> String {
+    let start = dateStr.index(dateStr.startIndex, offsetBy: 11)
+    let end = dateStr.index(dateStr.startIndex, offsetBy: 16)
+    let range = start..<end
     
-    let endDate = dateFormatter.date(from: String(str)) ?? Date()
+    return String(dateStr[range])
+}
+
+/// 시간 AM, PM으로 변환
+func convertTime(_ dateStr: String) -> String {
+    let time = subTimeString(dateStr)
+    
+    var start = time.startIndex
+    var end = time.index(time.startIndex, offsetBy: 2)
+    var range = start..<end
+    let hour = String(time[range])
+    
+    start = time.index(time.startIndex, offsetBy: 3)
+    end = time.endIndex
+    range = start..<end
+    let min = String(time[range])
+    
+    let int = Int(hour)!
+    if int > 12 {
+        return ("\(int % 12):\(min) PM")
+    } else {
+        return ("\(int):\(min) AM")
+    }
+}
+
+/// 받아온 날짜 String -> Date로 변환
+func formatStringToDate(_ dateStr: String) -> Date {
+    let str = subDateString(dateStr)
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy.MM.dd"
+
+    let date = dateFormatter.date(from: String(str)) ?? Date()
+    
+    return date
+}
+
+/// D-day 계산
+func caculateDDay(_ endAt: String) -> String {
+    let endAt = formatStringToDate(endAt)
     let now = Date()
-    let interval = endDate.timeIntervalSince(now)
+    let interval = endAt.timeIntervalSince(now)
     let dday = Int(interval / 86400) + 1
     
     return "\(dday)"
