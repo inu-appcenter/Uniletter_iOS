@@ -104,7 +104,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let eventDetailViewController = EventDetailViewController()
-        eventDetailViewController.index = indexPath.row
+        let event = eventManager.events[indexPath.row]
+        eventDetailViewController.id = event.id
         
         self.navigationController?.pushViewController(eventDetailViewController, animated: true)
     }

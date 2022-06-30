@@ -318,7 +318,7 @@ class EventDetailView : UIView {
         
         categoryContentsLabel.snp.makeConstraints {
             $0.top.equalTo(categoryLabel)
-            $0.left.equalTo(categoryLabel.snp.right).offset(20)
+            $0.left.equalToSuperview().offset(100)
         }
         
         startLabel.snp.makeConstraints {

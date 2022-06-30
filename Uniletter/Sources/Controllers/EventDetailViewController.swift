@@ -11,7 +11,7 @@ import Kingfisher
 class EventDetailViewController: UIViewController {
 
     let eventDetailView = EventDetailView()
-    var index: Int = 0
+    var id: Int = 0
     let viewModel = EventDetailViewModel()
     
     override func loadView() {
@@ -20,13 +20,23 @@ class EventDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.eventLoad(index)
-        setNavigationBar()
-        setViewController()
+        self.setNavigationBar()
+        fetchEvents()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         convertProfileImageToCircle()
+    }
+    
+    func fetchEvents() {
+        DispatchQueue.global().async {
+            API.getEventOne(self.id) { event in
+                self.viewModel.event = event
+                DispatchQueue.main.async {
+                    self.setViewController()
+                }
+            }
+        }
     }
     
     func setNavigationBar() {
