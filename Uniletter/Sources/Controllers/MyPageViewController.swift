@@ -15,13 +15,13 @@ class MyPageViewController: UIViewController {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         
-//        scrollView.backgroundColor = .systemGray4
         return scrollView
     }()
     
     let tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .grouped)
+        let tableView = UITableView(frame: .zero, style: .plain)
 //        tableView.isScrollEnabled = false
+        tableView.separatorStyle = .none
         return tableView
     }()
     
@@ -38,6 +38,8 @@ class MyPageViewController: UIViewController {
         imageView.image = UIImage(named: "UserImage")
         imageView.clipsToBounds = true
         
+        imageView.layer.borderWidth = 0.5
+        imageView.layer.cornerRadius = 38
         return imageView
     }()
     
@@ -61,11 +63,12 @@ class MyPageViewController: UIViewController {
     let changeBtn: UIButton = {
 
         var config = UIButton.Configuration.plain()
-
-        let btn = UIButton()
         
-        btn.configuration = config
-        btn.setTitle("수정하기", for: .normal)
+        var titleArr = AttributedString.init("수정하기")
+        titleArr.font = .systemFont(ofSize: 13)
+        config.attributedTitle = titleArr
+        
+        var btn = UIButton(configuration: config)
         btn.tintColor = UIColor.customColor(.lightGray)
         
         btn.addTarget(self, action: #selector(changeBtnClicked), for: .touchUpInside)
@@ -82,9 +85,10 @@ class MyPageViewController: UIViewController {
         
         let button = UIButton(configuration: config)
         button.layer.cornerRadius = 8
-        button.layer.borderWidth = 1
+        button.layer.borderWidth = 0.5
         button.layer.borderColor = UIColor.lightGray.cgColor
         button.setTitleColor(.black, for: .normal)
+        button.tintColor = UIColor.customColor(.yellow)
         button.setTitle("저장목록", for: .normal)
         
         return button
@@ -100,9 +104,10 @@ class MyPageViewController: UIViewController {
         
         let button = UIButton(configuration: config)
         button.layer.cornerRadius = 8
-        button.layer.borderWidth = 1
+        button.layer.borderWidth = 0.5
         button.layer.borderColor = UIColor.lightGray.cgColor
         button.setTitleColor(.black, for: .normal)
+        button.tintColor = UIColor.customColor(.yellow)
         button.setTitle("알림목록", for: .normal)
         
         return button
@@ -119,7 +124,7 @@ class MyPageViewController: UIViewController {
  
     
     func configureUI() {
-        
+
         view.addSubview(scrollView)
 
         scrollView.addSubview(infoView)
@@ -135,6 +140,7 @@ class MyPageViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(MyPageCell.self, forCellReuseIdentifier: MyPageCell.identifier)
+        tableView.register(MyPageSectionView.self, forHeaderFooterViewReuseIdentifier: MyPageSectionView.identifier)
         
         scrollView.snp.makeConstraints {
 //            $0.top.bottom.equalTo(view.safeAreaLayoutGuide)
@@ -170,7 +176,7 @@ class MyPageViewController: UIViewController {
             $0.top.equalTo(userName.snp.bottom).offset(4)
             $0.centerX.equalTo(view)
             $0.width.equalTo(244)
-            $0.height.equalTo(1)
+            $0.height.equalTo(0.5)
         }
 
         changeBtn.snp.makeConstraints {
@@ -180,7 +186,8 @@ class MyPageViewController: UIViewController {
         
         saveListBtn.snp.makeConstraints {
             $0.top.equalTo(changeBtn.snp.bottom).offset(16)
-            $0.leading.equalToSuperview().inset(26)
+//            $0.leading.equalToSuperview()
+            $0.leading.equalTo(view.snp.centerX).offset(-160)
             $0.width.equalTo(160)
             $0.height.equalTo(49)
         }
@@ -225,23 +232,34 @@ extension MyPageViewController: UITableViewDelegate, UITableViewDataSource {
         return myPageViewModel.numOfSection
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+
+        guard let headerView = view as? MyPageSectionView else { return }
         
+
         switch section {
         case 0:
-            return myPageViewModel.titleOfSection(at: section)
+            headerView.updateUI(myPageViewModel.titleOfSection(at: section))
         case 1:
-            return myPageViewModel.titleOfSection(at: section)
+            headerView.updateUI(myPageViewModel.titleOfSection(at: section))
         case 2:
-            return myPageViewModel.titleOfSection(at: section)
+            headerView.updateUI(myPageViewModel.titleOfSection(at: section))
         case 3:
-            return myPageViewModel.titleOfSection(at: section)
+            headerView.updateUI(myPageViewModel.titleOfSection(at: section))
         default:
-            return "error"
+            print("error")
         }
     }
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+
+        let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: MyPageSectionView.identifier)
+
+        return headerView
+    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        50
+        40
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

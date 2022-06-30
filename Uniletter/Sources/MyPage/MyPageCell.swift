@@ -15,6 +15,8 @@ class MyPageCell: UITableViewCell {
     lazy var label: UILabel = {
         var label = UILabel()
         
+        label.font = .systemFont(ofSize: 16)
+        
         return label
     }()
     
