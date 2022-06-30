@@ -20,7 +20,7 @@ class MyPageViewController: UIViewController {
     
     let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
-//        tableView.isScrollEnabled = false
+        tableView.isScrollEnabled = false
         tableView.separatorStyle = .none
         return tableView
     }()
@@ -28,6 +28,8 @@ class MyPageViewController: UIViewController {
     let infoView: UIView = {
        
         let view = UIView()
+        
+    
         return view
         
     }()
@@ -38,7 +40,7 @@ class MyPageViewController: UIViewController {
         imageView.image = UIImage(named: "UserImage")
         imageView.clipsToBounds = true
         
-        imageView.layer.borderWidth = 0.5
+        imageView.layer.borderWidth = 0.3
         imageView.layer.cornerRadius = 38
         return imageView
     }()
@@ -137,56 +139,52 @@ class MyPageViewController: UIViewController {
         infoView.addSubview(saveListBtn)
         infoView.addSubview(alarmListBtn)
         
+        
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(MyPageCell.self, forCellReuseIdentifier: MyPageCell.identifier)
         tableView.register(MyPageSectionView.self, forHeaderFooterViewReuseIdentifier: MyPageSectionView.identifier)
         
         scrollView.snp.makeConstraints {
-//            $0.top.bottom.equalTo(view.safeAreaLayoutGuide)
-//            $0.leading.trailing.equalTo(view)
-//            $0.width.equalTo(350)
-//            $0.height.equalTo(1000)
-            
-            $0.edges.equalToSuperview()
+
+            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.leading.trailing.equalTo(view)
+            $0.width.equalTo(350)
+            $0.height.equalTo(800)
         }
 
         infoView.snp.makeConstraints {
-            $0.top.bottom.equalTo(view.safeAreaLayoutGuide)
-            $0.leading.trailing.equalTo(view)
-//
-//            $0.edges.equalTo(scrollView.contentLayoutGuide)
-//            $0.height.greaterThanOrEqualTo(view.snp.height).priority(.low)
-//            $0.width.equalTo(scrollView.snp.width)
 
+            $0.edges.equalTo(scrollView.contentLayoutGuide)
+            $0.height.equalTo(850)
+            $0.width.equalTo(scrollView.snp.width)
         }
 
         userImage.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(36)
-            $0.centerX.equalTo(view)
+            $0.top.equalTo(scrollView).offset(36)
+            $0.centerX.equalTo(scrollView)
             $0.width.height.equalTo(78)
         }
 
         userName.snp.makeConstraints {
             $0.top.equalTo(userImage.snp.bottom).offset(24)
-            $0.centerX.equalTo(view)
+            $0.centerX.equalTo(infoView)
         }
 
         grayBar.snp.makeConstraints {
             $0.top.equalTo(userName.snp.bottom).offset(4)
-            $0.centerX.equalTo(view)
+            $0.centerX.equalTo(infoView)
             $0.width.equalTo(244)
             $0.height.equalTo(0.5)
         }
 
         changeBtn.snp.makeConstraints {
             $0.top.equalTo(grayBar.snp.bottom).offset(4)
-            $0.centerX.equalTo(view)
+            $0.centerX.equalTo(infoView)
         }
         
         saveListBtn.snp.makeConstraints {
             $0.top.equalTo(changeBtn.snp.bottom).offset(16)
-//            $0.leading.equalToSuperview()
             $0.leading.equalTo(view.snp.centerX).offset(-160)
             $0.width.equalTo(160)
             $0.height.equalTo(49)
@@ -201,7 +199,8 @@ class MyPageViewController: UIViewController {
         
         tableView.snp.makeConstraints {
             $0.top.equalTo(saveListBtn.snp.bottom).offset(5)
-            $0.leading.trailing.bottom.equalTo(infoView)
+            $0.leading.trailing.equalTo(scrollView)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
     

@@ -28,7 +28,7 @@ class MyPageSectionView: UITableViewHeaderFooterView {
     func setting() {
         addSubview(label)
         
-        self.backgroundColor = .white
+//        self.backgroundColor = .white
         label.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.leading.equalToSuperview().inset(20)
