@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C80F388286D997300ECAB60 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C80F387286D997300ECAB60 /* MyPageViewModel.swift */; };
+		2C80F38B286DA01600ECAB60 /* MyPageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C80F38A286DA01500ECAB60 /* MyPageCell.swift */; };
+		2C80F391286DE20000ECAB60 /* MyPageSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C80F390286DE20000ECAB60 /* MyPageSectionView.swift */; };
 		7616B813286B50A000935257 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7616B812286B50A000935257 /* MyPageViewController.swift */; };
 		765BC9FD2868C00C0098BBF2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765BC9FC2868C00C0098BBF2 /* AppDelegate.swift */; };
 		765BC9FF2868C00C0098BBF2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765BC9FE2868C00C0098BBF2 /* SceneDelegate.swift */; };
@@ -39,6 +42,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2C80F387286D997300ECAB60 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
+		2C80F38A286DA01500ECAB60 /* MyPageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageCell.swift; sourceTree = "<group>"; };
+		2C80F390286DE20000ECAB60 /* MyPageSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSectionView.swift; sourceTree = "<group>"; };
 		4B9E2AEF628539C36D2C3D4F /* Pods_Uniletter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Uniletter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F1F5DD4E8EBAC5709B4DC60 /* Pods-Uniletter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Uniletter.debug.xcconfig"; path = "Target Support Files/Pods-Uniletter/Pods-Uniletter.debug.xcconfig"; sourceTree = "<group>"; };
 		7616B812286B50A000935257 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
@@ -86,6 +92,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2C80F389286D9FF800ECAB60 /* MyPage */ = {
+			isa = PBXGroup;
+			children = (
+				2C80F387286D997300ECAB60 /* MyPageViewModel.swift */,
+				2C80F38A286DA01500ECAB60 /* MyPageCell.swift */,
+				2C80F390286DE20000ECAB60 /* MyPageSectionView.swift */,
+			);
+			path = MyPage;
+			sourceTree = "<group>";
+		};
 		36F4336931E7A0D725AE126A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -158,6 +174,7 @@
 			isa = PBXGroup;
 			children = (
 				76944016286D53DA006CD081 /* Jun's new file */,
+				2C80F389286D9FF800ECAB60 /* MyPage */,
 				76FCB54A286C35AD00AC4F70 /* CustomUI */,
 				7681D588286A297F0081C644 /* Utilities */,
 				7681D585286A1FE50081C644 /* Managers */,
@@ -392,12 +409,14 @@
 				76FCB54E286CA16700AC4F70 /* UILabel++Extensions.swift in Sources */,
 				7681D57D2869ECDF0081C644 /* Event.swift in Sources */,
 				765DCDB12868DBF800961EA8 /* HomeViewController.swift in Sources */,
+				2C80F391286DE20000ECAB60 /* MyPageSectionView.swift in Sources */,
 				76FCB545286C253900AC4F70 /* EventDetailViewController.swift in Sources */,
 				76FCB543286B955F00AC4F70 /* Colors++Extensions.swift in Sources */,
 				7681D5822869F46A0081C644 /* ServiceAPI.swift in Sources */,
 				76FCB54C286C35DE00AC4F70 /* DetailLabel.swift in Sources */,
 				7681D57028698EC60081C644 /* HomeCell.swift in Sources */,
 				765BCA122868CA1B0098BBF2 /* LoginViewController.swift in Sources */,
+				2C80F38B286DA01600ECAB60 /* MyPageCell.swift in Sources */,
 				7681D57A2869D2300081C644 /* Address.swift in Sources */,
 				765BCA012868C00C0098BBF2 /* LaunchViewController.swift in Sources */,
 				7616B813286B50A000935257 /* MyPageViewController.swift in Sources */,
@@ -409,6 +428,7 @@
 				765BC9FF2868C00C0098BBF2 /* SceneDelegate.swift in Sources */,
 				76944018286D5406006CD081 /* API++.swift in Sources */,
 				76FCB547286C254B00AC4F70 /* EventDetailView.swift in Sources */,
+				2C80F388286D997300ECAB60 /* MyPageViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
