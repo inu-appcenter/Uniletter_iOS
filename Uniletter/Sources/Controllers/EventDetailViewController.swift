@@ -42,7 +42,7 @@ class EventDetailViewController: UIViewController {
             image: UIImage(systemName: "ellipsis"),
             style: .done,
             target: self,
-            action: #selector(moreButtonDidTap(_:)))
+            action: #selector(didTapMorebutton(_:)))
         moreButton.tintColor = .black
         
         self.navigationItem.rightBarButtonItems = [
@@ -67,6 +67,10 @@ class EventDetailViewController: UIViewController {
         eventDetailView.likeAndCommentsLabel.text = viewModel.likeAndComments
         updateDDay()
         convertTextToHyperLink()
+        
+        eventDetailView.recognizeTapLink.addTarget(
+            self,
+            action: #selector(recognizeTapped(_:)))
     }
     
     func updateDDay() {
@@ -133,18 +137,28 @@ class EventDetailViewController: UIViewController {
         button.isSelected = !button.isSelected
         button.tintColor = .clear
         
-        if button.isSelected {
-            button.image = UIImage(
-                systemName: "bookmark.fill")?
-                .withTintColor(UIColor.customColor(.yellow), renderingMode: .alwaysOriginal)
-        } else {
-            button.image = UIImage(
-                systemName: "bookmark")?
-                .withTintColor(UIColor.customColor(.lightGray), renderingMode: .alwaysOriginal)
-        }
+        button.image = button.isSelected
+        ? UIImage(
+            systemName: "bookmark.fill")?
+            .withTintColor(
+                UIColor.customColor(.yellow),
+                renderingMode: .alwaysOriginal)
+        : UIImage(
+            systemName: "bookmark")?
+            .withTintColor(
+                UIColor.customColor(.lightGray),
+                renderingMode: .alwaysOriginal)
     }
     
-    @objc func moreButtonDidTap(_ sender: UIButton) {
-        print("more")
+    @objc func didTapMorebutton(_ sender: UIButton) {
+        
+    }
+    
+    @objc func recognizeTapped(_ sender: Any) {
+        guard let url = URL(string: viewModel.link) else {
+            return
+        }
+        
+        UIApplication.shared.open(url)
     }
 }

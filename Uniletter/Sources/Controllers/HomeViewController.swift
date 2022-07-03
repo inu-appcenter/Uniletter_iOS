@@ -11,6 +11,7 @@ class HomeViewController: UIViewController {
     
     let homeView = HomeView()
     let viewModel = HomeViewModel()
+    var isLoggedIn = false
     
     override func loadView() {
         view = homeView
@@ -28,8 +29,15 @@ class HomeViewController: UIViewController {
     }
     
     func setNavigationBar() {
-        let topLogo = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 20))
-        topLogo.setBackgroundImage(UIImage(named: "UniletterLabel"), for: .normal)
+        let topLogo: UIButton = {
+            let button = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 20))
+            button.setBackgroundImage(
+                UIImage(named: "UniletterLabel"),
+                for: .normal)
+            button.isUserInteractionEnabled = false
+            
+            return button
+        }()
         
         let config = UIImage.SymbolConfiguration(weight: .bold)
         let myInfo = UIBarButtonItem(
@@ -39,7 +47,7 @@ class HomeViewController: UIViewController {
                 .withRenderingMode(.alwaysOriginal),
             style: .done,
             target: self,
-            action: #selector(gotoInfo))
+            action: #selector(goToInfo))
         
         self.navigationItem.leftBarButtonItems = [
             spacingItem(15),
@@ -59,6 +67,11 @@ class HomeViewController: UIViewController {
     func setViewController() {
         homeView.collectionView.dataSource = self
         homeView.collectionView.delegate = self
+        
+        homeView.writeButton.addTarget(
+            self,
+            action: #selector(goToWrite(_:)),
+            for: .touchUpInside)
     }
     
     func addGradientLayer() {
@@ -83,10 +96,22 @@ class HomeViewController: UIViewController {
         }
     }
     
-    @objc func gotoInfo() {
-        let myPageViewController = MyPageViewController()
-        
-        self.navigationController?.pushViewController(myPageViewController, animated: true)
+    @objc func goToInfo(_ sender: UIBarButtonItem) {
+        if isLoggedIn {
+            let myPageViewController = MyPageViewController()
+            
+            self.navigationController?.pushViewController(myPageViewController, animated: true)
+        } else {
+            presentAlertView(.login)
+        }
+    }
+    
+    @objc func goToWrite(_ sender: UIButton) {
+        if isLoggedIn {
+            // TODO: 글쓰기
+        } else {
+            presentAlertView(.login)
+        }
     }
 }
 

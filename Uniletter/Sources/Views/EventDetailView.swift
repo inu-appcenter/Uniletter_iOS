@@ -200,12 +200,7 @@ class EventDetailView : UIView {
         return view
     }()
     
-    lazy var recognizeTapLink: UITapGestureRecognizer = {
-        let gesture = UITapGestureRecognizer()
-        gesture.addTarget(self, action: #selector(recognizeTapped(_:)))
-        
-        return gesture
-    }()
+    let recognizeTapLink = UITapGestureRecognizer()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -421,15 +416,5 @@ class EventDetailView : UIView {
         targetLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         contactLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         linkLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
-    }
-    
-    @objc func recognizeTapped(_ sender: Any) {
-        guard let text = linkContentsLabel.text else { return }
-        guard let url = URL(string: text) else {
-            print("url을 찾을 수 없습니다.")
-            return
-        }
-        
-        UIApplication.shared.open(url)
     }
 }
