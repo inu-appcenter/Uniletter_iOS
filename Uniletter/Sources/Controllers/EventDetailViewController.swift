@@ -28,17 +28,6 @@ class EventDetailViewController: UIViewController {
         convertProfileImageToCircle()
     }
     
-    func fetchEvents() {
-        DispatchQueue.global().async {
-            API.getEventOne(self.id) { event in
-                self.viewModel.event = event
-                DispatchQueue.main.async {
-                    self.setViewController()
-                }
-            }
-        }
-    }
-    
     func setNavigationBar() {
         self.navigationItem.title = "읽어보기"
         
@@ -123,6 +112,16 @@ class EventDetailViewController: UIViewController {
             eventDetailView.linkContentsLabel.attributedText = attributedString
         } else {
             eventDetailView.linkContentsLabel.text = viewModel.link
+        }
+    }
+    
+    func fetchEvents() {
+        DispatchQueue.global().async {
+            self.viewModel.loadEvent(self.id) {
+                DispatchQueue.main.async {
+                    self.setViewController()
+                }
+            }
         }
     }
 

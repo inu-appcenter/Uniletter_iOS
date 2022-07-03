@@ -8,6 +8,7 @@
 import UIKit
 
 class HomeViewController: UIViewController {
+    
     let homeView = HomeView()
     let viewModel = HomeViewModel()
     
@@ -32,7 +33,10 @@ class HomeViewController: UIViewController {
         
         let config = UIImage.SymbolConfiguration(weight: .bold)
         let myInfo = UIBarButtonItem(
-            image: UIImage(systemName: "person", withConfiguration: config)?.withRenderingMode(.alwaysOriginal),
+            image: UIImage(
+                systemName: "person",
+                withConfiguration: config)?
+                .withRenderingMode(.alwaysOriginal),
             style: .done,
             target: self,
             action: #selector(gotoInfo))
@@ -71,8 +75,7 @@ class HomeViewController: UIViewController {
     
     func fetchEvents() {
         DispatchQueue.global().async {
-            API.getEvents() { events in
-                self.viewModel.events = events
+            self.viewModel.loadEvents() {
                 DispatchQueue.main.async {
                     self.homeView.collectionView.reloadData()
                 }

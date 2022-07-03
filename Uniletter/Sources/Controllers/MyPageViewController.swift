@@ -10,7 +10,6 @@ import SnapKit
 
 class MyPageViewController: UIViewController {
     
-    // test
     let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -70,9 +69,8 @@ class MyPageViewController: UIViewController {
         titleArr.font = .systemFont(ofSize: 13)
         config.attributedTitle = titleArr
         
-        var btn = UIButton(configuration: config)
+        let btn = UIButton(configuration: config)
         btn.tintColor = UIColor.customColor(.lightGray)
-        
         btn.addTarget(self, action: #selector(changeBtnClicked), for: .touchUpInside)
         return btn
     }()

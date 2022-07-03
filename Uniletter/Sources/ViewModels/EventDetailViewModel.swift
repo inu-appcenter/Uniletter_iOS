@@ -95,7 +95,10 @@ class EventDetailViewModel {
         return "저장\(event?.likes ?? 0) ∙ 댓글 \(event?.comments ?? 0)개"
     }
     
-    func eventLoad(_ index: Int) {
-        event = EventManager.shared.events[index]
+    func loadEvent(_ id: Int, completion: @escaping () -> Void) {
+        API.getEventOne(id) { event in
+            self.event = event
+            completion()
+        }
     }
 }

@@ -19,4 +19,10 @@ class HomeViewModel {
         return events[index]
     }
     
+    func loadEvents(completion: @escaping () -> Void) {
+        API.getEvents() { events in
+            self.events = events
+            completion()
+        }
+    }
 }

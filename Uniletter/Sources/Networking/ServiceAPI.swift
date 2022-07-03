@@ -7,7 +7,8 @@
 
 import Alamofire
 
-private func networking<T: Decodable>(urlStr: String, method: HTTPMethod, data: Data?, model: [T].Type, completion: @escaping(Result<[T], AFError>) -> Void) {
+// MARK: 네트워킹 통합
+private func networking<T: Decodable>(urlStr: String, method: HTTPMethod, data: Data?, model: T.Type, completion: @escaping(Result<T, AFError>) -> Void) {
     guard let url = URL(string: Address.base.url + urlStr) else {
         print("URL을 찾을 수 없습니다.")
         return
@@ -29,6 +30,7 @@ private func networking<T: Decodable>(urlStr: String, method: HTTPMethod, data: 
         }
 }
 
+// MARK: - API
 class API {
     static func getEvents(completion: @escaping([Event]) -> Void) {
         networking(
@@ -36,6 +38,21 @@ class API {
             method: .get,
             data: nil,
             model: [Event].self) { result in
+                switch result {
+                case .success(let events):
+                    completion(events)
+                case .failure(let error):
+                    print(error)
+                }
+            }
+    }
+    
+    static func getEventOne(_ id: Int, completion: @escaping(Event) ->Void) {
+        networking(
+            urlStr: Address.events.url + "/\(id)",
+            method: .get,
+            data: nil,
+            model: Event.self) { result in
                 switch result {
                 case .success(let events):
                     completion(events)
