@@ -132,6 +132,7 @@ class EventDetailView : UIView {
         let label = MarqueeLabel()
         label.font = .systemFont(ofSize: 16)
         label.speed = .duration(20)
+        label.isUserInteractionEnabled = true
         
         return label
     }()
@@ -423,6 +424,12 @@ class EventDetailView : UIView {
     }
     
     @objc func recognizeTapped(_ sender: Any) {
-        print(linkContentsLabel.text ?? "zz")
+        guard let text = linkContentsLabel.text else { return }
+        guard let url = URL(string: text) else {
+            print("url을 찾을 수 없습니다.")
+            return
+        }
+        
+        UIApplication.shared.open(url)
     }
 }
