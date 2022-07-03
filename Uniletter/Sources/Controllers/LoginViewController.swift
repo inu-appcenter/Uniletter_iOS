@@ -25,7 +25,7 @@ class LoginViewController: UIViewController {
         button.layer.borderColor = UIColor.lightGray.cgColor
         button.setTitleColor(.black, for: .normal)
         button.setTitle("로그인", for: .normal)
-        button.addTarget(self, action: #selector(checkLogin), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didTapLoginButton(_:)), for: .touchUpInside)
         
         return button
     }()
@@ -55,7 +55,7 @@ class LoginViewController: UIViewController {
         }
     }
     
-    @objc func checkLogin() {
+    @objc func didTapLoginButton(_ sender: UIButton) {
         let viewController = HomeViewController()
         let navigationController = UINavigationController(rootViewController: viewController)
         navigationController.modalPresentationStyle = .fullScreen

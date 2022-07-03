@@ -132,6 +132,7 @@ class EventDetailView : UIView {
         let label = MarqueeLabel()
         label.font = .systemFont(ofSize: 16)
         label.speed = .duration(20)
+        label.isUserInteractionEnabled = true
         
         return label
     }()
@@ -199,6 +200,8 @@ class EventDetailView : UIView {
         return view
     }()
     
+    let recognizeTapLink = UITapGestureRecognizer()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
@@ -215,6 +218,8 @@ class EventDetailView : UIView {
     }
     
     func addViews() {
+        linkContentsLabel.addGestureRecognizer(recognizeTapLink)
+        
         [
             profileImageView,
             nicknameLabel,
@@ -318,7 +323,7 @@ class EventDetailView : UIView {
         
         categoryContentsLabel.snp.makeConstraints {
             $0.top.equalTo(categoryLabel)
-            $0.left.equalTo(categoryLabel.snp.right).offset(20)
+            $0.left.equalToSuperview().offset(100)
         }
         
         startLabel.snp.makeConstraints {

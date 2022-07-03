@@ -8,9 +8,10 @@
 import UIKit
 
 class HomeViewController: UIViewController {
-    // Test
+    
     let homeView = HomeView()
-    let eventManager = EventManager.shared
+    let viewModel = HomeViewModel()
+    var isLoggedIn = false
     
     override func loadView() {
         view = homeView
@@ -28,15 +29,25 @@ class HomeViewController: UIViewController {
     }
     
     func setNavigationBar() {
-        let topLogo = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 20))
-        topLogo.setBackgroundImage(UIImage(named: "UniletterLabel"), for: .normal)
+        let topLogo: UIButton = {
+            let button = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 20))
+            button.setBackgroundImage(
+                UIImage(named: "UniletterLabel"),
+                for: .normal)
+            button.isUserInteractionEnabled = false
+            
+            return button
+        }()
         
         let config = UIImage.SymbolConfiguration(weight: .bold)
         let myInfo = UIBarButtonItem(
-            image: UIImage(systemName: "person", withConfiguration: config)?.withRenderingMode(.alwaysOriginal),
+            image: UIImage(
+                systemName: "person",
+                withConfiguration: config)?
+                .withRenderingMode(.alwaysOriginal),
             style: .done,
             target: self,
-            action: #selector(gotoInfo))
+            action: #selector(goToInfo))
         
         self.navigationItem.leftBarButtonItems = [
             spacingItem(15),
@@ -56,9 +67,15 @@ class HomeViewController: UIViewController {
     func setViewController() {
         homeView.collectionView.dataSource = self
         homeView.collectionView.delegate = self
+        
+        homeView.writeButton.addTarget(
+            self,
+            action: #selector(goToWrite(_:)),
+            for: .touchUpInside)
     }
     
     func addGradientLayer() {
+        homeView.gradientView.layer.sublayers?.removeAll()
         let gradient: CAGradientLayer = CAGradientLayer()
         gradient.colors = [
             UIColor(red: 1, green: 1, blue: 1, alpha: 0).cgColor,
@@ -71,8 +88,7 @@ class HomeViewController: UIViewController {
     
     func fetchEvents() {
         DispatchQueue.global().async {
-            API.getEvents() { events in
-                self.eventManager.events = events
+            self.viewModel.loadEvents() {
                 DispatchQueue.main.async {
                     self.homeView.collectionView.reloadData()
                 }
@@ -80,23 +96,34 @@ class HomeViewController: UIViewController {
         }
     }
     
-    @objc func gotoInfo() {
-        // TODO: 내 정보 표시
-        let myPageViewController = MyPageViewController()
-        
-        self.navigationController?.pushViewController(myPageViewController, animated: true)
+    @objc func goToInfo(_ sender: UIBarButtonItem) {
+        if isLoggedIn {
+            let myPageViewController = MyPageViewController()
+            
+            self.navigationController?.pushViewController(myPageViewController, animated: true)
+        } else {
+            presentAlertView(.login)
+        }
+    }
+    
+    @objc func goToWrite(_ sender: UIButton) {
+        if isLoggedIn {
+            // TODO: 글쓰기
+        } else {
+            presentAlertView(.login)
+        }
     }
 }
 
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return eventManager.numOfEvents
+        return viewModel.numOfEvents
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeCell.identifier, for: indexPath) as? HomeCell else { return UICollectionViewCell() }
         
-        let event = eventManager.infoOfEvent(indexPath.row)
+        let event = viewModel.infoOfEvent(indexPath.row)
         cell.setUI(event)
         
         return cell
@@ -104,7 +131,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let eventDetailViewController = EventDetailViewController()
-        eventDetailViewController.index = indexPath.row
+        let event = viewModel.events[indexPath.row]
+        eventDetailViewController.id = event.id
         
         self.navigationController?.pushViewController(eventDetailViewController, animated: true)
     }

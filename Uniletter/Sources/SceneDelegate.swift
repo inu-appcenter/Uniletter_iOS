@@ -19,8 +19,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.rootViewController = LaunchViewController()
         window?.makeKeyAndVisible()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.window?.rootViewController = LoginViewController()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            let homeViewController = HomeViewController()
+            let navigationController = UINavigationController(rootViewController: homeViewController)
+            navigationController.modalPresentationStyle = .fullScreen
+            
+            self.window?.rootViewController = navigationController
         }
     }
 
