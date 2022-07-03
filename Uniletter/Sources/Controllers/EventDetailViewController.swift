@@ -11,8 +11,8 @@ import Kingfisher
 class EventDetailViewController: UIViewController {
 
     let eventDetailView = EventDetailView()
-    var index: Int = 0
     let viewModel = EventDetailViewModel()
+    var id: Int = 0
     
     override func loadView() {
         view = eventDetailView
@@ -20,30 +20,45 @@ class EventDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.eventLoad(index)
-        setNavigationBar()
-        setViewController()
+        self.setNavigationBar()
+        fetchEvents()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         convertProfileImageToCircle()
     }
     
+    func fetchEvents() {
+        DispatchQueue.global().async {
+            API.getEventOne(self.id) { event in
+                self.viewModel.event = event
+                DispatchQueue.main.async {
+                    self.setViewController()
+                }
+            }
+        }
+    }
+    
     func setNavigationBar() {
         self.navigationItem.title = "읽어보기"
         
-        let bookmarkButton = UIButton(frame: CGRect(x: 0, y: 0, width: 14, height: 20))
-        bookmarkButton.setImage(UIImage(systemName: "bookmark"), for: .normal)
-        bookmarkButton.setImage(UIImage(systemName: "bookmark.fill"), for: .selected)
-        bookmarkButton.addTarget(self, action: #selector(bookmarkButtonDidTap(_:)), for: .touchUpInside)
+        let bookmarkButton = UIBarButtonItem(
+            image: UIImage(systemName: "bookmark"),
+            style: .done,
+            target: self,
+            action: #selector(bookmarkButtonDidTap(_:)))
+        bookmarkButton.tintColor = UIColor.customColor(.lightGray)
         
-        let moreButton = UIButton(frame: CGRect(x: 0, y: 0, width: 14, height: 20))
-        moreButton.setImage(UIImage(systemName: "ellipsis"), for: .normal)
+        let moreButton = UIBarButtonItem(
+            image: UIImage(systemName: "ellipsis"),
+            style: .done,
+            target: self,
+            action: #selector(moreButtonDidTap(_:)))
         moreButton.tintColor = .black
         
         self.navigationItem.rightBarButtonItems = [
-            UIBarButtonItem(customView: moreButton),
-            UIBarButtonItem(customView: bookmarkButton),
+            moreButton,
+            bookmarkButton,
         ]
     }
     
@@ -58,11 +73,11 @@ class EventDetailViewController: UIViewController {
         eventDetailView.endContentsLabel.text = viewModel.endContent
         eventDetailView.targetContentsLabel.text = viewModel.target
         eventDetailView.contactContentsLabel.text = viewModel.contact
-        eventDetailView.linkContentsLabel.text = viewModel.link
         eventDetailView.bodyContentsLabel.text = viewModel.body
         eventDetailView.viewsLabel.text = viewModel.views
         eventDetailView.likeAndCommentsLabel.text = viewModel.likeAndComments
         updateDDay()
+        convertTextToHyperLink()
     }
     
     func updateDDay() {
@@ -96,15 +111,41 @@ class EventDetailViewController: UIViewController {
         imageView.layer.cornerRadius = imageView.frame.height / 2
         imageView.clipsToBounds = true
     }
+    
+    func convertTextToHyperLink() {
+        if viewModel.link.contains("http") {
+            let attributedString = NSMutableAttributedString(string: viewModel.link)
+            attributedString.addAttribute(
+                .link,
+                value: NSUnderlineStyle.single.rawValue,
+                range: NSRange(location: 0, length: viewModel.link.count))
+            
+            eventDetailView.linkContentsLabel.attributedText = attributedString
+        } else {
+            eventDetailView.linkContentsLabel.text = viewModel.link
+        }
+    }
 
     @objc func bookmarkButtonDidTap(_ sender: UIButton) {
         guard let button = self.navigationItem.rightBarButtonItems?[1] else {
-            print("찾을 수 없음.")
             return
         }
+        
         button.isSelected = !button.isSelected
-        button.tintColor = button.isSelected
-        ? UIColor.customColor(.yellow)
-        : UIColor.customColor(.lightGray)
+        button.tintColor = .clear
+        
+        if button.isSelected {
+            button.image = UIImage(
+                systemName: "bookmark.fill")?
+                .withTintColor(UIColor.customColor(.yellow), renderingMode: .alwaysOriginal)
+        } else {
+            button.image = UIImage(
+                systemName: "bookmark")?
+                .withTintColor(UIColor.customColor(.lightGray), renderingMode: .alwaysOriginal)
+        }
+    }
+    
+    @objc func moreButtonDidTap(_ sender: UIButton) {
+        print("more")
     }
 }

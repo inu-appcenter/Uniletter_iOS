@@ -132,6 +132,7 @@ class EventDetailView : UIView {
         let label = MarqueeLabel()
         label.font = .systemFont(ofSize: 16)
         label.speed = .duration(20)
+        label.isUserInteractionEnabled = true
         
         return label
     }()
@@ -199,6 +200,13 @@ class EventDetailView : UIView {
         return view
     }()
     
+    lazy var recognizeTapLink: UITapGestureRecognizer = {
+        let gesture = UITapGestureRecognizer()
+        gesture.addTarget(self, action: #selector(recognizeTapped(_:)))
+        
+        return gesture
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
@@ -215,6 +223,8 @@ class EventDetailView : UIView {
     }
     
     func addViews() {
+        linkContentsLabel.addGestureRecognizer(recognizeTapLink)
+        
         [
             profileImageView,
             nicknameLabel,
@@ -318,7 +328,7 @@ class EventDetailView : UIView {
         
         categoryContentsLabel.snp.makeConstraints {
             $0.top.equalTo(categoryLabel)
-            $0.left.equalTo(categoryLabel.snp.right).offset(20)
+            $0.left.equalToSuperview().offset(100)
         }
         
         startLabel.snp.makeConstraints {
@@ -411,5 +421,15 @@ class EventDetailView : UIView {
         targetLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         contactLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         linkLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+    }
+    
+    @objc func recognizeTapped(_ sender: Any) {
+        guard let text = linkContentsLabel.text else { return }
+        guard let url = URL(string: text) else {
+            print("url을 찾을 수 없습니다.")
+            return
+        }
+        
+        UIApplication.shared.open(url)
     }
 }
