@@ -8,9 +8,8 @@
 import UIKit
 
 class HomeViewController: UIViewController {
-    // Test
     let homeView = HomeView()
-    let eventManager = EventManager.shared
+    let viewModel = HomeViewModel()
     
     override func loadView() {
         view = homeView
@@ -59,6 +58,7 @@ class HomeViewController: UIViewController {
     }
     
     func addGradientLayer() {
+        homeView.gradientView.layer.sublayers?.removeAll()
         let gradient: CAGradientLayer = CAGradientLayer()
         gradient.colors = [
             UIColor(red: 1, green: 1, blue: 1, alpha: 0).cgColor,
@@ -72,7 +72,7 @@ class HomeViewController: UIViewController {
     func fetchEvents() {
         DispatchQueue.global().async {
             API.getEvents() { events in
-                self.eventManager.events = events
+                self.viewModel.events = events
                 DispatchQueue.main.async {
                     self.homeView.collectionView.reloadData()
                 }
@@ -81,7 +81,6 @@ class HomeViewController: UIViewController {
     }
     
     @objc func gotoInfo() {
-        // TODO: 내 정보 표시
         let myPageViewController = MyPageViewController()
         
         self.navigationController?.pushViewController(myPageViewController, animated: true)
@@ -90,13 +89,13 @@ class HomeViewController: UIViewController {
 
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return eventManager.numOfEvents
+        return viewModel.numOfEvents
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeCell.identifier, for: indexPath) as? HomeCell else { return UICollectionViewCell() }
         
-        let event = eventManager.infoOfEvent(indexPath.row)
+        let event = viewModel.infoOfEvent(indexPath.row)
         cell.setUI(event)
         
         return cell
@@ -104,7 +103,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let eventDetailViewController = EventDetailViewController()
-        let event = eventManager.events[indexPath.row]
+        let event = viewModel.events[indexPath.row]
         eventDetailViewController.id = event.id
         
         self.navigationController?.pushViewController(eventDetailViewController, animated: true)

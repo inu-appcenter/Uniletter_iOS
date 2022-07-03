@@ -27,6 +27,7 @@
 		7681D587286A1FFA0081C644 /* EventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7681D586286A1FFA0081C644 /* EventManager.swift */; };
 		7681D58A286A29970081C644 /* DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7681D589286A29970081C644 /* DateFormatter.swift */; };
 		76944018286D5406006CD081 /* API++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76944017286D5406006CD081 /* API++.swift */; };
+		76AC78342871D6C100D303C4 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76AC78332871D6C100D303C4 /* HomeViewModel.swift */; };
 		76E96489286B6F4700D5299A /* UIImage++Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E96488286B6F4700D5299A /* UIImage++Extensions.swift */; };
 		76E9648B286B8F6400D5299A /* UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E9648A286B8F6400D5299A /* UI.swift */; };
 		76FCB543286B955F00AC4F70 /* Colors++Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FCB542286B955F00AC4F70 /* Colors++Extensions.swift */; };
@@ -62,6 +63,7 @@
 		7681D586286A1FFA0081C644 /* EventManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventManager.swift; sourceTree = "<group>"; };
 		7681D589286A29970081C644 /* DateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatter.swift; sourceTree = "<group>"; };
 		76944017286D5406006CD081 /* API++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API++.swift"; sourceTree = "<group>"; };
+		76AC78332871D6C100D303C4 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		76E96488286B6F4700D5299A /* UIImage++Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage++Extensions.swift"; sourceTree = "<group>"; };
 		76E9648A286B8F6400D5299A /* UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UI.swift; sourceTree = "<group>"; };
 		76FCB542286B955F00AC4F70 /* Colors++Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Colors++Extensions.swift"; sourceTree = "<group>"; };
@@ -245,6 +247,7 @@
 			isa = PBXGroup;
 			children = (
 				76944017286D5406006CD081 /* API++.swift */,
+				76AC78332871D6C100D303C4 /* HomeViewModel.swift */,
 			);
 			path = "Jun's new file";
 			sourceTree = "<group>";
@@ -384,6 +387,7 @@
 				7681D58A286A29970081C644 /* DateFormatter.swift in Sources */,
 				7681D587286A1FFA0081C644 /* EventManager.swift in Sources */,
 				76E9648B286B8F6400D5299A /* UI.swift in Sources */,
+				76AC78342871D6C100D303C4 /* HomeViewModel.swift in Sources */,
 				7681D5752869AD780081C644 /* UlButton++Extensions.swift in Sources */,
 				76FCB54E286CA16700AC4F70 /* UILabel++Extensions.swift in Sources */,
 				7681D57D2869ECDF0081C644 /* Event.swift in Sources */,
@@ -552,7 +556,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 899UYL8QU3;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Uniletter/Supporting Files/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -582,7 +586,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 899UYL8QU3;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Uniletter/Supporting Files/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

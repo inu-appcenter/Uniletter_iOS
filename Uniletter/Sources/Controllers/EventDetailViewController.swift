@@ -73,11 +73,11 @@ class EventDetailViewController: UIViewController {
         eventDetailView.endContentsLabel.text = viewModel.endContent
         eventDetailView.targetContentsLabel.text = viewModel.target
         eventDetailView.contactContentsLabel.text = viewModel.contact
-        eventDetailView.linkContentsLabel.text = viewModel.link
         eventDetailView.bodyContentsLabel.text = viewModel.body
         eventDetailView.viewsLabel.text = viewModel.views
         eventDetailView.likeAndCommentsLabel.text = viewModel.likeAndComments
         updateDDay()
+        convertTextToHyperLink()
     }
     
     func updateDDay() {
@@ -110,6 +110,20 @@ class EventDetailViewController: UIViewController {
         let imageView = eventDetailView.profileImageView
         imageView.layer.cornerRadius = imageView.frame.height / 2
         imageView.clipsToBounds = true
+    }
+    
+    func convertTextToHyperLink() {
+        if viewModel.link.contains("http") {
+            let attributedString = NSMutableAttributedString(string: viewModel.link)
+            attributedString.addAttribute(
+                .link,
+                value: NSUnderlineStyle.single.rawValue,
+                range: NSRange(location: 0, length: viewModel.link.count))
+            
+            eventDetailView.linkContentsLabel.attributedText = attributedString
+        } else {
+            eventDetailView.linkContentsLabel.text = viewModel.link
+        }
     }
 
     @objc func bookmarkButtonDidTap(_ sender: UIButton) {

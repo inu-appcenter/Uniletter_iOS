@@ -199,6 +199,13 @@ class EventDetailView : UIView {
         return view
     }()
     
+    lazy var recognizeTapLink: UITapGestureRecognizer = {
+        let gesture = UITapGestureRecognizer()
+        gesture.addTarget(self, action: #selector(recognizeTapped(_:)))
+        
+        return gesture
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
@@ -215,6 +222,8 @@ class EventDetailView : UIView {
     }
     
     func addViews() {
+        linkContentsLabel.addGestureRecognizer(recognizeTapLink)
+        
         [
             profileImageView,
             nicknameLabel,
@@ -411,5 +420,9 @@ class EventDetailView : UIView {
         targetLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         contactLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         linkLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+    }
+    
+    @objc func recognizeTapped(_ sender: Any) {
+        print(linkContentsLabel.text ?? "zz")
     }
 }
