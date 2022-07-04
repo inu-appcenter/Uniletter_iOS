@@ -72,6 +72,10 @@ class EventDetailViewController: UIViewController {
             self,
             action: #selector(didTapProfileMoreButton(_:)),
             for: .touchUpInside)
+        eventDetailView.notificationButton.addTarget(
+            self,
+            action: #selector(didTapNotificationButton(_:)),
+            for: .touchUpInside)
         eventDetailView.recognizeTapLink.addTarget(
             self,
             action: #selector(didTapLabel(_:)))
@@ -160,6 +164,12 @@ class EventDetailViewController: UIViewController {
     
     @objc func didTapProfileMoreButton(_ sender: UIButton) {
         presentActionSheetView(.profile)
+    }
+    
+    @objc func didTapNotificationButton(_ sender: UIButton) {
+        if viewModel.dday > 0 {
+            presentActionSheetView(.notification)
+        }
     }
     
     @objc func didTapLabel(_ sender: UITapGestureRecognizer) {

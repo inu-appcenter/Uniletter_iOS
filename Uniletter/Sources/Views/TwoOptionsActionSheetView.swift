@@ -13,7 +13,7 @@ class TwoOptionsActionSheetView: UIView {
     lazy var backgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = .black
-        view.layer.opacity = 0.3
+        view.layer.opacity = 0.4
         view.isUserInteractionEnabled = true
         
         return view
@@ -49,14 +49,16 @@ class TwoOptionsActionSheetView: UIView {
     
     lazy var firstButton: UIButton = {
         let button = UIButton()
-        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
+        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
+        button.setTitleColor(UIColor.black, for: .normal)
         
         return button
     }()
     
     lazy var secondButton: UIButton = {
         let button = UIButton()
-        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
+        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
+        button.setTitleColor(UIColor.black, for: .normal)
         
         return button
     }()
@@ -98,7 +100,7 @@ class TwoOptionsActionSheetView: UIView {
             secondBorder,
             secondButton,
         ]
-            .forEach { alertView.addSubview($0) }
+            .forEach { alertView.addArrangedSubview($0) }
         
         [backgroundView, alertView, cancleButton].forEach { addSubview($0) }
         

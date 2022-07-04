@@ -13,7 +13,7 @@ class OneOptionActionSheetView: UIView {
     lazy var backgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = .black
-        view.layer.opacity = 0.3
+        view.layer.opacity = 0.4
         view.isUserInteractionEnabled = true
         
         return view
@@ -49,7 +49,7 @@ class OneOptionActionSheetView: UIView {
     
     lazy var firstButton: UIButton = {
         let button = UIButton()
-        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
+        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
         button.setTitleColor(UIColor.black, for: .normal)
         
         return button

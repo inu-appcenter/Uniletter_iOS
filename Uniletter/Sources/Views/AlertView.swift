@@ -13,7 +13,7 @@ class AlertView: UIView {
     lazy var backgroundView : UIView = {
         let view = UIView()
         view.backgroundColor = .black
-        view.layer.opacity = 0.3
+        view.layer.opacity = 0.4
         view.isUserInteractionEnabled = true
         
         return view

@@ -59,7 +59,7 @@ class MyPageViewController: UIViewController {
         return view
     }()
 
-    let changeButton: UIButton = {
+    lazy var changeButton: UIButton = {
 
         var config = UIButton.Configuration.plain()
         
