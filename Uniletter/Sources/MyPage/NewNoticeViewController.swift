@@ -61,19 +61,7 @@ class NewNoticeViewController: UIViewController {
     }
     
     func configureNavigationBar() {
-        let logo = UIBarButtonItem(
-            image: UIImage(named: "Vector")?.withRenderingMode(.alwaysOriginal),
-            style: .done,
-            target: self,
-            action: #selector(backBtnClicked))
-        self.navigationItem.leftBarButtonItem = logo
-        
-        self.navigationItem.title = "새로운 행사 알림"
-    }
-    
-    @objc func backBtnClicked() {
-        self.navigationController?.popViewController(animated: true)
-        print("backBtnClicked - called")
+        setNavigationTitleAndBackButton("새로운 행사 알림")
     }
 }
 

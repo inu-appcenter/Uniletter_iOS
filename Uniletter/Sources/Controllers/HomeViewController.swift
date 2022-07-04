@@ -11,7 +11,7 @@ class HomeViewController: UIViewController {
     
     let homeView = HomeView()
     let viewModel = HomeViewModel()
-    var isLoggedIn = false
+    var isLoggedIn = true
     
     override func loadView() {
         view = homeView
