@@ -29,7 +29,7 @@ class EventDetailViewController: UIViewController {
     }
     
     func setNavigationBar() {
-        self.navigationItem.title = "읽어보기"
+        setNavigationTitleAndBackButton("읽어보기")
         
         let bookmarkButton = UIBarButtonItem(
             image: UIImage(systemName: "bookmark"),

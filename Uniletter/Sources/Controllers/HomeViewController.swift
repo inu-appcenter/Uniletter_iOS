@@ -22,6 +22,7 @@ class HomeViewController: UIViewController {
         setNavigationBar()
         setViewController()
         fetchEvents()
+        self.navigationController?.navigationItem.title = "ㅋㅋㅋㅋㅋ"
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -42,8 +43,7 @@ class HomeViewController: UIViewController {
         let config = UIImage.SymbolConfiguration(weight: .bold)
         let myInfo = UIBarButtonItem(
             image: UIImage(
-                systemName: "person",
-                withConfiguration: config)?
+                systemName: "person", withConfiguration: config)?
                 .withRenderingMode(.alwaysOriginal),
             style: .done,
             target: self,
