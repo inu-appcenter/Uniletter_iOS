@@ -30,6 +30,16 @@ enum SectionType: CaseIterable {
         case .etc: return ["로그아웃"]
         }
     }
+    
+    var view: [UIViewController] {
+        switch self {
+        case .setting: return [NewNoticeViewController()]
+        case .shortcut: return [UIViewController(), UIViewController(), UIViewController()]
+        case .infomation: return [UIViewController(), UIViewController(), UIViewController()]
+        case .etc: return [UIViewController()]
+            
+        }
+    }
 }
 
 class MyPageViewModel {
@@ -46,5 +56,9 @@ class MyPageViewModel {
     
     func numOfCell(at index: Int) -> Int {
         return self.type[index].cell.count
+    }
+    
+    func viewOfSection(_ sectionIndex: Int, _ rowIndex: Int) -> UIViewController {
+        return self.type[sectionIndex].view[rowIndex]
     }
 }
