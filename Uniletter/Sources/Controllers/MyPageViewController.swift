@@ -299,4 +299,10 @@ extension MyPageViewController: UITableViewDelegate, UITableViewDataSource {
             return UITableViewCell()
         }
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let view = myPageViewModel.viewOfSection(indexPath.section, indexPath.row)
+        
+        self.navigationController?.pushViewController(view, animated: true)
+    }
 }
