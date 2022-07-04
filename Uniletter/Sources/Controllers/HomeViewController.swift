@@ -22,7 +22,6 @@ class HomeViewController: UIViewController {
         setNavigationBar()
         setViewController()
         fetchEvents()
-        self.navigationController?.navigationItem.title = "ㅋㅋㅋㅋㅋ"
     }
     
     override func viewDidAppear(_ animated: Bool) {

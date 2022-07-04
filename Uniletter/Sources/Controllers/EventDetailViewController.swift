@@ -38,15 +38,15 @@ class EventDetailViewController: UIViewController {
             action: #selector(bookmarkButtonDidTap(_:)))
         bookmarkButton.tintColor = UIColor.customColor(.lightGray)
         
-        let moreButton = UIBarButtonItem(
+        let topMoreButton = UIBarButtonItem(
             image: UIImage(systemName: "ellipsis"),
             style: .done,
             target: self,
-            action: #selector(didTapMorebutton(_:)))
-        moreButton.tintColor = .black
+            action: #selector(didTapTopMoreButton(_:)))
+        topMoreButton.tintColor = .black
         
         self.navigationItem.rightBarButtonItems = [
-            moreButton,
+            topMoreButton,
             bookmarkButton,
         ]
     }
@@ -68,9 +68,13 @@ class EventDetailViewController: UIViewController {
         updateDDay()
         convertTextToHyperLink()
         
+        eventDetailView.moreButton.addTarget(
+            self,
+            action: #selector(didTapProfileMoreButton(_:)),
+            for: .touchUpInside)
         eventDetailView.recognizeTapLink.addTarget(
             self,
-            action: #selector(recognizeTapped(_:)))
+            action: #selector(didTapLabel(_:)))
     }
     
     func updateDDay() {
@@ -80,10 +84,10 @@ class EventDetailViewController: UIViewController {
         
         if dday < 0 {
             eventDetailView.ddayButton.configuration?.baseBackgroundColor = UIColor.customColor(.darkGray)
-            eventDetailView.notificationButton.backgroundColor = UIColor.customColor(.darkGray)
+            eventDetailView.notificationButton.backgroundColor = UIColor.customColor(.lightGray)
             
             ddayText = "마감"
-            buttonText = "마감"
+            buttonText = "행사 마감"
         } else {
             eventDetailView.ddayButton.configuration?.baseBackgroundColor = UIColor.customColor(.blueGreen)
             eventDetailView.notificationButton.backgroundColor = UIColor.customColor(.blueGreen)
@@ -150,11 +154,15 @@ class EventDetailViewController: UIViewController {
                 renderingMode: .alwaysOriginal)
     }
     
-    @objc func didTapMorebutton(_ sender: UIButton) {
-        
+    @objc func didTapTopMoreButton(_ sender: UIButton) {
+        presentActionSheetView(.topForUser)
     }
     
-    @objc func recognizeTapped(_ sender: Any) {
+    @objc func didTapProfileMoreButton(_ sender: UIButton) {
+        presentActionSheetView(.profile)
+    }
+    
+    @objc func didTapLabel(_ sender: UITapGestureRecognizer) {
         guard let url = URL(string: viewModel.link) else {
             return
         }

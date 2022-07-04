@@ -37,4 +37,13 @@ extension UIViewController {
         
         present(alertViewController, animated: true)
     }
+    
+    func presentActionSheetView(_ actionSheet: ActionSheet) {
+        let actionSheetViewController = ActionSheetViewController()
+        actionSheetViewController.actionSheet = actionSheet
+        actionSheetViewController.modalPresentationStyle = .overFullScreen
+        actionSheetViewController.modalTransitionStyle = .crossDissolve
+        
+        present(actionSheetViewController, animated: true)
+    }
 }

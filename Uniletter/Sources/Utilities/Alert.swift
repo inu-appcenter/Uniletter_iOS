@@ -1,5 +1,5 @@
 //
-//  AlertTypes.swift
+//  Alert.swift
 //  Uniletter
 //
 //  Created by 권오준 on 2022/07/04.
