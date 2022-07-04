@@ -27,10 +27,8 @@ class MyPageViewController: UIViewController {
     let infoView: UIView = {
        
         let view = UIView()
-        
     
         return view
-        
     }()
     
     let userImage: UIImageView = {
@@ -61,7 +59,7 @@ class MyPageViewController: UIViewController {
         return view
     }()
 
-    let changeBtn: UIButton = {
+    let changeButton: UIButton = {
 
         var config = UIButton.Configuration.plain()
         
@@ -75,40 +73,19 @@ class MyPageViewController: UIViewController {
         return btn
     }()
     
-    let saveListBtn: UIButton = {
+    let saveListButton: UIButton = {
         
-        var config = UIButton.Configuration.plain()
-        config.baseBackgroundColor = .clear
-        config.image = UIImage(systemName: "bookmark.fill")
-        config.imagePadding = 10
-        config.imagePlacement = .leading
-        
-        let button = UIButton(configuration: config)
-        button.layer.cornerRadius = 8
-        button.layer.borderWidth = 0.5
-        button.layer.borderColor = UIColor.lightGray.cgColor
-        button.setTitleColor(.black, for: .normal)
-        button.tintColor = UIColor.customColor(.yellow)
-        button.setTitle("저장목록", for: .normal)
+
+        let button = UIButton()
+        button.listButtonSetting("bookmark.fill", "저장목록")
         
         return button
     }()
     
-    let alarmListBtn: UIButton = {
+    let alarmListButton: UIButton = {
         
-        var config = UIButton.Configuration.plain()
-        config.baseBackgroundColor = .clear
-        config.image = UIImage(systemName: "bell.fill")
-        config.imagePadding = 10
-        config.imagePlacement = .leading
-        
-        let button = UIButton(configuration: config)
-        button.layer.cornerRadius = 8
-        button.layer.borderWidth = 0.5
-        button.layer.borderColor = UIColor.lightGray.cgColor
-        button.setTitleColor(.black, for: .normal)
-        button.tintColor = UIColor.customColor(.yellow)
-        button.setTitle("알림목록", for: .normal)
+        let button = UIButton()
+        button.listButtonSetting("bell.fill", "알림목록")
         
         return button
     }()
@@ -122,21 +99,22 @@ class MyPageViewController: UIViewController {
         configureUI()
     }
  
-    
     func configureUI() {
 
         view.addSubview(scrollView)
 
         scrollView.addSubview(infoView)
         
-        infoView.addSubview(tableView)
-        infoView.addSubview(userImage)
-        infoView.addSubview(userName)
-        infoView.addSubview(grayBar)
-        infoView.addSubview(changeBtn)
-        infoView.addSubview(saveListBtn)
-        infoView.addSubview(alarmListBtn)
-        
+        [
+            tableView,
+            userImage,
+            userName,
+            grayBar,
+            changeButton,
+            saveListButton,
+            alarmListButton
+        ]
+            .forEach { infoView.addSubview($0) }
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -144,18 +122,15 @@ class MyPageViewController: UIViewController {
         tableView.register(MyPageSectionView.self, forHeaderFooterViewReuseIdentifier: MyPageSectionView.identifier)
         
         scrollView.snp.makeConstraints {
-
             $0.top.equalTo(view.safeAreaLayoutGuide)
             $0.leading.trailing.equalTo(view)
-            $0.width.equalTo(350)
             $0.height.equalTo(800)
         }
 
         infoView.snp.makeConstraints {
-
             $0.edges.equalTo(scrollView.contentLayoutGuide)
             $0.height.equalTo(850)
-            $0.width.equalTo(scrollView.snp.width)
+            $0.width.equalTo(scrollView)
         }
 
         userImage.snp.makeConstraints {
@@ -171,32 +146,32 @@ class MyPageViewController: UIViewController {
 
         grayBar.snp.makeConstraints {
             $0.top.equalTo(userName.snp.bottom).offset(4)
-            $0.centerX.equalTo(infoView)
-            $0.width.equalTo(244)
+            $0.leading.equalToSuperview().offset(70)
+            $0.trailing.equalToSuperview().offset(-70)
             $0.height.equalTo(0.5)
         }
 
-        changeBtn.snp.makeConstraints {
+        changeButton.snp.makeConstraints {
             $0.top.equalTo(grayBar.snp.bottom).offset(4)
             $0.centerX.equalTo(infoView)
         }
         
-        saveListBtn.snp.makeConstraints {
-            $0.top.equalTo(changeBtn.snp.bottom).offset(16)
+        saveListButton.snp.makeConstraints {
+            $0.top.equalTo(changeButton.snp.bottom).offset(16)
             $0.leading.equalTo(view.snp.centerX).offset(-160)
             $0.width.equalTo(160)
             $0.height.equalTo(49)
         }
         
-        alarmListBtn.snp.makeConstraints {
-            $0.top.equalTo(changeBtn.snp.bottom).offset(16)
-            $0.leading.equalTo(saveListBtn.snp.trailing)
+        alarmListButton.snp.makeConstraints {
+            $0.top.equalTo(changeButton.snp.bottom).offset(16)
+            $0.leading.equalTo(saveListButton.snp.trailing)
             $0.width.equalTo(160)
             $0.height.equalTo(49)
         }
         
         tableView.snp.makeConstraints {
-            $0.top.equalTo(saveListBtn.snp.bottom).offset(5)
+            $0.top.equalTo(saveListButton.snp.bottom).offset(5)
             $0.leading.trailing.equalTo(scrollView)
             $0.bottom.equalTo(view.safeAreaLayoutGuide)
         }
@@ -229,25 +204,13 @@ extension MyPageViewController: UITableViewDelegate, UITableViewDataSource {
         return myPageViewModel.numOfSection
     }
     
-
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
 
         guard let headerView = view as? MyPageSectionView else { return }
         
-
-        switch section {
-        case 0:
-            headerView.updateUI(myPageViewModel.titleOfSection(at: section))
-        case 1:
-            headerView.updateUI(myPageViewModel.titleOfSection(at: section))
-        case 2:
-            headerView.updateUI(myPageViewModel.titleOfSection(at: section))
-        case 3:
-            headerView.updateUI(myPageViewModel.titleOfSection(at: section))
-        default:
-            print("error")
-        }
+        headerView.updateUI(myPageViewModel.titleOfSection(at: section))
     }
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: MyPageSectionView.identifier)
@@ -256,53 +219,42 @@ extension MyPageViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        40
+        return 40
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        switch section {
-        case 0:
-            return myPageViewModel.numOfCell(at: 0)
-        case 1:
-            return myPageViewModel.numOfCell(at: 1)
-        case 2:
-            return myPageViewModel.numOfCell(at: 2)
-        case 3:
-            return myPageViewModel.numOfCell(at: 3)
-        default:
-            return 0
-        }
+        return myPageViewModel.numOfCell(at: section)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: MyPageCell.identifier, for: indexPath) as? MyPageCell else { return UITableViewCell() }
         
-        switch indexPath.section {
-        case 0:
-            let text = myPageViewModel.type[indexPath.section].cell
-            cell.updateUI(at: text[indexPath.row])
-            return cell
-        case 1:
-            let text = myPageViewModel.type[indexPath.section].cell
-            cell.updateUI(at: text[indexPath.row])
-            return cell
-        case 2:
-            let text = myPageViewModel.type[indexPath.section].cell
-            cell.updateUI(at: text[indexPath.row])
-            return cell
-        case 3:
-            let text = myPageViewModel.type[indexPath.section].cell
-            cell.updateUI(at: text[indexPath.row])
-            return cell
-        default:
-            return UITableViewCell()
-        }
+        let text = myPageViewModel.type[indexPath.section].cell
+        cell.updateUI(at: text[indexPath.row])
+        return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let view = myPageViewModel.viewOfSection(indexPath.section, indexPath.row)
         
         self.navigationController?.pushViewController(view, animated: true)
+    }
+}
+
+extension UIButton {
+    func listButtonSetting(_ image: String, _ title: String) {
+        var config = UIButton.Configuration.plain()
+        config.baseBackgroundColor = .clear
+        config.imagePadding = 10
+        config.imagePlacement = .leading
+        config.image = UIImage(systemName: image)
+        
+        self.configuration = config
+        self.layer.cornerRadius = 8
+        self.layer.borderWidth = 0.5
+        self.layer.borderColor = UIColor.lightGray.cgColor
+        self.setTitleColor(.black, for: .normal)
+        self.tintColor = UIColor.customColor(.yellow)
+        self.setTitle(title, for: .normal)
     }
 }
