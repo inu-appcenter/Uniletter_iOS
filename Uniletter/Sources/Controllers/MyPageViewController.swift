@@ -240,21 +240,3 @@ extension MyPageViewController: UITableViewDelegate, UITableViewDataSource {
         self.navigationController?.pushViewController(view, animated: true)
     }
 }
-
-extension UIButton {
-    func listButtonSetting(_ image: String, _ title: String) {
-        var config = UIButton.Configuration.plain()
-        config.baseBackgroundColor = .clear
-        config.imagePadding = 10
-        config.imagePlacement = .leading
-        config.image = UIImage(systemName: image)
-        
-        self.configuration = config
-        self.layer.cornerRadius = 8
-        self.layer.borderWidth = 0.5
-        self.layer.borderColor = UIColor.lightGray.cgColor
-        self.setTitleColor(.black, for: .normal)
-        self.tintColor = UIColor.customColor(.yellow)
-        self.setTitle(title, for: .normal)
-    }
-}
