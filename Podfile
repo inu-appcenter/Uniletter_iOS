@@ -9,6 +9,7 @@ target 'Uniletter' do
   pod "Alamofire"
   pod "Kingfisher"
   pod "MarqueeLabel"
+  pod "GoogleSignIn"
 
   # Pods for Uniletter
 
