@@ -61,6 +61,20 @@ class API {
             }
     }
     
+    static func getMeInfo(completion: @escaping(Me) -> Void) {
+        networking(
+            urlStr: Address.me.url,
+            method: .get,
+            data: nil,
+            model: Me.self) { result, _ in
+                switch result {
+                case .success(let Me):
+                    completion(Me)
+                case .failure(let error):
+                    print(error)
+                }
+            }
+    }
     static func getEventOne(_ id: Int, completion: @escaping(Event) ->Void) {
         networking(
             urlStr: Address.events.url + "/\(id)",

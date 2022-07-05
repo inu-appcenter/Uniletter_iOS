@@ -47,7 +47,7 @@ class MyPageViewController: UIViewController {
 
         label.text = "사용자"
         label.font = .systemFont(ofSize: 16)
-        
+    
         return label
     }()
     
@@ -90,15 +90,25 @@ class MyPageViewController: UIViewController {
         return button
     }()
     
-    var myPageViewModel = MyPageViewModel()
+    var myPageViewModel = MyPageViewModel.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         configureNavigationBar()
         configureUI()
+        fetchUserInfo()
+        
     }
  
+    func fetchUserInfo() {
+        DispatchQueue.global().sync {
+            myPageViewModel.setUserInfo {
+                self.userName.text = self.myPageViewModel.userName
+            }
+        }
+    }
+    
     func configureUI() {
 
         view.addSubview(scrollView)
