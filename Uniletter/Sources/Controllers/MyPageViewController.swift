@@ -193,6 +193,9 @@ class MyPageViewController: UIViewController {
     
     @objc func changeBtnClicked(_ sender: UIGestureRecognizer) {
         print("changeBtnClicked() - called")
+        let view = ChangeViewController()
+        
+        self.navigationController?.pushViewController(view, animated: true)
     }
 }
 
