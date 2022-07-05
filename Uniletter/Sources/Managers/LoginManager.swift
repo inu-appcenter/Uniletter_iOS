@@ -27,14 +27,11 @@ class LoginManager {
             "token": loginInfo.rememberMeToken
         ]
         
-        DispatchQueue.global().async {
-            API.rememberedLogin(parameter) { info in
-                self.saveLoginInfo(info)
-                DispatchQueue.main.async {
-                    self.isLoggedIn = true
-                    completion()
-                }
-            }
+        API.rememberedLogin(parameter) { info in
+            self.saveLoginInfo(info)
+            self.isLoggedIn = true
+            completion()
+            
         }
     }
     

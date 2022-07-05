@@ -67,7 +67,12 @@ class AlertViewController: UIViewController {
     }
     
     func alertIsLogOut() {
-        // TODO: 로그인 해제
+        let defaultInfo = LoginInfo(jwt: "", userID: 0, rememberMeToken: "")
+        LoginManager.shared.saveLoginInfo(defaultInfo)
+        
+        let homeViewController = UINavigationController(rootViewController: HomeViewController())
+        view.window?.rootViewController = homeViewController
+        view.window?.rootViewController?.dismiss(animated: false)
     }
     
     func alertIsReport() {
