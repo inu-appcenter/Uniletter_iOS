@@ -10,6 +10,7 @@ import SnapKit
 
 class MyPageViewController: UIViewController {
     
+    //test
     let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -98,9 +99,11 @@ class MyPageViewController: UIViewController {
         configureNavigationBar()
         configureUI()
         fetchUserInfo()
-        
     }
  
+    override func viewWillAppear(_ animated: Bool) {
+        fetchUserInfo()
+    }
     func fetchUserInfo() {
         DispatchQueue.global().sync {
             myPageViewModel.setUserInfo {

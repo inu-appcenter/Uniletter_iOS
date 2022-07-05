@@ -56,7 +56,7 @@ class ChangeViewController: UIViewController {
     lazy var notificationButton: UIButton = {
         var button = UIButton()
         button.createNofiButton("완료")
-        
+        button.addTarget(self, action: #selector(notificationButtonClicked), for: .touchUpInside)
         return button
     }()
 
@@ -187,6 +187,19 @@ class ChangeViewController: UIViewController {
             warningLabel.isHidden = false
             border.backgroundColor = UIColor.customColor(.blueGreen).cgColor
         }
+    }
+    
+    @objc func notificationButtonClicked() {
+        guard let text = textField.text else { return }
+       
+
+        let data: [String: Any] = [
+                                    "nickname": text,
+                                    "imageUrl": "null"
+                                ]
         
+        API.patchMeInfo(data: data)
+        
+        navigationController?.popViewController(animated: true)
     }
 }
