@@ -31,19 +31,19 @@ class EventDetailViewController: UIViewController {
     func setNavigationBar() {
         setNavigationTitleAndBackButton("읽어보기")
         
+        let config = UIImage.SymbolConfiguration(pointSize: 18)
         let bookmarkButton = UIBarButtonItem(
-            image: UIImage(systemName: "bookmark"),
+            image: UIImage(systemName: "bookmark")?.withConfiguration(config),
             style: .done,
             target: self,
             action: #selector(bookmarkButtonDidTap(_:)))
         bookmarkButton.tintColor = UIColor.customColor(.lightGray)
         
         let topMoreButton = UIBarButtonItem(
-            image: UIImage(systemName: "ellipsis"),
+            image: UIImage(named: "ellipsis")?.withRenderingMode(.alwaysOriginal),
             style: .done,
             target: self,
             action: #selector(didTapTopMoreButton(_:)))
-        topMoreButton.tintColor = .black
         
         self.navigationItem.rightBarButtonItems = [
             topMoreButton,
