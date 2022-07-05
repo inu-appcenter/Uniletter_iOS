@@ -57,7 +57,7 @@ class OneOptionActionSheetView: UIView {
 
     lazy var firstBorder: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.customColor(.lightGray)
+        view.backgroundColor = #colorLiteral(red: 0.918249011, green: 0.9182489514, blue: 0.9182489514, alpha: 1)
         
         return view
     }()
