@@ -23,7 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             let homeViewController = HomeViewController()
             let navigationController = UINavigationController(rootViewController: homeViewController)
             navigationController.modalPresentationStyle = .fullScreen
-            
+
             self.window?.rootViewController = navigationController
         }
     }

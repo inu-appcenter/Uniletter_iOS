@@ -32,7 +32,7 @@ class EventDetailView : UIView {
     
     lazy var moreButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "ellipsis"), for: .normal)
+        button.setImage(UIImage(named: "ellipsisSmall"), for: .normal)
         button.tintColor = .black
         
         return button

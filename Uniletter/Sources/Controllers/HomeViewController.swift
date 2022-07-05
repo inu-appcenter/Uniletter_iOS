@@ -6,12 +6,14 @@
 //
 
 import UIKit
+import GoogleSignIn
 
 class HomeViewController: UIViewController {
     
     let homeView = HomeView()
     let viewModel = HomeViewModel()
-    var isLoggedIn = true
+    let loginManager = LoginManager.shared
+    var isLoggedIn = false
     
     override func loadView() {
         view = homeView
@@ -22,6 +24,7 @@ class HomeViewController: UIViewController {
         setNavigationBar()
         setViewController()
         fetchEvents()
+        checkLogin()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -73,6 +76,23 @@ class HomeViewController: UIViewController {
             for: .touchUpInside)
     }
     
+    func fetchEvents() {
+        DispatchQueue.global().async {
+            self.viewModel.loadEvents() {
+                DispatchQueue.main.async {
+                    self.homeView.collectionView.reloadData()
+                }
+            }
+        }
+    }
+    
+    func checkLogin() {
+        loginManager.checkLogin() {
+            self.isLoggedIn = self.loginManager.isLoggedIn
+            print("로그인 상태: \(self.isLoggedIn)")
+        }
+    }
+    
     func addGradientLayer() {
         homeView.gradientView.layer.sublayers?.removeAll()
         let gradient: CAGradientLayer = CAGradientLayer()
@@ -83,16 +103,6 @@ class HomeViewController: UIViewController {
         ]
         gradient.frame = homeView.gradientView.bounds
         homeView.gradientView.layer.addSublayer(gradient)
-    }
-    
-    func fetchEvents() {
-        DispatchQueue.global().async {
-            self.viewModel.loadEvents() {
-                DispatchQueue.main.async {
-                    self.homeView.collectionView.reloadData()
-                }
-            }
-        }
     }
     
     @objc func goToInfo(_ sender: UIBarButtonItem) {
@@ -108,6 +118,8 @@ class HomeViewController: UIViewController {
     @objc func goToWrite(_ sender: UIButton) {
         if isLoggedIn {
             // TODO: 글쓰기
+            /// 임시로 로그아웃 알림창으로 구현
+            presentAlertView(.logout)
         } else {
             presentAlertView(.login)
         }

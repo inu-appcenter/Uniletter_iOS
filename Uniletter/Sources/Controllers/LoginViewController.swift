@@ -6,9 +6,12 @@
 //
 
 import UIKit
+import GoogleSignIn
 import SnapKit
 
 class LoginViewController: UIViewController {
+
+    let config = GIDConfiguration(clientID: "295205896616-up393se5bofg6ntuqjeksbimk04rg14q.apps.googleusercontent.com")
 
     lazy var launchLogo: UIImageView = {
         let imageView = UIImageView()
@@ -18,16 +21,47 @@ class LoginViewController: UIViewController {
         return imageView
     }()
     
-    lazy var login: UIButton = {
+    lazy var googleLoginButton: UIButton = {
         let button = UIButton()
         button.layer.cornerRadius = 8
         button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.lightGray.cgColor
+        button.layer.borderColor = CGColor.customColor(.lightGray)
         button.setTitleColor(.black, for: .normal)
-        button.setTitle("로그인", for: .normal)
+        button.setTitle("구글 계정으로 로그인", for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 14)
         button.addTarget(self, action: #selector(didTapLoginButton(_:)), for: .touchUpInside)
         
         return button
+    }()
+    
+    lazy var appleLoginButton: UIButton = {
+        let button = UIButton()
+        button.layer.cornerRadius = 8
+        button.layer.borderWidth = 1
+        button.layer.borderColor = CGColor.customColor(.lightGray)
+        button.setTitleColor(.black, for: .normal)
+        button.setTitle("애플 계정으로 로그인", for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 14)
+        button.addTarget(self, action: #selector(didTapLoginButton(_:)), for: .touchUpInside)
+        
+        return button
+    }()
+    
+    let googleLogo: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "google")
+        imageView.contentMode = .scaleAspectFit
+        
+        return imageView
+    }()
+    
+    let appleLogo: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(systemName: "applelogo")
+        imageView.tintColor = UIColor.customColor(.lightGray)
+        imageView.contentMode = .scaleAspectFit
+        
+        return imageView
     }()
     
     override func viewDidLoad() {
@@ -38,28 +72,84 @@ class LoginViewController: UIViewController {
     }
     
     func addViews() {
-        [launchLogo, login].forEach { view.addSubview($0) }
+        [
+            launchLogo,
+            googleLoginButton,
+            appleLoginButton,
+            googleLogo,
+            appleLogo,
+        ]
+            .forEach { view.addSubview($0) }
     }
     
     func setLayout() {
         launchLogo.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.centerY.equalToSuperview().offset(-40)
-            $0.width.equalTo(150)
-            $0.height.equalTo(80)
+            $0.centerY.equalToSuperview().offset(-80)
+            $0.width.height.equalTo(200)
         }
         
-        login.snp.makeConstraints {
-            $0.left.right.equalToSuperview().inset(40)
-            $0.centerY.equalToSuperview().offset(40)
+        googleLoginButton.snp.makeConstraints {
+            $0.top.equalTo(launchLogo.snp.bottom).offset(12)
+            $0.left.right.equalToSuperview().inset(20)
+            $0.height.equalTo(45)
         }
+        
+        googleLogo.snp.makeConstraints {
+            $0.top.bottom.equalTo(googleLoginButton).inset(8)
+            $0.left.equalTo(googleLoginButton).offset(16)
+            $0.width.equalTo(googleLogo.snp.height)
+        }
+        
+        appleLoginButton.snp.makeConstraints {
+            $0.top.equalTo(googleLoginButton.snp.bottom).offset(12)
+            $0.left.right.equalToSuperview().inset(20)
+            $0.height.equalTo(45)
+        }
+        
+        appleLogo.snp.makeConstraints {
+            $0.top.bottom.equalTo(appleLoginButton).inset(8)
+            $0.left.equalTo(appleLoginButton).offset(16)
+            $0.width.equalTo(appleLogo.snp.height)
+        }
+        
+        
     }
     
-    @objc func didTapLoginButton(_ sender: UIButton) {
+    func goToHomeViewController() {
         let viewController = HomeViewController()
         let navigationController = UINavigationController(rootViewController: viewController)
         navigationController.modalPresentationStyle = .fullScreen
         
         present(navigationController, animated: true)
+    }
+    
+    @objc func didTapLoginButton(_ sender: UIButton) {
+        GIDSignIn.sharedInstance.signIn(with: config, presenting: self) { user, error in
+            guard error == nil else {
+                print(error!)
+                return }
+            guard let user = user else { return }
+            
+            user.authentication.do { authentication, error in
+                guard error == nil else {
+                    print(error!)
+                    return
+                }
+                guard let authentication = authentication else { return }
+                
+                let token = authentication.accessToken
+                let parameter = ["accessToken": token]
+                
+                DispatchQueue.global().async {
+                    API.oAuthLogin(parameter) { info in
+                        DispatchQueue.main.async {
+                            LoginManager.shared.saveLoginInfo(info)
+                            self.goToHomeViewController()
+                        }
+                    }
+                }
+            }
+        }
     }
 }
