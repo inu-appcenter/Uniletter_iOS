@@ -7,8 +7,15 @@
 
 import Alamofire
 
+enum StatusCode {
+    case success
+    case fail
+    case server
+}
+
 // MARK: 네트워킹 통합
-private func networking<T: Decodable>(urlStr: String, method: HTTPMethod, data: Data?, model: T.Type, completion: @escaping(Result<T, AFError>) -> Void) {
+private func networking<T: Decodable>(urlStr: String, method: HTTPMethod, data: Data?, model: T.Type, completion: @escaping(Result<T, AFError>, StatusCode) -> Void) {
+    var statusCode: StatusCode = .fail
     guard let url = URL(string: Address.base.url + urlStr) else {
         print("URL을 찾을 수 없습니다.")
         return
@@ -22,11 +29,17 @@ private func networking<T: Decodable>(urlStr: String, method: HTTPMethod, data: 
     AF.request(request)
         .validate(statusCode: 200..<500)
         .responseDecodable(of: model.self) { response in
+            switch response.response?.statusCode {
+            case 200: statusCode = .success
+            case 500: statusCode = .server
+            default: break
+            }
+            
             switch response.result {
             case .success(let result):
-                completion(.success(result))
+                completion(.success(result), statusCode)
             case .failure(let error):
-                completion(.failure(error))
+                completion(.failure(error), statusCode)
             }
         }
 }
@@ -38,7 +51,7 @@ class API {
             urlStr: Address.events.url,
             method: .get,
             data: nil,
-            model: [Event].self) { result in
+            model: [Event].self) { result, _ in
                 switch result {
                 case .success(let events):
                     completion(events)
@@ -53,7 +66,7 @@ class API {
             urlStr: Address.events.url + "/\(id)",
             method: .get,
             data: nil,
-            model: Event.self) { result in
+            model: Event.self) { result, _ in
                 switch result {
                 case .success(let events):
                     completion(events)
@@ -73,10 +86,12 @@ class API {
             urlStr: Address.loginOauth.url,
             method: .post,
             data: data,
-            model: LoginInfo.self) { result in
+            model: LoginInfo.self) { result, statusCode in
                 switch result {
                 case .success(let info):
-                    completion(info)
+                    if statusCode == .success {
+                        completion(info)
+                    }
                 case .failure(let error):
                     print(error)
                 }
@@ -92,10 +107,12 @@ class API {
             urlStr: Address.loginRemembered.url,
             method: .post,
             data: data,
-            model: LoginInfo.self) { result in
+            model: LoginInfo.self) { result, statusCode in
                 switch result {
                 case .success(let info):
-                    completion(info)
+                    if statusCode == .success {
+                        completion(info)
+                    }
                 case .failure(let error):
                     print(error)
                 }

@@ -57,13 +57,21 @@ class LoginViewController: UIViewController {
         }
     }
     
+    func goToHomeViewController() {
+        let viewController = HomeViewController()
+        let navigationController = UINavigationController(rootViewController: viewController)
+        navigationController.modalPresentationStyle = .fullScreen
+        
+        present(navigationController, animated: true)
+    }
+    
     @objc func didTapLoginButton(_ sender: UIButton) {
         GIDSignIn.sharedInstance.signIn(with: config, presenting: self) { user, error in
             guard error == nil else {
                 print(error!)
                 return }
             guard let user = user else { return }
-
+            
             user.authentication.do { authentication, error in
                 guard error == nil else {
                     print(error!)
@@ -72,16 +80,17 @@ class LoginViewController: UIViewController {
                 guard let authentication = authentication else { return }
                 
                 let token = authentication.accessToken
+                let parameter = ["accessToken": token]
                 
-                API.oAuthLogin(["accessToken" : token]) { info in
-                    
+                DispatchQueue.global().async {
+                    API.oAuthLogin(parameter) { info in
+                        DispatchQueue.main.async {
+                            LoginManager.shared.saveLoginInfo(info)
+                            self.goToHomeViewController()
+                        }
+                    }
                 }
             }
         }
-//        let viewController = HomeViewController()
-//        let navigationController = UINavigationController(rootViewController: viewController)
-//        navigationController.modalPresentationStyle = .fullScreen
-//
-//        present(navigationController, animated: true)
     }
 }

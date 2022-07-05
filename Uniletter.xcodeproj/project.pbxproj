@@ -11,6 +11,7 @@
 		2C80F38B286DA01600ECAB60 /* MyPageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C80F38A286DA01500ECAB60 /* MyPageCell.swift */; };
 		2C80F391286DE20000ECAB60 /* MyPageSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C80F390286DE20000ECAB60 /* MyPageSectionView.swift */; };
 		7616B813286B50A000935257 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7616B812286B50A000935257 /* MyPageViewController.swift */; };
+		764386642874021600375CE6 /* LoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764386632874021600375CE6 /* LoginManager.swift */; };
 		765BC9FD2868C00C0098BBF2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765BC9FC2868C00C0098BBF2 /* AppDelegate.swift */; };
 		765BC9FF2868C00C0098BBF2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765BC9FE2868C00C0098BBF2 /* SceneDelegate.swift */; };
 		765BCA012868C00C0098BBF2 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765BCA002868C00C0098BBF2 /* LaunchViewController.swift */; };
@@ -58,6 +59,7 @@
 		4B9E2AEF628539C36D2C3D4F /* Pods_Uniletter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Uniletter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F1F5DD4E8EBAC5709B4DC60 /* Pods-Uniletter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Uniletter.debug.xcconfig"; path = "Target Support Files/Pods-Uniletter/Pods-Uniletter.debug.xcconfig"; sourceTree = "<group>"; };
 		7616B812286B50A000935257 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
+		764386632874021600375CE6 /* LoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginManager.swift; sourceTree = "<group>"; };
 		765BC9F92868C00C0098BBF2 /* Uniletter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Uniletter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		765BC9FC2868C00C0098BBF2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		765BC9FE2868C00C0098BBF2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -133,6 +135,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		764386622874020100375CE6 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				764386632874021600375CE6 /* LoginManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
 		765BC9F02868C00C0098BBF2 = {
 			isa = PBXGroup;
 			children = (
@@ -201,6 +211,7 @@
 		765BCA162868CA840098BBF2 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				764386622874020100375CE6 /* Managers */,
 				2C80F389286D9FF800ECAB60 /* MyPage */,
 				76FCB54A286C35AD00AC4F70 /* CustomUI */,
 				7681D588286A297F0081C644 /* Utilities */,
@@ -420,6 +431,7 @@
 				766F384F2872FC3900EC9593 /* NewNoticeCell.swift in Sources */,
 				766F38502872FC3900EC9593 /* NewNoticeViewModel.swift in Sources */,
 				7681D58A286A29970081C644 /* DateFormatter.swift in Sources */,
+				764386642874021600375CE6 /* LoginManager.swift in Sources */,
 				76AC78442872E14A00D303C4 /* ActionSheet.swift in Sources */,
 				76E9648B286B8F6400D5299A /* UI.swift in Sources */,
 				766F385328733E3200EC9593 /* LoginInfo.swift in Sources */,

@@ -68,7 +68,6 @@ class AlertViewController: UIViewController {
     
     func alertIsLogOut() {
         // TODO: 로그인 해제
-        alertIsLogin()
     }
     
     func alertIsReport() {
