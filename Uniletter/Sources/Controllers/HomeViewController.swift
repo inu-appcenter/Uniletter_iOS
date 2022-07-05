@@ -6,12 +6,13 @@
 //
 
 import UIKit
+import GoogleSignIn
 
 class HomeViewController: UIViewController {
     
     let homeView = HomeView()
     let viewModel = HomeViewModel()
-    var isLoggedIn = true
+    var isLoggedIn = false
     
     override func loadView() {
         view = homeView

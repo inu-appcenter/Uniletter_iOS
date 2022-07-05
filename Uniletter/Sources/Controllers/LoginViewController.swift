@@ -6,9 +6,12 @@
 //
 
 import UIKit
+import GoogleSignIn
 import SnapKit
 
 class LoginViewController: UIViewController {
+
+    let config = GIDConfiguration(clientID: "295205896616-up393se5bofg6ntuqjeksbimk04rg14q.apps.googleusercontent.com")
 
     lazy var launchLogo: UIImageView = {
         let imageView = UIImageView()
@@ -18,11 +21,11 @@ class LoginViewController: UIViewController {
         return imageView
     }()
     
-    lazy var login: UIButton = {
+    lazy var googleloginButton: UIButton = {
         let button = UIButton()
         button.layer.cornerRadius = 8
         button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.lightGray.cgColor
+        button.layer.borderColor = CGColor.customColor(.lightGray)
         button.setTitleColor(.black, for: .normal)
         button.setTitle("로그인", for: .normal)
         button.addTarget(self, action: #selector(didTapLoginButton(_:)), for: .touchUpInside)
@@ -38,28 +41,47 @@ class LoginViewController: UIViewController {
     }
     
     func addViews() {
-        [launchLogo, login].forEach { view.addSubview($0) }
+        [launchLogo, googleloginButton].forEach { view.addSubview($0) }
     }
     
     func setLayout() {
         launchLogo.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.centerY.equalToSuperview().offset(-40)
-            $0.width.equalTo(150)
-            $0.height.equalTo(80)
+            $0.width.height.equalTo(200)
         }
         
-        login.snp.makeConstraints {
-            $0.left.right.equalToSuperview().inset(40)
-            $0.centerY.equalToSuperview().offset(40)
+        googleloginButton.snp.makeConstraints {
+            $0.top.equalTo(launchLogo.snp.bottom).offset(12)
+            $0.left.right.equalToSuperview().inset(20)
         }
     }
     
     @objc func didTapLoginButton(_ sender: UIButton) {
-        let viewController = HomeViewController()
-        let navigationController = UINavigationController(rootViewController: viewController)
-        navigationController.modalPresentationStyle = .fullScreen
-        
-        present(navigationController, animated: true)
+        GIDSignIn.sharedInstance.signIn(with: config, presenting: self) { user, error in
+            guard error == nil else {
+                print(error!)
+                return }
+            guard let user = user else { return }
+
+            user.authentication.do { authentication, error in
+                guard error == nil else {
+                    print(error!)
+                    return
+                }
+                guard let authentication = authentication else { return }
+                
+                let token = authentication.accessToken
+                
+                API.oAuthLogin(["accessToken" : token]) { info in
+                    
+                }
+            }
+        }
+//        let viewController = HomeViewController()
+//        let navigationController = UINavigationController(rootViewController: viewController)
+//        navigationController.modalPresentationStyle = .fullScreen
+//
+//        present(navigationController, animated: true)
     }
 }

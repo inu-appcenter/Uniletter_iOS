@@ -13,13 +13,14 @@ private func networking<T: Decodable>(urlStr: String, method: HTTPMethod, data: 
         print("URL을 찾을 수 없습니다.")
         return
     }
+    
     var request = URLRequest(url: url)
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     request.httpBody = data
     request.method = method
     
     AF.request(request)
         .validate(statusCode: 200..<500)
-        .validate(contentType: ["application/json"])
         .responseDecodable(of: model.self) { response in
             switch response.result {
             case .success(let result):
@@ -56,6 +57,45 @@ class API {
                 switch result {
                 case .success(let events):
                     completion(events)
+                case .failure(let error):
+                    print(error)
+                }
+            }
+    }
+    
+    static func oAuthLogin(_ params: [String: String], completion: @escaping(LoginInfo) -> Void) {
+        guard let data = try? JSONSerialization.data(
+            withJSONObject: params, options: .prettyPrinted) else {
+            return
+        }
+        
+        networking(
+            urlStr: Address.loginOauth.url,
+            method: .post,
+            data: data,
+            model: LoginInfo.self) { result in
+                switch result {
+                case .success(let info):
+                    completion(info)
+                case .failure(let error):
+                    print(error)
+                }
+            }
+    }
+    
+    static func rememberedLogin(_ params: [String: Any], completion: @escaping(LoginInfo) -> Void) {
+        guard let data = try? JSONSerialization.data(withJSONObject: params, options: .prettyPrinted) else {
+            return
+        }
+        
+        networking(
+            urlStr: Address.loginRemembered.url,
+            method: .post,
+            data: data,
+            model: LoginInfo.self) { result in
+                switch result {
+                case .success(let info):
+                    completion(info)
                 case .failure(let error):
                     print(error)
                 }

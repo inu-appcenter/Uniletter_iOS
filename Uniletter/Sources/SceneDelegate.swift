@@ -16,16 +16,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
        
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = LaunchViewController()
+        //window?.rootViewController = LaunchViewController()
+        window?.rootViewController = LoginViewController()
         window?.makeKeyAndVisible()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            let homeViewController = HomeViewController()
-            let navigationController = UINavigationController(rootViewController: homeViewController)
-            navigationController.modalPresentationStyle = .fullScreen
-            
-            self.window?.rootViewController = navigationController
-        }
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//            let homeViewController = HomeViewController()
+//            let navigationController = UINavigationController(rootViewController: homeViewController)
+//            navigationController.modalPresentationStyle = .fullScreen
+//
+//            self.window?.rootViewController = navigationController
+//        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
