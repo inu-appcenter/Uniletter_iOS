@@ -118,6 +118,8 @@ class HomeViewController: UIViewController {
     @objc func goToWrite(_ sender: UIButton) {
         if isLoggedIn {
             // TODO: 글쓰기
+            /// 임시로 로그아웃 알림창으로 구현
+            presentAlertView(.logout)
         } else {
             presentAlertView(.login)
         }
