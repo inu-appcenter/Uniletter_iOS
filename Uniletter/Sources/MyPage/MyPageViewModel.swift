@@ -42,9 +42,19 @@ enum SectionType: CaseIterable {
     }
 }
 
+struct UserInfo {
+    var nickname: String?
+    var image: UIImage?
+}
+
 class MyPageViewModel {
     
+    static let shared = MyPageViewModel()
+    
     var type: [SectionType] = [.setting, .shortcut, .infomation, .etc]
+    
+    var userName = "사용자"
+    var userImage = UIImage(systemName: "UserImage")
     
     var numOfSection: Int {
         return type.count
@@ -60,5 +70,12 @@ class MyPageViewModel {
     
     func viewOfSection(_ sectionIndex: Int, _ rowIndex: Int) -> UIViewController {
         return self.type[sectionIndex].view[rowIndex]
+    }
+    
+    func setUserInfo(completion: @escaping () -> Void) {
+        API.getMeInfo { Me in
+            self.userName = Me.nickname
+            completion()
+        }
     }
 }

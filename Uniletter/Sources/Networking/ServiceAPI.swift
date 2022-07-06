@@ -118,4 +118,35 @@ class API {
                 }
             }
     }
+    
+    static func getMeInfo(completion: @escaping(Me) -> Void) {
+        networking(
+            urlStr: Address.me.url,
+            method: .get,
+            data: nil,
+            model: Me.self) { result, _ in
+                switch result {
+                case .success(let Me):
+                    completion(Me)
+                case .failure(let error):
+                    print(error)
+                }
+            }
+    }
+    
+    static func patchMeInfo(data: [String: Any]) {
+    
+        guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
+        networking(
+            urlStr: Address.me.url,
+            method: .patch,
+            data: data, model: Me.self) { result, _ in
+                switch result {
+                case .success(let Me):
+                    print("성공")
+                case .failure(let error):
+                    print(error)
+                }
+            }
+    }
 }
