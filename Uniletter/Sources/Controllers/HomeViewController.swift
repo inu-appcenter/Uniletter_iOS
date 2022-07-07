@@ -88,8 +88,7 @@ class HomeViewController: UIViewController {
     
     func checkLogin() {
         loginManager.checkLogin() {
-            self.isLoggedIn = self.loginManager.isLoggedIn
-            print("로그인 상태: \(self.isLoggedIn)")
+            print("로그인 상태: \(self.loginManager.isLoggedIn)")
         }
     }
     
@@ -106,9 +105,8 @@ class HomeViewController: UIViewController {
     }
     
     @objc func goToInfo(_ sender: UIBarButtonItem) {
-        if isLoggedIn {
+        if loginManager.isLoggedIn {
             let myPageViewController = MyPageViewController()
-            
             self.navigationController?.pushViewController(myPageViewController, animated: true)
         } else {
             presentAlertView(.login)
