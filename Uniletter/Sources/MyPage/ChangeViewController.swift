@@ -198,7 +198,9 @@ class ChangeViewController: UIViewController {
                                     "imageUrl": "null"
                                 ]
         
-        API.patchMeInfo(data: data)
+        DispatchQueue.global().sync {
+            API.patchMeInfo(data: data)
+        }
         
         navigationController?.popViewController(animated: true)
     }

@@ -76,10 +76,9 @@ class MyPageViewController: UIViewController {
     
     let saveListButton: UIButton = {
         
-
         let button = UIButton()
         button.listButtonSetting("bookmark.fill", "저장목록")
-        
+        button.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
         return button
     }()
     
@@ -87,7 +86,7 @@ class MyPageViewController: UIViewController {
         
         let button = UIButton()
         button.listButtonSetting("bell.fill", "알림목록")
-        
+        button.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner]
         return button
     }()
     
