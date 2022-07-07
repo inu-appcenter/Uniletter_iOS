@@ -21,10 +21,9 @@ class ChangeViewController: UIViewController {
         return view
     }()
     
-    let userImage: UIImageView = {
+    lazy var userImage: UIImageView = {
         let imageView = UIImageView()
 
-        imageView.image = UIImage(named: "UserImage")
         imageView.clipsToBounds = true
         
         imageView.layer.borderWidth = 1
@@ -97,26 +96,21 @@ class ChangeViewController: UIViewController {
         configureUI()
         setUserInfo()
         NotificationCenter.default.addObserver(self, selector: #selector(textDidChange(_:)), name: UITextField.textDidChangeNotification, object: textField)
+        NotificationCenter.default.addObserver(self, selector: #selector(selectedImageDidChange(_:)), name: NSNotification.Name(rawValue: "PickImage"), object: nil)
+
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        setUserInfo()
-        print("viewWillAppear - 실행")
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        print("viewDidAppear - 실행")
-    }
+
     override func viewDidLayoutSubviews() {
         settingTextField()
     }
     
-    
+
     func setUserInfo() {
-        DispatchQueue.global().async {
+        
             self.myPageViewModel.setUserInfo {
-                self.userImage.image = self.myPageViewModel.setUserImage()
-                self.textField.text = self.myPageViewModel.setUserNickName()
+                DispatchQueue.main.async {
+                    self.userImage.image = self.myPageViewModel.setUserImage()
+                    self.textField.text = self.myPageViewModel.setUserNickName()
             }
         }
     }
@@ -212,13 +206,16 @@ class ChangeViewController: UIViewController {
         }
     }
     
+    @objc func selectedImageDidChange(_ notification: NSNotification?) {
+        guard let notiImage = notification?.object as? UIImage else { return }
+        
+        userImage.image = notiImage
+    }
     @objc func notificationButtonClicked() {
         guard let text = textField.text else { return }
        
         myPageViewModel.userName = text
         
-        // [] 유저가 이미지 변경을 하지 않았을 때 오류 안나게 수정
-        // [O] 완료 버튼을 눌렀을 떄 마이페이지에 바로 바뀐 내용 바로 적용되도록 구현
         DispatchQueue.global().async {
             self.myPageViewModel.uploadUserImage(self.myPageViewModel.userImage!)
         }

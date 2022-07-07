@@ -100,12 +100,15 @@ class MyPageViewModel {
         let url = URL(string: imageUrl)!
 
         guard let data = try? Data(contentsOf: url) else { return UIImage(named: "UserImage") ?? UIImage() }
-
+        
+        userImage = UIImage(data: data)!
         return UIImage(data: data)!
     }
     
     func setUserNickName() -> String {
         guard let nickname = me?.nickname else { return "사용자"}
+        
+        userName = nickname
         
         return nickname
     }

@@ -154,6 +154,7 @@ class ActionSheetViewController: UIViewController {
         
         let picker = PHPickerViewController(configuration: configuration)
         picker.delegate = self
+        picker.modalPresentationStyle = .fullScreen
         self.present(picker, animated: true, completion: nil)
         
         print("앨범에서 사진 선택 - clicked")
@@ -163,7 +164,9 @@ class ActionSheetViewController: UIViewController {
     func basicPhoto() {
         print("기본 이미지로 변경 - clicked")
 
-        // TODO: 기본 이미지로 변경
+        myPageViewModel.userImage = UIImage(named: "UserImage")
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PickImage"), object: UIImage(named: "UserImage"))
+        self.dismiss(animated: true)
     }
 }
 
@@ -171,14 +174,19 @@ extension ActionSheetViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         picker.dismiss(animated: true)
         self.dismiss(animated: true)
+        let VC = ChangeViewController()
         
         let itemProvider = results.first?.itemProvider
         if let itemProvider = itemProvider, itemProvider.canLoadObject(ofClass: UIImage.self) {
             itemProvider.loadObject(ofClass: UIImage.self) { image, error in
-                DispatchQueue.global().async {
-                        guard let selectedImage = image as? UIImage else { return }
-                        self.myPageViewModel.userImage = selectedImage
-                        // [] 이미지 선택했을 떄 프로필 수정 화면에서 선택한 이미지 보이도록 구현
+                DispatchQueue.main.async {
+                    guard let selectedImage = image as? UIImage else { return }
+                    
+                    
+                    self.myPageViewModel.userImage = selectedImage
+                    VC.userImage.image = selectedImage
+                   
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PickImage"), object: selectedImage)
                 }
             }
         }

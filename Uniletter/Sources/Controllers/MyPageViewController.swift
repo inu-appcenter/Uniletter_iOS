@@ -102,6 +102,8 @@ class MyPageViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
+        print("viewDidAppear - 실행")
+
         fetchUserInfo()
     }
     func fetchUserInfo() {
