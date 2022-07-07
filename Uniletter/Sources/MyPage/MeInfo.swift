@@ -20,3 +20,8 @@ struct Me: Codable {
         case imageUrl = "imageUrl"
     }
 }
+
+struct Images: Codable {
+    var uuid: String
+
+}

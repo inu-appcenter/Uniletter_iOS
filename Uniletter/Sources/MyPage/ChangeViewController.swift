@@ -7,8 +7,11 @@
 
 import UIKit
 import SnapKit
+import PhotosUI
 
 class ChangeViewController: UIViewController {
+    
+    var myPageViewModel = MyPageViewModel.shared
     
     let infoView: UIView = {
        
@@ -86,20 +89,38 @@ class ChangeViewController: UIViewController {
         
         return border
     }()
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         configureNavigationBar()
         configureUI()
-
+        setUserInfo()
         NotificationCenter.default.addObserver(self, selector: #selector(textDidChange(_:)), name: UITextField.textDidChangeNotification, object: textField)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        setUserInfo()
+        print("viewWillAppear - 실행")
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        print("viewDidAppear - 실행")
+    }
     override func viewDidLayoutSubviews() {
         settingTextField()
     }
     
-
+    
+    func setUserInfo() {
+        DispatchQueue.global().async {
+            self.myPageViewModel.setUserInfo {
+                self.userImage.image = self.myPageViewModel.setUserImage()
+                self.textField.text = self.myPageViewModel.setUserNickName()
+            }
+        }
+    }
+    
     func settingTextField() {
         textField.borderStyle = .none
         border.frame = CGRect(x: 0, y: textField.frame.size.height + 3, width: textField.frame.size.width, height: 1)
@@ -114,8 +135,8 @@ class ChangeViewController: UIViewController {
         textField.rightViewMode = .always
         
         textField.tintColor = UIColor.customColor(.blueGreen)
-
     }
+    
     func configureNavigationBar() {
         setNavigationTitleAndBackButton("프로필수정")
     }
@@ -173,6 +194,8 @@ class ChangeViewController: UIViewController {
     
     @objc func changeImageButtonClicked() {
         print("changeImageButton - clicked")
+
+        presentActionSheetView(.modifyInfo)
     }
     
     @objc func textDidChange(_ notification: Notification) {
@@ -192,16 +215,13 @@ class ChangeViewController: UIViewController {
     @objc func notificationButtonClicked() {
         guard let text = textField.text else { return }
        
-
-        let data: [String: Any] = [
-                                    "nickname": text,
-                                    "imageUrl": "null"
-                                ]
+        myPageViewModel.userName = text
         
-        DispatchQueue.global().sync {
-            API.patchMeInfo(data: data)
+        // [] 유저가 이미지 변경을 하지 않았을 때 오류 안나게 수정
+        // [O] 완료 버튼을 눌렀을 떄 마이페이지에 바로 바뀐 내용 바로 적용되도록 구현
+        DispatchQueue.global().async {
+            self.myPageViewModel.uploadUserImage(self.myPageViewModel.userImage!)
         }
-        
         navigationController?.popViewController(animated: true)
     }
 }
