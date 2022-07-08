@@ -14,6 +14,7 @@
 		2CB69D0D287456C60089A922 /* ChangeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB69D0C287456C60089A922 /* ChangeViewController.swift */; };
 		2CB8AA302878384300BDA358 /* MyCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB8AA2F2878384300BDA358 /* MyCommentViewController.swift */; };
 		2CB8AA32287838EE00BDA358 /* MyCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB8AA31287838EE00BDA358 /* MyCommentCell.swift */; };
+		2CB8AA3428787D3900BDA358 /* MyCommentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB8AA3328787D3900BDA358 /* MyCommentViewModel.swift */; };
 		7616B813286B50A000935257 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7616B812286B50A000935257 /* MyPageViewController.swift */; };
 		764386642874021600375CE6 /* LoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764386632874021600375CE6 /* LoginManager.swift */; };
 		765BC9FD2868C00C0098BBF2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765BC9FC2868C00C0098BBF2 /* AppDelegate.swift */; };
@@ -64,6 +65,7 @@
 		2CB69D0C287456C60089A922 /* ChangeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeViewController.swift; sourceTree = "<group>"; };
 		2CB8AA2F2878384300BDA358 /* MyCommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCommentViewController.swift; sourceTree = "<group>"; };
 		2CB8AA31287838EE00BDA358 /* MyCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCommentCell.swift; sourceTree = "<group>"; };
+		2CB8AA3328787D3900BDA358 /* MyCommentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCommentViewModel.swift; sourceTree = "<group>"; };
 		4B9E2AEF628539C36D2C3D4F /* Pods_Uniletter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Uniletter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F1F5DD4E8EBAC5709B4DC60 /* Pods-Uniletter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Uniletter.debug.xcconfig"; path = "Target Support Files/Pods-Uniletter/Pods-Uniletter.debug.xcconfig"; sourceTree = "<group>"; };
 		7616B812286B50A000935257 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
@@ -135,6 +137,7 @@
 				2CB69D0C287456C60089A922 /* ChangeViewController.swift */,
 				2CB8AA2F2878384300BDA358 /* MyCommentViewController.swift */,
 				2CB8AA31287838EE00BDA358 /* MyCommentCell.swift */,
+				2CB8AA3328787D3900BDA358 /* MyCommentViewModel.swift */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -462,6 +465,7 @@
 				76FCB545286C253900AC4F70 /* EventDetailViewController.swift in Sources */,
 				76FCB543286B955F00AC4F70 /* Colors++Extensions.swift in Sources */,
 				7681D5822869F46A0081C644 /* ServiceAPI.swift in Sources */,
+				2CB8AA3428787D3900BDA358 /* MyCommentViewModel.swift in Sources */,
 				76FCB54C286C35DE00AC4F70 /* DetailLabel.swift in Sources */,
 				7681D57028698EC60081C644 /* HomeCell.swift in Sources */,
 				765BCA122868CA1B0098BBF2 /* LoginViewController.swift in Sources */,

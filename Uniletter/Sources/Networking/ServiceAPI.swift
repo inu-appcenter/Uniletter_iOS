@@ -161,6 +161,22 @@ class API {
             }
     }
     
+    
+    static func getMyComment(completion: @escaping([myComment]) -> Void) {
+        
+        networking(
+            urlStr: Address.mycomments.url,
+            method: .get,
+            data: nil,
+            model: [myComment].self) { result, _ in
+                switch result {
+                case .success(let myComments):
+                    completion(myComments)
+                case .failure(let error):
+                    print(error)
+                }
+            }
+    }
     static func patchMeInfo(data: [String: Any]) {
     
         guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
@@ -195,4 +211,24 @@ class API {
             }
         }
     }
+    
+    static func createComment(data: [String: Any]) {
+
+        guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
+
+        networking(
+            urlStr: Address.comments.url,
+            method: .post,
+            data: data,
+            model: Comment.self) { result, _ in
+                switch result {
+                case .success(let Comments):
+                    print(Comments)
+                case .failure(let error):
+                    print(error)
+                }
+            }
+
+    }
+ 
 }

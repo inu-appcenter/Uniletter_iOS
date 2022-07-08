@@ -36,7 +36,6 @@ class MyCommentCell: UICollectionViewCell {
     
         var label = UILabel()
         
-        label.text = "앱센터에서 신입맴버 모집.."
         label.font = .systemFont(ofSize: 16, weight: .semibold)
         
         return label
@@ -45,8 +44,6 @@ class MyCommentCell: UICollectionViewCell {
     var eventBodyLabel: UILabel = {
         
         var label = UILabel()
-        
-        label.text = "인천대학교 앱센터에서 신입맴버를 모집합니다!! 앱센터에서 현재 진행중인 프로젝트는 inu버스, 맵퍼스, INUM등을 진행..."
         
         label.font = .systemFont(ofSize: 14)
         label.numberOfLines = 3
@@ -60,7 +57,6 @@ class MyCommentCell: UICollectionViewCell {
         
         label.font = .systemFont(ofSize: 13)
         
-        label.text = "2년전"
         label.textColor = UIColor.customColor(.lightGray)
         
         return label
@@ -82,7 +78,6 @@ class MyCommentCell: UICollectionViewCell {
         
         label.font = .systemFont(ofSize: 13)
         
-        label.text = "4"
         label.textColor = UIColor.customColor(.darkGray)
         
         return label
@@ -142,7 +137,7 @@ class MyCommentCell: UICollectionViewCell {
             $0.top.equalTo(eventTitleLabel.snp.bottom).inset(4)
             $0.leading.equalTo(eventImage.snp.trailing).inset(-20)
             $0.width.equalTo(215)
-            $0.height.equalTo(70)
+            $0.height.equalTo(80)
         }
         
         writeDayLabel.snp.makeConstraints {

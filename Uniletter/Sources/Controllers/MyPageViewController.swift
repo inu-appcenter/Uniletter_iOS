@@ -239,5 +239,6 @@ extension MyPageViewController: UITableViewDelegate, UITableViewDataSource {
         let view = myPageViewModel.viewOfSection(indexPath.section, indexPath.row)
         
         self.navigationController?.pushViewController(view, animated: true)
+        
     }
 }
