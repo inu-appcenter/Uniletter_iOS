@@ -179,7 +179,7 @@ class API {
     
     static func uploadMeImage(image: UIImage, completion: @escaping(Images) -> Void) {
         
-        let imageData = image.jpegData(compressionQuality: 0.2)!
+        let imageData = image.jpegData(compressionQuality: 1)!
         
         uploadNetworking(
             urlStr: Address.images.url,

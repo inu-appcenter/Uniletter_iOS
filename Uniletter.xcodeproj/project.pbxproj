@@ -12,6 +12,8 @@
 		2C80F391286DE20000ECAB60 /* MyPageSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C80F390286DE20000ECAB60 /* MyPageSectionView.swift */; };
 		2CB69D0B287443870089A922 /* MeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB69D0A287443870089A922 /* MeInfo.swift */; };
 		2CB69D0D287456C60089A922 /* ChangeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB69D0C287456C60089A922 /* ChangeViewController.swift */; };
+		2CB8AA302878384300BDA358 /* MyCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB8AA2F2878384300BDA358 /* MyCommentViewController.swift */; };
+		2CB8AA32287838EE00BDA358 /* MyCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB8AA31287838EE00BDA358 /* MyCommentCell.swift */; };
 		7616B813286B50A000935257 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7616B812286B50A000935257 /* MyPageViewController.swift */; };
 		764386642874021600375CE6 /* LoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764386632874021600375CE6 /* LoginManager.swift */; };
 		765BC9FD2868C00C0098BBF2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765BC9FC2868C00C0098BBF2 /* AppDelegate.swift */; };
@@ -60,6 +62,8 @@
 		2C80F390286DE20000ECAB60 /* MyPageSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSectionView.swift; sourceTree = "<group>"; };
 		2CB69D0A287443870089A922 /* MeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeInfo.swift; sourceTree = "<group>"; };
 		2CB69D0C287456C60089A922 /* ChangeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeViewController.swift; sourceTree = "<group>"; };
+		2CB8AA2F2878384300BDA358 /* MyCommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCommentViewController.swift; sourceTree = "<group>"; };
+		2CB8AA31287838EE00BDA358 /* MyCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCommentCell.swift; sourceTree = "<group>"; };
 		4B9E2AEF628539C36D2C3D4F /* Pods_Uniletter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Uniletter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F1F5DD4E8EBAC5709B4DC60 /* Pods-Uniletter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Uniletter.debug.xcconfig"; path = "Target Support Files/Pods-Uniletter/Pods-Uniletter.debug.xcconfig"; sourceTree = "<group>"; };
 		7616B812286B50A000935257 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
@@ -129,6 +133,8 @@
 				2C80F390286DE20000ECAB60 /* MyPageSectionView.swift */,
 				2CB69D0A287443870089A922 /* MeInfo.swift */,
 				2CB69D0C287456C60089A922 /* ChangeViewController.swift */,
+				2CB8AA2F2878384300BDA358 /* MyCommentViewController.swift */,
+				2CB8AA31287838EE00BDA358 /* MyCommentCell.swift */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -437,6 +443,7 @@
 				766F384F2872FC3900EC9593 /* NewNoticeCell.swift in Sources */,
 				2CB69D0D287456C60089A922 /* ChangeViewController.swift in Sources */,
 				766F38502872FC3900EC9593 /* NewNoticeViewModel.swift in Sources */,
+				2CB8AA32287838EE00BDA358 /* MyCommentCell.swift in Sources */,
 				7681D58A286A29970081C644 /* DateFormatter.swift in Sources */,
 				2CB69D0B287443870089A922 /* MeInfo.swift in Sources */,
 				764386642874021600375CE6 /* LoginManager.swift in Sources */,
@@ -464,6 +471,7 @@
 				765BCA012868C00C0098BBF2 /* LaunchViewController.swift in Sources */,
 				7616B813286B50A000935257 /* MyPageViewController.swift in Sources */,
 				76AC783C28721D0400D303C4 /* Alert.swift in Sources */,
+				2CB8AA302878384300BDA358 /* MyCommentViewController.swift in Sources */,
 				76AC78382872053100D303C4 /* AlertView.swift in Sources */,
 				765DCDB32868DCD300961EA8 /* HomeView.swift in Sources */,
 				7681D584286A09DD0081C644 /* EventDetailViewModel.swift in Sources */,

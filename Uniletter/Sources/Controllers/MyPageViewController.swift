@@ -34,7 +34,6 @@ class MyPageViewController: UIViewController {
     let userImage: UIImageView = {
         let imageView = UIImageView()
 
-        imageView.image = UIImage(named: "UserImage")
         imageView.clipsToBounds = true
         
         imageView.layer.borderWidth = 0.3
@@ -45,7 +44,6 @@ class MyPageViewController: UIViewController {
     let userName: UILabel = {
         let label = UILabel()
 
-        label.text = "사용자"
         label.font = .systemFont(ofSize: 16)
     
         return label
@@ -98,21 +96,16 @@ class MyPageViewController: UIViewController {
         configureUI()
         fetchUserInfo()
     }
- 
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
-        print("viewDidAppear - 실행")
-
         fetchUserInfo()
     }
+    
     func fetchUserInfo() {
-        
-            myPageViewModel.setUserInfo {
-                DispatchQueue.main.async {
-                    self.userImage.image = self.myPageViewModel.setUserImage()
-                    self.userName.text = self.myPageViewModel.me?.nickname
-            }
+            DispatchQueue.main.async {
+                self.userImage.image = self.myPageViewModel.userImage
+                self.userName.text = self.myPageViewModel.userName
         }
     }
     

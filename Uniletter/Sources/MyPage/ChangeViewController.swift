@@ -109,8 +109,8 @@ class ChangeViewController: UIViewController {
         
             self.myPageViewModel.setUserInfo {
                 DispatchQueue.main.async {
-                    self.userImage.image = self.myPageViewModel.setUserImage()
-                    self.textField.text = self.myPageViewModel.setUserNickName()
+                    self.userImage.image = self.myPageViewModel.userImage
+                    self.textField.text = self.myPageViewModel.userName
             }
         }
     }
@@ -211,6 +211,7 @@ class ChangeViewController: UIViewController {
         
         userImage.image = notiImage
     }
+    
     @objc func notificationButtonClicked() {
         guard let text = textField.text else { return }
        

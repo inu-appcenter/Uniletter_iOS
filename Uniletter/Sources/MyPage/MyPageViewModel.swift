@@ -34,7 +34,7 @@ enum SectionType: CaseIterable {
     var view: [UIViewController] {
         switch self {
         case .setting: return [NewNoticeViewController()]
-        case .shortcut: return [UIViewController(), UIViewController(), UIViewController()]
+        case .shortcut: return [UIViewController(), MyCommentViewController(), UIViewController()]
         case .infomation: return [UIViewController(), UIViewController(), UIViewController()]
         case .etc: return [UIViewController()]
             
@@ -83,7 +83,7 @@ class MyPageViewModel {
                                     "nickname": nickname,
                                     "imageUuid": imageUuid
                                 ]
-        
+    
         API.patchMeInfo(data: data)
     }
     
@@ -95,6 +95,7 @@ class MyPageViewModel {
     }
 
     func setUserImage() -> UIImage {
+        
         guard let imageUrl = me?.imageUrl else { return UIImage(named: "UserImage") ?? UIImage() }
         
         let url = URL(string: imageUrl)!
