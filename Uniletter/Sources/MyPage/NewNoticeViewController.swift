@@ -50,7 +50,7 @@ class NewNoticeViewController: UIViewController {
         
         collectionView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
-            $0.bottom.equalTo(notificationButton.snp.top)
+            $0.bottom.equalTo(notificationButton.snp.top).offset(-20)
         }
         
         notificationButton.snp.makeConstraints {

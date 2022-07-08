@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PhotosUI
 
 class ActionSheetViewController: UIViewController {
 
@@ -13,6 +14,7 @@ class ActionSheetViewController: UIViewController {
     let twoOptionsActionSheetView = TwoOptionsActionSheetView()
     var actionSheet: ActionSheet?
     var option: Int?
+    var myPageViewModel = MyPageViewModel.shared
     
     override func loadView() {
         guard let actionSheet = actionSheet else {
@@ -72,7 +74,7 @@ class ActionSheetViewController: UIViewController {
             self,
             action: #selector(didTapFirstButton(_:)),
             for: .touchUpInside)
-        twoOptionsActionSheetView.firstButton.addTarget(
+        twoOptionsActionSheetView.secondButton.addTarget(
             self,
             action: #selector(didTapSecondButton(_:)),
             for: .touchUpInside)
@@ -146,10 +148,47 @@ class ActionSheetViewController: UIViewController {
     }
     
     func selectPhoto() {
+        var configuration = PHPickerConfiguration()
+        configuration.selectionLimit = 1
+        configuration.filter = .images
+        
+        let picker = PHPickerViewController(configuration: configuration)
+        picker.delegate = self
+        picker.modalPresentationStyle = .fullScreen
+        self.present(picker, animated: true, completion: nil)
+        
+        print("앨범에서 사진 선택 - clicked")
         // TODO: 앨범에서 사진 선택
     }
     
     func basicPhoto() {
-        // TODO: 기본 이미지로 변경
+        print("기본 이미지로 변경 - clicked")
+
+        myPageViewModel.userImage = UIImage(named: "UserImage")
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PickImage"), object: UIImage(named: "UserImage"))
+        self.dismiss(animated: true)
+    }
+}
+
+extension ActionSheetViewController: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        picker.dismiss(animated: true)
+        self.dismiss(animated: true)
+        let VC = ChangeViewController()
+        
+        let itemProvider = results.first?.itemProvider
+        if let itemProvider = itemProvider, itemProvider.canLoadObject(ofClass: UIImage.self) {
+            itemProvider.loadObject(ofClass: UIImage.self) { image, error in
+                DispatchQueue.main.async {
+                    guard let selectedImage = image as? UIImage else { return }
+                    
+                    
+                    self.myPageViewModel.userImage = selectedImage
+                    VC.userImage.image = selectedImage
+                   
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PickImage"), object: selectedImage)
+                }
+            }
+        }
     }
 }

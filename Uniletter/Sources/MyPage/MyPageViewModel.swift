@@ -34,7 +34,7 @@ enum SectionType: CaseIterable {
     var view: [UIViewController] {
         switch self {
         case .setting: return [NewNoticeViewController()]
-        case .shortcut: return [UIViewController(), UIViewController(), UIViewController()]
+        case .shortcut: return [UIViewController(), MyCommentViewController(), UIViewController()]
         case .infomation: return [UIViewController(), UIViewController(), UIViewController()]
         case .etc: return [UIViewController()]
             
@@ -42,19 +42,17 @@ enum SectionType: CaseIterable {
     }
 }
 
-struct UserInfo {
-    var nickname: String?
-    var image: UIImage?
-}
-
 class MyPageViewModel {
     
     static let shared = MyPageViewModel()
     
+    var me: Me?
+    
     var type: [SectionType] = [.setting, .shortcut, .infomation, .etc]
     
-    var userName = "사용자"
-    var userImage = UIImage(systemName: "UserImage")
+    var userName: String?
+    
+    var userImage: UIImage?
     
     var numOfSection: Int {
         return type.count
@@ -74,8 +72,45 @@ class MyPageViewModel {
     
     func setUserInfo(completion: @escaping () -> Void) {
         API.getMeInfo { Me in
-            self.userName = Me.nickname
+            self.me = Me
             completion()
         }
+    }
+    
+    func patchUserInfo(_ nickname: String, _ imageUuid: String) {
+        
+        let data: [String: Any] = [
+                                    "nickname": nickname,
+                                    "imageUuid": imageUuid
+                                ]
+    
+        API.patchMeInfo(data: data)
+    }
+    
+    func uploadUserImage(_ image: UIImage) {
+        
+        API.uploadMeImage(image: image) { images in
+            self.patchUserInfo(self.userName!, images.uuid)
+        }
+    }
+
+    func setUserImage() -> UIImage {
+        
+        guard let imageUrl = me?.imageUrl else { return UIImage(named: "UserImage") ?? UIImage() }
+        
+        let url = URL(string: imageUrl)!
+
+        guard let data = try? Data(contentsOf: url) else { return UIImage(named: "UserImage") ?? UIImage() }
+        
+        userImage = UIImage(data: data)!
+        return UIImage(data: data)!
+    }
+    
+    func setUserNickName() -> String {
+        guard let nickname = me?.nickname else { return "사용자"}
+        
+        userName = nickname
+        
+        return nickname
     }
 }

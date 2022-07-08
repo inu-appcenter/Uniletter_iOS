@@ -14,7 +14,8 @@ class HomeViewController: UIViewController {
     let viewModel = HomeViewModel()
     let loginManager = LoginManager.shared
     var isLoggedIn = false
-    
+    let myPageViewModel = MyPageViewModel.shared
+
     override func loadView() {
         view = homeView
     }
@@ -88,8 +89,7 @@ class HomeViewController: UIViewController {
     
     func checkLogin() {
         loginManager.checkLogin() {
-            self.isLoggedIn = self.loginManager.isLoggedIn
-            print("로그인 상태: \(self.isLoggedIn)")
+            print("로그인 상태: \(self.loginManager.isLoggedIn)")
         }
     }
     
@@ -105,11 +105,17 @@ class HomeViewController: UIViewController {
         homeView.gradientView.layer.addSublayer(gradient)
     }
     
+    
     @objc func goToInfo(_ sender: UIBarButtonItem) {
-        if isLoggedIn {
+        if loginManager.isLoggedIn {
             let myPageViewController = MyPageViewController()
-            
             self.navigationController?.pushViewController(myPageViewController, animated: true)
+            myPageViewModel.setUserInfo {
+                DispatchQueue.global().async {
+                    self.myPageViewModel.userName = self.myPageViewModel.setUserNickName()
+                    self.myPageViewModel.userImage = self.myPageViewModel.setUserImage()
+                }
+            }
         } else {
             presentAlertView(.login)
         }

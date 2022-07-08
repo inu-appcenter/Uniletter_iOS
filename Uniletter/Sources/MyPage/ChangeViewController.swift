@@ -7,8 +7,11 @@
 
 import UIKit
 import SnapKit
+import PhotosUI
 
 class ChangeViewController: UIViewController {
+    
+    var myPageViewModel = MyPageViewModel.shared
     
     let infoView: UIView = {
        
@@ -18,10 +21,9 @@ class ChangeViewController: UIViewController {
         return view
     }()
     
-    let userImage: UIImageView = {
+    lazy var userImage: UIImageView = {
         let imageView = UIImageView()
 
-        imageView.image = UIImage(named: "UserImage")
         imageView.clipsToBounds = true
         
         imageView.layer.borderWidth = 1
@@ -86,20 +88,33 @@ class ChangeViewController: UIViewController {
         
         return border
     }()
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         configureNavigationBar()
         configureUI()
-
+        setUserInfo()
         NotificationCenter.default.addObserver(self, selector: #selector(textDidChange(_:)), name: UITextField.textDidChangeNotification, object: textField)
+        NotificationCenter.default.addObserver(self, selector: #selector(selectedImageDidChange(_:)), name: NSNotification.Name(rawValue: "PickImage"), object: nil)
+
     }
-    
+
     override func viewDidLayoutSubviews() {
         settingTextField()
     }
     
 
+    func setUserInfo() {
+        
+            self.myPageViewModel.setUserInfo {
+                DispatchQueue.main.async {
+                    self.userImage.image = self.myPageViewModel.userImage
+                    self.textField.text = self.myPageViewModel.userName
+            }
+        }
+    }
+    
     func settingTextField() {
         textField.borderStyle = .none
         border.frame = CGRect(x: 0, y: textField.frame.size.height + 3, width: textField.frame.size.width, height: 1)
@@ -114,8 +129,8 @@ class ChangeViewController: UIViewController {
         textField.rightViewMode = .always
         
         textField.tintColor = UIColor.customColor(.blueGreen)
-
     }
+    
     func configureNavigationBar() {
         setNavigationTitleAndBackButton("프로필수정")
     }
@@ -173,6 +188,8 @@ class ChangeViewController: UIViewController {
     
     @objc func changeImageButtonClicked() {
         print("changeImageButton - clicked")
+
+        presentActionSheetView(.modifyInfo)
     }
     
     @objc func textDidChange(_ notification: Notification) {
@@ -189,17 +206,20 @@ class ChangeViewController: UIViewController {
         }
     }
     
+    @objc func selectedImageDidChange(_ notification: NSNotification?) {
+        guard let notiImage = notification?.object as? UIImage else { return }
+        
+        userImage.image = notiImage
+    }
+    
     @objc func notificationButtonClicked() {
         guard let text = textField.text else { return }
        
-
-        let data: [String: Any] = [
-                                    "nickname": text,
-                                    "imageUrl": "null"
-                                ]
+        myPageViewModel.userName = text
         
-        API.patchMeInfo(data: data)
-        
+        DispatchQueue.global().async {
+            self.myPageViewModel.uploadUserImage(self.myPageViewModel.userImage!)
+        }
         navigationController?.popViewController(animated: true)
     }
 }

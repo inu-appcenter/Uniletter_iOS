@@ -10,7 +10,6 @@ import SnapKit
 
 class MyPageViewController: UIViewController {
     
-    //test
     let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -35,7 +34,6 @@ class MyPageViewController: UIViewController {
     let userImage: UIImageView = {
         let imageView = UIImageView()
 
-        imageView.image = UIImage(named: "UserImage")
         imageView.clipsToBounds = true
         
         imageView.layer.borderWidth = 0.3
@@ -46,7 +44,6 @@ class MyPageViewController: UIViewController {
     let userName: UILabel = {
         let label = UILabel()
 
-        label.text = "사용자"
         label.font = .systemFont(ofSize: 16)
     
         return label
@@ -76,10 +73,9 @@ class MyPageViewController: UIViewController {
     
     let saveListButton: UIButton = {
         
-
         let button = UIButton()
         button.listButtonSetting("bookmark.fill", "저장목록")
-        
+        button.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
         return button
     }()
     
@@ -87,7 +83,7 @@ class MyPageViewController: UIViewController {
         
         let button = UIButton()
         button.listButtonSetting("bell.fill", "알림목록")
-        
+        button.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner]
         return button
     }()
     
@@ -100,15 +96,16 @@ class MyPageViewController: UIViewController {
         configureUI()
         fetchUserInfo()
     }
- 
-    override func viewWillAppear(_ animated: Bool) {
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
         fetchUserInfo()
     }
+    
     func fetchUserInfo() {
-        DispatchQueue.global().sync {
-            myPageViewModel.setUserInfo {
+            DispatchQueue.main.async {
+                self.userImage.image = self.myPageViewModel.userImage
                 self.userName.text = self.myPageViewModel.userName
-            }
         }
     }
     

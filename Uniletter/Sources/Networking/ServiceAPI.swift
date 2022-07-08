@@ -6,6 +6,7 @@
 //
 
 import Alamofire
+import UIKit
 
 enum StatusCode {
     case success
@@ -42,6 +43,32 @@ private func networking<T: Decodable>(urlStr: String, method: HTTPMethod, data: 
                 completion(.failure(error), statusCode)
             }
         }
+}
+
+private func uploadNetworking<T: Decodable>(urlStr: String, method: HTTPMethod, data: Data?, model: T.Type, completion: @escaping(Result<T, AFError>, StatusCode) -> Void) {
+    
+    var statusCode: StatusCode = .fail
+    guard let url = URL(string: Address.base.url + urlStr) else {
+        print("URL을 찾을 수 없습니다.")
+        return
+    }
+    
+    AF.upload(multipartFormData: { multipartFormData in
+        multipartFormData.append(data!, withName: "file", fileName: "test.jpg", mimeType: "image/jpg")
+    }, to: url).responseDecodable(of: model.self) { response in
+        switch response.response?.statusCode {
+        case 200: statusCode = .success
+        case 500: statusCode = .server
+        default: break
+        }
+        
+        switch response.result {
+        case .success(let result):
+            completion(.success(result), statusCode)
+        case .failure(let error):
+            completion(.failure(error), statusCode)
+        }
+    }
 }
 
 // MARK: - API
@@ -148,5 +175,24 @@ class API {
                     print(error)
                 }
             }
+    }
+    
+    static func uploadMeImage(image: UIImage, completion: @escaping(Images) -> Void) {
+        
+        let imageData = image.jpegData(compressionQuality: 1)!
+        
+        uploadNetworking(
+            urlStr: Address.images.url,
+            method: .post,
+            data: imageData,
+            model: Images.self) { result, _ in
+                switch result {
+                case .success(let Images):
+                    print(result)
+                    completion(Images)
+                case .failure(let error):
+                    print(error)
+            }
+        }
     }
 }
