@@ -46,6 +46,8 @@ class MyPageViewModel {
     
     static let shared = MyPageViewModel()
     
+    private init() { }
+    
     var me: Me?
     
     var type: [SectionType] = [.setting, .shortcut, .infomation, .etc]
