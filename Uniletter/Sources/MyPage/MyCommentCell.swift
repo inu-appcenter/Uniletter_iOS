@@ -46,7 +46,7 @@ class MyCommentCell: UICollectionViewCell {
         var label = UILabel()
         
         label.font = .systemFont(ofSize: 14)
-        label.numberOfLines = 3
+        label.numberOfLines = 4
         
         return label
     }()
@@ -162,5 +162,26 @@ class MyCommentCell: UICollectionViewCell {
             $0.height.equalTo(1)
             $0.width.equalToSuperview()
         }
+    }
+    
+    func setUI(event: Event) {
+        self.eventImage.image = setEventImage(imageUrl: event.imageURL)
+        
+        self.eventBodyLabel.text = event.body
+        
+        self.eventTitleLabel.text = event.title
+        
+        self.writeDayLabel.text = event.createdAt
+        
+        self.commentCountLabel.text = String(event.comments)
+    }
+    
+    func setEventImage(imageUrl: String) -> UIImage {
+        
+        let url = URL(string: imageUrl)!
+
+        guard let data = try? Data(contentsOf: url) else { return UIImage(named: "UserImage") ?? UIImage() }
+        
+        return UIImage(data: data)!
     }
 }

@@ -204,7 +204,6 @@ class API {
             model: Images.self) { result, _ in
                 switch result {
                 case .success(let Images):
-                    print(result)
                     completion(Images)
                 case .failure(let error):
                     print(error)

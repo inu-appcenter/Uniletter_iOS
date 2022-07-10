@@ -7,35 +7,32 @@
 
 import UIKit
 
-
-// 구조체
-// 이벤트 사진, 이벤트 타이틀, 이벤트 바디, 이벤트 작성 날짜, 이벤트 댓글갯수
-
-struct MyCommentList {
-    var eventId: Int
-    var eventUrl: String
-    var eventTitle: String
-    var eventBody: String
-    var writeDay: String
-    var commentCount: Int
-}
-
 class MyCommentViewModel {
-    
-    static let shared = MyCommentViewModel()
-    
+        
     var myComments = [myComment]()
     var events = [Event]()
-    var CommentList = [MyCommentList]()
+    var eventIdList = [Int]()
     
     var numOfCell: Int {
-        return CommentList.count
+        return events.count
     }
     
     func getMyComments(completion: @escaping () -> Void) {
-        API.getMyComment { myComments in
-            self.myComments = myComments
-            completion()
+        
+        events = [Event]()
+        
+        API.getMyComment { result in
+            self.myComments = result
+            
+            self.returnEventIdList(CommentList: self.myComments)
+            
+            for i in self.eventIdList {
+                API.getEventOne(i) { Event in
+                self.events.append(Event)
+                self.sortedEventList(event: self.events)
+                completion()
+                }
+            }
         }
     }
     
@@ -48,6 +45,26 @@ class MyCommentViewModel {
         return UIImage(data: data)!
     }
     
-
     
+    func returnEventIdList(CommentList: [myComment]) {
+        
+        var eventIdList = [Int]()
+        
+        for i in 0...CommentList.count - 1 {
+            if eventIdList.isEmpty == true {
+                eventIdList.append(CommentList[i].eventId)
+            } else {
+                if eventIdList.contains(CommentList[i].eventId) == false {
+                    eventIdList.append(CommentList[i].eventId)
+                }
+            }
+        }
+        
+        self.eventIdList = eventIdList
+    }
+    
+    func sortedEventList(event: [Event]) {
+        
+        self.events = self.events.sorted(by: { $0.id > $1.id} )
+    }
 }
