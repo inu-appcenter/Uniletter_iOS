@@ -187,14 +187,7 @@ class ChangeViewController: UIViewController {
     }
     
     @objc func changeImageButtonClicked() {
-//
-//        let para: [String: Any] = [
-//                    "eventId": 82,
-//                    "content": "test"
-//                    ]
 
-//        API.createComment(data: para)
-        
         print("changeImageButton - clicked")
 
         presentActionSheetView(.modifyInfo)

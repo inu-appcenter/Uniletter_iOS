@@ -63,3 +63,30 @@ func caculateDDay(_ endAt: String) -> String {
     
     return "\(dday)"
 }
+
+func StringToYearMonthDay(_ dataStr: String) -> [String] {
+    let YearMonthDay = dataStr.components(separatedBy: "-")
+    
+    return YearMonthDay
+}
+
+func caculateWriteDay(_ dateStr: String) -> String {
+    
+    let date = subDateString(dateStr)
+    
+    let YearMonthDay =  date.components(separatedBy: "-")
+    
+    let month = YearMonthDay[1]
+    let day = YearMonthDay[2]
+    
+    let writeDay = formatStringToDate(dateStr)
+    let now = Date()
+    
+    let interval = now.timeIntervalSince(writeDay)
+    
+    if interval / 86400 > 365 {
+        return "\(interval / 31536000)년전"
+    } else {
+        return "\(month)/\(day)"
+    }
+}

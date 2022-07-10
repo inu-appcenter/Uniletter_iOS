@@ -70,6 +70,14 @@ extension MyCommentViewController: UICollectionViewDelegate, UICollectionViewDat
         
         return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let EventDetailVC = EventDetailViewController()
+        
+        EventDetailVC.id = myCommentViewModel.events[indexPath.row].id
+        
+        navigationController?.pushViewController(EventDetailVC, animated: true)
+    }
 }
 
 extension MyCommentViewController: UICollectionViewDelegateFlowLayout {
@@ -77,5 +85,9 @@ extension MyCommentViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         return CGSize(width: view.frame.size.width, height: 160)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+      return 0
     }
 }

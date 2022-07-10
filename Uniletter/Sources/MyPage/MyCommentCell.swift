@@ -122,7 +122,7 @@ class MyCommentCell: UICollectionViewCell {
         
         eventImage.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(20)
-            $0.top.equalToSuperview().offset(24)
+            $0.centerY.equalToSuperview()
             $0.width.equalTo(85)
             $0.height.equalTo(120)
         }
@@ -134,27 +134,26 @@ class MyCommentCell: UICollectionViewCell {
         }
         
         eventBodyLabel.snp.makeConstraints {
-            $0.top.equalTo(eventTitleLabel.snp.bottom).inset(4)
+            $0.top.equalTo(eventTitleLabel.snp.bottom).inset(-4)
             $0.leading.equalTo(eventImage.snp.trailing).inset(-20)
-            $0.width.equalTo(215)
-            $0.height.equalTo(80)
+            $0.trailing.equalToSuperview().offset(-20)
+            $0.bottom.equalToSuperview().offset(-44)
+
         }
         
         writeDayLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(28)
-            $0.leading.equalTo(eventTitleLabel.snp.trailing).inset(-4)
+            $0.trailing.equalToSuperview().offset(-20)
         }
         
         commentLabel.snp.makeConstraints {
             $0.bottom.equalTo(eventImage.snp.bottom)
             $0.leading.equalTo(eventImage.snp.trailing).inset(-20)
-            $0.width.equalTo(24)
         }
         
         commentCountLabel.snp.makeConstraints {
             $0.bottom.equalTo(eventImage.snp.bottom)
             $0.leading.equalTo(commentLabel.snp.trailing).inset(-4)
-            $0.width.equalTo(10)
         }
         
         separatorLine.snp.makeConstraints {
@@ -165,14 +164,11 @@ class MyCommentCell: UICollectionViewCell {
     }
     
     func setUI(event: Event) {
+        
         self.eventImage.image = setEventImage(imageUrl: event.imageURL)
-        
         self.eventBodyLabel.text = event.body
-        
         self.eventTitleLabel.text = event.title
-        
-        self.writeDayLabel.text = event.createdAt
-        
+        self.writeDayLabel.text = caculateWriteDay(event.createdAt)
         self.commentCountLabel.text = String(event.comments)
     }
     
