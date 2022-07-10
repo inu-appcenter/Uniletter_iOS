@@ -8,30 +8,47 @@
 import UIKit
 
 class MyCommentViewModel {
-        
+    
+
+
     var myComments = [myComment]()
     var events = [Event]()
     var eventIdList = [Int]()
-    
+
     var numOfCell: Int {
         return events.count
     }
     
-    func getMyComments(completion: @escaping () -> Void) {
+    func getMyComments(completion: @escaping() -> Void) {
+        
+        let firstDispatchGroup = DispatchGroup()
+        let secondDispatchdGroup = DispatchGroup()
         
         events = [Event]()
         
+        firstDispatchGroup.enter()
+        
         API.getMyComment { result in
             self.myComments = result
-            
             self.returnEventIdList(CommentList: self.myComments)
+            firstDispatchGroup.leave()
+        }
+        
+        firstDispatchGroup.notify(queue: .main) {
             
             for i in self.eventIdList {
-                API.getEventOne(i) { Event in
+                
+            secondDispatchdGroup.enter()
+    
+            API.getEventOne(i) { Event in
                 self.events.append(Event)
                 self.sortedEventList(event: self.events)
-                completion()
+                secondDispatchdGroup.leave()
                 }
+            }
+            
+            secondDispatchdGroup.notify(queue: .main) {
+                completion()
             }
         }
     }

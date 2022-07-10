@@ -48,9 +48,9 @@ class MyCommentViewController: UIViewController {
     }
     
     func settingAPI() {
-        
-        DispatchQueue.global().async {
-            self.myCommentViewModel.getMyComments {
+
+        self.myCommentViewModel.getMyComments {
+            DispatchQueue.main.async {
                 self.collectionView.reloadData()
             }
         }
