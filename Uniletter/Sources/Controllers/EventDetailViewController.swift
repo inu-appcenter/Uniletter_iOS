@@ -79,6 +79,10 @@ class EventDetailViewController: UIViewController {
         eventDetailView.recognizeTapLink.addTarget(
             self,
             action: #selector(didTapLabel(_:)))
+        eventDetailView.commentsButton.addTarget(
+            self,
+            action: #selector(didTapCommentesLabel(_:)),
+            for: .touchUpInside)
     }
     
     func updateDDay() {
@@ -164,6 +168,12 @@ class EventDetailViewController: UIViewController {
     
     @objc func didTapProfileMoreButton(_ sender: UIButton) {
         presentActionSheetView(.profile)
+    }
+    
+    @objc func didTapCommentesLabel(_ sender: UIButton) {
+        let vc = CommentsViewController()
+        
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func didTapNotificationButton(_ sender: UIButton) {

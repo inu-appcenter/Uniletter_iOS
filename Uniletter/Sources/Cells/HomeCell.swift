@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SnapKit
 import Kingfisher
 
 class HomeCell: UICollectionViewCell {
@@ -20,7 +19,10 @@ class HomeCell: UICollectionViewCell {
         
         homeCellView.frame = contentView.frame
         contentView.addSubview(homeCellView)
-        homeCellView.bookmarkButton.addTarget(self, action: #selector(didTapBookmarkButton(_:)), for: .touchUpInside)
+        homeCellView.bookmarkButton.addTarget(
+            self,
+            action: #selector(didTapBookmarkButton(_:)),
+            for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
@@ -32,7 +34,7 @@ class HomeCell: UICollectionViewCell {
         updateDDay(event.endAt)
         homeCellView.categoryLabel.text = event.category
         
-        let url = URL(string: event.imageURL)!
+        guard let url = URL(string: event.imageURL) else { return }
         homeCellView.posterImageView.kf.setImage(with: url, options: [.cacheMemoryOnly])
     }
     

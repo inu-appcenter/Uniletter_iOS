@@ -12,13 +12,21 @@ func subDateString(_ dateStr: String) -> String {
     return String(dateStr.prefix(10))
 }
 
-/// 받아온 날짜 시간-분 구하기
+/// 받아온 날짜 시간:분 구하기
 func subTimeString(_ dateStr: String) -> String {
     let start = dateStr.index(dateStr.startIndex, offsetBy: 11)
     let end = dateStr.index(dateStr.startIndex, offsetBy: 16)
     let range = start..<end
     
     return String(dateStr[range])
+}
+
+/// 받아온 날짜 년.월.일 시간:분 구하기(댓글용)
+func formatDateForComments(_ dateStr: String) -> String {
+    let date = subDateString(dateStr).replacingOccurrences(of: "-", with: ".")
+    let time = subTimeString(dateStr)
+    
+    return "\(date) \(time)"
 }
 
 /// 시간 AM, PM으로 변환

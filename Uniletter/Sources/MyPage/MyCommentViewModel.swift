@@ -11,7 +11,7 @@ class MyCommentViewModel {
     
 
 
-    var myComments = [myComment]()
+    var myComments = [Comment]()
     var events = [Event]()
     var eventIdList = [Int]()
 
@@ -30,7 +30,7 @@ class MyCommentViewModel {
         
         API.getMyComment { result in
             self.myComments = result
-            self.returnEventIdList(CommentList: self.myComments)
+            //self.returnEventIdList(CommentList: self.myComments)
             firstDispatchGroup.leave()
         }
         
@@ -62,23 +62,23 @@ class MyCommentViewModel {
         return UIImage(data: data)!
     }
     
-    
-    func returnEventIdList(CommentList: [myComment]) {
-        
-        var eventIdList = [Int]()
-        
-        for i in 0...CommentList.count - 1 {
-            if eventIdList.isEmpty == true {
-                eventIdList.append(CommentList[i].eventId)
-            } else {
-                if eventIdList.contains(CommentList[i].eventId) == false {
-                    eventIdList.append(CommentList[i].eventId)
-                }
-            }
-        }
-        
-        self.eventIdList = eventIdList
-    }
+
+//    func returnEventIdList(CommentList: [Comment]) {
+//
+//        var eventIdList = [Int]()
+//
+//        for i in 0...CommentList.count - 1 {
+//            if eventIdList.isEmpty == true {
+//                eventIdList.append(CommentList[i].eventId)
+//            } else {
+//                if eventIdList.contains(CommentList[i].eventId) == false {
+//                    eventIdList.append(CommentList[i].eventId)
+//                }
+//            }
+//        }
+//
+//        self.eventIdList = eventIdList
+//    }
     
     func sortedEventList(event: [Event]) {
         
