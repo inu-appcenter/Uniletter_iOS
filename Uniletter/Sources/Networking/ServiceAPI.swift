@@ -103,6 +103,21 @@ class API {
             }
     }
     
+    static func getComments(completion: @escaping([Comment]) -> Void) {
+        networking(
+            urlStr: Address.comments.url,
+            method: .get,
+            data: nil,
+            model: [Comment].self) { result, _ in
+                switch result {
+                case .success(let comments):
+                    completion(comments)
+                case .failure(let error):
+                    print(error)
+                }
+            }
+    }
+    
     static func oAuthLogin(_ params: [String: String], completion: @escaping(LoginInfo) -> Void) {
         guard let data = try? JSONSerialization.data(
             withJSONObject: params, options: .prettyPrinted) else {
@@ -162,13 +177,13 @@ class API {
     }
     
     
-    static func getMyComment(completion: @escaping([myComment]) -> Void) {
+    static func getMyComment(completion: @escaping([Comment]) -> Void) {
         
         networking(
             urlStr: Address.mycomments.url,
             method: .get,
             data: nil,
-            model: [myComment].self) { result, _ in
+            model: [Comment].self) { result, _ in
                 switch result {
                 case .success(let myComments):
                     completion(myComments)
