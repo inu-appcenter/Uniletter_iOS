@@ -14,10 +14,10 @@ enum StatusCode {
     case server
 }
 
-// MARK: 네트워킹 통합
+// MARK: - 네트워킹 통합
 private func networking<T: Decodable>(urlStr: String, method: HTTPMethod, data: Data?, model: T.Type, completion: @escaping(Result<T, AFError>, StatusCode) -> Void) {
     var statusCode: StatusCode = .fail
-    guard let url = URL(string: Address.base.url + urlStr) else {
+    guard let url = URL(string: baseURL + urlStr) else {
         print("URL을 찾을 수 없습니다.")
         return
     }
@@ -45,10 +45,11 @@ private func networking<T: Decodable>(urlStr: String, method: HTTPMethod, data: 
         }
 }
 
+// 이미지 업로드
 private func uploadNetworking<T: Decodable>(urlStr: String, method: HTTPMethod, data: Data?, model: T.Type, completion: @escaping(Result<T, AFError>, StatusCode) -> Void) {
     
     var statusCode: StatusCode = .fail
-    guard let url = URL(string: Address.base.url + urlStr) else {
+    guard let url = URL(string: baseURL + urlStr) else {
         print("URL을 찾을 수 없습니다.")
         return
     }
@@ -73,6 +74,7 @@ private func uploadNetworking<T: Decodable>(urlStr: String, method: HTTPMethod, 
 
 // MARK: - API
 class API {
+    // 이벤트 전체 받아오기
     static func getEvents(completion: @escaping([Event]) -> Void) {
         networking(
             urlStr: Address.events.url,
@@ -88,6 +90,7 @@ class API {
             }
     }
     
+    // 이벤트 하나 받아오기
     static func getEventOne(_ id: Int, completion: @escaping(Event) ->Void) {
         networking(
             urlStr: Address.events.url + "/\(id)",
@@ -103,6 +106,7 @@ class API {
             }
     }
     
+    // 댓글 전체 받아오기
     static func getComments(completion: @escaping([Comment]) -> Void) {
         networking(
             urlStr: Address.comments.url,
@@ -118,6 +122,7 @@ class API {
             }
     }
     
+    // 로그인
     static func oAuthLogin(_ params: [String: String], completion: @escaping(LoginInfo) -> Void) {
         guard let data = try? JSONSerialization.data(
             withJSONObject: params, options: .prettyPrinted) else {
@@ -140,6 +145,7 @@ class API {
             }
     }
     
+    // 자동 로그인
     static func rememberedLogin(_ params: [String: Any], completion: @escaping(LoginInfo) -> Void) {
         guard let data = try? JSONSerialization.data(withJSONObject: params, options: .prettyPrinted) else {
             return
@@ -161,6 +167,7 @@ class API {
             }
     }
     
+    // 내 정보 받아오기
     static func getMeInfo(completion: @escaping(Me) -> Void) {
         networking(
             urlStr: Address.me.url,
@@ -176,9 +183,8 @@ class API {
             }
     }
     
-    
+    // 내가 단 댓글 받아오기
     static func getMyComment(completion: @escaping([Comment]) -> Void) {
-        
         networking(
             urlStr: Address.mycomments.url,
             method: .get,
@@ -192,15 +198,17 @@ class API {
                 }
             }
     }
-    static func patchMeInfo(data: [String: Any]) {
     
+    // 내 정보 업데이트
+    static func patchMeInfo(data: [String: Any]) {
         guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
+        
         networking(
             urlStr: Address.me.url,
             method: .patch,
             data: data, model: Me.self) { result, _ in
                 switch result {
-                case .success(let Me):
+                case .success(_):
                     print("성공")
                 case .failure(let error):
                     print(error)
@@ -208,8 +216,8 @@ class API {
             }
     }
     
+    // 내 정보 이미지 업로드
     static func uploadMeImage(image: UIImage, completion: @escaping(Images) -> Void) {
-        
         let imageData = image.jpegData(compressionQuality: 1)!
         
         uploadNetworking(
@@ -226,8 +234,8 @@ class API {
         }
     }
     
+    // 댓글 달기
     static func createComment(data: [String: Any]) {
-
         guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
 
         networking(

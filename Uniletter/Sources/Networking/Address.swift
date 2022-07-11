@@ -6,7 +6,6 @@
 //
 
 enum Address {
-    case base               // 베이스
     case block              // 차단
     case comments           // 댓글
     case mycomments         // 내 댓글
@@ -27,7 +26,6 @@ enum Address {
     
     var url: String {
         switch self {
-        case .base: return "http://uniletter.inuappcenter.kr/"
         case .block: return "blocks"
         case .comments: return "comments"   // + commentId
         case .mycomments: return "mycomments"
