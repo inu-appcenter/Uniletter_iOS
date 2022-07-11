@@ -27,7 +27,7 @@ enum Address {
     var url: String {
         switch self {
         case .block: return "blocks"
-        case .comments: return "comments"   // + commentId
+        case .comments: return "comments?eventId="   // + commentId
         case .mycomments: return "mycomments"
         case .push: return "push"
         case .events: return "events"   // + eventId

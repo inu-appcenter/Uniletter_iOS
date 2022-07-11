@@ -14,7 +14,6 @@ class CommentsView: UIView {
     lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(CommentsCell.self, forCellReuseIdentifier: CommentsCell.identifier)
-        tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 93
         tableView.isHidden = true
         
@@ -45,7 +44,12 @@ class CommentsView: UIView {
         return view
     }()
     
-    let writeView = UIView()
+    let writeView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        
+        return view
+    }()
     
     lazy var textField: UITextView = {
         let textView = UITextView()
@@ -120,8 +124,9 @@ class CommentsView: UIView {
         }
         
         tableView.snp.makeConstraints {
-            $0.top.equalTo(commentLabel).offset(8)
-            $0.bottom.left.right.equalTo(safeAreaLayoutGuide)
+            $0.top.equalTo(commentLabel.snp.bottom).offset(8)
+            $0.bottom.equalToSuperview().offset(-100)
+            $0.left.right.equalTo(safeAreaLayoutGuide)
         }
         
         writeView.snp.makeConstraints {

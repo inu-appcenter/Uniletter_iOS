@@ -107,9 +107,9 @@ class API {
     }
     
     // 댓글 전체 받아오기
-    static func getComments(completion: @escaping([Comment]) -> Void) {
+    static func getComments(_ id: Int, completion: @escaping([Comment]) -> Void) {
         networking(
-            urlStr: Address.comments.url,
+            urlStr: Address.comments.url + "\(id)",
             method: .get,
             data: nil,
             model: [Comment].self) { result, _ in
@@ -235,7 +235,7 @@ class API {
     }
     
     // 댓글 달기
-    static func createComment(data: [String: Any]) {
+    static func createComment(data: [String: Any], completion: @escaping () -> Void) {
         guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
 
         networking(
@@ -244,8 +244,8 @@ class API {
             data: data,
             model: Comment.self) { result, _ in
                 switch result {
-                case .success(let Comments):
-                    print(Comments)
+                case .success(_):
+                    completion()
                 case .failure(let error):
                     print(error)
                 }

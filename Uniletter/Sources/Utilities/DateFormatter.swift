@@ -23,7 +23,10 @@ func subTimeString(_ dateStr: String) -> String {
 
 /// 받아온 날짜 년.월.일 시간:분 구하기(댓글용)
 func formatDateForComments(_ dateStr: String) -> String {
-    let date = subDateString(dateStr).replacingOccurrences(of: "-", with: ".")
+    let start = dateStr.index(dateStr.startIndex, offsetBy: 2)
+    let end = dateStr.index(dateStr.startIndex, offsetBy: 10)
+    let range = start..<end
+    let date = String(dateStr[range]).replacingOccurrences(of: "-", with: ".")
     let time = subTimeString(dateStr)
     
     return "\(date) \(time)"
