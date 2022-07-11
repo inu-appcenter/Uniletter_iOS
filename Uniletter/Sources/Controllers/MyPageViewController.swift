@@ -133,8 +133,7 @@ class MyPageViewController: UIViewController {
         
         scrollView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide)
-            $0.leading.trailing.equalTo(view)
-            $0.height.equalTo(800)
+            $0.leading.trailing.height.equalTo(view)
         }
 
         infoView.snp.makeConstraints {
@@ -239,5 +238,6 @@ extension MyPageViewController: UITableViewDelegate, UITableViewDataSource {
         let view = myPageViewModel.viewOfSection(indexPath.section, indexPath.row)
         
         self.navigationController?.pushViewController(view, animated: true)
+        
     }
 }

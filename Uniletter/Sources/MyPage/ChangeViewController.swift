@@ -9,6 +9,8 @@ import UIKit
 import SnapKit
 import PhotosUI
 
+// [] 빈공칸 클릭시 키보드 내려가게
+// [] 리턴 누르면 키보드 내려가게
 class ChangeViewController: UIViewController {
     
     var myPageViewModel = MyPageViewModel.shared
@@ -88,7 +90,8 @@ class ChangeViewController: UIViewController {
         
         return border
     }()
-        
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -96,8 +99,6 @@ class ChangeViewController: UIViewController {
         configureUI()
         setUserInfo()
         NotificationCenter.default.addObserver(self, selector: #selector(textDidChange(_:)), name: UITextField.textDidChangeNotification, object: textField)
-        NotificationCenter.default.addObserver(self, selector: #selector(selectedImageDidChange(_:)), name: NSNotification.Name(rawValue: "PickImage"), object: nil)
-
     }
 
     override func viewDidLayoutSubviews() {
@@ -187,9 +188,32 @@ class ChangeViewController: UIViewController {
     }
     
     @objc func changeImageButtonClicked() {
-        print("changeImageButton - clicked")
 
-        presentActionSheetView(.modifyInfo)
+        print("changeImageButton - clicked")
+        
+        let actionSheetViewController = ActionSheetViewController()
+        actionSheetViewController.actionSheet = .modifyInfo
+        actionSheetViewController.modalPresentationStyle = .overFullScreen
+        actionSheetViewController.modalTransitionStyle = .crossDissolve
+        
+        actionSheetViewController.selectPhotoCompletionClosure = {
+            print("ChangeViewController - completionTest() 호출됨")
+            var configuration = PHPickerConfiguration()
+            configuration.selectionLimit = 1
+            configuration.filter = .images
+            
+            let picker = PHPickerViewController(configuration: configuration)
+            picker.delegate = self
+            picker.modalPresentationStyle = .fullScreen
+            
+            self.present(picker, animated: true, completion: nil)
+        }
+        
+        actionSheetViewController.basicPhotoCompletionClosure = {
+            // 리팩토링 필요
+            self.userImage.image = UIImage(named: "UserImage") 
+        }
+        present(actionSheetViewController, animated: true)
     }
     
     @objc func textDidChange(_ notification: Notification) {
@@ -206,20 +230,34 @@ class ChangeViewController: UIViewController {
         }
     }
     
-    @objc func selectedImageDidChange(_ notification: NSNotification?) {
-        guard let notiImage = notification?.object as? UIImage else { return }
-        
-        userImage.image = notiImage
-    }
-    
     @objc func notificationButtonClicked() {
         guard let text = textField.text else { return }
        
+        // 리팩토링 필요
         myPageViewModel.userName = text
+        myPageViewModel.userImage = self.userImage.image
         
         DispatchQueue.global().async {
             self.myPageViewModel.uploadUserImage(self.myPageViewModel.userImage!)
         }
         navigationController?.popViewController(animated: true)
+    }
+}
+
+extension ChangeViewController: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        picker.dismiss(animated: true)
+        
+        let itemProvider = results.first?.itemProvider
+        if let itemProvider = itemProvider, itemProvider.canLoadObject(ofClass: UIImage.self) {
+            itemProvider.loadObject(ofClass: UIImage.self) { image, error in
+                DispatchQueue.main.async {
+                    guard let selectedImage = image as? UIImage else { return }
+                    
+                    // 리팩토링 필요
+                    self.userImage.image = selectedImage
+                }
+            }
+        }
     }
 }

@@ -36,7 +36,6 @@ class MyCommentCell: UICollectionViewCell {
     
         var label = UILabel()
         
-        label.text = "앱센터에서 신입맴버 모집.."
         label.font = .systemFont(ofSize: 16, weight: .semibold)
         
         return label
@@ -46,10 +45,8 @@ class MyCommentCell: UICollectionViewCell {
         
         var label = UILabel()
         
-        label.text = "인천대학교 앱센터에서 신입맴버를 모집합니다!! 앱센터에서 현재 진행중인 프로젝트는 inu버스, 맵퍼스, INUM등을 진행..."
-        
         label.font = .systemFont(ofSize: 14)
-        label.numberOfLines = 3
+        label.numberOfLines = 4
         
         return label
     }()
@@ -60,7 +57,6 @@ class MyCommentCell: UICollectionViewCell {
         
         label.font = .systemFont(ofSize: 13)
         
-        label.text = "2년전"
         label.textColor = UIColor.customColor(.lightGray)
         
         return label
@@ -82,7 +78,6 @@ class MyCommentCell: UICollectionViewCell {
         
         label.font = .systemFont(ofSize: 13)
         
-        label.text = "4"
         label.textColor = UIColor.customColor(.darkGray)
         
         return label
@@ -127,7 +122,7 @@ class MyCommentCell: UICollectionViewCell {
         
         eventImage.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(20)
-            $0.top.equalToSuperview().offset(24)
+            $0.centerY.equalToSuperview()
             $0.width.equalTo(85)
             $0.height.equalTo(120)
         }
@@ -139,27 +134,26 @@ class MyCommentCell: UICollectionViewCell {
         }
         
         eventBodyLabel.snp.makeConstraints {
-            $0.top.equalTo(eventTitleLabel.snp.bottom).inset(4)
+            $0.top.equalTo(eventTitleLabel.snp.bottom).inset(-4)
             $0.leading.equalTo(eventImage.snp.trailing).inset(-20)
-            $0.width.equalTo(215)
-            $0.height.equalTo(70)
+            $0.trailing.equalToSuperview().offset(-20)
+            $0.bottom.equalToSuperview().offset(-44)
+
         }
         
         writeDayLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(28)
-            $0.leading.equalTo(eventTitleLabel.snp.trailing).inset(-4)
+            $0.trailing.equalToSuperview().offset(-20)
         }
         
         commentLabel.snp.makeConstraints {
             $0.bottom.equalTo(eventImage.snp.bottom)
             $0.leading.equalTo(eventImage.snp.trailing).inset(-20)
-            $0.width.equalTo(24)
         }
         
         commentCountLabel.snp.makeConstraints {
             $0.bottom.equalTo(eventImage.snp.bottom)
             $0.leading.equalTo(commentLabel.snp.trailing).inset(-4)
-            $0.width.equalTo(10)
         }
         
         separatorLine.snp.makeConstraints {
@@ -167,5 +161,23 @@ class MyCommentCell: UICollectionViewCell {
             $0.height.equalTo(1)
             $0.width.equalToSuperview()
         }
+    }
+    
+    func setUI(event: Event) {
+        
+        self.eventImage.image = setEventImage(imageUrl: event.imageURL)
+        self.eventBodyLabel.text = event.body
+        self.eventTitleLabel.text = event.title
+        self.writeDayLabel.text = caculateWriteDay(event.createdAt)
+        self.commentCountLabel.text = String(event.comments)
+    }
+    
+    func setEventImage(imageUrl: String) -> UIImage {
+        
+        let url = URL(string: imageUrl)!
+
+        guard let data = try? Data(contentsOf: url) else { return UIImage(named: "UserImage") ?? UIImage() }
+        
+        return UIImage(data: data)!
     }
 }
