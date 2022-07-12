@@ -15,6 +15,13 @@ class CommentsView: UIView {
         let tableView = UITableView()
         tableView.register(CommentsCell.self, forCellReuseIdentifier: CommentsCell.identifier)
         tableView.estimatedRowHeight = 93
+        tableView.separatorColor = #colorLiteral(red: 0.8980392157, green: 0.8980392157, blue: 0.8980392157, alpha: 1)
+        tableView.separatorInset = UIEdgeInsets(
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0)
+        
         tableView.isHidden = true
         
         return tableView
@@ -39,7 +46,7 @@ class CommentsView: UIView {
     
     let border: UIView = {
         let view = UIView()
-        view.backgroundColor = #colorLiteral(red: 0.918249011, green: 0.9182489514, blue: 0.9182489514, alpha: 1)
+        view.backgroundColor = #colorLiteral(red: 0.8980392157, green: 0.8980392157, blue: 0.8980392157, alpha: 1)
         
         return view
     }()
@@ -124,8 +131,8 @@ class CommentsView: UIView {
         
         tableView.snp.makeConstraints {
             $0.top.equalTo(commentLabel.snp.bottom).offset(8)
-            $0.bottom.equalToSuperview().offset(-100)
-            $0.left.right.equalTo(safeAreaLayoutGuide)
+            $0.bottom.equalTo(border)
+            $0.left.right.equalToSuperview()
         }
         
         writeView.snp.makeConstraints {
