@@ -82,7 +82,6 @@ class CommentsView: UIView {
         return button
     }()
     
-    
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -131,7 +130,8 @@ class CommentsView: UIView {
         
         writeView.snp.makeConstraints {
             $0.top.equalTo(textField.snp.top).offset(-18)
-            $0.bottom.left.right.equalTo(safeAreaLayoutGuide)
+            $0.bottom.equalTo(keyboardLayoutGuide.snp.top)
+            $0.left.right.equalToSuperview()
         }
         
         border.snp.makeConstraints {

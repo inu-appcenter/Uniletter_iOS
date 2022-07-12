@@ -26,36 +26,12 @@ class CommentsViewController: UIViewController {
         setNavigationBar()
         setViewController()
         fetchComments()
-        keyboardNofitications()
     }
     
     // MARK: - Keyboard
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
-    
-    private func keyboardNofitications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(adjustInputViewHeigt), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(adjustInputViewHeigt), name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-    
-    @objc private func adjustInputViewHeigt(noti: Notification) {
-        guard let keyboardFrame = (noti.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
-            return
-        }
-        
-        // TODO: - 레이아웃 에러 잡기
-        if noti.name == UIResponder.keyboardWillShowNotification {
-            commentsView.writeView.snp.remakeConstraints {
-                $0.bottom.equalToSuperview().offset(-keyboardFrame.height)
-            }
-        } else {
-            commentsView.writeView.snp.remakeConstraints {
-                $0.bottom.equalTo(commentsView.safeAreaLayoutGuide)
-            }
-        }
-    }
-    
     
     // MARK: - Setup
     func setNavigationBar() {
@@ -76,6 +52,9 @@ class CommentsViewController: UIViewController {
             self,
             action: #selector(didTapSubmitButton(_:)),
             for: .touchUpInside)
+        
+        // 입력 뷰 키보드 따라가기
+        view.keyboardLayoutGuide.topAnchor.constraint(equalTo: commentsView.writeView.bottomAnchor).isActive = true
     }
     
     func fetchComments() {
@@ -128,6 +107,10 @@ extension CommentsViewController: UITableViewDataSource,
         }
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.view.endEditing(true)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
