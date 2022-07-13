@@ -1,6 +1,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/macos,swift,cocoapods
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,swift,cocoapods
 
+# Base URL
+BaseURL.swift
+
 ### CocoaPods ###
 ## CocoaPods GitIgnore Template
 

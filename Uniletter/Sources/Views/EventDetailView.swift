@@ -200,6 +200,13 @@ class EventDetailView : UIView {
         return view
     }()
     
+    lazy var commentsButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .clear
+        
+        return button
+    }()
+    
     let recognizeTapLink = UITapGestureRecognizer()
     
     override init(frame: CGRect) {
@@ -247,6 +254,7 @@ class EventDetailView : UIView {
             eyeImageView,
             viewsLabel,
             likeAndCommentsLabel,
+            commentsButton,
         ]
             .forEach { scrollView.addSubview($0) }
         
@@ -411,6 +419,11 @@ class EventDetailView : UIView {
         likeAndCommentsLabel.snp.makeConstraints {
             $0.centerY.equalTo(eyeImageView)
             $0.right.equalToSuperview().offset(-20)
+        }
+        
+        commentsButton.snp.makeConstraints {
+            $0.top.bottom.right.equalTo(likeAndCommentsLabel)
+            $0.left.equalTo(likeAndCommentsLabel.snp.centerX)
         }
         
         targetLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
