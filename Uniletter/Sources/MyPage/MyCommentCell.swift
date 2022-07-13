@@ -7,7 +7,7 @@
 
 import UIKit
 import SnapKit
-import SwiftUI
+import Kingfisher
 
 class MyCommentCell: UICollectionViewCell {
     
@@ -46,7 +46,7 @@ class MyCommentCell: UICollectionViewCell {
         var label = UILabel()
         
         label.font = .systemFont(ofSize: 14)
-        label.numberOfLines = 4
+        label.numberOfLines = 0
         
         return label
     }()
@@ -165,19 +165,11 @@ class MyCommentCell: UICollectionViewCell {
     
     func setUI(event: Event) {
         
-        self.eventImage.image = setEventImage(imageUrl: event.imageURL)
+        guard let url = URL(string: event.imageURL) else { return }
+        self.eventImage.kf.setImage(with: url)
         self.eventBodyLabel.text = event.body
         self.eventTitleLabel.text = event.title
         self.writeDayLabel.text = caculateWriteDay(event.createdAt)
         self.commentCountLabel.text = String(event.comments)
-    }
-    
-    func setEventImage(imageUrl: String) -> UIImage {
-        
-        let url = URL(string: imageUrl)!
-
-        guard let data = try? Data(contentsOf: url) else { return UIImage(named: "UserImage") ?? UIImage() }
-        
-        return UIImage(data: data)!
     }
 }

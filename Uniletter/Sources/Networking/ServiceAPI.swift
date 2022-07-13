@@ -199,6 +199,22 @@ class API {
             }
     }
     
+    // 내가 쓴 행사 받아오기
+    static func getMyEvent(completion: @escaping([Event]) -> Void) {
+        networking(
+            urlStr: Address.myevents.url,
+            method: .get,
+            data: nil,
+            model: [Event].self) { result, _ in
+                switch result {
+                case .success(let myEvents):
+                    completion(myEvents)
+                case .failure(let error):
+                    print(error)
+                }
+            }
+    }
+    
     // 내 정보 업데이트
     static func patchMeInfo(data: [String: Any]) {
         guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
@@ -252,5 +268,22 @@ class API {
             }
 
     }
- 
+    
+    // 행사 생성
+    static func createEvent(data: [String : String], completion: @escaping() -> Void) {
+        guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
+
+        networking(
+            urlStr: Address.comments.url,
+            method: .post,
+            data: data,
+            model: Event.self) { result, _ in
+                switch result {
+                case .success(_):
+                    completion()
+                case .failure(let error):
+                    print(error)
+                }
+            }
+    }
 }

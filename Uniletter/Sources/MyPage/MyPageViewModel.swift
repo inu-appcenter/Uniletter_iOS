@@ -25,7 +25,7 @@ enum SectionType: CaseIterable {
     var cell: [String] {
         switch self {
         case .setting: return ["새로운 행사 알림"]
-        case .shortcut: return ["내가 쓴글", "댓글 단 글", "차단한 계정"]
+        case .shortcut: return ["내가 쓴 글", "댓글 단 글", "차단한 계정"]
         case .infomation: return ["개인정보 처리방침", "오픈소스 라이센스"]
         case .etc: return ["로그아웃"]
         }
@@ -34,7 +34,7 @@ enum SectionType: CaseIterable {
     var view: [UIViewController] {
         switch self {
         case .setting: return [NewNoticeViewController()]
-        case .shortcut: return [UIViewController(), MyCommentViewController(), UIViewController()]
+        case .shortcut: return [MyEventViewController(), MyCommentViewController(), UIViewController()]
         case .infomation: return [UIViewController(), UIViewController(), UIViewController()]
         case .etc: return [UIViewController()]
             

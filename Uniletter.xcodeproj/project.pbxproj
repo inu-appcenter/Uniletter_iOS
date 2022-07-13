@@ -15,6 +15,9 @@
 		2CB8AA302878384300BDA358 /* MyCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB8AA2F2878384300BDA358 /* MyCommentViewController.swift */; };
 		2CB8AA32287838EE00BDA358 /* MyCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB8AA31287838EE00BDA358 /* MyCommentCell.swift */; };
 		2CB8AA3428787D3900BDA358 /* MyCommentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB8AA3328787D3900BDA358 /* MyCommentViewModel.swift */; };
+		2CB8AAA6287E918500BDA358 /* BaseURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB8AAA5287E918500BDA358 /* BaseURL.swift */; };
+		2CB8AAA8287EA34400BDA358 /* MyEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB8AAA7287EA34400BDA358 /* MyEventViewController.swift */; };
+		2CB8AAAA287EA7A200BDA358 /* MyEventViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB8AAA9287EA7A200BDA358 /* MyEventViewModel.swift */; };
 		7616B813286B50A000935257 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7616B812286B50A000935257 /* MyPageViewController.swift */; };
 		764386642874021600375CE6 /* LoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764386632874021600375CE6 /* LoginManager.swift */; };
 		765BC9FD2868C00C0098BBF2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765BC9FC2868C00C0098BBF2 /* AppDelegate.swift */; };
@@ -43,7 +46,6 @@
 		769AEB3D287C271E00C697FC /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769AEB3C287C271E00C697FC /* Comment.swift */; };
 		769AEB3F287C4A1B00C697FC /* CommentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769AEB3E287C4A1B00C697FC /* CommentsCell.swift */; };
 		769AEB43287C85AC00C697FC /* CommentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769AEB42287C85AC00C697FC /* CommentsViewModel.swift */; };
-		769AEB45287C889500C697FC /* BaseURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769AEB44287C889500C697FC /* BaseURL.swift */; };
 		76AC78342871D6C100D303C4 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76AC78332871D6C100D303C4 /* HomeViewModel.swift */; };
 		76AC78362871FF1900D303C4 /* UIViewController++Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76AC78352871FF1900D303C4 /* UIViewController++Extensions.swift */; };
 		76AC78382872053100D303C4 /* AlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76AC78372872053100D303C4 /* AlertView.swift */; };
@@ -72,6 +74,9 @@
 		2CB8AA2F2878384300BDA358 /* MyCommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCommentViewController.swift; sourceTree = "<group>"; };
 		2CB8AA31287838EE00BDA358 /* MyCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCommentCell.swift; sourceTree = "<group>"; };
 		2CB8AA3328787D3900BDA358 /* MyCommentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCommentViewModel.swift; sourceTree = "<group>"; };
+		2CB8AAA5287E918500BDA358 /* BaseURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseURL.swift; sourceTree = "<group>"; };
+		2CB8AAA7287EA34400BDA358 /* MyEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyEventViewController.swift; sourceTree = "<group>"; };
+		2CB8AAA9287EA7A200BDA358 /* MyEventViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyEventViewModel.swift; sourceTree = "<group>"; };
 		4B9E2AEF628539C36D2C3D4F /* Pods_Uniletter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Uniletter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F1F5DD4E8EBAC5709B4DC60 /* Pods-Uniletter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Uniletter.debug.xcconfig"; path = "Target Support Files/Pods-Uniletter/Pods-Uniletter.debug.xcconfig"; sourceTree = "<group>"; };
 		7616B812286B50A000935257 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
@@ -104,7 +109,6 @@
 		769AEB3C287C271E00C697FC /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		769AEB3E287C4A1B00C697FC /* CommentsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsCell.swift; sourceTree = "<group>"; };
 		769AEB42287C85AC00C697FC /* CommentsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewModel.swift; sourceTree = "<group>"; };
-		769AEB44287C889500C697FC /* BaseURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseURL.swift; sourceTree = "<group>"; };
 		76AC78332871D6C100D303C4 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		76AC78352871FF1900D303C4 /* UIViewController++Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController++Extensions.swift"; sourceTree = "<group>"; };
 		76AC78372872053100D303C4 /* AlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertView.swift; sourceTree = "<group>"; };
@@ -150,6 +154,8 @@
 				2CB8AA2F2878384300BDA358 /* MyCommentViewController.swift */,
 				2CB8AA31287838EE00BDA358 /* MyCommentCell.swift */,
 				2CB8AA3328787D3900BDA358 /* MyCommentViewModel.swift */,
+				2CB8AAA7287EA34400BDA358 /* MyEventViewController.swift */,
+				2CB8AAA9287EA7A200BDA358 /* MyEventViewModel.swift */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -289,7 +295,7 @@
 			children = (
 				7681D5792869D2300081C644 /* Address.swift */,
 				7681D5812869F46A0081C644 /* ServiceAPI.swift */,
-				769AEB44287C889500C697FC /* BaseURL.swift */,
+				2CB8AAA5287E918500BDA358 /* BaseURL.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -481,7 +487,6 @@
 				76AC78442872E14A00D303C4 /* ActionSheet.swift in Sources */,
 				76E9648B286B8F6400D5299A /* UI.swift in Sources */,
 				769AEB3B287C267300C697FC /* CommentsView.swift in Sources */,
-				769AEB45287C889500C697FC /* BaseURL.swift in Sources */,
 				766F385328733E3200EC9593 /* LoginInfo.swift in Sources */,
 				76AC78342871D6C100D303C4 /* HomeViewModel.swift in Sources */,
 				76AC78362871FF1900D303C4 /* UIViewController++Extensions.swift in Sources */,
@@ -497,6 +502,7 @@
 				76FCB545286C253900AC4F70 /* EventDetailViewController.swift in Sources */,
 				76FCB543286B955F00AC4F70 /* Colors++Extensions.swift in Sources */,
 				7681D5822869F46A0081C644 /* ServiceAPI.swift in Sources */,
+				2CB8AAAA287EA7A200BDA358 /* MyEventViewModel.swift in Sources */,
 				2CB8AA3428787D3900BDA358 /* MyCommentViewModel.swift in Sources */,
 				76FCB54C286C35DE00AC4F70 /* DetailLabel.swift in Sources */,
 				7681D57028698EC60081C644 /* HomeCell.swift in Sources */,
@@ -507,9 +513,11 @@
 				765BCA012868C00C0098BBF2 /* LaunchViewController.swift in Sources */,
 				7616B813286B50A000935257 /* MyPageViewController.swift in Sources */,
 				76AC783C28721D0400D303C4 /* Alert.swift in Sources */,
+				2CB8AAA8287EA34400BDA358 /* MyEventViewController.swift in Sources */,
 				2CB8AA302878384300BDA358 /* MyCommentViewController.swift in Sources */,
 				76AC78382872053100D303C4 /* AlertView.swift in Sources */,
 				765DCDB32868DCD300961EA8 /* HomeView.swift in Sources */,
+				2CB8AAA6287E918500BDA358 /* BaseURL.swift in Sources */,
 				7681D584286A09DD0081C644 /* EventDetailViewModel.swift in Sources */,
 				76E96489286B6F4700D5299A /* UIImage++Extensions.swift in Sources */,
 				765BC9FD2868C00C0098BBF2 /* AppDelegate.swift in Sources */,
