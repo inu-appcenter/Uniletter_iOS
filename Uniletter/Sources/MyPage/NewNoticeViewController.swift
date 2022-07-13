@@ -39,6 +39,14 @@ class NewNoticeViewController: UIViewController {
             
         configureNavigationBar()
         setting()
+        
+        DispatchQueue.main.async {
+            self.viewModel.setTopic {
+                self.collectionView.reloadData()
+                print("토픽받아왔슴")
+            }
+        }
+        
     }
     
     func setting() {
@@ -77,16 +85,15 @@ extension NewNoticeViewController: UICollectionViewDelegate, UICollectionViewDat
         cell.imageView.image = viewModel.imageOfIndex(indexPath.item)
         cell.imagetitle.text = viewModel.titleOfIndex(indexPath.item)
         
-        cell.cellSelected(viewModel.selected[indexPath.item])
+        cell.cellSelected(viewModel.selected[viewModel.titleOfIndex(indexPath.item)]!)
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        viewModel.selected[indexPath.item] = !viewModel.selected[indexPath.item]
-        
-        print("\(viewModel.title[indexPath.item]) clicked, value: \(viewModel.selected[indexPath.item])")
+        viewModel.selected[viewModel.titleOfIndex(indexPath.item)] = !viewModel.selected[viewModel.titleOfIndex(indexPath.item)]!
+
         
         collectionView.reloadData()
     }

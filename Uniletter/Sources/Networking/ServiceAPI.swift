@@ -209,12 +209,29 @@ class API {
                 switch result {
                 case .success(let myEvents):
                     completion(myEvents)
+                    print(myEvents)
                 case .failure(let error):
                     print(error)
                 }
             }
     }
     
+    // 새 행사 구독 토픽 가져오기
+    static func getTopic(completion: @escaping(Topic) -> Void) {
+        
+        networking(
+            urlStr: Address.topics.url,
+            method: .get,
+            data: nil,
+            model: Topic.self) { result, _ in
+                switch result {
+                case .success(let topics):
+                    completion(topics)
+                case .failure(let error):
+                    print(error)
+                }
+            }
+    }
     // 내 정보 업데이트
     static func patchMeInfo(data: [String: Any]) {
         guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
@@ -286,4 +303,6 @@ class API {
                 }
             }
     }
+    
+
 }
