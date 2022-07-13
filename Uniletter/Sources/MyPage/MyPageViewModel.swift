@@ -35,7 +35,7 @@ enum SectionType: CaseIterable {
         switch self {
         case .setting: return [NewNoticeViewController()]
         case .shortcut: return [MyEventViewController(), MyCommentViewController(), UIViewController()]
-        case .infomation: return [UIViewController(), UIViewController(), UIViewController()]
+        case .infomation: return [PrivacyPolicyViewController(), UIViewController(), UIViewController()]
         case .etc: return [UIViewController()]
             
         }

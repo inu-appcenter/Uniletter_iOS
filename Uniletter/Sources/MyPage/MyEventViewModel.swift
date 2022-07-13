@@ -22,6 +22,7 @@ class MyEventViewModel {
         API.getMyEvent { result in
             self.myEvents = result
             self.myEvents = self.sortedEventList(event: self.myEvents)
+            completion()
         }
     }
     
