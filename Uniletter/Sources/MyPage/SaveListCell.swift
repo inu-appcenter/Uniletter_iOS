@@ -12,8 +12,8 @@ class SaveListCell: UICollectionViewCell {
     
     static let identifier = "SaveListCell"
     
-    let EventView = MyEventView()
-
+    let EventView = MyEventView(option: true)
+    
     let bookMarkButton: UIButton = {
         
         var config = UIButton.Configuration.plain()
@@ -36,13 +36,12 @@ class SaveListCell: UICollectionViewCell {
     }
     
     func configureUI() {
-        
         EventView.layer.shadowColor = UIColor.customColor(.lightGray).cgColor
         EventView.layer.masksToBounds = false
         EventView.layer.shadowRadius = 7
         EventView.layer.shadowOpacity = 0.4
         EventView.layer.cornerRadius = 8
-        
+       
         addSubview(EventView)
         EventView.addSubview(bookMarkButton)
         
@@ -50,7 +49,6 @@ class SaveListCell: UICollectionViewCell {
             $0.top.leading.equalToSuperview().offset(20)
             $0.trailing.equalToSuperview().offset(-20)
             $0.bottom.equalToSuperview()
-//            $0.edges.equalToSuperview()
         }
         
         bookMarkButton.snp.makeConstraints {
@@ -59,37 +57,6 @@ class SaveListCell: UICollectionViewCell {
             $0.width.equalTo(14)
             $0.height.equalTo(20)
         }
-        
-
-//
-//        EventView.commentLabel.snp.makeConstraints {
-//        }
-        
-        EventView.eventImage.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(12)
-            $0.centerY.equalToSuperview()
-            $0.width.equalTo(85)
-            $0.height.equalTo(120)
-        }
-        
-        EventView.eventTitleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(12)
-            $0.leading.equalTo(EventView.eventImage.snp.trailing).inset(-8)
-            $0.width.equalTo(175)
-        }
-        
-        EventView.eventBodyLabel.snp.makeConstraints {
-            $0.top.equalTo(EventView.eventTitleLabel.snp.bottom).inset(-4)
-            $0.leading.equalTo(EventView.eventTitleLabel.snp.leading)
-            $0.trailing.equalToSuperview().offset(-20)
-            $0.bottom.equalToSuperview().offset(-44)
-        }
-        
-        EventView.commentLabel.snp.makeConstraints {
-            $0.bottom.equalTo(EventView.eventImage.snp.bottom)
-            $0.leading.equalTo(EventView.eventTitleLabel.snp.leading)
-        }
-        
     }
     
     func setUI(event: Event) {
