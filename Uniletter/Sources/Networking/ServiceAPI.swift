@@ -243,7 +243,7 @@ class API {
             data: data,
             model: Int.self) { result, statusCode in
                 switch result {
-                case .success(let reuslt):
+                case .success(_):
                     print("성공")
                 case .failure(let error):
                     if error.errorDescription! == "Response could not be serialized, input data was nil or zero length." {
@@ -307,7 +307,11 @@ class API {
                 case .success(_):
                     print("성공")
                 case .failure(let error):
-                    print(error)
+                    if error.errorDescription! == "Response could not be serialized, input data was nil or zero length." {
+                        print("성공")
+                    } else {
+                        print(error)
+                    }
                 }
             }
     }
@@ -341,9 +345,15 @@ class API {
             model: Comment.self) { result, _ in
                 switch result {
                 case .success(_):
-                    completion()
+                    print("성공")
                 case .failure(let error):
-                    print(error)
+                    if error.errorDescription! == "Response could not be serialized, input data was nil or zero length." {
+                        print("성공")
+                        completion()
+                    } else {
+                        print(error)
+                    }
+
                 }
             }
 
@@ -362,7 +372,12 @@ class API {
                 case .success(_):
                     completion()
                 case .failure(let error):
-                    print(error)
+                    if error.errorDescription! == "Response could not be serialized, input data was nil or zero length." {
+                        print("성공")
+                        completion()
+                    } else {
+                        print(error)
+                    }
                 }
             }
     }
