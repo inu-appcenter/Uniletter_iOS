@@ -21,7 +21,6 @@ class SaveListViewModel {
     func getLike(completion: @escaping() -> Void) {
         API.getLikes { result in
             self.event = result
-            print(result)
             completion()
         }
     }

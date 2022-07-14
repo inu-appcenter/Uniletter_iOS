@@ -209,7 +209,6 @@ class API {
                 switch result {
                 case .success(let myEvents):
                     completion(myEvents)
-                    print(myEvents)
                 case .failure(let error):
                     print(error)
                 }

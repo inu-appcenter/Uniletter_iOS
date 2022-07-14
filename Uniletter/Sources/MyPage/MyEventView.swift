@@ -98,31 +98,7 @@ class MyEventView: UIView {
             $0.edges.equalToSuperview()
         }
         
-        eventImage.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(20)
-            $0.centerY.equalToSuperview()
-            $0.width.equalTo(85)
-            $0.height.equalTo(120)
-        }
-        
-        eventTitleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(28)
-            $0.leading.equalTo(eventImage.snp.trailing).inset(-20)
-            $0.width.equalTo(175)
-        }
-        
-        eventBodyLabel.snp.makeConstraints {
-            $0.top.equalTo(eventTitleLabel.snp.bottom).inset(-4)
-            $0.leading.equalTo(eventImage.snp.trailing).inset(-20)
-            $0.trailing.equalToSuperview().offset(-20)
-            $0.bottom.equalToSuperview().offset(-44)
 
-        }
-        
-        commentLabel.snp.makeConstraints {
-            $0.bottom.equalTo(eventImage.snp.bottom)
-            $0.leading.equalTo(eventImage.snp.trailing).inset(-20)
-        }
         
         commentCountLabel.snp.makeConstraints {
             $0.bottom.equalTo(eventImage.snp.bottom)

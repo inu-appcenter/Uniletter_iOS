@@ -44,10 +44,8 @@ class NewNoticeViewController: UIViewController {
         DispatchQueue.main.async {
             self.viewModel.setTopic {
                 self.collectionView.reloadData()
-                print("토픽받아왔슴")
             }
         }
-        
     }
     
     func setting() {
