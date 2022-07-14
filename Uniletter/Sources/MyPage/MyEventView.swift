@@ -47,18 +47,7 @@ class MyEventView: UIView {
         
         return label
     }()
-    
-    var writeDayLabel: UILabel = {
-        
-        var label = UILabel()
-        
-        label.font = .systemFont(ofSize: 13)
-        
-        label.textColor = UIColor.customColor(.lightGray)
-        
-        return label
-    }()
-    
+
     var commentLabel: UILabel = {
         var label = UILabel()
         label.font = .systemFont(ofSize: 13)
@@ -80,14 +69,7 @@ class MyEventView: UIView {
         return label
     }()
     
-    var separatorLine: UIView = {
-        
-        var view = UIView()
-        
-        view.backgroundColor = UIColor.customColor(.lightGray)
-        
-        return view
-    }()
+
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -107,10 +89,8 @@ class MyEventView: UIView {
             eventImage,
             eventTitleLabel,
             eventBodyLabel,
-            writeDayLabel,
             commentLabel,
             commentCountLabel,
-            separatorLine
         ]
             .forEach { subView.addSubview($0) }
     
@@ -139,11 +119,6 @@ class MyEventView: UIView {
 
         }
         
-        writeDayLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(28)
-            $0.trailing.equalToSuperview().offset(-20)
-        }
-        
         commentLabel.snp.makeConstraints {
             $0.bottom.equalTo(eventImage.snp.bottom)
             $0.leading.equalTo(eventImage.snp.trailing).inset(-20)
@@ -152,12 +127,6 @@ class MyEventView: UIView {
         commentCountLabel.snp.makeConstraints {
             $0.bottom.equalTo(eventImage.snp.bottom)
             $0.leading.equalTo(commentLabel.snp.trailing).inset(-4)
-        }
-        
-        separatorLine.snp.makeConstraints {
-            $0.bottom.equalToSuperview()
-            $0.height.equalTo(1)
-            $0.width.equalToSuperview()
         }
     }
 }

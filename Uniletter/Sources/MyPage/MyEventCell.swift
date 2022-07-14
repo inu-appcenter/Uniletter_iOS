@@ -15,6 +15,26 @@ class MyEventCell: UICollectionViewCell {
     
     let EventView = MyEventView()
     
+    var writeDayLabel: UILabel = {
+        
+        var label = UILabel()
+        
+        label.font = .systemFont(ofSize: 13)
+        
+        label.textColor = UIColor.customColor(.lightGray)
+        
+        return label
+    }()
+    
+    var separatorLine: UIView = {
+        
+        var view = UIView()
+        
+        view.backgroundColor = UIColor.customColor(.lightGray)
+        
+        return view
+    }()
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         configurateUI()
@@ -27,9 +47,21 @@ class MyEventCell: UICollectionViewCell {
     func configurateUI() {
         
         addSubview(EventView)
+        [writeDayLabel, separatorLine] .forEach { EventView.addSubview($0)}
         
         EventView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+        
+        writeDayLabel.snp.makeConstraints {
+            $0.top.equalTo(EventView).offset(28)
+            $0.trailing.equalTo(EventView).offset(-20)
+        }
+        
+        separatorLine.snp.makeConstraints {
+            $0.bottom.equalToSuperview()
+            $0.height.equalTo(1)
+            $0.width.equalToSuperview()
         }
     }
         
@@ -40,7 +72,7 @@ class MyEventCell: UICollectionViewCell {
         self.EventView.eventImage.kf.setImage(with: url)
         self.EventView.eventBodyLabel.text = event.body
         self.EventView.eventTitleLabel.text = event.title
-        self.EventView.writeDayLabel.text = caculateWriteDay(event.createdAt)
+        self.writeDayLabel.text = caculateWriteDay(event.createdAt)
         self.EventView.commentCountLabel.text = String(event.comments)
     }
 }

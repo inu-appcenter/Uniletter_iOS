@@ -76,6 +76,7 @@ class MyPageViewController: UIViewController {
         let button = UIButton()
         button.listButtonSetting("bookmark.fill", "저장목록")
         button.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
+        button.addTarget(self, action: #selector(saveListButtonClicked(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -193,6 +194,12 @@ class MyPageViewController: UIViewController {
     @objc func changeBtnClicked(_ sender: UIGestureRecognizer) {
         print("changeBtnClicked() - called")
         let view = ChangeViewController()
+        
+        self.navigationController?.pushViewController(view, animated: true)
+    }
+    
+    @objc func saveListButtonClicked(_ sender: UIGestureRecognizer) {
+        let view = SaveListViewController()
         
         self.navigationController?.pushViewController(view, animated: true)
     }

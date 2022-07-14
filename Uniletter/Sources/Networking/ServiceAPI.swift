@@ -251,6 +251,24 @@ class API {
                 }
             }
     }
+    
+    // 행사 좋아요 가져오기 (북마크 버튼 눌려진 행사)
+    static func getLikes(completion: @escaping([Event]) -> Void) {
+        
+        networking(
+            urlStr: Address.likes.url,
+            method: .get,
+            data: nil,
+            model: [Event].self) { result, _ in
+                switch result {
+                case .success(let Events):
+                    completion(Events)
+                case .failure(let error):
+                    print(error)
+                }
+            }
+    }
+    
     // 내 정보 업데이트
     static func patchMeInfo(data: [String: Any]) {
         guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
