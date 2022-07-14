@@ -59,12 +59,36 @@ extension SaveListViewController: UICollectionViewDelegate, UICollectionViewData
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return saveListViewModel.numOfCell
     }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SaveListCell.identifier, for: indexPath) as? SaveListCell else { return UICollectionViewCell() }
         
         cell.setUI(event: saveListViewModel.eventAtIndex(index: indexPath.item))
         
+        cell.bookMarkClosure = {
+    
+            let alertViewController = AlertViewController()
+            alertViewController.alert = .save
+            alertViewController.modalPresentationStyle = .overFullScreen
+            alertViewController.modalTransitionStyle = .crossDissolve
+            self.present(alertViewController, animated: true)
+            
+            alertViewController.alertIsSaveClouser = {
+                
+                self.saveListViewModel.deleteLike(index: indexPath.item) {
+                    self.setAPI()
+                    self.dismiss(animated: true)
+                }
+            }
+            
+        }
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let EventDetailVC = EventDetailViewController()
+        EventDetailVC.id = saveListViewModel.eventAtIndex(index: indexPath.item).id
+        navigationController?.pushViewController(EventDetailVC, animated: true)
     }
 }
 

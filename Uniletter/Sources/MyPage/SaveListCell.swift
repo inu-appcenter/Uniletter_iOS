@@ -14,7 +14,9 @@ class SaveListCell: UICollectionViewCell {
     
     let EventView = MyEventView(option: true)
     
-    let bookMarkButton: UIButton = {
+    var bookMarkClosure: (() -> Void)?
+    
+    lazy var bookMarkButton: UIButton = {
         
         var config = UIButton.Configuration.plain()
         config.image = UIImage(systemName: "bookmark.fill")
@@ -22,6 +24,8 @@ class SaveListCell: UICollectionViewCell {
         let button = UIButton(configuration: config)
         
         button.tintColor = UIColor.customColor(.yellow)
+        
+        button.addTarget(self, action: #selector(bookMarkButtonClicked(_:)), for: .touchUpInside)
         
         return button
     }()
@@ -65,5 +69,11 @@ class SaveListCell: UICollectionViewCell {
         self.EventView.eventBodyLabel.text = event.body
         self.EventView.eventTitleLabel.text = event.title
         self.EventView.commentCountLabel.text = String(event.comments)
+    }
+    
+    @objc func bookMarkButtonClicked(_ sender: UIGestureRecognizer) {
+        if let bookMarkClosure = bookMarkClosure {
+            bookMarkClosure()
+        }
     }
 }

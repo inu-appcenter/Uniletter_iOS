@@ -241,12 +241,16 @@ class API {
             urlStr: Address.topics.url,
             method: .put,
             data: data,
-            model: Topic.self) { result, _ in
+            model: Int.self) { result, statusCode in
                 switch result {
-                case .success(_):
+                case .success(let reuslt):
                     print("성공")
                 case .failure(let error):
-                    print(error)
+                    if error.errorDescription! == "Response could not be serialized, input data was nil or zero length." {
+                        print("성공")
+                    } else {
+                        print(error)
+                    }
                 }
             }
     }
@@ -264,6 +268,28 @@ class API {
                     completion(Events)
                 case .failure(let error):
                     print(error)
+                }
+            }
+    }
+    
+    static func deleteLikes(data: [String: Int], completion: @escaping() -> Void) {
+        
+        guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
+        
+        networking(
+            urlStr: Address.likes.url,
+            method: .delete,
+            data: data,
+            model: likes.self) { result, _ in
+                switch result {
+                case .success(_):
+                    print("성공")
+                case .failure(let error):
+                    if error.errorDescription! == "Response could not be serialized, input data was nil or zero length." {
+                        completion()
+                    } else {
+                        print(error)
+                    }
                 }
             }
     }

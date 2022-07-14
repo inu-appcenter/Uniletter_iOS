@@ -11,7 +11,8 @@ class AlertViewController: UIViewController {
     
     let alertView = AlertView()
     var alert: Alert?
-
+    var alertIsSaveClouser: (() -> Void)?
+    
     override func loadView() {
         view = alertView
     }
@@ -92,6 +93,9 @@ class AlertViewController: UIViewController {
     }
     
     func alertIsSave() {
+        if let alertIsSaveClouser = alertIsSaveClouser {
+            alertIsSaveClouser()
+        }
         // TODO: 저장 취소
     }
     

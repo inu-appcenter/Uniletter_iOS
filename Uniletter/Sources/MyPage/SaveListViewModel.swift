@@ -24,4 +24,12 @@ class SaveListViewModel {
             completion()
         }
     }
+    
+    func deleteLike(index: Int, completion: @escaping() -> Void) {
+        let data = ["eventId": self.event[index].id]
+        API.deleteLikes(data: data) {
+            completion()
+        
+        }
+    }
 }
