@@ -1,17 +1,14 @@
 //
-//  MyCommentCell.swift
+//  MyEventView.swift
 //  Uniletter
 //
-//  Created by 임현규 on 2022/07/08.
+//  Created by 임현규 on 2022/07/14.
 //
 
 import UIKit
 import SnapKit
-import Kingfisher
 
-class MyCommentCell: UICollectionViewCell {
-    
-    static let identifier = "MyCommnetCell"
+class MyEventView: UIView {
     
     var subView: UIView = {
         var view = UIView()
@@ -94,6 +91,7 @@ class MyCommentCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        backgroundColor = .white
         configurateUI()
     }
     
@@ -161,15 +159,5 @@ class MyCommentCell: UICollectionViewCell {
             $0.height.equalTo(1)
             $0.width.equalToSuperview()
         }
-    }
-    
-    func setUI(event: Event) {
-        
-        guard let url = URL(string: event.imageURL) else { return }
-        self.eventImage.kf.setImage(with: url)
-        self.eventBodyLabel.text = event.body
-        self.eventTitleLabel.text = event.title
-        self.writeDayLabel.text = caculateWriteDay(event.createdAt)
-        self.commentCountLabel.text = String(event.comments)
     }
 }

@@ -91,7 +91,6 @@ class NewNoticeViewModel {
                 self.putTopics.append(i)
             }
         }
-        print(self.putTopics)
         API.putTopic(data: ["topics" : self.putTopics])
     }
 }

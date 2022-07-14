@@ -19,7 +19,7 @@ class MyEventViewController: UIViewController {
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         
-        collectionView.register(MyCommentCell.self, forCellWithReuseIdentifier: MyCommentCell.identifier)
+        collectionView.register(MyEventCell.self, forCellWithReuseIdentifier: MyEventCell.identifier)
         
         return collectionView
     }()
@@ -67,7 +67,7 @@ extension MyEventViewController: UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyCommentCell.identifier, for: indexPath) as? MyCommentCell else { return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyEventCell.identifier, for: indexPath) as? MyEventCell else { return UICollectionViewCell() }
         
         cell.setUI(event: myEventViewModel.myEvents[indexPath.row])
         
