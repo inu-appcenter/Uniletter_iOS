@@ -232,6 +232,25 @@ class API {
                 }
             }
     }
+    
+    // 새 행사 구독 토픽 설정하기
+    static func putTopic(data: [String: [Any]]) {
+        
+        guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
+        
+        networking(
+            urlStr: Address.topics.url,
+            method: .put,
+            data: data,
+            model: Topic.self) { result, _ in
+                switch result {
+                case .success(_):
+                    print("성공")
+                case .failure(let error):
+                    print(error)
+                }
+            }
+    }
     // 내 정보 업데이트
     static func patchMeInfo(data: [String: Any]) {
         guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
@@ -239,7 +258,8 @@ class API {
         networking(
             urlStr: Address.me.url,
             method: .patch,
-            data: data, model: Me.self) { result, _ in
+            data: data,
+            model: Me.self) { result, _ in
                 switch result {
                 case .success(_):
                     print("성공")

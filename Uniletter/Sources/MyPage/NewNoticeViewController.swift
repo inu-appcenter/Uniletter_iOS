@@ -29,6 +29,7 @@ class NewNoticeViewController: UIViewController {
         let button = UIButton()
         button.createNofiButton("선택 완료")
         
+        button.addTarget(self, action: #selector(doneButtonclicked), for: .touchUpInside)
         return button
     }()
     
@@ -70,6 +71,13 @@ class NewNoticeViewController: UIViewController {
     
     func configureNavigationBar() {
         setNavigationTitleAndBackButton("새로운 행사 알림")
+    }
+    
+    @objc func doneButtonclicked() {
+        DispatchQueue.main.async {
+            self.viewModel.putTopic()
+            self.navigationController?.popViewController(animated: true)
+        }
     }
 }
 

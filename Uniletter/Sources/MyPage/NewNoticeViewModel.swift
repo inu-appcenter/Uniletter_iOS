@@ -47,6 +47,8 @@ class NewNoticeViewModel {
     
     var notices: [Notice] = [.club, .studentCountcil, .sharing, .competition, .study, .job, .etc]
     
+    var putTopics = [String]()
+    
     var selected: [String: Bool] = [
                                     "동아리/소모임": false,
                                     "학생회": false,
@@ -81,5 +83,15 @@ class NewNoticeViewModel {
         for i in topic.topics {
             selected[i] = true
         }
+    }
+    
+    func putTopic() {
+        for i in selected.keys {
+            if selected[i] == true {
+                self.putTopics.append(i)
+            }
+        }
+        print(self.putTopics)
+        API.putTopic(data: ["topics" : self.putTopics])
     }
 }
