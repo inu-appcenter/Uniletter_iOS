@@ -17,6 +17,9 @@
 		2C0DBE642881507A004A933A /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE632881507A004A933A /* Notification.swift */; };
 		2C0DBE662881591B004A933A /* NoticeAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE652881591B004A933A /* NoticeAlertView.swift */; };
 		2C0DBE6828815CA6004A933A /* NoticeAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE6728815CA6004A933A /* NoticeAlertViewController.swift */; };
+		2C0DBE6A288192E5004A933A /* BlockListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE69288192E5004A933A /* BlockListViewController.swift */; };
+		2C0DBE6C2881A13E004A933A /* BlockListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE6B2881A13E004A933A /* BlockListViewModel.swift */; };
+		2C0DBE6E2881A158004A933A /* BlockListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE6D2881A158004A933A /* BlockListCell.swift */; };
 		2C80F388286D997300ECAB60 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C80F387286D997300ECAB60 /* MyPageViewModel.swift */; };
 		2C80F38B286DA01600ECAB60 /* MyPageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C80F38A286DA01500ECAB60 /* MyPageCell.swift */; };
 		2C80F391286DE20000ECAB60 /* MyPageSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C80F390286DE20000ECAB60 /* MyPageSectionView.swift */; };
@@ -89,6 +92,9 @@
 		2C0DBE632881507A004A933A /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		2C0DBE652881591B004A933A /* NoticeAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeAlertView.swift; sourceTree = "<group>"; };
 		2C0DBE6728815CA6004A933A /* NoticeAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeAlertViewController.swift; sourceTree = "<group>"; };
+		2C0DBE69288192E5004A933A /* BlockListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockListViewController.swift; sourceTree = "<group>"; };
+		2C0DBE6B2881A13E004A933A /* BlockListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockListViewModel.swift; sourceTree = "<group>"; };
+		2C0DBE6D2881A158004A933A /* BlockListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockListCell.swift; sourceTree = "<group>"; };
 		2C80F387286D997300ECAB60 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		2C80F38A286DA01500ECAB60 /* MyPageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageCell.swift; sourceTree = "<group>"; };
 		2C80F390286DE20000ECAB60 /* MyPageSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSectionView.swift; sourceTree = "<group>"; };
@@ -193,6 +199,9 @@
 				2C0DBE5F288140FD004A933A /* NotiListCell.swift */,
 				2C0DBE6128814308004A933A /* NotiViewModel.swift */,
 				2C0DBE632881507A004A933A /* Notification.swift */,
+				2C0DBE69288192E5004A933A /* BlockListViewController.swift */,
+				2C0DBE6D2881A158004A933A /* BlockListCell.swift */,
+				2C0DBE6B2881A13E004A933A /* BlockListViewModel.swift */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -513,9 +522,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				766F38512872FDFF00EC9593 /* UlButton++Extensions.swift in Sources */,
+				2C0DBE6E2881A158004A933A /* BlockListCell.swift in Sources */,
 				769AEB3D287C271E00C697FC /* Comment.swift in Sources */,
 				766F384E2872FC3900EC9593 /* NewNoticeViewController.swift in Sources */,
 				766F384F2872FC3900EC9593 /* NewNoticeCell.swift in Sources */,
+				2C0DBE6A288192E5004A933A /* BlockListViewController.swift in Sources */,
 				2CB69D0D287456C60089A922 /* ChangeViewController.swift in Sources */,
 				766F38502872FC3900EC9593 /* NewNoticeViewModel.swift in Sources */,
 				2CB8AA32287838EE00BDA358 /* MyEventCell.swift in Sources */,
@@ -549,6 +560,7 @@
 				76FCB54C286C35DE00AC4F70 /* DetailLabel.swift in Sources */,
 				7681D57028698EC60081C644 /* HomeCell.swift in Sources */,
 				2C0DBE5C28801484004A933A /* SaveListViewModel.swift in Sources */,
+				2C0DBE6C2881A13E004A933A /* BlockListViewModel.swift in Sources */,
 				2C0DBE662881591B004A933A /* NoticeAlertView.swift in Sources */,
 				765BCA122868CA1B0098BBF2 /* LoginViewController.swift in Sources */,
 				2C0DBE642881507A004A933A /* Notification.swift in Sources */,

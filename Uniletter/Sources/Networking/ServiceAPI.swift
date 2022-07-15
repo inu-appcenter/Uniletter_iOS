@@ -295,6 +295,7 @@ class API {
             }
     }
     
+    // 행사 알림 가져오기
     static func getAlarm(completion: @escaping([Noti]) -> Void) {
         networking(
             urlStr: Address.nofifications.url,
@@ -310,6 +311,7 @@ class API {
             }
     }
     
+    // 행사 알림 삭제하기
     static func deleteAlarm(data: [String: Any], completion: @escaping() -> Void) {
         guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
         
@@ -331,6 +333,7 @@ class API {
             }
         
     }
+    
     
     // 내 정보 업데이트
     static func patchMeInfo(data: [String: Any]) {
