@@ -12,6 +12,8 @@ class BlockListCell: UITableViewCell {
     
     static let identifier = "BlockListCell"
     
+    var blockCancleButtonClosure: (() -> Void)?
+    
     let userImage: UIImageView = {
        
         let imageView = UIImageView()
@@ -24,7 +26,7 @@ class BlockListCell: UITableViewCell {
         return imageView
     }()
     
-    let userName: UILabel = {
+    var userName: UILabel = {
         
         let label = UILabel()
         
@@ -33,7 +35,7 @@ class BlockListCell: UITableViewCell {
         return label
     }()
     
-    let blockCancleButton: UIButton = {
+    lazy var blockCancleButton: UIButton = {
     
         var config = UIButton.Configuration.plain()
         
@@ -48,6 +50,8 @@ class BlockListCell: UITableViewCell {
         button.layer.cornerRadius = 12
         button.layer.borderColor = UIColor.customColor(.blueGreen).cgColor
         button.layer.borderWidth = 1
+        
+        button.addTarget(self, action: #selector(blockCancleButtonClicked(_:)), for: .touchUpInside)
         
         return button
     }()
@@ -80,7 +84,15 @@ class BlockListCell: UITableViewCell {
         }
     }
     
-//    func setUI() {
-//
-//    }
+    func setUI(block: Block) {
+
+        self.userImage.image = UIImage(named: "UserImage")
+        self.userName.text = block.user.nickname
+    }
+    
+    @objc func blockCancleButtonClicked(_ sender: UIGestureRecognizer) {
+        if let blockCancleButtonClosure = blockCancleButtonClosure {
+            blockCancleButtonClosure()
+        }
+    }
 }

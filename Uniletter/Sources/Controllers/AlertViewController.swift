@@ -13,6 +13,7 @@ class AlertViewController: UIViewController {
     var alert: Alert?
     var alertIsSaveClosure: (() -> Void)?
     var alertIsNotificationClosure: (() -> Void)?
+    var alertIsBlockOffClosure: (() -> Void)?
     
     override func loadView() {
         view = alertView
@@ -86,6 +87,9 @@ class AlertViewController: UIViewController {
     }
     
     func alertIsBlockOff() {
+        if let alertIsBlockOffClosure = alertIsBlockOffClosure {
+            alertIsBlockOffClosure()
+        }
         // TODO: 차단 해제
     }
     

@@ -10,6 +10,8 @@ import SnapKit
 
 class BlockListViewController: UIViewController {
     
+    let blockListViewModel = BlockListViewModel()
+    
     let subView: UIView = {
         let view = UIView()
         
@@ -20,7 +22,7 @@ class BlockListViewController: UIViewController {
         let label = UILabel()
         label.font = .systemFont(ofSize: 16)
         label.textColor = UIColor.customColor(.lightGray)
-        label.text = "댓글"
+        label.text = "목록"
         return label
     }()
     
@@ -43,7 +45,8 @@ class BlockListViewController: UIViewController {
     }()
     
     let tableView: UITableView = {
-        let tableView = UITableView()
+        let tableView = UITableView(frame: .zero, style: .plain)
+        tableView.separatorStyle = .none
         
         return tableView
     }()
@@ -53,8 +56,17 @@ class BlockListViewController: UIViewController {
         view.backgroundColor = .white
         configureNavigationBar()
         configureUI()
+        settingAPI()
+        blockListViewModel.postBlock()
     }
-    
+    func settingAPI() {
+        DispatchQueue.main.async {
+            self.blockListViewModel.getBlock {
+                self.tableView.reloadData()
+                self.listCountLabel.text = String(self.blockListViewModel.numOfCell)
+            }
+        }
+    }
     func configureNavigationBar() {
         setNavigationTitleAndBackButton("차단한 계정")
     }
@@ -97,18 +109,39 @@ class BlockListViewController: UIViewController {
     
     @objc func arrowButtonClicked(_ sender: UIGestureRecognizer) {
         arrowButton.isSelected = !arrowButton.isSelected
+        tableView.isHidden = !tableView.isHidden
     }
 }
 
 extension BlockListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return blockListViewModel.numOfCell
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: BlockListCell.identifier, for: indexPath) as? BlockListCell else { return UITableViewCell() }
         
+        cell.setUI(block: blockListViewModel.blocks[indexPath.row])
+        
+        cell.blockCancleButtonClosure = {
+            let alertViewController = AlertViewController()
+            alertViewController.alert = .blockOff
+            alertViewController.modalPresentationStyle = .overFullScreen
+            alertViewController.modalTransitionStyle = .crossDissolve
+            self.present(alertViewController, animated: true)
+            
+            alertViewController.alertIsBlockOffClosure = {
+                self.blockListViewModel.deleteBlock(index: indexPath.row) {
+                    self.settingAPI()
+                    self.dismiss(animated: true)
+                }
+            }
+        }
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50
     }
 }

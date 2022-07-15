@@ -20,6 +20,7 @@
 		2C0DBE6A288192E5004A933A /* BlockListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE69288192E5004A933A /* BlockListViewController.swift */; };
 		2C0DBE6C2881A13E004A933A /* BlockListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE6B2881A13E004A933A /* BlockListViewModel.swift */; };
 		2C0DBE6E2881A158004A933A /* BlockListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE6D2881A158004A933A /* BlockListCell.swift */; };
+		2C0DBE702881AC5B004A933A /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE6F2881AC5B004A933A /* Block.swift */; };
 		2C80F388286D997300ECAB60 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C80F387286D997300ECAB60 /* MyPageViewModel.swift */; };
 		2C80F38B286DA01600ECAB60 /* MyPageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C80F38A286DA01500ECAB60 /* MyPageCell.swift */; };
 		2C80F391286DE20000ECAB60 /* MyPageSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C80F390286DE20000ECAB60 /* MyPageSectionView.swift */; };
@@ -95,6 +96,7 @@
 		2C0DBE69288192E5004A933A /* BlockListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockListViewController.swift; sourceTree = "<group>"; };
 		2C0DBE6B2881A13E004A933A /* BlockListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockListViewModel.swift; sourceTree = "<group>"; };
 		2C0DBE6D2881A158004A933A /* BlockListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockListCell.swift; sourceTree = "<group>"; };
+		2C0DBE6F2881AC5B004A933A /* Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
 		2C80F387286D997300ECAB60 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		2C80F38A286DA01500ECAB60 /* MyPageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageCell.swift; sourceTree = "<group>"; };
 		2C80F390286DE20000ECAB60 /* MyPageSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSectionView.swift; sourceTree = "<group>"; };
@@ -202,6 +204,7 @@
 				2C0DBE69288192E5004A933A /* BlockListViewController.swift */,
 				2C0DBE6D2881A158004A933A /* BlockListCell.swift */,
 				2C0DBE6B2881A13E004A933A /* BlockListViewModel.swift */,
+				2C0DBE6F2881AC5B004A933A /* Block.swift */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -587,6 +590,7 @@
 				2CB8AAAC287EAE5400BDA358 /* PrivacyPolicyViewController.swift in Sources */,
 				76FCB547286C254B00AC4F70 /* EventDetailView.swift in Sources */,
 				2C0DBE6828815CA6004A933A /* NoticeAlertViewController.swift in Sources */,
+				2C0DBE702881AC5B004A933A /* Block.swift in Sources */,
 				2C0DBE6228814308004A933A /* NotiViewModel.swift in Sources */,
 				2C80F388286D997300ECAB60 /* MyPageViewModel.swift in Sources */,
 			);

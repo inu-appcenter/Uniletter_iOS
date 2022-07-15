@@ -334,6 +334,67 @@ class API {
         
     }
     
+    // 차단 목록 가져오기
+    static func getBlock(completion: @escaping([Block]) -> Void) {
+        
+        networking(
+            urlStr: Address.block.url,
+            method: .get,
+            data: nil,
+            model: [Block].self) { result, _ in
+                switch result {
+                case .success(let blocks):
+                    completion(blocks)
+                case .failure(let error):
+                    print(error)
+                }
+            }
+    }
+    
+    // 차단 해제하기
+    static func deleteBlock(data: [String: Int], completion: @escaping() -> Void) {
+        guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
+        
+        networking(
+            urlStr: Address.block.url,
+            method: .delete,
+            data: data,
+            model: Block.self) { result, _ in
+                switch result {
+                case .success(_):
+                    print("성공")
+                case .failure(let error):
+                    if error.errorDescription! == "Response could not be serialized, input data was nil or zero length." {
+                        print("성공")
+                        completion()
+                    } else {
+                        print(error)
+                    }
+                }
+            }
+    }
+    
+    // 차단하기
+    static func postBlock(data: [String: Int], completion: @escaping() -> Void) {
+        guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
+        
+        networking(
+            urlStr: Address.block.url,
+            method: .post,
+            data: data,
+            model: Block.self) { result, _ in
+                switch result {
+                case .success(_):
+                    print("성공")
+                case .failure(let error):
+                    if error.errorDescription! == "Response could not be serialized, input data was nil or zero length." {
+                        completion()
+                    } else {
+                        print(error)
+                    }
+                }
+            }
+    }
     
     // 내 정보 업데이트
     static func patchMeInfo(data: [String: Any]) {
