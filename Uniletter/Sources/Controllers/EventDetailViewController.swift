@@ -20,7 +20,11 @@ class EventDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setNavigationBar()
+        setNavigationBar()
+        setViewController()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         fetchEvents()
     }
     
@@ -52,22 +56,6 @@ class EventDetailViewController: UIViewController {
     }
     
     func setViewController() {
-        eventDetailView.profileImageView.image = viewModel.profileImage
-        eventDetailView.nicknameLabel.text = viewModel.nickname
-        eventDetailView.dateWroteLabel.text = viewModel.dateWrote
-        eventDetailView.mainImageView.image = viewModel.mainImage
-        eventDetailView.titleTextView.text = viewModel.title
-        eventDetailView.categoryContentsLabel.text = viewModel.categoryContent
-        eventDetailView.startContentsLabel.text = viewModel.startContent
-        eventDetailView.endContentsLabel.text = viewModel.endContent
-        eventDetailView.targetContentsLabel.text = viewModel.target
-        eventDetailView.contactContentsLabel.text = viewModel.contact
-        eventDetailView.bodyContentsLabel.text = viewModel.body
-        eventDetailView.viewsLabel.text = viewModel.views
-        eventDetailView.likeAndCommentsLabel.text = viewModel.likeAndComments
-        updateDDay()
-        convertTextToHyperLink()
-        
         eventDetailView.moreButton.addTarget(
             self,
             action: #selector(didTapProfileMoreButton(_:)),
@@ -83,6 +71,24 @@ class EventDetailViewController: UIViewController {
             self,
             action: #selector(didTapCommentesLabel(_:)),
             for: .touchUpInside)
+    }
+    
+    func updateUI() {
+        eventDetailView.profileImageView.image = viewModel.profileImage
+        eventDetailView.nicknameLabel.text = viewModel.nickname
+        eventDetailView.dateWroteLabel.text = viewModel.dateWrote
+        eventDetailView.mainImageView.image = viewModel.mainImage
+        eventDetailView.titleTextView.text = viewModel.title
+        eventDetailView.categoryContentsLabel.text = viewModel.categoryContent
+        eventDetailView.startContentsLabel.text = viewModel.startContent
+        eventDetailView.endContentsLabel.text = viewModel.endContent
+        eventDetailView.targetContentsLabel.text = viewModel.target
+        eventDetailView.contactContentsLabel.text = viewModel.contact
+        eventDetailView.bodyContentsLabel.text = viewModel.body
+        eventDetailView.viewsLabel.text = viewModel.views
+        eventDetailView.likeAndCommentsLabel.text = viewModel.likeAndComments
+        updateDDay()
+        convertTextToHyperLink()
     }
     
     func updateDDay() {
@@ -135,7 +141,7 @@ class EventDetailViewController: UIViewController {
         DispatchQueue.global().async {
             self.viewModel.loadEvent(self.id) {
                 DispatchQueue.main.async {
-                    self.setViewController()
+                    self.updateUI()
                 }
             }
         }

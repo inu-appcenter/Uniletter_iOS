@@ -25,6 +25,9 @@ class CommentsViewController: UIViewController {
         super.viewDidLoad()
         setNavigationBar()
         setViewController()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         fetchComments()
     }
     
@@ -57,13 +60,17 @@ class CommentsViewController: UIViewController {
         view.keyboardLayoutGuide.topAnchor.constraint(equalTo: commentsView.writeView.bottomAnchor).isActive = true
     }
     
+    func updateUI() {
+        commentsView.commentLabel.text = "댓글 \(viewModel.numofComments)"
+    }
+    
     func fetchComments() {
         guard let id = eventID else { return }
         
         DispatchQueue.global().async {
             self.viewModel.loadComments(id) {
                 DispatchQueue.main.async {
-                    self.commentsView.commentLabel.text = "댓글 \(self.viewModel.numofComments)"
+                    self.updateUI()
                     self.commentsView.tableView.reloadData()
                 }
             }
@@ -78,7 +85,8 @@ class CommentsViewController: UIViewController {
     
     @objc func didTapSubmitButton(_ sender: UIButton) {
         viewModel.writeComments(commentsView.textField.text) {
-            // TODO: - 댓글 쓴 후, 업데이트 하기 (fetchComments로는 안됨)
+            self.commentsView.textField.text = ""
+            self.view.endEditing(true)
             self.fetchComments()
         }
     }
