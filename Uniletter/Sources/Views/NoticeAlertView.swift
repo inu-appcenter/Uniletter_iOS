@@ -48,8 +48,7 @@ class NoticeAlertView: UIView {
     lazy var okButton: UIButton = {
         let button = UIButton()
         
-        button.createNofiButton("확인")
-        
+        button.createCompletionButton("확인")        
         return button
     }()
     

@@ -310,6 +310,28 @@ class API {
             }
     }
     
+    static func deleteAlarm(data: [String: Any], completion: @escaping() -> Void) {
+        guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
+        
+        networking(
+            urlStr: Address.nofifications.url,
+            method: .delete,
+            data: data,
+            model: Noti.self) { result, _ in
+                switch result {
+                case .success(_):
+                    print("성공")
+                case .failure(let error):
+                    if error.errorDescription! == "Response could not be serialized, input data was nil or zero length." {
+                        completion()
+                    } else {
+                        print(error)
+                    }
+                }
+            }
+        
+    }
+    
     // 내 정보 업데이트
     static func patchMeInfo(data: [String: Any]) {
         guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-class AlarmViewModel {
+class NotiViewModel {
     var notis = [Noti]()
     
     var numOfcell: Int {
@@ -21,6 +21,12 @@ class AlarmViewModel {
     func getAlarm(completion: @escaping() -> Void) {
         API.getAlarm { result in
             self.notis = result
+            completion()
+        }
+    }
+    
+    func deleteAlarm(index: Int, completion: @escaping() -> Void) {
+        API.deleteAlarm(data: ["eventId": notis[index].event.id, "setFor": notis[index].setFor]) {
             completion()
         }
     }

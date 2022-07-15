@@ -11,9 +11,9 @@
 		2C0DBE5828800A29004A933A /* SaveListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE5728800A29004A933A /* SaveListCell.swift */; };
 		2C0DBE5A28800B29004A933A /* MyEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE5928800B29004A933A /* MyEventView.swift */; };
 		2C0DBE5C28801484004A933A /* SaveListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE5B28801484004A933A /* SaveListViewModel.swift */; };
-		2C0DBE5E28813FC3004A933A /* AlarmListVIewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE5D28813FC3004A933A /* AlarmListVIewController.swift */; };
-		2C0DBE60288140FD004A933A /* AlarmListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE5F288140FD004A933A /* AlarmListCell.swift */; };
-		2C0DBE6228814308004A933A /* AlarmViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE6128814308004A933A /* AlarmViewModel.swift */; };
+		2C0DBE5E28813FC3004A933A /* NotiListVIewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE5D28813FC3004A933A /* NotiListVIewController.swift */; };
+		2C0DBE60288140FD004A933A /* NotiListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE5F288140FD004A933A /* NotiListCell.swift */; };
+		2C0DBE6228814308004A933A /* NotiViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE6128814308004A933A /* NotiViewModel.swift */; };
 		2C0DBE642881507A004A933A /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE632881507A004A933A /* Notification.swift */; };
 		2C0DBE662881591B004A933A /* NoticeAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE652881591B004A933A /* NoticeAlertView.swift */; };
 		2C0DBE6828815CA6004A933A /* NoticeAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE6728815CA6004A933A /* NoticeAlertViewController.swift */; };
@@ -83,9 +83,9 @@
 		2C0DBE5728800A29004A933A /* SaveListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveListCell.swift; sourceTree = "<group>"; };
 		2C0DBE5928800B29004A933A /* MyEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyEventView.swift; sourceTree = "<group>"; };
 		2C0DBE5B28801484004A933A /* SaveListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveListViewModel.swift; sourceTree = "<group>"; };
-		2C0DBE5D28813FC3004A933A /* AlarmListVIewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmListVIewController.swift; sourceTree = "<group>"; };
-		2C0DBE5F288140FD004A933A /* AlarmListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmListCell.swift; sourceTree = "<group>"; };
-		2C0DBE6128814308004A933A /* AlarmViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmViewModel.swift; sourceTree = "<group>"; };
+		2C0DBE5D28813FC3004A933A /* NotiListVIewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiListVIewController.swift; sourceTree = "<group>"; };
+		2C0DBE5F288140FD004A933A /* NotiListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiListCell.swift; sourceTree = "<group>"; };
+		2C0DBE6128814308004A933A /* NotiViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiViewModel.swift; sourceTree = "<group>"; };
 		2C0DBE632881507A004A933A /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		2C0DBE652881591B004A933A /* NoticeAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeAlertView.swift; sourceTree = "<group>"; };
 		2C0DBE6728815CA6004A933A /* NoticeAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeAlertViewController.swift; sourceTree = "<group>"; };
@@ -189,9 +189,9 @@
 				2C0DBE5728800A29004A933A /* SaveListCell.swift */,
 				2C0DBE5B28801484004A933A /* SaveListViewModel.swift */,
 				2C0DBE5928800B29004A933A /* MyEventView.swift */,
-				2C0DBE5D28813FC3004A933A /* AlarmListVIewController.swift */,
-				2C0DBE5F288140FD004A933A /* AlarmListCell.swift */,
-				2C0DBE6128814308004A933A /* AlarmViewModel.swift */,
+				2C0DBE5D28813FC3004A933A /* NotiListVIewController.swift */,
+				2C0DBE5F288140FD004A933A /* NotiListCell.swift */,
+				2C0DBE6128814308004A933A /* NotiViewModel.swift */,
 				2C0DBE632881507A004A933A /* Notification.swift */,
 			);
 			path = MyPage;
@@ -562,11 +562,11 @@
 				2CB8AA302878384300BDA358 /* MyCommentViewController.swift in Sources */,
 				2C0DBE5828800A29004A933A /* SaveListCell.swift in Sources */,
 				76AC78382872053100D303C4 /* AlertView.swift in Sources */,
-				2C0DBE5E28813FC3004A933A /* AlarmListVIewController.swift in Sources */,
+				2C0DBE5E28813FC3004A933A /* NotiListVIewController.swift in Sources */,
 				765DCDB32868DCD300961EA8 /* HomeView.swift in Sources */,
 				2CB8AAA6287E918500BDA358 /* BaseURL.swift in Sources */,
 				2CB8AAB0287F1EDA00BDA358 /* Topic.swift in Sources */,
-				2C0DBE60288140FD004A933A /* AlarmListCell.swift in Sources */,
+				2C0DBE60288140FD004A933A /* NotiListCell.swift in Sources */,
 				7681D584286A09DD0081C644 /* EventDetailViewModel.swift in Sources */,
 				76E96489286B6F4700D5299A /* UIImage++Extensions.swift in Sources */,
 				765BC9FD2868C00C0098BBF2 /* AppDelegate.swift in Sources */,
@@ -575,7 +575,7 @@
 				2CB8AAAC287EAE5400BDA358 /* PrivacyPolicyViewController.swift in Sources */,
 				76FCB547286C254B00AC4F70 /* EventDetailView.swift in Sources */,
 				2C0DBE6828815CA6004A933A /* NoticeAlertViewController.swift in Sources */,
-				2C0DBE6228814308004A933A /* AlarmViewModel.swift in Sources */,
+				2C0DBE6228814308004A933A /* NotiViewModel.swift in Sources */,
 				2C80F388286D997300ECAB60 /* MyPageViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

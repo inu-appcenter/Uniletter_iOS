@@ -73,7 +73,7 @@ extension SaveListViewController: UICollectionViewDelegate, UICollectionViewData
             alertViewController.modalTransitionStyle = .crossDissolve
             self.present(alertViewController, animated: true)
             
-            alertViewController.alertIsSaveClouser = {
+            alertViewController.alertIsSaveClosure = {
                 
                 self.saveListViewModel.deleteLike(index: indexPath.item) {
                     self.setAPI()

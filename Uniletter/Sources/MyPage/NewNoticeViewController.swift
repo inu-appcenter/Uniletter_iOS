@@ -27,7 +27,7 @@ class NewNoticeViewController: UIViewController {
 
     lazy var notificationButton: UIButton = {
         let button = UIButton()
-        button.createNofiButton("선택 완료")
+        button.createCompletionButton("선택 완료")
         
         button.addTarget(self, action: #selector(doneButtonclicked), for: .touchUpInside)
         return button

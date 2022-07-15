@@ -9,22 +9,22 @@ import Foundation
 import UIKit
 import SwiftUI
 
-class AlarmListCell: UICollectionViewCell {
+class NotiListCell: UICollectionViewCell {
     
-    static let identifier = "AlarmListCell"
+    static let identifier = "NotiListCell"
     
     let EventView = MyEventView(option: true)
     
-    var alarmClosure: (() -> Void)?
+    var bellClosure: (() -> Void)?
 
-    lazy var alarmButton: UIButton = {
+    lazy var bellButton: UIButton = {
         var config = UIButton.Configuration.plain()
         config.image = UIImage(systemName: "bell.fill")
         
         let button = UIButton(configuration: config)
         button.tintColor = UIColor.customColor(.yellow)
             
-        button.addTarget(self, action: #selector(alarmButtonClicked(_:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(bellButtonClicked(_:)), for: .touchUpInside)
         
         return button
     }()
@@ -47,7 +47,7 @@ class AlarmListCell: UICollectionViewCell {
         EventView.layer.cornerRadius = 8
         
         addSubview(EventView)
-        EventView.addSubview(alarmButton)
+        EventView.addSubview(bellButton)
         
         EventView.snp.makeConstraints {
             $0.top.leading.equalToSuperview().offset(20)
@@ -55,7 +55,7 @@ class AlarmListCell: UICollectionViewCell {
             $0.bottom.equalToSuperview()
         }
         
-        alarmButton.snp.makeConstraints {
+        bellButton.snp.makeConstraints {
             $0.top.equalToSuperview().offset(12)
             $0.trailing.equalToSuperview().offset(-10)
             $0.width.equalTo(14)
@@ -71,9 +71,9 @@ class AlarmListCell: UICollectionViewCell {
         self.EventView.commentCountLabel.text = String(event.comments)
     }
     
-    @objc func alarmButtonClicked(_ sender: UIGestureRecognizer) {
-        if let alarmClosure = alarmClosure {
-            alarmClosure()
+    @objc func bellButtonClicked(_ sender: UIGestureRecognizer) {
+        if let bellClosure = bellClosure {
+            bellClosure()
         }
     }
 }

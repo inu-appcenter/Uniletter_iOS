@@ -71,7 +71,7 @@ class MyPageViewController: UIViewController {
         return btn
     }()
     
-    let saveListButton: UIButton = {
+    lazy var saveListButton: UIButton = {
         
         let button = UIButton()
         button.listButtonSetting("bookmark.fill", "저장목록")
@@ -80,7 +80,7 @@ class MyPageViewController: UIViewController {
         return button
     }()
     
-    let alarmListButton: UIButton = {
+    lazy var alarmListButton: UIButton = {
         
         let button = UIButton()
         button.listButtonSetting("bell.fill", "알림목록")
@@ -207,7 +207,7 @@ class MyPageViewController: UIViewController {
     }
     
     @objc func alarmListButtonClicked(_ sender: UIGestureRecognizer) {
-        let view = AlarmListViewController()
+        let view = NotiListViewController()
         
         self.navigationController?.pushViewController(view, animated: true)
     }

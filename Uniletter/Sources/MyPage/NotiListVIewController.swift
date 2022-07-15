@@ -8,16 +8,14 @@
 import UIKit
 import SnapKit
 
-class AlarmListViewController: UIViewController {
+class NotiListViewController: UIViewController {
     
-    let alarmViewModel = AlarmViewModel()
+    let notiViewModel = NotiViewModel()
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        
-
         
         return collectionView
     }()
@@ -39,6 +37,7 @@ class AlarmListViewController: UIViewController {
             target: self,
             action: #selector(infoButtonClicked(_:)))
         
+        infoButton.tintColor = UIColor.customColor(.lightGray)
         self.navigationItem.rightBarButtonItem = infoButton
     }
     
@@ -49,7 +48,7 @@ class AlarmListViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         
-        collectionView.register(AlarmListCell.self, forCellWithReuseIdentifier: AlarmListCell.identifier)
+        collectionView.register(NotiListCell.self, forCellWithReuseIdentifier: NotiListCell.identifier)
         collectionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
@@ -58,7 +57,7 @@ class AlarmListViewController: UIViewController {
     
     func settingAPI() {
         DispatchQueue.main.async {
-            self.alarmViewModel.getAlarm {
+            self.notiViewModel.getAlarm {
                 self.collectionView.reloadData()
             }
         }
@@ -69,29 +68,44 @@ class AlarmListViewController: UIViewController {
     }
 }
 
-extension AlarmListViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension NotiListViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return alarmViewModel.numOfcell
+        return notiViewModel.numOfcell
     }
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AlarmListCell.identifier, for: indexPath) as? AlarmListCell else { return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NotiListCell.identifier, for: indexPath) as? NotiListCell else { return UICollectionViewCell() }
         
-        cell.setUI(event: alarmViewModel.eventAtIndex(index: indexPath.item))
+        cell.setUI(event: notiViewModel.eventAtIndex(index: indexPath.item))
         
+        cell.bellClosure = {
+            let alertViewController = AlertViewController()
+            alertViewController.alert = .notification
+            alertViewController.modalPresentationStyle = .overFullScreen
+            alertViewController.modalTransitionStyle = .crossDissolve
+            self.present(alertViewController, animated: true)
+            
+            alertViewController.alertIsNotificationClosure = {
+                self.notiViewModel.deleteAlarm(index: indexPath.item) {
+                    self.settingAPI()
+                    self.dismiss(animated: true)
+                }
+            }
+            
+        }
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let EventDetailVC = EventDetailViewController()
-        EventDetailVC.id = alarmViewModel.eventAtIndex(index: indexPath.item).id
+        EventDetailVC.id = notiViewModel.eventAtIndex(index: indexPath.item).id
         
         navigationController?.pushViewController(EventDetailVC, animated: true)
     }
 }
 
-extension AlarmListViewController: UICollectionViewDelegateFlowLayout {
+extension NotiListViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
