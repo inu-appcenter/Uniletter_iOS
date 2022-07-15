@@ -32,6 +32,14 @@ class AlarmListViewController: UIViewController {
     
     func configureNavigationBar() {
         setNavigationTitleAndBackButton("알림 목록")
+        
+        let infoButton = UIBarButtonItem(
+            image: UIImage(systemName: "info.circle"),
+            style: .done,
+            target: self,
+            action: #selector(infoButtonClicked(_:)))
+        
+        self.navigationItem.rightBarButtonItem = infoButton
     }
     
     func configureUI() {
@@ -55,6 +63,10 @@ class AlarmListViewController: UIViewController {
             }
         }
     }
+    
+    @objc func infoButtonClicked(_ sender: UIGestureRecognizer) {
+        presentNoticeAlertView(.notice)
+    }
 }
 
 extension AlarmListViewController: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -69,6 +81,13 @@ extension AlarmListViewController: UICollectionViewDelegate, UICollectionViewDat
         cell.setUI(event: alarmViewModel.eventAtIndex(index: indexPath.item))
         
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let EventDetailVC = EventDetailViewController()
+        EventDetailVC.id = alarmViewModel.eventAtIndex(index: indexPath.item).id
+        
+        navigationController?.pushViewController(EventDetailVC, animated: true)
     }
 }
 

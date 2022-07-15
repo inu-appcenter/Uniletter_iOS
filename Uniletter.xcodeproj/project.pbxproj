@@ -15,6 +15,8 @@
 		2C0DBE60288140FD004A933A /* AlarmListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE5F288140FD004A933A /* AlarmListCell.swift */; };
 		2C0DBE6228814308004A933A /* AlarmViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE6128814308004A933A /* AlarmViewModel.swift */; };
 		2C0DBE642881507A004A933A /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE632881507A004A933A /* Notification.swift */; };
+		2C0DBE662881591B004A933A /* NoticeAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE652881591B004A933A /* NoticeAlertView.swift */; };
+		2C0DBE6828815CA6004A933A /* NoticeAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE6728815CA6004A933A /* NoticeAlertViewController.swift */; };
 		2C80F388286D997300ECAB60 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C80F387286D997300ECAB60 /* MyPageViewModel.swift */; };
 		2C80F38B286DA01600ECAB60 /* MyPageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C80F38A286DA01500ECAB60 /* MyPageCell.swift */; };
 		2C80F391286DE20000ECAB60 /* MyPageSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C80F390286DE20000ECAB60 /* MyPageSectionView.swift */; };
@@ -85,6 +87,8 @@
 		2C0DBE5F288140FD004A933A /* AlarmListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmListCell.swift; sourceTree = "<group>"; };
 		2C0DBE6128814308004A933A /* AlarmViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmViewModel.swift; sourceTree = "<group>"; };
 		2C0DBE632881507A004A933A /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
+		2C0DBE652881591B004A933A /* NoticeAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeAlertView.swift; sourceTree = "<group>"; };
+		2C0DBE6728815CA6004A933A /* NoticeAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeAlertViewController.swift; sourceTree = "<group>"; };
 		2C80F387286D997300ECAB60 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		2C80F38A286DA01500ECAB60 /* MyPageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageCell.swift; sourceTree = "<group>"; };
 		2C80F390286DE20000ECAB60 /* MyPageSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSectionView.swift; sourceTree = "<group>"; };
@@ -247,6 +251,7 @@
 				76FCB544286C253900AC4F70 /* EventDetailViewController.swift */,
 				76AC783928720B6C00D303C4 /* AlertViewController.swift */,
 				76AC78412872E02500D303C4 /* ActionSheetViewController.swift */,
+				2C0DBE6728815CA6004A933A /* NoticeAlertViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -260,6 +265,7 @@
 				76AC78372872053100D303C4 /* AlertView.swift */,
 				76AC783D2872D7FB00D303C4 /* TwoOptionsActionSheetView.swift */,
 				76AC783F2872DF9300D303C4 /* OneOptionActionSheetView.swift */,
+				2C0DBE652881591B004A933A /* NoticeAlertView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -543,6 +549,7 @@
 				76FCB54C286C35DE00AC4F70 /* DetailLabel.swift in Sources */,
 				7681D57028698EC60081C644 /* HomeCell.swift in Sources */,
 				2C0DBE5C28801484004A933A /* SaveListViewModel.swift in Sources */,
+				2C0DBE662881591B004A933A /* NoticeAlertView.swift in Sources */,
 				765BCA122868CA1B0098BBF2 /* LoginViewController.swift in Sources */,
 				2C0DBE642881507A004A933A /* Notification.swift in Sources */,
 				2C80F38B286DA01600ECAB60 /* MyPageCell.swift in Sources */,
@@ -567,6 +574,7 @@
 				765BC9FF2868C00C0098BBF2 /* SceneDelegate.swift in Sources */,
 				2CB8AAAC287EAE5400BDA358 /* PrivacyPolicyViewController.swift in Sources */,
 				76FCB547286C254B00AC4F70 /* EventDetailView.swift in Sources */,
+				2C0DBE6828815CA6004A933A /* NoticeAlertViewController.swift in Sources */,
 				2C0DBE6228814308004A933A /* AlarmViewModel.swift in Sources */,
 				2C80F388286D997300ECAB60 /* MyPageViewModel.swift in Sources */,
 			);
