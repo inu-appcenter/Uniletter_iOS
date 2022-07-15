@@ -272,6 +272,7 @@ class API {
             }
     }
     
+    // 행사 좋아요 삭제하기
     static func deleteLikes(data: [String: Int], completion: @escaping() -> Void) {
         
         guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
@@ -290,6 +291,21 @@ class API {
                     } else {
                         print(error)
                     }
+                }
+            }
+    }
+    
+    static func getAlarm(completion: @escaping([Noti]) -> Void) {
+        networking(
+            urlStr: Address.nofifications.url,
+            method: .get,
+            data: nil,
+            model: [Noti].self) { result, _ in
+                switch result {
+                case .success(let Events):
+                    completion(Events)
+                case .failure(let error):
+                    print(error)
                 }
             }
     }

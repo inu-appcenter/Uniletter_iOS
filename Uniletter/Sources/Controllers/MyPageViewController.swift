@@ -85,7 +85,9 @@ class MyPageViewController: UIViewController {
         let button = UIButton()
         button.listButtonSetting("bell.fill", "알림목록")
         button.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner]
+        button.addTarget(self, action: #selector(alarmListButtonClicked(_:)), for: .touchUpInside)
         return button
+        
     }()
     
     var myPageViewModel = MyPageViewModel.shared
@@ -200,6 +202,12 @@ class MyPageViewController: UIViewController {
     
     @objc func saveListButtonClicked(_ sender: UIGestureRecognizer) {
         let view = SaveListViewController()
+        
+        self.navigationController?.pushViewController(view, animated: true)
+    }
+    
+    @objc func alarmListButtonClicked(_ sender: UIGestureRecognizer) {
+        let view = AlarmListViewController()
         
         self.navigationController?.pushViewController(view, animated: true)
     }
