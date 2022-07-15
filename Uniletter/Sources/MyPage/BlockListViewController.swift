@@ -36,8 +36,8 @@ class BlockListViewController: UIViewController {
     
     lazy var arrowButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "arrowUp"), for: .normal)
-        button.setImage(UIImage(named: "arrowDown"), for: .selected)
+        button.setImage(UIImage(named: "arrowDown"), for: .normal)
+        button.setImage(UIImage(named: "arrowUp"), for: .selected)
         
         button.addTarget(self, action: #selector(arrowButtonClicked(_:)), for: .touchUpInside)
         
