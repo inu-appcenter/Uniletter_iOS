@@ -13,6 +13,7 @@ class HomeCell: UICollectionViewCell {
     static let identifier = "homeCell"
     
     let homeCellView = HomeCellView()
+    var bookmarkButtonTapHandler: (() -> Void)?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -29,10 +30,22 @@ class HomeCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        homeCellView.bookmarkButton.isSelected = false
+        homeCellView.bookmarkButton.tintColor = UIColor.customColor(.lightGray)
+    }
+    
     func setUI(_ event: Event) {
         homeCellView.titleTextView.text = event.title
         updateDDay(event.endAt)
         homeCellView.categoryLabel.text = event.category
+        
+        if let liked = event.likedByMe {
+            homeCellView.bookmarkButton.isSelected = liked
+            homeCellView.bookmarkButton.tintColor = liked
+            ? UIColor.customColor(.yellow)
+            : UIColor.customColor(.lightGray)
+        }
         
         guard let url = URL(string: event.imageURL) else { return }
         homeCellView.posterImageView.kf.setImage(with: url, options: [.cacheMemoryOnly])
@@ -57,10 +70,12 @@ class HomeCell: UICollectionViewCell {
     }
     
     @objc func didTapBookmarkButton(_ sender: UIButton) {
-        homeCellView.bookmarkButton.isSelected = !homeCellView.bookmarkButton.isSelected
+        sender.isSelected = !sender.isSelected
         
-        homeCellView.bookmarkButton.tintColor = homeCellView.bookmarkButton.isSelected
+        sender.tintColor = sender.isSelected
         ? UIColor.customColor(.yellow)
         : UIColor.customColor(.lightGray)
+        
+        bookmarkButtonTapHandler?()
     }
 }

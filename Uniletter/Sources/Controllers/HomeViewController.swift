@@ -144,15 +144,24 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeCell.identifier, for: indexPath) as? HomeCell else { return UICollectionViewCell() }
         
-        let event = viewModel.infoOfEvent(indexPath.row)
+        let event = viewModel.infoOfEvent(indexPath.item)
         cell.setUI(event)
+        
+        cell.bookmarkButtonTapHandler = {
+            guard let like = event.likedByMe else { return }
+            if like {
+                self.viewModel.deleteLike(event.id)
+            } else {
+                self.viewModel.likeEvent(event.id)
+            }
+        }
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let eventDetailViewController = EventDetailViewController()
-        let event = viewModel.events[indexPath.row]
+        let event = viewModel.events[indexPath.item]
         eventDetailViewController.id = event.id
         
         self.navigationController?.pushViewController(eventDetailViewController, animated: true)
