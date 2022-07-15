@@ -46,4 +46,13 @@ extension UIViewController {
         
         present(actionSheetViewController, animated: true)
     }
+    
+    func presentNoticeAlertView(_ noticeAlert: NoticeAlert) {
+        let noticeAlertViewController = NoticeAlertViewController()
+        noticeAlertViewController.noticeAlert = noticeAlert
+        noticeAlertViewController.modalPresentationStyle = .overFullScreen
+        noticeAlertViewController.modalTransitionStyle = .crossDissolve
+        
+        present(noticeAlertViewController, animated: true)
+    }
 }

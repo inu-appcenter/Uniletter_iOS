@@ -71,20 +71,23 @@ class MyPageViewController: UIViewController {
         return btn
     }()
     
-    let saveListButton: UIButton = {
+    lazy var saveListButton: UIButton = {
         
         let button = UIButton()
         button.listButtonSetting("bookmark.fill", "저장목록")
         button.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
+        button.addTarget(self, action: #selector(saveListButtonClicked(_:)), for: .touchUpInside)
         return button
     }()
     
-    let alarmListButton: UIButton = {
+    lazy var alarmListButton: UIButton = {
         
         let button = UIButton()
         button.listButtonSetting("bell.fill", "알림목록")
         button.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner]
+        button.addTarget(self, action: #selector(alarmListButtonClicked(_:)), for: .touchUpInside)
         return button
+        
     }()
     
     var myPageViewModel = MyPageViewModel.shared
@@ -193,6 +196,18 @@ class MyPageViewController: UIViewController {
     @objc func changeBtnClicked(_ sender: UIGestureRecognizer) {
         print("changeBtnClicked() - called")
         let view = ChangeViewController()
+        
+        self.navigationController?.pushViewController(view, animated: true)
+    }
+    
+    @objc func saveListButtonClicked(_ sender: UIGestureRecognizer) {
+        let view = SaveListViewController()
+        
+        self.navigationController?.pushViewController(view, animated: true)
+    }
+    
+    @objc func alarmListButtonClicked(_ sender: UIGestureRecognizer) {
+        let view = NotiListViewController()
         
         self.navigationController?.pushViewController(view, animated: true)
     }

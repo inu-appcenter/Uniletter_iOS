@@ -9,7 +9,7 @@ import UIKit
 
 extension UIButton {
     
-    func createNofiButton(_ title: String) {
+    func createCompletionButton(_ title: String) {
         self.backgroundColor = UIColor.customColor(.blueGreen)
         self.tintColor = .white
         self.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)

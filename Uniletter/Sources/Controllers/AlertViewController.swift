@@ -11,7 +11,10 @@ class AlertViewController: UIViewController {
     
     let alertView = AlertView()
     var alert: Alert?
-
+    var alertIsSaveClosure: (() -> Void)?
+    var alertIsNotificationClosure: (() -> Void)?
+    var alertIsBlockOffClosure: (() -> Void)?
+    
     override func loadView() {
         view = alertView
     }
@@ -84,6 +87,9 @@ class AlertViewController: UIViewController {
     }
     
     func alertIsBlockOff() {
+        if let alertIsBlockOffClosure = alertIsBlockOffClosure {
+            alertIsBlockOffClosure()
+        }
         // TODO: 차단 해제
     }
     
@@ -91,11 +97,17 @@ class AlertViewController: UIViewController {
         // TODO: 삭제
     }
     
+    // 저장 취소
     func alertIsSave() {
-        // TODO: 저장 취소
+        if let alertIsSaveClosure = alertIsSaveClosure {
+            alertIsSaveClosure()
+        }
     }
     
+    // 알림 취소
     func alertIsNotification() {
-        // TODO: 알림 해제
+        if let alertIsNotificationClosure = alertIsNotificationClosure {
+            alertIsNotificationClosure()
+        }
     }
 }

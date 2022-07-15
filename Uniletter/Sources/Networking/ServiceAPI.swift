@@ -199,6 +199,203 @@ class API {
             }
     }
     
+    // 내가 쓴 행사 받아오기
+    static func getMyEvent(completion: @escaping([Event]) -> Void) {
+        networking(
+            urlStr: Address.myevents.url,
+            method: .get,
+            data: nil,
+            model: [Event].self) { result, _ in
+                switch result {
+                case .success(let myEvents):
+                    completion(myEvents)
+                case .failure(let error):
+                    print(error)
+                }
+            }
+    }
+    
+    // 새 행사 구독 토픽 가져오기
+    static func getTopic(completion: @escaping(Topic) -> Void) {
+        
+        networking(
+            urlStr: Address.topics.url,
+            method: .get,
+            data: nil,
+            model: Topic.self) { result, _ in
+                switch result {
+                case .success(let topics):
+                    completion(topics)
+                case .failure(let error):
+                    print(error)
+                }
+            }
+    }
+    
+    // 새 행사 구독 토픽 설정하기
+    static func putTopic(data: [String: [Any]]) {
+        
+        guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
+        
+        networking(
+            urlStr: Address.topics.url,
+            method: .put,
+            data: data,
+            model: Int.self) { result, statusCode in
+                switch result {
+                case .success(_):
+                    print("성공")
+                case .failure(let error):
+                    if error.errorDescription! == "Response could not be serialized, input data was nil or zero length." {
+                        print("성공")
+                    } else {
+                        print(error)
+                    }
+                }
+            }
+    }
+    
+    // 행사 좋아요 가져오기 (북마크 버튼 눌려진 행사)
+    static func getLikes(completion: @escaping([Event]) -> Void) {
+        
+        networking(
+            urlStr: Address.likes.url,
+            method: .get,
+            data: nil,
+            model: [Event].self) { result, _ in
+                switch result {
+                case .success(let Events):
+                    completion(Events)
+                case .failure(let error):
+                    print(error)
+                }
+            }
+    }
+    
+    // 행사 좋아요 삭제하기
+    static func deleteLikes(data: [String: Int], completion: @escaping() -> Void) {
+        
+        guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
+        
+        networking(
+            urlStr: Address.likes.url,
+            method: .delete,
+            data: data,
+            model: likes.self) { result, _ in
+                switch result {
+                case .success(_):
+                    print("성공")
+                case .failure(let error):
+                    if error.errorDescription! == "Response could not be serialized, input data was nil or zero length." {
+                        completion()
+                    } else {
+                        print(error)
+                    }
+                }
+            }
+    }
+    
+    // 행사 알림 가져오기
+    static func getAlarm(completion: @escaping([Noti]) -> Void) {
+        networking(
+            urlStr: Address.nofifications.url,
+            method: .get,
+            data: nil,
+            model: [Noti].self) { result, _ in
+                switch result {
+                case .success(let Events):
+                    completion(Events)
+                case .failure(let error):
+                    print(error)
+                }
+            }
+    }
+    
+    // 행사 알림 삭제하기
+    static func deleteAlarm(data: [String: Any], completion: @escaping() -> Void) {
+        guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
+        
+        networking(
+            urlStr: Address.nofifications.url,
+            method: .delete,
+            data: data,
+            model: Noti.self) { result, _ in
+                switch result {
+                case .success(_):
+                    print("성공")
+                case .failure(let error):
+                    if error.errorDescription! == "Response could not be serialized, input data was nil or zero length." {
+                        completion()
+                    } else {
+                        print(error)
+                    }
+                }
+            }
+        
+    }
+    
+    // 차단 목록 가져오기
+    static func getBlock(completion: @escaping([Block]) -> Void) {
+        
+        networking(
+            urlStr: Address.block.url,
+            method: .get,
+            data: nil,
+            model: [Block].self) { result, _ in
+                switch result {
+                case .success(let blocks):
+                    completion(blocks)
+                case .failure(let error):
+                    print(error)
+                }
+            }
+    }
+    
+    // 차단 해제하기
+    static func deleteBlock(data: [String: Int], completion: @escaping() -> Void) {
+        guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
+        
+        networking(
+            urlStr: Address.block.url,
+            method: .delete,
+            data: data,
+            model: Block.self) { result, _ in
+                switch result {
+                case .success(_):
+                    print("성공")
+                case .failure(let error):
+                    if error.errorDescription! == "Response could not be serialized, input data was nil or zero length." {
+                        print("성공")
+                        completion()
+                    } else {
+                        print(error)
+                    }
+                }
+            }
+    }
+    
+    // 차단하기
+    static func postBlock(data: [String: Int], completion: @escaping() -> Void) {
+        guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
+        
+        networking(
+            urlStr: Address.block.url,
+            method: .post,
+            data: data,
+            model: Block.self) { result, _ in
+                switch result {
+                case .success(_):
+                    print("성공")
+                case .failure(let error):
+                    if error.errorDescription! == "Response could not be serialized, input data was nil or zero length." {
+                        completion()
+                    } else {
+                        print(error)
+                    }
+                }
+            }
+    }
+    
     // 내 정보 업데이트
     static func patchMeInfo(data: [String: Any]) {
         guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
@@ -206,12 +403,17 @@ class API {
         networking(
             urlStr: Address.me.url,
             method: .patch,
-            data: data, model: Me.self) { result, _ in
+            data: data,
+            model: Me.self) { result, _ in
                 switch result {
                 case .success(_):
                     print("성공")
                 case .failure(let error):
-                    print(error)
+                    if error.errorDescription! == "Response could not be serialized, input data was nil or zero length." {
+                        print("성공")
+                    } else {
+                        print(error)
+                    }
                 }
             }
     }
@@ -245,12 +447,42 @@ class API {
             model: Comment.self) { result, _ in
                 switch result {
                 case .success(_):
-                    completion()
+                    print("성공")
                 case .failure(let error):
-                    print(error)
+                    if error.errorDescription! == "Response could not be serialized, input data was nil or zero length." {
+                        print("성공")
+                        completion()
+                    } else {
+                        print(error)
+                    }
+
                 }
             }
 
     }
- 
+    
+    // 행사 생성
+    static func createEvent(data: [String : String], completion: @escaping() -> Void) {
+        guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
+
+        networking(
+            urlStr: Address.comments.url,
+            method: .post,
+            data: data,
+            model: Event.self) { result, _ in
+                switch result {
+                case .success(_):
+                    completion()
+                case .failure(let error):
+                    if error.errorDescription! == "Response could not be serialized, input data was nil or zero length." {
+                        print("성공")
+                        completion()
+                    } else {
+                        print(error)
+                    }
+                }
+            }
+    }
+    
+
 }

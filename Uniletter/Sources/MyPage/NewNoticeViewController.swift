@@ -27,8 +27,9 @@ class NewNoticeViewController: UIViewController {
 
     lazy var notificationButton: UIButton = {
         let button = UIButton()
-        button.createNofiButton("선택 완료")
+        button.createCompletionButton("선택 완료")
         
+        button.addTarget(self, action: #selector(doneButtonclicked), for: .touchUpInside)
         return button
     }()
     
@@ -39,6 +40,12 @@ class NewNoticeViewController: UIViewController {
             
         configureNavigationBar()
         setting()
+        
+        DispatchQueue.main.async {
+            self.viewModel.setTopic {
+                self.collectionView.reloadData()
+            }
+        }
     }
     
     func setting() {
@@ -63,6 +70,13 @@ class NewNoticeViewController: UIViewController {
     func configureNavigationBar() {
         setNavigationTitleAndBackButton("새로운 행사 알림")
     }
+    
+    @objc func doneButtonclicked() {
+        DispatchQueue.main.async {
+            self.viewModel.putTopic()
+            self.navigationController?.popViewController(animated: true)
+        }
+    }
 }
 
 
@@ -77,16 +91,15 @@ extension NewNoticeViewController: UICollectionViewDelegate, UICollectionViewDat
         cell.imageView.image = viewModel.imageOfIndex(indexPath.item)
         cell.imagetitle.text = viewModel.titleOfIndex(indexPath.item)
         
-        cell.cellSelected(viewModel.selected[indexPath.item])
+        cell.cellSelected(viewModel.selected[viewModel.titleOfIndex(indexPath.item)]!)
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        viewModel.selected[indexPath.item] = !viewModel.selected[indexPath.item]
-        
-        print("\(viewModel.title[indexPath.item]) clicked, value: \(viewModel.selected[indexPath.item])")
+        viewModel.selected[viewModel.titleOfIndex(indexPath.item)] = !viewModel.selected[viewModel.titleOfIndex(indexPath.item)]!
+
         
         collectionView.reloadData()
     }

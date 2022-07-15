@@ -57,9 +57,9 @@ class ChangeViewController: UIViewController {
         return button
     }()
     
-    lazy var notificationButton: UIButton = {
+    lazy var completionButton: UIButton = {
         var button = UIButton()
-        button.createNofiButton("완료")
+        button.createCompletionButton("완료")
         button.addTarget(self, action: #selector(notificationButtonClicked), for: .touchUpInside)
         return button
     }()
@@ -139,7 +139,7 @@ class ChangeViewController: UIViewController {
     func configureUI() {
         
         view.addSubview(infoView)
-        view.addSubview(notificationButton)
+        view.addSubview(completionButton)
         
         infoView.addSubview(userImage)
         infoView.addSubview(cameraView)
@@ -169,7 +169,7 @@ class ChangeViewController: UIViewController {
             $0.centerX.centerY.equalTo(cameraView)
         }
         
-        notificationButton.snp.makeConstraints {
+        completionButton.snp.makeConstraints {
             $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-15)
             $0.left.right.equalToSuperview().inset(20)
             $0.height.equalTo(50)

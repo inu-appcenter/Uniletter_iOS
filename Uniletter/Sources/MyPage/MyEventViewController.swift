@@ -1,19 +1,20 @@
 //
-//  MyCommentViewController.swift
+//  MyEventViewController.swift
 //  Uniletter
 //
-//  Created by 임현규 on 2022/07/08.
+//  Created by 임현규 on 2022/07/13.
 //
 
 import UIKit
 import SnapKit
 
-class MyCommentViewController: UIViewController {
+class MyEventViewController: UIViewController {
     
-    let myCommentViewModel = MyCommentViewModel()
+    
+    let myEventViewModel = MyEventViewModel()
     
     lazy var collectionView: UICollectionView = {
-       
+        
         let layout = UICollectionViewFlowLayout()
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -29,10 +30,11 @@ class MyCommentViewController: UIViewController {
         configureNavigationBar()
         configureUI()
         settingAPI()
+        
     }
     
     func configureNavigationBar() {
-        setNavigationTitleAndBackButton("댓글 단 글")
+        setNavigationTitleAndBackButton("내가 쓴 글")
     }
     
     func configureUI() {
@@ -48,25 +50,26 @@ class MyCommentViewController: UIViewController {
     }
     
     func settingAPI() {
-
-        self.myCommentViewModel.getMyComments {
+        
+        self.myEventViewModel.getMyEvents {
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
             }
         }
     }
+    
 }
 
-extension MyCommentViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension MyEventViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return myCommentViewModel.numOfCell
+        return myEventViewModel.numOfCell
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyEventCell.identifier, for: indexPath) as? MyEventCell else { return UICollectionViewCell() }
         
-        cell.setUI(event: myCommentViewModel.events[indexPath.row])
+        cell.setUI(event: myEventViewModel.myEvents[indexPath.row])
         
         return cell
     }
@@ -74,13 +77,13 @@ extension MyCommentViewController: UICollectionViewDelegate, UICollectionViewDat
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let EventDetailVC = EventDetailViewController()
         
-        EventDetailVC.id = myCommentViewModel.events[indexPath.row].id
+        EventDetailVC.id = myEventViewModel.myEvents[indexPath.row].id
         
         navigationController?.pushViewController(EventDetailVC, animated: true)
     }
 }
 
-extension MyCommentViewController: UICollectionViewDelegateFlowLayout {
+extension MyEventViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         

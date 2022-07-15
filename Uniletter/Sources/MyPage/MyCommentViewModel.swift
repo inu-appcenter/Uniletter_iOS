@@ -9,8 +9,6 @@ import UIKit
 
 class MyCommentViewModel {
     
-
-
     var myComments = [Comment]()
     var events = [Event]()
     var eventIdList = [Int]()
@@ -30,7 +28,7 @@ class MyCommentViewModel {
         
         API.getMyComment { result in
             self.myComments = result
-            //self.returnEventIdList(CommentList: self.myComments)
+            self.returnEventIdList(CommentList: self.myComments)
             firstDispatchGroup.leave()
         }
         
@@ -63,22 +61,22 @@ class MyCommentViewModel {
     }
     
 
-//    func returnEventIdList(CommentList: [Comment]) {
-//
-//        var eventIdList = [Int]()
-//
-//        for i in 0...CommentList.count - 1 {
-//            if eventIdList.isEmpty == true {
-//                eventIdList.append(CommentList[i].eventId)
-//            } else {
-//                if eventIdList.contains(CommentList[i].eventId) == false {
-//                    eventIdList.append(CommentList[i].eventId)
-//                }
-//            }
-//        }
-//
-//        self.eventIdList = eventIdList
-//    }
+    func returnEventIdList(CommentList: [Comment]) {
+
+        var eventIdList = [Int]()
+
+        for i in 0...CommentList.count - 1 {
+            if eventIdList.isEmpty == true {
+                eventIdList.append(CommentList[i].eventID)
+            } else {
+                if eventIdList.contains(CommentList[i].eventID) == false {
+                    eventIdList.append(CommentList[i].eventID)
+                }
+            }
+        }
+
+        self.eventIdList = eventIdList
+    }
     
     func sortedEventList(event: [Event]) {
         
