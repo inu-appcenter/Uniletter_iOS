@@ -74,8 +74,7 @@ final class AlertViewController: UIViewController {
     }
     
     func alertIsLogOut() {
-        let defaultInfo = LoginInfo(jwt: "", userID: 0, rememberMeToken: "")
-        LoginManager.shared.saveLoginInfo(defaultInfo)
+        LoginManager.shared.logout()
         
         let homeViewController = UINavigationController(rootViewController: HomeViewController())
         view.window?.rootViewController = homeViewController

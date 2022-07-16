@@ -188,11 +188,16 @@ extension HomeViewController: UICollectionViewDelegate,
         cell.setUI(event)
         
         cell.bookmarkButtonTapHandler = {
-            guard let like = event.likedByMe else { return }
-            if like {
-                self.viewModel.deleteLike(event.id)
+            if self.loginManager.isLoggedIn {
+                cell.homeCellView.bookmarkButton.isSelected = !cell.homeCellView.bookmarkButton.isSelected
+                guard let like = event.likedByMe else { return }
+                if like {
+                    self.viewModel.deleteLike(event.id)
+                } else {
+                    self.viewModel.likeEvent(event.id)
+                }
             } else {
-                self.viewModel.likeEvent(event.id)
+                self.presentAlertView(.login)
             }
         }
         
