@@ -30,22 +30,17 @@ class HomeCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func prepareForReuse() {
-        homeCellView.bookmarkButton.isSelected = false
-        homeCellView.bookmarkButton.tintColor = UIColor.customColor(.lightGray)
-    }
-    
     func setUI(_ event: Event) {
-        homeCellView.titleTextView.text = event.title
-        updateDDay(event.endAt)
-        homeCellView.categoryLabel.text = event.category
-        
         if let liked = event.likedByMe {
             homeCellView.bookmarkButton.isSelected = liked
             homeCellView.bookmarkButton.tintColor = liked
             ? UIColor.customColor(.yellow)
             : UIColor.customColor(.lightGray)
         }
+        
+        homeCellView.titleTextView.text = event.title
+        updateDDay(event.endAt)
+        homeCellView.categoryLabel.text = event.category
         
         guard let url = URL(string: event.imageURL) else { return }
         homeCellView.posterImageView.kf.setImage(with: url, options: [.cacheMemoryOnly])

@@ -11,6 +11,13 @@ class EventDetailViewModel {
     var event: Event?
     let defaultDate = "2022-02-02T00:00"
     
+    var like: Bool {
+        guard let like = event?.likedByMe else {
+            return false
+        }
+        return like
+    }
+    
     var profileImage: UIImage {
         guard let imageURL = event?.profileImage else {
             return UIImage(named: "BasicProfileImage") ?? UIImage()
@@ -93,6 +100,16 @@ class EventDetailViewModel {
     
     var likeAndComments: String {
         return "저장\(event?.likes ?? 0) ∙ 댓글 \(event?.comments ?? 0)개"
+    }
+    
+    func likeEvent() {
+        guard let id = event?.id else { return }
+        API.likeEvent(["eventId": id]) { }
+    }
+    
+    func deleteLike() {
+        guard let id = event?.id else { return }
+        API.deleteLikes(data: ["eventId": id]) { }
     }
     
     func loadEvent(_ id: Int, completion: @escaping () -> Void) {

@@ -77,6 +77,15 @@ extension SaveListViewController: UICollectionViewDelegate, UICollectionViewData
                 
                 self.saveListViewModel.deleteLike(index: indexPath.item) {
                     self.setAPI()
+                    
+                    NotificationCenter.default.post(
+                        name: NSNotification.Name("like"),
+                        object: nil,
+                        userInfo: [
+                            "id": self.saveListViewModel.eventAtIndex(index: indexPath.item).id,
+                            "like": false
+                        ])
+                    
                     self.dismiss(animated: true)
                 }
             }

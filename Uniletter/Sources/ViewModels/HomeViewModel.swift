@@ -38,6 +38,13 @@ class HomeViewModel {
         }
     }
     
+    func updateBookmarkButton(id: Int, isChecked: Bool) {
+        guard let index: Int = self.ids.firstIndex(of: id) else {
+            return
+        }
+        events[index].likedByMe = isChecked
+    }
+    
     func loadEvents(completion: @escaping () -> Void) {
         API.getEvents() { events in
             self.events = events

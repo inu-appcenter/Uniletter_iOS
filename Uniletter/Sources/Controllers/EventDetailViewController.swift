@@ -13,6 +13,7 @@ class EventDetailViewController: UIViewController {
     let eventDetailView = EventDetailView()
     let viewModel = EventDetailViewModel()
     var id: Int = 0
+    var bookmarkButton: UIBarButtonItem?
     
     override func loadView() {
         view = eventDetailView
@@ -42,6 +43,7 @@ class EventDetailViewController: UIViewController {
             target: self,
             action: #selector(bookmarkButtonDidTap(_:)))
         bookmarkButton.tintColor = UIColor.customColor(.lightGray)
+        self.bookmarkButton = bookmarkButton
         
         let topMoreButton = UIBarButtonItem(
             image: UIImage(named: "ellipsis")?.withRenderingMode(.alwaysOriginal),
@@ -74,6 +76,8 @@ class EventDetailViewController: UIViewController {
     }
     
     func updateUI() {
+        bookmarkButton?.isSelected = viewModel.like
+        changeBookmarkButton(viewModel.like)
         eventDetailView.profileImageView.image = viewModel.profileImage
         eventDetailView.nicknameLabel.text = viewModel.nickname
         eventDetailView.dateWroteLabel.text = viewModel.dateWrote
@@ -146,26 +150,37 @@ class EventDetailViewController: UIViewController {
             }
         }
     }
-
-    @objc func bookmarkButtonDidTap(_ sender: UIButton) {
-        guard let button = self.navigationItem.rightBarButtonItems?[1] else {
-            return
-        }
+    
+    func changeBookmarkButton(_ isSelected: Bool) {
+        bookmarkButton?.tintColor = .clear
         
-        button.isSelected = !button.isSelected
-        button.tintColor = .clear
-        
-        button.image = button.isSelected
+        bookmarkButton?.image = isSelected
         ? UIImage(
-            systemName: "bookmark.fill")?
-            .withTintColor(
-                UIColor.customColor(.yellow),
-                renderingMode: .alwaysOriginal)
+                systemName: "bookmark.fill")?
+                .withTintColor(
+                    UIColor.customColor(.yellow),
+                    renderingMode: .alwaysOriginal)
         : UIImage(
-            systemName: "bookmark")?
-            .withTintColor(
-                UIColor.customColor(.lightGray),
-                renderingMode: .alwaysOriginal)
+                systemName: "bookmark")?
+                .withTintColor(
+                    UIColor.customColor(.lightGray),
+                    renderingMode: .alwaysOriginal)
+    }
+
+    @objc func bookmarkButtonDidTap(_ sender: UIBarButtonItem) {
+        if LoginManager.shared.isLoggedIn {
+            sender.isSelected = !sender.isSelected
+            changeBookmarkButton(sender.isSelected)
+            
+            sender.isSelected ? viewModel.likeEvent() : viewModel.deleteLike()
+            
+            NotificationCenter.default.post(
+                name: NSNotification.Name("like"),
+                object: nil,
+                userInfo: ["id": id, "like": sender.isSelected])
+        } else {
+            presentAlertView(.login)
+        }
     }
     
     @objc func didTapTopMoreButton(_ sender: UIButton) {

@@ -28,7 +28,7 @@ class HomeViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        fetchEvents()
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -78,6 +78,12 @@ class HomeViewController: UIViewController {
             self,
             action: #selector(goToWrite(_:)),
             for: .touchUpInside)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(updateBookmark(_:)),
+            name: NSNotification.Name("like"),
+            object: nil)
     }
     
     func fetchEvents() {
@@ -85,14 +91,29 @@ class HomeViewController: UIViewController {
             self.viewModel.loadEvents() {
                 DispatchQueue.main.async {
                     self.homeView.collectionView.reloadData()
+                    self.setLoadingIndicator(false)
                 }
             }
         }
     }
     
     func checkLogin() {
+        setLoadingIndicator(true)
         loginManager.checkLogin() {
             print("로그인 상태: \(self.loginManager.isLoggedIn)")
+            self.fetchEvents()
+        }
+    }
+    
+    func setLoadingIndicator(_ bool: Bool) {
+        if bool {
+            homeView.loadingIndicatorView.isHidden = false
+            homeView.collectionView.isHidden = true
+            homeView.loadingIndicatorView.startAnimating()
+        } else {
+            homeView.loadingIndicatorView.isHidden = true
+            homeView.collectionView.isHidden = false
+            homeView.loadingIndicatorView.stopAnimating()
         }
     }
     
@@ -133,6 +154,17 @@ class HomeViewController: UIViewController {
         } else {
             presentAlertView(.login)
         }
+    }
+    
+    @objc func updateBookmark(_ noti: NSNotification) {
+        guard let like = noti.userInfo?["like"],
+              let id = noti.userInfo?["id"] else {
+            print("실패")
+            
+            return }
+        
+        viewModel.updateBookmarkButton(id: id as! Int, isChecked: like as! Bool)
+        homeView.collectionView.reloadData()
     }
 }
 
