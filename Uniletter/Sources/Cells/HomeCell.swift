@@ -67,10 +67,6 @@ class HomeCell: UICollectionViewCell {
     @objc func didTapBookmarkButton(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
         
-        sender.tintColor = sender.isSelected
-        ? UIColor.customColor(.yellow)
-        : UIColor.customColor(.lightGray)
-        
         bookmarkButtonTapHandler?()
     }
 }

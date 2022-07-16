@@ -102,14 +102,22 @@ class EventDetailViewModel {
         return "저장\(event?.likes ?? 0) ∙ 댓글 \(event?.comments ?? 0)개"
     }
     
-    func likeEvent() {
+    func likeEvent(completion: @escaping (String) -> Void) {
         guard let id = event?.id else { return }
-        API.likeEvent(["eventId": id]) { }
+        API.likeEvent(["eventId": id]) {
+            completion(self.changeLikes(1))
+        }
     }
     
-    func deleteLike() {
+    func deleteLike(completion: @escaping (String) -> Void) {
         guard let id = event?.id else { return }
-        API.deleteLikes(data: ["eventId": id]) { }
+        API.deleteLikes(data: ["eventId": id]) {
+            completion(self.changeLikes(0))
+        }
+    }
+    
+    func changeLikes(_ num: Int) -> String {
+        return "저장\((event?.likes ?? 0) + num) ∙ 댓글 \(event?.comments ?? 0)개"
     }
     
     func loadEvent(_ id: Int, completion: @escaping () -> Void) {
