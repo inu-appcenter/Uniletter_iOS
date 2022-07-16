@@ -93,7 +93,7 @@ class API {
     // 댓글 전체 받아오기
     static func getComments(_ id: Int, completion: @escaping([Comment]) -> Void) {
         networking(
-            urlStr: Address.comments.url + "\(id)",
+            urlStr: Address.comments.url + "?eventId=\(id)",
             method: .get,
             data: nil,
             model: [Comment].self) { result in
@@ -233,6 +233,7 @@ class API {
             }
     }
     
+    // 행사 좋아요
     static func likeEvent(_ params: [String: Int], completion: @escaping () -> Void) {
         guard let data = try? JSONSerialization.data(withJSONObject: params, options: .prettyPrinted) else {
             return
@@ -457,6 +458,27 @@ class API {
                 }
             }
         
+    }
+    
+    // 댓글 삭제
+    static func deleteComment(_ id: Int, completion: @escaping () -> Void) {
+        networking(
+            urlStr: Address.comments.url + "/\(id)",
+            method: .delete,
+            data: nil,
+            model: String.self) { result in
+                switch result {
+                case .success(_):
+                    print("성공")
+                case .failure(let error):
+                    if error.errorDescription! == "Response could not be serialized, input data was nil or zero length." {
+                        print("성공")
+                        completion()
+                    } else {
+                        print(error)
+                    }
+                }
+            }
     }
     
     // 행사 생성

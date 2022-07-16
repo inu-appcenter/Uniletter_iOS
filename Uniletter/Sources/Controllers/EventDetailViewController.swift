@@ -180,11 +180,11 @@ class EventDetailViewController: UIViewController {
     }
     
     @objc func didTapTopMoreButton(_ sender: UIButton) {
-        presentActionSheetView(.topForUser)
+        self.present(presentActionSheetView(.topForUser), animated: true)
     }
     
     @objc func didTapProfileMoreButton(_ sender: UIButton) {
-        presentActionSheetView(.profile)
+        self.present(presentActionSheetView(.profile), animated: true)
     }
     
     @objc func didTapCommentesLabel(_ sender: UIButton) {
@@ -196,7 +196,7 @@ class EventDetailViewController: UIViewController {
     
     @objc func didTapNotificationButton(_ sender: UIButton) {
         if viewModel.dday > 0 {
-            presentActionSheetView(.notification)
+            self.present(presentActionSheetView(.notification), animated: true)
         }
     }
     

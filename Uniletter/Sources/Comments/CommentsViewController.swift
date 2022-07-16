@@ -56,6 +56,12 @@ class CommentsViewController: UIViewController {
             action: #selector(didTapSubmitButton(_:)),
             for: .touchUpInside)
         
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(reload),
+            name: NSNotification.Name("reload"),
+            object: nil)
+        
         // 입력 뷰 키보드 따라가기
         view.keyboardLayoutGuide.topAnchor.constraint(equalTo: commentsView.writeView.bottomAnchor).isActive = true
     }
@@ -90,6 +96,10 @@ class CommentsViewController: UIViewController {
             self.fetchComments()
         }
     }
+    
+    @objc func reload() {
+        fetchComments()
+    }
 }
 
 // MARK: - TableView
@@ -111,7 +121,21 @@ extension CommentsViewController: UITableViewDataSource,
         cell.updateUI(comment)
         
         cell.moreButtonTapHandler = {
-            print("gd")
+            guard let wrote = comment.wroteByMe else {
+                self.presentAlertView(.login)
+                return }
+            var vc = ActionSheetViewController()
+            
+            if wrote {
+                vc = self.presentActionSheetView(.commentForWriter)
+                vc.commentID = comment.id
+                
+            } else {
+                vc = self.presentActionSheetView(.commentForUser)
+                vc.targetUserID = comment.userID
+            }
+            
+            self.present(vc, animated: true)
         }
         
         return cell
@@ -150,4 +174,17 @@ extension CommentsViewController: UITextViewDelegate {
             checkText = textView.text
         }
     }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange,
+            replacementText text: String) -> Bool {
+            guard let term = commentsView.textField.text,
+                  let stringRange = Range(range, in: term) else {
+                return false
+            }
+            let updatedText = term.replacingCharacters(
+                in: stringRange,
+                with: text)
+            
+            return updatedText.count <= 300
+        }
 }
