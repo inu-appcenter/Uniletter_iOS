@@ -8,13 +8,15 @@
 import UIKit
 import Kingfisher
 
-class EventDetailViewController: UIViewController {
-
+final class EventDetailViewController: UIViewController {
+    
+    // MARK: - Property
     let eventDetailView = EventDetailView()
     let viewModel = EventDetailViewModel()
     var id: Int = 0
     var bookmarkButton = UIButton()
     
+    // MARK: - Life cycle
     override func loadView() {
         view = eventDetailView
     }
@@ -33,6 +35,7 @@ class EventDetailViewController: UIViewController {
         convertProfileImageToCircle()
     }
     
+    // MARK: - Setup
     func setNavigationBar() {
         setNavigationTitleAndBackButton("읽어보기")
         
@@ -83,6 +86,7 @@ class EventDetailViewController: UIViewController {
             for: .touchUpInside)
     }
     
+    // MARK: - Funcs
     func updateUI() {
         bookmarkButton.isSelected = viewModel.like
         eventDetailView.profileImageView.image = viewModel.profileImage
@@ -157,7 +161,8 @@ class EventDetailViewController: UIViewController {
             }
         }
     }
-
+    
+    // MARK: - Actions
     @objc func didTapBookmarkButton(_ sender: UIButton) {
         if LoginManager.shared.isLoggedIn {
             sender.isSelected = !sender.isSelected

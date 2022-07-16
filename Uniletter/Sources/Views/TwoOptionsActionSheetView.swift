@@ -8,8 +8,9 @@
 import UIKit
 import SnapKit
 
-class TwoOptionsActionSheetView: UIView {
+final class TwoOptionsActionSheetView: UIView {
     
+    // MARK: - UI
     lazy var backgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = .black
@@ -79,6 +80,7 @@ class TwoOptionsActionSheetView: UIView {
     
     let recognizeTapBackground = UITapGestureRecognizer()
     
+    // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         addViews()
@@ -92,6 +94,7 @@ class TwoOptionsActionSheetView: UIView {
         setLayout()
     }
     
+    // MARK: - Setup
     func addViews() {
         [
             titleLabel,

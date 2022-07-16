@@ -7,11 +7,13 @@
 
 import Foundation
 
-class HomeViewModel {
+final class HomeViewModel {
     
+    // MARK: - Property
     var events = [Event]()
     var ids = [Int]()
     
+    // MARK: - UI
     var numOfEvents: Int {
         return events.count
     }
@@ -20,6 +22,7 @@ class HomeViewModel {
         return events[index]
     }
     
+    // MARK: - Funcs
     func likeEvent(_ id: Int) {
         API.likeEvent(["eventId": id]) {
             guard let index: Int = self.ids.firstIndex(of: id) else {

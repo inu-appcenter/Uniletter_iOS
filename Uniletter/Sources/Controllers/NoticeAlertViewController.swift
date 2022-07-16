@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NoticeAlertViewController: UIViewController {
+final class NoticeAlertViewController: UIViewController {
     let noticeAlertView = NoticeAlertView()
     var noticeAlert: NoticeAlert?
     

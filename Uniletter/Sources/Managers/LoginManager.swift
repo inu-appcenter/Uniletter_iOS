@@ -7,15 +7,18 @@
 
 import UIKit
 
-class LoginManager {
+final class LoginManager {
     
+    // MARK: - Init
     static let shared = LoginManager()
     
     private init() { }
     
+    // MARK: - Property
     var loginInfo: LoginInfo?
     var isLoggedIn = false
     
+    // MARK: - Funcs
     func checkLogin(completion: @escaping() -> Void) {
         loadLoginInfo()
         guard let loginInfo = loginInfo else {

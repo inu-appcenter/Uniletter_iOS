@@ -12,9 +12,11 @@ class HomeCell: UICollectionViewCell {
     
     static let identifier = "homeCell"
     
+    // MARK: - Property
     let homeCellView = HomeCellView()
     var bookmarkButtonTapHandler: (() -> Void)?
     
+    // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -30,6 +32,7 @@ class HomeCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - UI
     func setUI(_ event: Event) {
         if let liked = event.likedByMe {
             homeCellView.bookmarkButton.isSelected = liked
@@ -64,6 +67,7 @@ class HomeCell: UICollectionViewCell {
         homeCellView.ddayButton.configuration?.attributedTitle = attributedString
     }
     
+    // MARK: - Actions
     @objc func didTapBookmarkButton(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
         

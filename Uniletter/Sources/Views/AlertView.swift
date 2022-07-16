@@ -8,8 +8,9 @@
 import UIKit
 import SnapKit
 
-class AlertView: UIView {
+final class AlertView: UIView {
     
+    // MARK: - UI
     lazy var backgroundView : UIView = {
         let view = UIView()
         view.backgroundColor = .black
@@ -54,6 +55,7 @@ class AlertView: UIView {
     
     let recognizeTapBackground = UITapGestureRecognizer()
     
+    // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -68,6 +70,7 @@ class AlertView: UIView {
         setLayout()
     }
     
+    // MARK: - Setup
     func addViews() {
         [alertLabel, okButton, cancleButton].forEach { alertView.addSubview($0) }
         

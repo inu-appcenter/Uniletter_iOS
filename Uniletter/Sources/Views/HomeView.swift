@@ -8,8 +8,9 @@
 import UIKit
 import SnapKit
 
-class HomeView: UIView {
+final class HomeView: UIView {
     
+    // MARK: - UI
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let margin: CGFloat = 20
@@ -49,6 +50,7 @@ class HomeView: UIView {
     
     let loadingIndicatorView = UIActivityIndicatorView(style: .medium)
     
+    // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
@@ -64,6 +66,7 @@ class HomeView: UIView {
         setLayout()
     }
     
+    // MARK: - Setup
     func addViews() {
         [
             collectionView,

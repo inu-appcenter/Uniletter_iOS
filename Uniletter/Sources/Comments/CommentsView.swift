@@ -8,12 +8,14 @@
 import UIKit
 import SnapKit
 
-class CommentsView: UIView {
+final class CommentsView: UIView {
     
     // MARK: - UI
     lazy var tableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(CommentsCell.self, forCellReuseIdentifier: CommentsCell.identifier)
+        tableView.register(
+            CommentsCell.self,
+            forCellReuseIdentifier: CommentsCell.identifier)
         tableView.estimatedRowHeight = 93
         tableView.separatorColor = #colorLiteral(red: 0.8980392157, green: 0.8980392157, blue: 0.8980392157, alpha: 1)
         tableView.separatorInset = UIEdgeInsets(

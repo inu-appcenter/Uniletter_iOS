@@ -9,7 +9,14 @@ import Alamofire
 import UIKit
 
 // MARK: - 네트워킹 통합
-private func networking<T: Decodable>(urlStr: String, method: HTTPMethod, data: Data?, model: T.Type, completion: @escaping(Result<T, AFError>) -> Void) {
+private let errorString = "Response could not be serialized, input data was nil or zero length."
+
+private func networking<T: Decodable>(
+    urlStr: String,
+    method: HTTPMethod,
+    data: Data?,
+    model: T.Type,
+    completion: @escaping(Result<T, AFError>) -> Void) {
     guard let url = URL(string: baseURL + urlStr) else {
         print("URL을 찾을 수 없습니다.")
         return
@@ -33,7 +40,12 @@ private func networking<T: Decodable>(urlStr: String, method: HTTPMethod, data: 
 }
 
 // 이미지 업로드
-private func uploadNetworking<T: Decodable>(urlStr: String, method: HTTPMethod, data: Data?, model: T.Type, completion: @escaping(Result<T, AFError>) -> Void) {
+private func uploadNetworking<T: Decodable>(
+    urlStr: String,
+    method: HTTPMethod,
+    data: Data?,
+    model: T.Type,
+    completion: @escaping(Result<T, AFError>) -> Void) {
     guard let url = URL(string: baseURL + urlStr) else {
         print("URL을 찾을 수 없습니다.")
         return
@@ -57,7 +69,7 @@ private func uploadNetworking<T: Decodable>(urlStr: String, method: HTTPMethod, 
 }
 
 // MARK: - API
-class API {
+final class API {
     // 이벤트 전체 받아오기
     static func getEvents(completion: @escaping([Event]) -> Void) {
         networking(
@@ -224,7 +236,7 @@ class API {
                 case .success(_):
                     print("성공")
                 case .failure(let error):
-                    if error.errorDescription! == "Response could not be serialized, input data was nil or zero length." {
+                    if error.errorDescription! == errorString {
                         print("성공")
                     } else {
                         print(error)
@@ -248,7 +260,7 @@ class API {
                 case .success(_):
                     print("성공")
                 case .failure(let error):
-                    if error.errorDescription! == "Response could not be serialized, input data was nil or zero length." {
+                    if error.errorDescription! == errorString {
                         completion()
                     } else {
                         print(error)
@@ -286,7 +298,7 @@ class API {
                 case .success(_):
                     print("성공")
                 case .failure(let error):
-                    if error.errorDescription! == "Response could not be serialized, input data was nil or zero length." {
+                    if error.errorDescription! == errorString {
                         completion()
                     } else {
                         print(error)
@@ -324,7 +336,7 @@ class API {
                 case .success(_):
                     print("성공")
                 case .failure(let error):
-                    if error.errorDescription! == "Response could not be serialized, input data was nil or zero length." {
+                    if error.errorDescription! == errorString {
                         completion()
                     } else {
                         print(error)
@@ -363,7 +375,7 @@ class API {
                 case .success(_):
                     print("성공")
                 case .failure(let error):
-                    if error.errorDescription! == "Response could not be serialized, input data was nil or zero length." {
+                    if error.errorDescription! == errorString {
                         print("성공")
                         completion()
                     } else {
@@ -386,7 +398,7 @@ class API {
                 case .success(_):
                     print("성공")
                 case .failure(let error):
-                    if error.errorDescription! == "Response could not be serialized, input data was nil or zero length." {
+                    if error.errorDescription! == errorString {
                         completion()
                     } else {
                         print(error)
@@ -408,7 +420,7 @@ class API {
                 case .success(_):
                     print("성공")
                 case .failure(let error):
-                    if error.errorDescription! == "Response could not be serialized, input data was nil or zero length." {
+                    if error.errorDescription! == errorString {
                         print("성공")
                     } else {
                         print(error)
@@ -448,7 +460,7 @@ class API {
                 case .success(_):
                     print("성공")
                 case .failure(let error):
-                    if error.errorDescription! == "Response could not be serialized, input data was nil or zero length." {
+                    if error.errorDescription! == errorString {
                         print("성공")
                         completion()
                     } else {
@@ -471,7 +483,7 @@ class API {
                 case .success(_):
                     print("성공")
                 case .failure(let error):
-                    if error.errorDescription! == "Response could not be serialized, input data was nil or zero length." {
+                    if error.errorDescription! == errorString {
                         print("성공")
                         completion()
                     } else {
@@ -494,7 +506,7 @@ class API {
                 case .success(_):
                     completion()
                 case .failure(let error):
-                    if error.errorDescription! == "Response could not be serialized, input data was nil or zero length." {
+                    if error.errorDescription! == errorString {
                         print("성공")
                         completion()
                     } else {

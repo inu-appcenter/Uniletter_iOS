@@ -8,8 +8,9 @@
 import UIKit
 import SnapKit
 
-class HomeCellView: UIView {
+final class HomeCellView: UIView {
     
+    // MARK: - UI
     lazy var posterImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.cornerRadius = 12
@@ -60,6 +61,7 @@ class HomeCellView: UIView {
         return button
     }()
     
+    // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -74,6 +76,7 @@ class HomeCellView: UIView {
         setLayout()
     }
     
+    // MARK: - Setup
     func addViews() {
         [posterImageView, titleTextView, ddayButton, categoryLabel, bookmarkButton].forEach { addSubview($0) }
     }

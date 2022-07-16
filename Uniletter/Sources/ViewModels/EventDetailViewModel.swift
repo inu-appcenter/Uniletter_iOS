@@ -7,10 +7,13 @@
 
 import UIKit
 
-class EventDetailViewModel {
+final class EventDetailViewModel {
+    
+    // MARK: - Property
     var event: Event?
     let defaultDate = "2022-02-02T00:00"
     
+    // MARK: - UI
     var like: Bool {
         guard let like = event?.likedByMe else {
             return false
@@ -102,6 +105,11 @@ class EventDetailViewModel {
         return "저장\(event?.likes ?? 0) ∙ 댓글 \(event?.comments ?? 0)개"
     }
     
+    func changeLikes(_ num: Int) -> String {
+        return "저장\((event?.likes ?? 0) + num) ∙ 댓글 \(event?.comments ?? 0)개"
+    }
+    
+    // MARK: - Funcs
     func likeEvent(completion: @escaping (String) -> Void) {
         guard let id = event?.id else { return }
         API.likeEvent(["eventId": id]) {
@@ -114,10 +122,6 @@ class EventDetailViewModel {
         API.deleteLikes(data: ["eventId": id]) {
             completion(self.changeLikes(0))
         }
-    }
-    
-    func changeLikes(_ num: Int) -> String {
-        return "저장\((event?.likes ?? 0) + num) ∙ 댓글 \(event?.comments ?? 0)개"
     }
     
     func loadEvent(_ id: Int, completion: @escaping () -> Void) {

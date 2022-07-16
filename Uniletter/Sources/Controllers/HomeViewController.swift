@@ -8,14 +8,16 @@
 import UIKit
 import GoogleSignIn
 
-class HomeViewController: UIViewController {
+final class HomeViewController: UIViewController {
     
+    // MARK: - Property
     let homeView = HomeView()
     let viewModel = HomeViewModel()
     let loginManager = LoginManager.shared
     // FIXME: viewModel 싱글톤 안쓰셔도 돼요! 밑에 FIXME에 주석 달아놓을게요!
     let myPageViewModel = MyPageViewModel.shared
-
+    
+    // MARK: - Life cycle
     override func loadView() {
         view = homeView
     }
@@ -31,6 +33,7 @@ class HomeViewController: UIViewController {
         addGradientLayer()
     }
     
+    // MARK: - Setup
     func setNavigationBar() {
         let topLogo: UIButton = {
             let button = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 20))
@@ -82,6 +85,7 @@ class HomeViewController: UIViewController {
             object: nil)
     }
     
+    // MARK: - Funcs
     func fetchEvents() {
         DispatchQueue.global().async {
             self.viewModel.loadEvents() {
@@ -164,12 +168,20 @@ class HomeViewController: UIViewController {
     }
 }
 
-extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+// MARK: - CollectionView
+extension HomeViewController: UICollectionViewDelegate,
+                              UICollectionViewDataSource {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        numberOfItemsInSection section: Int)
+    -> Int {
         return viewModel.numOfEvents
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath)
+    -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeCell.identifier, for: indexPath) as? HomeCell else { return UICollectionViewCell() }
         
         let event = viewModel.infoOfEvent(indexPath.item)
@@ -187,11 +199,13 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let eventDetailViewController = EventDetailViewController()
-        let event = viewModel.events[indexPath.item]
-        eventDetailViewController.id = event.id
-        
-        self.navigationController?.pushViewController(eventDetailViewController, animated: true)
-    }
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath) {
+            let eventDetailViewController = EventDetailViewController()
+            let event = viewModel.events[indexPath.item]
+            eventDetailViewController.id = event.id
+            
+            self.navigationController?.pushViewController(eventDetailViewController, animated: true)
+        }
 }
