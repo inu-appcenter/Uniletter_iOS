@@ -31,10 +31,15 @@ final class LoginManager {
         ]
         
         API.rememberedLogin(parameter) { info in
+            guard let info = info else {
+                self.isLoggedIn = false
+                completion()
+                return
+            }
+
             self.saveLoginInfo(info)
             self.isLoggedIn = true
             completion()
-            
         }
     }
     

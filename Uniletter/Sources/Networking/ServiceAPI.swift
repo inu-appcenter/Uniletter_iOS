@@ -140,7 +140,7 @@ final class API {
     }
     
     // 자동 로그인
-    static func rememberedLogin(_ params: [String: Any], completion: @escaping(LoginInfo) -> Void) {
+    static func rememberedLogin(_ params: [String: Any], completion: @escaping(LoginInfo?) -> Void) {
         guard let data = try? JSONSerialization.data(withJSONObject: params, options: .prettyPrinted) else {
             return
         }
@@ -154,7 +154,8 @@ final class API {
                 case .success(let info):
                     completion(info)
                 case .failure(let error):
-                    print(error)
+                    print("\(error)\n 자동 로그인 실패 시 나오는 거라서 상관 X")
+                    completion(nil)
                 }
             }
     }
