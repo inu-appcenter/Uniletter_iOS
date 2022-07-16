@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class MyPageViewController: UIViewController {
+final class MyPageViewController: UIViewController {
     
     let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -25,15 +25,15 @@ class MyPageViewController: UIViewController {
     }()
     
     let infoView: UIView = {
-       
+        
         let view = UIView()
-    
+        
         return view
     }()
     
     let userImage: UIImageView = {
         let imageView = UIImageView()
-
+        
         imageView.clipsToBounds = true
         
         imageView.layer.borderWidth = 0.3
@@ -43,22 +43,22 @@ class MyPageViewController: UIViewController {
     
     let userName: UILabel = {
         let label = UILabel()
-
+        
         label.font = .systemFont(ofSize: 16)
-    
+        
         return label
     }()
     
     let grayBar: UIView = {
         let view = UIView()
-
+        
         view.backgroundColor = UIColor.customColor(.lightGray)
         
         return view
     }()
-
+    
     lazy var changeButton: UIButton = {
-
+        
         var config = UIButton.Configuration.plain()
         
         var titleArr = AttributedString.init("수정하기")
@@ -106,16 +106,16 @@ class MyPageViewController: UIViewController {
     }
     
     func fetchUserInfo() {
-            DispatchQueue.main.async {
-                self.userImage.image = self.myPageViewModel.userImage
-                self.userName.text = self.myPageViewModel.userName
+        DispatchQueue.main.async {
+            self.userImage.image = self.myPageViewModel.userImage
+            self.userName.text = self.myPageViewModel.userName
         }
     }
     
     func configureUI() {
-
+        
         view.addSubview(scrollView)
-
+        
         scrollView.addSubview(infoView)
         
         [
@@ -138,31 +138,31 @@ class MyPageViewController: UIViewController {
             $0.top.equalTo(view.safeAreaLayoutGuide)
             $0.leading.trailing.height.equalTo(view)
         }
-
+        
         infoView.snp.makeConstraints {
             $0.edges.equalTo(scrollView.contentLayoutGuide)
             $0.height.equalTo(850)
             $0.width.equalTo(scrollView)
         }
-
+        
         userImage.snp.makeConstraints {
             $0.top.equalTo(scrollView).offset(36)
             $0.centerX.equalTo(scrollView)
             $0.width.height.equalTo(78)
         }
-
+        
         userName.snp.makeConstraints {
             $0.top.equalTo(userImage.snp.bottom).offset(24)
             $0.centerX.equalTo(infoView)
         }
-
+        
         grayBar.snp.makeConstraints {
             $0.top.equalTo(userName.snp.bottom).offset(4)
             $0.leading.equalToSuperview().offset(70)
             $0.trailing.equalToSuperview().offset(-70)
             $0.height.equalTo(0.5)
         }
-
+        
         changeButton.snp.makeConstraints {
             $0.top.equalTo(grayBar.snp.bottom).offset(4)
             $0.centerX.equalTo(infoView)
@@ -214,29 +214,29 @@ class MyPageViewController: UIViewController {
 }
 
 extension MyPageViewController: UITableViewDelegate, UITableViewDataSource {
-
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return myPageViewModel.numOfSection
     }
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-
+        
         guard let headerView = view as? MyPageSectionView else { return }
         
         headerView.updateUI(myPageViewModel.titleOfSection(at: section))
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-
+        
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: MyPageSectionView.identifier)
-
+        
         return headerView
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 40
     }
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return myPageViewModel.numOfCell(at: section)
     }

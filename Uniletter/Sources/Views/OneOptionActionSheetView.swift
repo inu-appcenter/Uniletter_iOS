@@ -8,8 +8,9 @@
 import UIKit
 import SnapKit
 
-class OneOptionActionSheetView: UIView {
+final class OneOptionActionSheetView: UIView {
     
+    // MARK: - UI
     lazy var backgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = .black
@@ -64,6 +65,7 @@ class OneOptionActionSheetView: UIView {
     
     let recognizeTapBackground = UITapGestureRecognizer()
     
+    // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         addViews()
@@ -77,6 +79,7 @@ class OneOptionActionSheetView: UIView {
         setLayout()
     }
     
+    // MARK: - Setup
     func addViews() {
         [
             titleLabel,

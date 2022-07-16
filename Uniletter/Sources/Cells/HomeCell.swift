@@ -12,13 +12,17 @@ class HomeCell: UICollectionViewCell {
     
     static let identifier = "homeCell"
     
+    // MARK: - Property
     let homeCellView = HomeCellView()
+    var bookmarkButtonTapHandler: (() -> Void)?
     
+    // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         homeCellView.frame = contentView.frame
         contentView.addSubview(homeCellView)
+        homeCellView.bookmarkButton.isSelected = false
         homeCellView.bookmarkButton.addTarget(
             self,
             action: #selector(didTapBookmarkButton(_:)),
@@ -29,7 +33,15 @@ class HomeCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - UI
     func setUI(_ event: Event) {
+        if let liked = event.likedByMe {
+            homeCellView.bookmarkButton.isSelected = liked
+            homeCellView.bookmarkButton.tintColor = liked
+            ? UIColor.customColor(.yellow)
+            : UIColor.customColor(.lightGray)
+        }
+        
         homeCellView.titleTextView.text = event.title
         updateDDay(event.endAt)
         homeCellView.categoryLabel.text = event.category
@@ -56,11 +68,8 @@ class HomeCell: UICollectionViewCell {
         homeCellView.ddayButton.configuration?.attributedTitle = attributedString
     }
     
+    // MARK: - Actions
     @objc func didTapBookmarkButton(_ sender: UIButton) {
-        homeCellView.bookmarkButton.isSelected = !homeCellView.bookmarkButton.isSelected
-        
-        homeCellView.bookmarkButton.tintColor = homeCellView.bookmarkButton.isSelected
-        ? UIColor.customColor(.yellow)
-        : UIColor.customColor(.lightGray)
+        bookmarkButtonTapHandler?()
     }
 }

@@ -8,19 +8,26 @@
 import UIKit
 import Kingfisher
 
-class EventDetailViewController: UIViewController {
-
+final class EventDetailViewController: UIViewController {
+    
+    // MARK: - Property
     let eventDetailView = EventDetailView()
     let viewModel = EventDetailViewModel()
     var id: Int = 0
+    var bookmarkButton = UIButton()
     
+    // MARK: - Life cycle
     override func loadView() {
         view = eventDetailView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setNavigationBar()
+        setNavigationBar()
+        setViewController()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         fetchEvents()
     }
     
@@ -28,16 +35,26 @@ class EventDetailViewController: UIViewController {
         convertProfileImageToCircle()
     }
     
+    // MARK: - Setup
     func setNavigationBar() {
         setNavigationTitleAndBackButton("읽어보기")
         
-        let config = UIImage.SymbolConfiguration(pointSize: 18)
-        let bookmarkButton = UIBarButtonItem(
-            image: UIImage(systemName: "bookmark")?.withConfiguration(config),
-            style: .done,
-            target: self,
-            action: #selector(bookmarkButtonDidTap(_:)))
-        bookmarkButton.tintColor = UIColor.customColor(.lightGray)
+        let bookmarkButton: UIButton = {
+            let button = UIButton(frame: CGRect(x: 0, y: 0, width: 15, height: 23))
+            button.setBackgroundImage(
+                UIImage(named: "bookmark"),
+                for: .normal)
+            button.setBackgroundImage(
+                UIImage(named: "bookmarkFill"),
+                for: .selected)
+            button.addTarget(
+                self,
+                action: #selector(didTapBookmarkButton(_:)),
+                for: .touchUpInside)
+            
+            return button
+        }()
+        self.bookmarkButton = bookmarkButton
         
         let topMoreButton = UIBarButtonItem(
             image: UIImage(named: "ellipsis")?.withRenderingMode(.alwaysOriginal),
@@ -47,27 +64,11 @@ class EventDetailViewController: UIViewController {
         
         self.navigationItem.rightBarButtonItems = [
             topMoreButton,
-            bookmarkButton,
+            UIBarButtonItem(customView: bookmarkButton)
         ]
     }
     
     func setViewController() {
-        eventDetailView.profileImageView.image = viewModel.profileImage
-        eventDetailView.nicknameLabel.text = viewModel.nickname
-        eventDetailView.dateWroteLabel.text = viewModel.dateWrote
-        eventDetailView.mainImageView.image = viewModel.mainImage
-        eventDetailView.titleTextView.text = viewModel.title
-        eventDetailView.categoryContentsLabel.text = viewModel.categoryContent
-        eventDetailView.startContentsLabel.text = viewModel.startContent
-        eventDetailView.endContentsLabel.text = viewModel.endContent
-        eventDetailView.targetContentsLabel.text = viewModel.target
-        eventDetailView.contactContentsLabel.text = viewModel.contact
-        eventDetailView.bodyContentsLabel.text = viewModel.body
-        eventDetailView.viewsLabel.text = viewModel.views
-        eventDetailView.likeAndCommentsLabel.text = viewModel.likeAndComments
-        updateDDay()
-        convertTextToHyperLink()
-        
         eventDetailView.moreButton.addTarget(
             self,
             action: #selector(didTapProfileMoreButton(_:)),
@@ -83,6 +84,26 @@ class EventDetailViewController: UIViewController {
             self,
             action: #selector(didTapCommentesLabel(_:)),
             for: .touchUpInside)
+    }
+    
+    // MARK: - Funcs
+    func updateUI() {
+        bookmarkButton.isSelected = viewModel.like
+        eventDetailView.profileImageView.image = viewModel.profileImage
+        eventDetailView.nicknameLabel.text = viewModel.nickname
+        eventDetailView.dateWroteLabel.text = viewModel.dateWrote
+        eventDetailView.mainImageView.image = viewModel.mainImage
+        eventDetailView.titleTextView.text = viewModel.title
+        eventDetailView.categoryContentsLabel.text = viewModel.categoryContent
+        eventDetailView.startContentsLabel.text = viewModel.startContent
+        eventDetailView.endContentsLabel.text = viewModel.endContent
+        eventDetailView.targetContentsLabel.text = viewModel.target
+        eventDetailView.contactContentsLabel.text = viewModel.contact
+        eventDetailView.bodyContentsLabel.text = viewModel.body
+        eventDetailView.viewsLabel.text = viewModel.views
+        eventDetailView.likeAndCommentsLabel.text = viewModel.likeAndComments
+        updateDDay()
+        convertTextToHyperLink()
     }
     
     func updateDDay() {
@@ -135,39 +156,40 @@ class EventDetailViewController: UIViewController {
         DispatchQueue.global().async {
             self.viewModel.loadEvent(self.id) {
                 DispatchQueue.main.async {
-                    self.setViewController()
+                    self.updateUI()
                 }
             }
         }
     }
-
-    @objc func bookmarkButtonDidTap(_ sender: UIButton) {
-        guard let button = self.navigationItem.rightBarButtonItems?[1] else {
-            return
+    
+    // MARK: - Actions
+    @objc func didTapBookmarkButton(_ sender: UIButton) {
+        if LoginManager.shared.isLoggedIn {
+            sender.isSelected = !sender.isSelected
+            
+            sender.isSelected
+            ? viewModel.likeEvent() { text in
+                self.eventDetailView.likeAndCommentsLabel.text = text
+            }
+            : viewModel.deleteLike() { text in
+                self.eventDetailView.likeAndCommentsLabel.text = text
+            }
+            
+            NotificationCenter.default.post(
+                name: NSNotification.Name("like"),
+                object: nil,
+                userInfo: ["id": id, "like": sender.isSelected])
+        } else {
+            presentAlertView(.login)
         }
-        
-        button.isSelected = !button.isSelected
-        button.tintColor = .clear
-        
-        button.image = button.isSelected
-        ? UIImage(
-            systemName: "bookmark.fill")?
-            .withTintColor(
-                UIColor.customColor(.yellow),
-                renderingMode: .alwaysOriginal)
-        : UIImage(
-            systemName: "bookmark")?
-            .withTintColor(
-                UIColor.customColor(.lightGray),
-                renderingMode: .alwaysOriginal)
     }
     
     @objc func didTapTopMoreButton(_ sender: UIButton) {
-        presentActionSheetView(.topForUser)
+        self.present(presentActionSheetView(.topForUser), animated: true)
     }
     
     @objc func didTapProfileMoreButton(_ sender: UIButton) {
-        presentActionSheetView(.profile)
+        self.present(presentActionSheetView(.profile), animated: true)
     }
     
     @objc func didTapCommentesLabel(_ sender: UIButton) {
@@ -179,7 +201,7 @@ class EventDetailViewController: UIViewController {
     
     @objc func didTapNotificationButton(_ sender: UIButton) {
         if viewModel.dday > 0 {
-            presentActionSheetView(.notification)
+            self.present(presentActionSheetView(.notification), animated: true)
         }
     }
     

@@ -8,8 +8,9 @@
 import UIKit
 import SnapKit
 
-class LaunchViewController: UIViewController {
+final class LaunchViewController: UIViewController {
 
+    // MARK: - UI
     lazy var launchLogo: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "Logo")
@@ -27,6 +28,7 @@ class LaunchViewController: UIViewController {
         return label
     }()
     
+    // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -34,6 +36,7 @@ class LaunchViewController: UIViewController {
         setLayout()
     }
     
+    // MARK: - Setup
     func addViews() {
         [launchLogo, launchTitle].forEach { view.addSubview($0) }
     }

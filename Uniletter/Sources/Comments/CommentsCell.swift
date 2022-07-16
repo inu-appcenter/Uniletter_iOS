@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import Kingfisher
 
-class CommentsCell: UITableViewCell {
+final class CommentsCell: UITableViewCell {
     
     static let identifier = "commentsCell"
     

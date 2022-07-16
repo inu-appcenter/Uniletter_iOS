@@ -8,15 +8,15 @@
 import Alamofire
 import UIKit
 
-enum StatusCode {
-    case success
-    case fail
-    case server
-}
-
 // MARK: - 네트워킹 통합
-private func networking<T: Decodable>(urlStr: String, method: HTTPMethod, data: Data?, model: T.Type, completion: @escaping(Result<T, AFError>, StatusCode) -> Void) {
-    var statusCode: StatusCode = .fail
+private let errorString = "Response could not be serialized, input data was nil or zero length."
+
+private func networking<T: Decodable>(
+    urlStr: String,
+    method: HTTPMethod,
+    data: Data?,
+    model: T.Type,
+    completion: @escaping(Result<T, AFError>) -> Void) {
     guard let url = URL(string: baseURL + urlStr) else {
         print("URL을 찾을 수 없습니다.")
         return
@@ -30,57 +30,53 @@ private func networking<T: Decodable>(urlStr: String, method: HTTPMethod, data: 
     AF.request(request)
         .validate(statusCode: 200..<500)
         .responseDecodable(of: model.self) { response in
-            switch response.response?.statusCode {
-            case 200: statusCode = .success
-            case 500: statusCode = .server
-            default: break
-            }
-            
             switch response.result {
             case .success(let result):
-                completion(.success(result), statusCode)
+                completion(.success(result))
             case .failure(let error):
-                completion(.failure(error), statusCode)
+                completion(.failure(error))
             }
         }
 }
 
 // 이미지 업로드
-private func uploadNetworking<T: Decodable>(urlStr: String, method: HTTPMethod, data: Data?, model: T.Type, completion: @escaping(Result<T, AFError>, StatusCode) -> Void) {
-    
-    var statusCode: StatusCode = .fail
+private func uploadNetworking<T: Decodable>(
+    urlStr: String,
+    method: HTTPMethod,
+    data: Data?,
+    model: T.Type,
+    completion: @escaping(Result<T, AFError>) -> Void) {
     guard let url = URL(string: baseURL + urlStr) else {
         print("URL을 찾을 수 없습니다.")
         return
     }
     
     AF.upload(multipartFormData: { multipartFormData in
-        multipartFormData.append(data!, withName: "file", fileName: "test.jpg", mimeType: "image/jpg")
-    }, to: url).responseDecodable(of: model.self) { response in
-        switch response.response?.statusCode {
-        case 200: statusCode = .success
-        case 500: statusCode = .server
-        default: break
-        }
-        
+        multipartFormData.append(
+            data!,
+            withName: "file",
+            fileName: "test.jpg",
+            mimeType: "image/jpg")},
+              to: url)
+    .responseDecodable(of: model.self) { response in
         switch response.result {
         case .success(let result):
-            completion(.success(result), statusCode)
+            completion(.success(result))
         case .failure(let error):
-            completion(.failure(error), statusCode)
+            completion(.failure(error))
         }
     }
 }
 
 // MARK: - API
-class API {
+final class API {
     // 이벤트 전체 받아오기
     static func getEvents(completion: @escaping([Event]) -> Void) {
         networking(
             urlStr: Address.events.url,
             method: .get,
             data: nil,
-            model: [Event].self) { result, _ in
+            model: [Event].self) { result in
                 switch result {
                 case .success(let events):
                     completion(events)
@@ -96,7 +92,7 @@ class API {
             urlStr: Address.events.url + "/\(id)",
             method: .get,
             data: nil,
-            model: Event.self) { result, _ in
+            model: Event.self) { result in
                 switch result {
                 case .success(let events):
                     completion(events)
@@ -109,10 +105,10 @@ class API {
     // 댓글 전체 받아오기
     static func getComments(_ id: Int, completion: @escaping([Comment]) -> Void) {
         networking(
-            urlStr: Address.comments.url + "\(id)",
+            urlStr: Address.comments.url + "?eventId=\(id)",
             method: .get,
             data: nil,
-            model: [Comment].self) { result, _ in
+            model: [Comment].self) { result in
                 switch result {
                 case .success(let comments):
                     completion(comments)
@@ -133,12 +129,10 @@ class API {
             urlStr: Address.loginOauth.url,
             method: .post,
             data: data,
-            model: LoginInfo.self) { result, statusCode in
+            model: LoginInfo.self) { result in
                 switch result {
                 case .success(let info):
-                    if statusCode == .success {
-                        completion(info)
-                    }
+                    completion(info)
                 case .failure(let error):
                     print(error)
                 }
@@ -146,7 +140,7 @@ class API {
     }
     
     // 자동 로그인
-    static func rememberedLogin(_ params: [String: Any], completion: @escaping(LoginInfo) -> Void) {
+    static func rememberedLogin(_ params: [String: Any], completion: @escaping(LoginInfo?) -> Void) {
         guard let data = try? JSONSerialization.data(withJSONObject: params, options: .prettyPrinted) else {
             return
         }
@@ -155,14 +149,13 @@ class API {
             urlStr: Address.loginRemembered.url,
             method: .post,
             data: data,
-            model: LoginInfo.self) { result, statusCode in
+            model: LoginInfo.self) { result in
                 switch result {
                 case .success(let info):
-                    if statusCode == .success {
-                        completion(info)
-                    }
+                    completion(info)
                 case .failure(let error):
-                    print(error)
+                    print("\(error)\n 자동 로그인 실패 시 나오는 거라서 상관 X")
+                    completion(nil)
                 }
             }
     }
@@ -173,7 +166,7 @@ class API {
             urlStr: Address.me.url,
             method: .get,
             data: nil,
-            model: Me.self) { result, _ in
+            model: Me.self) { result in
                 switch result {
                 case .success(let Me):
                     completion(Me)
@@ -189,7 +182,7 @@ class API {
             urlStr: Address.mycomments.url,
             method: .get,
             data: nil,
-            model: [Comment].self) { result, _ in
+            model: [Comment].self) { result in
                 switch result {
                 case .success(let myComments):
                     completion(myComments)
@@ -205,7 +198,7 @@ class API {
             urlStr: Address.myevents.url,
             method: .get,
             data: nil,
-            model: [Event].self) { result, _ in
+            model: [Event].self) { result in
                 switch result {
                 case .success(let myEvents):
                     completion(myEvents)
@@ -217,12 +210,11 @@ class API {
     
     // 새 행사 구독 토픽 가져오기
     static func getTopic(completion: @escaping(Topic) -> Void) {
-        
         networking(
             urlStr: Address.topics.url,
             method: .get,
             data: nil,
-            model: Topic.self) { result, _ in
+            model: Topic.self) { result in
                 switch result {
                 case .success(let topics):
                     completion(topics)
@@ -234,20 +226,43 @@ class API {
     
     // 새 행사 구독 토픽 설정하기
     static func putTopic(data: [String: [Any]]) {
-        
         guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
         
         networking(
             urlStr: Address.topics.url,
             method: .put,
             data: data,
-            model: Int.self) { result, statusCode in
+            model: Int.self) { result in
                 switch result {
                 case .success(_):
                     print("성공")
                 case .failure(let error):
-                    if error.errorDescription! == "Response could not be serialized, input data was nil or zero length." {
+                    if error.errorDescription! == errorString {
                         print("성공")
+                    } else {
+                        print(error)
+                    }
+                }
+            }
+    }
+    
+    // 행사 좋아요
+    static func likeEvent(_ params: [String: Int], completion: @escaping () -> Void) {
+        guard let data = try? JSONSerialization.data(withJSONObject: params, options: .prettyPrinted) else {
+            return
+        }
+        
+        networking(
+            urlStr: Address.likes.url,
+            method: .post,
+            data: data,
+            model: String.self) { result in
+                switch result {
+                case .success(_):
+                    print("성공")
+                case .failure(let error):
+                    if error.errorDescription! == errorString {
+                        completion()
                     } else {
                         print(error)
                     }
@@ -257,12 +272,11 @@ class API {
     
     // 행사 좋아요 가져오기 (북마크 버튼 눌려진 행사)
     static func getLikes(completion: @escaping([Event]) -> Void) {
-        
         networking(
             urlStr: Address.likes.url,
             method: .get,
             data: nil,
-            model: [Event].self) { result, _ in
+            model: [Event].self) { result in
                 switch result {
                 case .success(let Events):
                     completion(Events)
@@ -274,19 +288,18 @@ class API {
     
     // 행사 좋아요 삭제하기
     static func deleteLikes(data: [String: Int], completion: @escaping() -> Void) {
-        
         guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
         
         networking(
             urlStr: Address.likes.url,
             method: .delete,
             data: data,
-            model: likes.self) { result, _ in
+            model: likes.self) { result in
                 switch result {
                 case .success(_):
                     print("성공")
                 case .failure(let error):
-                    if error.errorDescription! == "Response could not be serialized, input data was nil or zero length." {
+                    if error.errorDescription! == errorString {
                         completion()
                     } else {
                         print(error)
@@ -301,7 +314,7 @@ class API {
             urlStr: Address.nofifications.url,
             method: .get,
             data: nil,
-            model: [Noti].self) { result, _ in
+            model: [Noti].self) { result in
                 switch result {
                 case .success(let Events):
                     completion(Events)
@@ -319,12 +332,12 @@ class API {
             urlStr: Address.nofifications.url,
             method: .delete,
             data: data,
-            model: Noti.self) { result, _ in
+            model: Noti.self) { result in
                 switch result {
                 case .success(_):
                     print("성공")
                 case .failure(let error):
-                    if error.errorDescription! == "Response could not be serialized, input data was nil or zero length." {
+                    if error.errorDescription! == errorString {
                         completion()
                     } else {
                         print(error)
@@ -336,12 +349,11 @@ class API {
     
     // 차단 목록 가져오기
     static func getBlock(completion: @escaping([Block]) -> Void) {
-        
         networking(
             urlStr: Address.block.url,
             method: .get,
             data: nil,
-            model: [Block].self) { result, _ in
+            model: [Block].self) { result in
                 switch result {
                 case .success(let blocks):
                     completion(blocks)
@@ -359,12 +371,12 @@ class API {
             urlStr: Address.block.url,
             method: .delete,
             data: data,
-            model: Block.self) { result, _ in
+            model: Block.self) { result in
                 switch result {
                 case .success(_):
                     print("성공")
                 case .failure(let error):
-                    if error.errorDescription! == "Response could not be serialized, input data was nil or zero length." {
+                    if error.errorDescription! == errorString {
                         print("성공")
                         completion()
                     } else {
@@ -382,12 +394,12 @@ class API {
             urlStr: Address.block.url,
             method: .post,
             data: data,
-            model: Block.self) { result, _ in
+            model: Block.self) { result in
                 switch result {
                 case .success(_):
                     print("성공")
                 case .failure(let error):
-                    if error.errorDescription! == "Response could not be serialized, input data was nil or zero length." {
+                    if error.errorDescription! == errorString {
                         completion()
                     } else {
                         print(error)
@@ -404,12 +416,12 @@ class API {
             urlStr: Address.me.url,
             method: .patch,
             data: data,
-            model: Me.self) { result, _ in
+            model: Me.self) { result in
                 switch result {
                 case .success(_):
                     print("성공")
                 case .failure(let error):
-                    if error.errorDescription! == "Response could not be serialized, input data was nil or zero length." {
+                    if error.errorDescription! == errorString {
                         print("성공")
                     } else {
                         print(error)
@@ -426,55 +438,76 @@ class API {
             urlStr: Address.images.url,
             method: .post,
             data: imageData,
-            model: Images.self) { result, _ in
+            model: Images.self) { result in
                 switch result {
                 case .success(let Images):
                     completion(Images)
                 case .failure(let error):
                     print(error)
+                }
             }
-        }
     }
     
     // 댓글 달기
     static func createComment(data: [String: Any], completion: @escaping () -> Void) {
         guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
-
+        
         networking(
             urlStr: Address.comments.url,
             method: .post,
             data: data,
-            model: Comment.self) { result, _ in
+            model: Comment.self) { result in
                 switch result {
                 case .success(_):
                     print("성공")
                 case .failure(let error):
-                    if error.errorDescription! == "Response could not be serialized, input data was nil or zero length." {
+                    if error.errorDescription! == errorString {
                         print("성공")
                         completion()
                     } else {
                         print(error)
                     }
-
+                    
                 }
             }
-
+        
+    }
+    
+    // 댓글 삭제
+    static func deleteComment(_ id: Int, completion: @escaping () -> Void) {
+        networking(
+            urlStr: Address.comments.url + "/\(id)",
+            method: .delete,
+            data: nil,
+            model: String.self) { result in
+                switch result {
+                case .success(_):
+                    print("성공")
+                case .failure(let error):
+                    if error.errorDescription! == errorString {
+                        print("성공")
+                        completion()
+                    } else {
+                        print(error)
+                    }
+                }
+            }
     }
     
     // 행사 생성
     static func createEvent(data: [String : String], completion: @escaping() -> Void) {
         guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
-
+        
         networking(
             urlStr: Address.comments.url,
             method: .post,
             data: data,
-            model: Event.self) { result, _ in
+            model: Event.self) { result in
                 switch result {
                 case .success(_):
                     completion()
                 case .failure(let error):
-                    if error.errorDescription! == "Response could not be serialized, input data was nil or zero length." {
+                    if error.errorDescription! == errorString {
                         print("성공")
                         completion()
                     } else {
@@ -484,5 +517,5 @@ class API {
             }
     }
     
-
+    
 }

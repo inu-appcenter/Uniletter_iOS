@@ -8,8 +8,8 @@
 import UIKit
 import SnapKit
 
-class CommentsViewController: UIViewController {
-
+final class CommentsViewController: UIViewController {
+    
     // MARK: - Property
     let commentsView = CommentsView()
     let viewModel = CommentsViewModel()
@@ -25,6 +25,9 @@ class CommentsViewController: UIViewController {
         super.viewDidLoad()
         setNavigationBar()
         setViewController()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         fetchComments()
     }
     
@@ -53,8 +56,18 @@ class CommentsViewController: UIViewController {
             action: #selector(didTapSubmitButton(_:)),
             for: .touchUpInside)
         
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(reload),
+            name: NSNotification.Name("reload"),
+            object: nil)
+        
         // 입력 뷰 키보드 따라가기
         view.keyboardLayoutGuide.topAnchor.constraint(equalTo: commentsView.writeView.bottomAnchor).isActive = true
+    }
+    
+    func updateUI() {
+        commentsView.commentLabel.text = "댓글 \(viewModel.numofComments)"
     }
     
     func fetchComments() {
@@ -63,7 +76,7 @@ class CommentsViewController: UIViewController {
         DispatchQueue.global().async {
             self.viewModel.loadComments(id) {
                 DispatchQueue.main.async {
-                    self.commentsView.commentLabel.text = "댓글 \(self.viewModel.numofComments)"
+                    self.updateUI()
                     self.commentsView.tableView.reloadData()
                 }
             }
@@ -78,20 +91,31 @@ class CommentsViewController: UIViewController {
     
     @objc func didTapSubmitButton(_ sender: UIButton) {
         viewModel.writeComments(commentsView.textField.text) {
-            // TODO: - 댓글 쓴 후, 업데이트 하기 (fetchComments로는 안됨)
+            self.commentsView.textField.text = ""
+            self.view.endEditing(true)
             self.fetchComments()
         }
+    }
+    
+    @objc func reload() {
+        fetchComments()
     }
 }
 
 // MARK: - TableView
 extension CommentsViewController: UITableViewDataSource,
                                   UITableViewDelegate {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(
+        _ tableView: UITableView,
+        numberOfRowsInSection section: Int)
+    -> Int {
         return viewModel.numofComments
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(
+        _ tableView: UITableView,
+        cellForRowAt indexPath: IndexPath)
+    -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: CommentsCell.identifier,
             for: indexPath) as? CommentsCell else {
@@ -103,17 +127,36 @@ extension CommentsViewController: UITableViewDataSource,
         cell.updateUI(comment)
         
         cell.moreButtonTapHandler = {
-            print("gd")
+            guard let wrote = comment.wroteByMe else {
+                self.presentAlertView(.login)
+                return }
+            var vc = ActionSheetViewController()
+            
+            if wrote {
+                vc = self.presentActionSheetView(.commentForWriter)
+                vc.commentID = comment.id
+                
+            } else {
+                vc = self.presentActionSheetView(.commentForUser)
+                vc.targetUserID = comment.userID
+            }
+            
+            self.present(vc, animated: true)
         }
         
         return cell
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.view.endEditing(true)
-    }
+    func tableView(
+        _ tableView: UITableView,
+        didSelectRowAt indexPath: IndexPath) {
+            self.view.endEditing(true)
+        }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(
+        _ tableView: UITableView,
+        heightForRowAt indexPath: IndexPath)
+    -> CGFloat {
         return UITableView.automaticDimension
     }
 }
@@ -141,5 +184,21 @@ extension CommentsViewController: UITextViewDelegate {
         } else {
             checkText = textView.text
         }
+    }
+    
+    func textView(
+        _ textView: UITextView,
+        shouldChangeTextIn range: NSRange,
+        replacementText text: String)
+    -> Bool {
+        guard let term = commentsView.textField.text,
+              let stringRange = Range(range, in: term) else {
+            return false
+        }
+        let updatedText = term.replacingCharacters(
+            in: stringRange,
+            with: text)
+        
+        return updatedText.count <= 300
     }
 }

@@ -8,8 +8,9 @@
 import UIKit
 import PhotosUI
 
-class ActionSheetViewController: UIViewController {
-
+final class ActionSheetViewController: UIViewController {
+    
+    // MARK: - Property
     let oneOptionActionSheetView = OneOptionActionSheetView()
     let twoOptionsActionSheetView = TwoOptionsActionSheetView()
     var actionSheet: ActionSheet?
@@ -17,8 +18,14 @@ class ActionSheetViewController: UIViewController {
     var myPageViewModel = MyPageViewModel.shared
     var selectPhotoCompletionClosure: (() -> Void)?
     var basicPhotoCompletionClosure: (() -> Void)?
-
-
+    
+    // 기능 별 필요한 Property
+    var commentID: Int!
+    var eventID: Int!
+    var setFor: String!
+    var targetUserID: Int!
+    
+    // MARK: - Life cycle
     override func loadView() {
         guard let actionSheet = actionSheet else {
             return
@@ -39,7 +46,8 @@ class ActionSheetViewController: UIViewController {
         
         setViewcontroller()
     }
-
+    
+    // MARK: - Setup
     func setViewcontroller() {
         guard let option = option else {
             return
@@ -47,6 +55,7 @@ class ActionSheetViewController: UIViewController {
         option == 1 ? setOneOptionActionSheetView() : setTwoOptionsActionSheetView()
     }
     
+    // MARK: - Actions
     func setOneOptionActionSheetView() {
         oneOptionActionSheetView.titleLabel.text = actionSheet?.title
         oneOptionActionSheetView.firstButton.setTitle(actionSheet?.buttonText[0], for: .normal)
@@ -101,7 +110,7 @@ class ActionSheetViewController: UIViewController {
         case .profile: blockUser()
         case .notification: notifyBeforeStart()
         case .commentForUser: reportUser()
-        case .commentForWriter: deleteComment()
+        case .commentForWriter: deleteComment(commentID)
         case .modifyInfo: selectPhoto()
         }
     }
@@ -146,12 +155,18 @@ class ActionSheetViewController: UIViewController {
         // TODO: 마감 전 알림
     }
     
-    func deleteComment() {
-        // TODO: 댓글 삭제
+    func deleteComment(_ commentID: Int) {
+        API.deleteComment(commentID) {
+            self.dismiss(animated: true)
+        }
+        
+        NotificationCenter.default.post(
+            name: NSNotification.Name("reload"),
+            object: nil)
     }
     
     func selectPhoto() {
-
+        
         self.dismiss(animated: true)
         
         if let selectPhotoCompletionClosure = selectPhotoCompletionClosure {

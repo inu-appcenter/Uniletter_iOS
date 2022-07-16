@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CommentsViewModel {
+final class CommentsViewModel {
     
     // MARK: - Property
     var comments = [Comment]()
@@ -25,7 +25,7 @@ class CommentsViewModel {
     // MARK: - Write comments
     func writeComments(_ text: String, completion: @escaping () -> Void) {
         guard let eventID = eventID else { return }
-
+        
         API.createComment(data: ["eventId": eventID, "content": text]) {
             completion()
         }

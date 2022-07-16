@@ -9,10 +9,12 @@ import UIKit
 import GoogleSignIn
 import SnapKit
 
-class LoginViewController: UIViewController {
-
+final class LoginViewController: UIViewController {
+    
+    // MARK: - Property
     let config = GIDConfiguration(clientID: "295205896616-up393se5bofg6ntuqjeksbimk04rg14q.apps.googleusercontent.com")
-
+    
+    // MARK: - UI
     lazy var launchLogo: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "Logo")
@@ -64,6 +66,7 @@ class LoginViewController: UIViewController {
         return imageView
     }()
     
+    // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -71,6 +74,7 @@ class LoginViewController: UIViewController {
         setLayout()
     }
     
+    // MARK: - Setup
     func addViews() {
         [
             launchLogo,
@@ -112,8 +116,6 @@ class LoginViewController: UIViewController {
             $0.left.equalTo(appleLoginButton).offset(16)
             $0.width.equalTo(appleLogo.snp.height)
         }
-        
-        
     }
     
     func goToHomeViewController() {
@@ -124,6 +126,7 @@ class LoginViewController: UIViewController {
         present(navigationController, animated: true)
     }
     
+    // MARK: - 구글 로그인
     @objc func didTapLoginButton(_ sender: UIButton) {
         GIDSignIn.sharedInstance.signIn(with: config, presenting: self) { user, error in
             guard error == nil else {

@@ -9,8 +9,9 @@ import UIKit
 import MarqueeLabel
 import SnapKit
 
-class EventDetailView : UIView {
+final class EventDetailView : UIView {
     
+    // MARK: - UI
     lazy var scrollView = UIScrollView()
     
     lazy var profileImageView = UIImageView()
@@ -209,6 +210,7 @@ class EventDetailView : UIView {
     
     let recognizeTapLink = UITapGestureRecognizer()
     
+    // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
@@ -224,6 +226,7 @@ class EventDetailView : UIView {
         setLayout()
     }
     
+    // MARK: - Setup
     func addViews() {
         linkContentsLabel.addGestureRecognizer(recognizeTapLink)
         

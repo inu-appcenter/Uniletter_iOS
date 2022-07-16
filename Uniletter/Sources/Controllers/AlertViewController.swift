@@ -7,24 +7,27 @@
 
 import UIKit
 
-class AlertViewController: UIViewController {
+final class AlertViewController: UIViewController {
     
+    // MARK: - Property
     let alertView = AlertView()
     var alert: Alert?
     var alertIsSaveClosure: (() -> Void)?
     var alertIsNotificationClosure: (() -> Void)?
     var alertIsBlockOffClosure: (() -> Void)?
     
+    // MARK: - Life cycle
     override func loadView() {
         view = alertView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setViewController()
     }
     
+    // MARK: - Setup
     func setViewController() {
         alertView.alertLabel.text = alert?.title
         
@@ -43,6 +46,7 @@ class AlertViewController: UIViewController {
             for: .touchUpInside)
     }
     
+    // MARK: - Actions
     @objc func dismissViewController(_ sender: Any) {
         dismiss(animated: true)
     }
@@ -70,8 +74,7 @@ class AlertViewController: UIViewController {
     }
     
     func alertIsLogOut() {
-        let defaultInfo = LoginInfo(jwt: "", userID: 0, rememberMeToken: "")
-        LoginManager.shared.saveLoginInfo(defaultInfo)
+        LoginManager.shared.logout()
         
         let homeViewController = UINavigationController(rootViewController: HomeViewController())
         view.window?.rootViewController = homeViewController

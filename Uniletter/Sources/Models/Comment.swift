@@ -14,7 +14,7 @@ struct Comment: Codable {
     let profileImage: String
     let eventID: Int
     let content: String
-    var createdAt: String
+    let createdAt: String
     let wroteByMe: Bool?
     
     enum CodingKeys: String, CodingKey {

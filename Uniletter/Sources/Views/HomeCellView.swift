@@ -8,8 +8,9 @@
 import UIKit
 import SnapKit
 
-class HomeCellView: UIView {
+final class HomeCellView: UIView {
     
+    // MARK: - UI
     lazy var posterImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.cornerRadius = 12
@@ -52,17 +53,15 @@ class HomeCellView: UIView {
     }()
     
     lazy var bookmarkButton: UIButton = {
-        var config = UIButton.Configuration.plain()
-        config.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 18)
         let button = UIButton()
-        button.configuration = config
-        button.tintColor = UIColor.customColor(.lightGray)
-        button.setImage(UIImage(systemName: "bookmark"), for: .normal)
-        button.setImage(UIImage(systemName: "bookmark.fill"), for: .selected)
+        button.setBackgroundImage(UIImage(named: "bookmark"), for: .normal)
+        button.setBackgroundImage(UIImage(named: "bookmarkFill"), for: .selected)
+        button.imageView?.contentMode = .scaleAspectFit
         
         return button
     }()
     
+    // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -77,6 +76,7 @@ class HomeCellView: UIView {
         setLayout()
     }
     
+    // MARK: - Setup
     func addViews() {
         [posterImageView, titleTextView, ddayButton, categoryLabel, bookmarkButton].forEach { addSubview($0) }
     }
@@ -105,10 +105,10 @@ class HomeCellView: UIView {
         }
         
         bookmarkButton.snp.makeConstraints {
-            $0.top.equalTo(posterImageView.snp.top).offset(2)
+            $0.top.equalTo(posterImageView.snp.top)
             $0.right.equalToSuperview().offset(-10)
-            $0.width.equalTo(14)
-            $0.height.equalTo(20)
+            $0.width.equalTo(15)
+            $0.height.equalTo(23)
         }
     }
 }

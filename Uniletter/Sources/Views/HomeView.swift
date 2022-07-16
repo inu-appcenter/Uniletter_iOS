@@ -8,8 +8,9 @@
 import UIKit
 import SnapKit
 
-class HomeView: UIView {
+final class HomeView: UIView {
     
+    // MARK: - UI
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let margin: CGFloat = 20
@@ -47,6 +48,9 @@ class HomeView: UIView {
         return button
     }()
     
+    let loadingIndicatorView = UIActivityIndicatorView(style: .medium)
+    
+    // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
@@ -62,8 +66,15 @@ class HomeView: UIView {
         setLayout()
     }
     
+    // MARK: - Setup
     func addViews() {
-        [collectionView, gradientView, writeButton].forEach { addSubview($0) }
+        [
+            collectionView,
+            gradientView,
+            writeButton,
+            loadingIndicatorView,
+        ]
+            .forEach { addSubview($0) }
     }
     
     func setLayout() {
@@ -81,6 +92,11 @@ class HomeView: UIView {
             $0.bottom.equalToSuperview().offset(-50)
             $0.right.equalToSuperview().offset(-20)
             $0.width.height.equalTo(60)
+        }
+        
+        loadingIndicatorView.snp.makeConstraints {
+            $0.top.equalTo(safeAreaLayoutGuide).offset(15)
+            $0.left.right.equalTo(collectionView)
         }
     }
 }
