@@ -49,7 +49,7 @@ final class WritingViewController: UIViewController {
     
     func setViewController() {
         view.backgroundColor = .white
-        changePictureViewController()
+        changeViewController(pictureViewController)
     }
     
     func setContainerView() {
@@ -76,25 +76,12 @@ final class WritingViewController: UIViewController {
     }
     
     // MARK: - Funcs
-    func changePictureViewController() {
-        pictureViewController.willMove(toParent: self)
-        pictureViewController.view.frame = containerView.bounds
-        containerView.addSubview(pictureViewController.view)
-        pictureViewController.didMove(toParent: self)
-    }
-    
-    func changeContentViewController() {
-        contentViewController.willMove(toParent: self)
-        contentViewController.view.frame = containerView.bounds
-        containerView.addSubview(contentViewController.view)
-        contentViewController.didMove(toParent: self)
-    }
-    
-    func changeDetailViewController() {
-        detailViewController.willMove(toParent: self)
-        detailViewController.view.frame = containerView.bounds
-        containerView.addSubview(detailViewController.view)
-        detailViewController.didMove(toParent: self)
+    func changeViewController(_ vc: UIViewController) {
+        vc.willMove(toParent: self)
+        containerView.addSubview(vc.view)
+        vc.view.frame = containerView.bounds
+        vc.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        vc.didMove(toParent: self)
     }
     
     // MARK: - Actions
@@ -104,10 +91,10 @@ final class WritingViewController: UIViewController {
             self.navigationController?.popViewController(animated: true)
         case 1:
             contentViewController.view.removeFromSuperview()
-            changePictureViewController()
+            changeViewController(pictureViewController)
         case 2:
             detailViewController.view.removeFromSuperview()
-            changeContentViewController()
+            changeViewController(contentViewController)
         default: break
         }
         
@@ -118,10 +105,10 @@ final class WritingViewController: UIViewController {
         switch page {
         case 0:
             pictureViewController.view.removeFromSuperview()
-            changeContentViewController()
+            changeViewController(contentViewController)
         case 1:
             contentViewController.view.removeFromSuperview()
-            changeDetailViewController()
+            changeViewController(detailViewController)
         case 2:
             // TODO: 이벤트 등록
             break

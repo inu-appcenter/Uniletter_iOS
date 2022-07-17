@@ -68,7 +68,7 @@ final class WritingPictureView: UIView {
     
     func setLayout() {
         titleLabel.snp.makeConstraints {
-            $0.top.equalTo(safeAreaLayoutGuide).offset(24)
+            $0.top.equalToSuperview().offset(24)
             $0.left.right.equalToSuperview().inset(20)
         }
         
