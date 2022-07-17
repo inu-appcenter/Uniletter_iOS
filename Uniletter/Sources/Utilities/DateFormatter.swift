@@ -75,6 +75,15 @@ func caculateDDay(_ endAt: String) -> String {
     return "\(dday)"
 }
 
+/// 현재 날짜 String으로 반환
+func convertTodayToString() -> String {
+    let now = Date()
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy.MMdd"
+    
+    return dateFormatter.string(from: now)
+}
+
 func StringToYearMonthDay(_ dataStr: String) -> [String] {
     let YearMonthDay = dataStr.components(separatedBy: "-")
     
