@@ -11,6 +11,8 @@ target 'Uniletter' do
   pod "MarqueeLabel"
   pod "GoogleSignIn"
   pod "DropDown"
+  pod "FSCalendar"
+
   # Pods for Uniletter
 
 end

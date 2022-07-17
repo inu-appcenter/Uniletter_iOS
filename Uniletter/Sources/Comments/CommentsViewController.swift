@@ -66,6 +66,13 @@ final class CommentsViewController: UIViewController {
         view.keyboardLayoutGuide.topAnchor.constraint(equalTo: commentsView.writeView.bottomAnchor).isActive = true
     }
     
+    func initTextField() {
+        commentsView.textField.text = "댓글을 입력해주세요."
+        commentsView.textField.textColor = UIColor.customColor(.lightGray)
+        commentsView.submitButton.isUserInteractionEnabled = false
+        commentsView.submitButton.configuration?.baseBackgroundColor = UIColor.customColor(.lightGray)
+    }
+    
     func updateUI() {
         commentsView.commentLabel.text = "댓글 \(viewModel.numofComments)"
     }
@@ -92,7 +99,7 @@ final class CommentsViewController: UIViewController {
     @objc func didTapSubmitButton(_ sender: UIButton) {
         if LoginManager.shared.isLoggedIn {
             viewModel.writeComments(commentsView.textField.text) {
-                self.commentsView.textField.text = ""
+                self.initTextField()
                 self.view.endEditing(true)
                 self.fetchComments()
             }
@@ -181,10 +188,7 @@ extension CommentsViewController: UITextViewDelegate {
     
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text == "" {
-            textView.text = "댓글을 입력해주세요."
-            textView.textColor = UIColor.customColor(.lightGray)
-            commentsView.submitButton.isUserInteractionEnabled = false
-            commentsView.submitButton.configuration?.baseBackgroundColor = UIColor.customColor(.lightGray)
+            initTextField()
         } else {
             checkText = textView.text
         }
