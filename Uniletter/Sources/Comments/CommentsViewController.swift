@@ -90,10 +90,14 @@ final class CommentsViewController: UIViewController {
     }
     
     @objc func didTapSubmitButton(_ sender: UIButton) {
-        viewModel.writeComments(commentsView.textField.text) {
-            self.commentsView.textField.text = ""
-            self.view.endEditing(true)
-            self.fetchComments()
+        if LoginManager.shared.isLoggedIn {
+            viewModel.writeComments(commentsView.textField.text) {
+                self.commentsView.textField.text = ""
+                self.view.endEditing(true)
+                self.fetchComments()
+            }
+        } else {
+            presentAlertView(.login)
         }
     }
     

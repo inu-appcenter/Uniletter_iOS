@@ -6,6 +6,7 @@ PODS:
   - AppAuth/Core (1.5.0)
   - AppAuth/ExternalUserAgent (1.5.0):
     - AppAuth/Core
+  - DropDown (2.3.13)
   - GoogleSignIn (6.2.2):
     - AppAuth (~> 1.5)
     - GTMAppAuth (~> 1.3)
@@ -20,6 +21,7 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire
+  - DropDown
   - GoogleSignIn
   - Kingfisher
   - MarqueeLabel
@@ -29,6 +31,7 @@ SPEC REPOS:
   trunk:
     - Alamofire
     - AppAuth
+    - DropDown
     - GoogleSignIn
     - GTMAppAuth
     - GTMSessionFetcher
@@ -39,6 +42,7 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   Alamofire: 87bd8c952f9a4454320fce00d9cc3de57bcadaf5
   AppAuth: 80317d99ac7ff2801a2f18ff86b48cd315ed465d
+  DropDown: 8a2116376c1981888557f72ec2ffc9a5e0e456ec
   GoogleSignIn: 3c68388ac221f379676e8f1cb115df3aaf73b93f
   GTMAppAuth: 4d8f864896f3646f0c33baf38a28362f4c601e15
   GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
@@ -46,6 +50,6 @@ SPEC CHECKSUMS:
   MarqueeLabel: 02f5ac8fd6877c94564556cb93fa86c70c08baeb
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
 
-PODFILE CHECKSUM: a822a2781d291bc1288a7c2e6f229f6bbb7e7602
+PODFILE CHECKSUM: d10e24899c2634e4af334212395bc51fc245c517
 
 COCOAPODS: 1.11.2

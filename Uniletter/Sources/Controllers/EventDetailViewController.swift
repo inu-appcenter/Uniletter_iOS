@@ -13,6 +13,7 @@ final class EventDetailViewController: UIViewController {
     // MARK: - Property
     let eventDetailView = EventDetailView()
     let viewModel = EventDetailViewModel()
+    let loginManager = LoginManager.shared
     var id: Int = 0
     var bookmarkButton = UIButton()
     
@@ -164,7 +165,7 @@ final class EventDetailViewController: UIViewController {
     
     // MARK: - Actions
     @objc func didTapBookmarkButton(_ sender: UIButton) {
-        if LoginManager.shared.isLoggedIn {
+        if loginManager.isLoggedIn {
             sender.isSelected = !sender.isSelected
             
             sender.isSelected
@@ -185,11 +186,19 @@ final class EventDetailViewController: UIViewController {
     }
     
     @objc func didTapTopMoreButton(_ sender: UIButton) {
-        self.present(presentActionSheetView(.topForUser), animated: true)
+        if loginManager.isLoggedIn {
+            self.present(presentActionSheetView(.topForUser), animated: true)
+        } else {
+            presentAlertView(.login)
+        }
     }
     
     @objc func didTapProfileMoreButton(_ sender: UIButton) {
-        self.present(presentActionSheetView(.profile), animated: true)
+        if loginManager.isLoggedIn {
+            self.present(presentActionSheetView(.profile), animated: true)
+        } else {
+            presentAlertView(.login)
+        }
     }
     
     @objc func didTapCommentesLabel(_ sender: UIButton) {
@@ -200,8 +209,12 @@ final class EventDetailViewController: UIViewController {
     }
     
     @objc func didTapNotificationButton(_ sender: UIButton) {
-        if viewModel.dday > 0 {
-            self.present(presentActionSheetView(.notification), animated: true)
+        if loginManager.isLoggedIn {
+            if viewModel.dday > 0 {
+                self.present(presentActionSheetView(.notification), animated: true)
+            }
+        } else {
+            presentAlertView(.login)
         }
     }
     
