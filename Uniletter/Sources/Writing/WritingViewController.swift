@@ -32,6 +32,7 @@ final class WritingViewController: UIViewController {
     let contentViewController = WritingContentViewController()
     let detailViewController = WritingDetailViewController()
     var page = 0
+    let writingManager = WritingManager.shared
     
     
     // MARK: - Life cycle

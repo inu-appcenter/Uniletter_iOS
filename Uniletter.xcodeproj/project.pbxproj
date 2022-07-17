@@ -45,6 +45,7 @@
 		7610DD6F2884568000CA03BC /* WiritingPictureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7610DD6E2884568000CA03BC /* WiritingPictureViewController.swift */; };
 		7610DD712884569100CA03BC /* WritingContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7610DD702884569100CA03BC /* WritingContentViewController.swift */; };
 		7610DD73288456A300CA03BC /* WritingDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7610DD72288456A300CA03BC /* WritingDetailViewController.swift */; };
+		7610DD7528846FCE00CA03BC /* WritingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7610DD7428846FCE00CA03BC /* WritingManager.swift */; };
 		7616B813286B50A000935257 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7616B812286B50A000935257 /* MyPageViewController.swift */; };
 		764386642874021600375CE6 /* LoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764386632874021600375CE6 /* LoginManager.swift */; };
 		765BC9FD2868C00C0098BBF2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765BC9FC2868C00C0098BBF2 /* AppDelegate.swift */; };
@@ -133,6 +134,7 @@
 		7610DD6E2884568000CA03BC /* WiritingPictureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WiritingPictureViewController.swift; sourceTree = "<group>"; };
 		7610DD702884569100CA03BC /* WritingContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritingContentViewController.swift; sourceTree = "<group>"; };
 		7610DD72288456A300CA03BC /* WritingDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritingDetailViewController.swift; sourceTree = "<group>"; };
+		7610DD7428846FCE00CA03BC /* WritingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritingManager.swift; sourceTree = "<group>"; };
 		7616B812286B50A000935257 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		764386632874021600375CE6 /* LoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginManager.swift; sourceTree = "<group>"; };
 		765BC9F92868C00C0098BBF2 /* Uniletter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Uniletter.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -240,8 +242,8 @@
 		7610DD5D28841EC800CA03BC /* Writing */ = {
 			isa = PBXGroup;
 			children = (
-				7610DD642884299A00CA03BC /* WritingCheckView.swift */,
 				7610DD6628842D8600CA03BC /* WritingBottomButtonsView.swift */,
+				7610DD642884299A00CA03BC /* WritingCheckView.swift */,
 				7610DD6028841F1500CA03BC /* WritingPictureView.swift */,
 				7610DD68288432E200CA03BC /* WritingContentView.swift */,
 				7610DD6A288432F100CA03BC /* WritingDetailView.swift */,
@@ -250,6 +252,7 @@
 				7610DD6E2884568000CA03BC /* WiritingPictureViewController.swift */,
 				7610DD702884569100CA03BC /* WritingContentViewController.swift */,
 				7610DD72288456A300CA03BC /* WritingDetailViewController.swift */,
+				7610DD7428846FCE00CA03BC /* WritingManager.swift */,
 			);
 			path = Writing;
 			sourceTree = "<group>";
@@ -592,6 +595,7 @@
 				2CB8AAAE287EAEA700BDA358 /* PrivacyPolicyViewModel.swift in Sources */,
 				76FCB54E286CA16700AC4F70 /* UILabel++Extensions.swift in Sources */,
 				76AC78422872E02500D303C4 /* ActionSheetViewController.swift in Sources */,
+				7610DD7528846FCE00CA03BC /* WritingManager.swift in Sources */,
 				769AEB43287C85AC00C697FC /* CommentsViewModel.swift in Sources */,
 				769AEB3F287C4A1B00C697FC /* CommentsCell.swift in Sources */,
 				76AC78402872DF9300D303C4 /* OneOptionActionSheetView.swift in Sources */,

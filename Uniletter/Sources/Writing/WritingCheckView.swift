@@ -24,6 +24,7 @@ final class WritingCheckView: UIView {
         button.layer.borderWidth = 1
         button.layer.borderColor = CGColor.customColor(.blueGreen)
         button.backgroundColor = UIColor.customColor(.blueGreen)
+        button.setImage(UIImage(), for: .normal)
         button.setImage(UIImage(named: "check"), for: .selected)
         button.isSelected = true
         
