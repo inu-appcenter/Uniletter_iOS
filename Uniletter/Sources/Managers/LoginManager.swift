@@ -38,7 +38,7 @@ final class LoginManager {
                 completion()
                 return
             }
-            print(info)
+            
             self.saveLoginInfo(info)
             self.isLoggedIn = true
             completion()
