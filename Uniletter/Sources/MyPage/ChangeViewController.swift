@@ -207,10 +207,10 @@ class ChangeViewController: UIViewController {
         }
         
         actionSheetViewController.basicPhotoCompletionClosure = {
-
-            self.myPageViewModel.userImage = UIImage(named: "UserImage")
             
-            self.userImage.image = self.myPageViewModel.userImage
+            self.myPageViewModel.choiceImage = UIImage(named: "UserImage")
+            
+            self.userImage.image = self.myPageViewModel.choiceImage
         }
         present(actionSheetViewController, animated: true)
     }
@@ -238,11 +238,10 @@ class ChangeViewController: UIViewController {
     @objc func notificationButtonClicked() {
         guard let text = textField.text else { return }
        
-        myPageViewModel.userName = text
-        myPageViewModel.userImage = userImage.image
+        myPageViewModel.changeName = text
         
         DispatchQueue.global().async {
-            self.myPageViewModel.uploadUserInfo(text, self.myPageViewModel.userImage!)
+            self.myPageViewModel.uploadUserInfo(self.myPageViewModel.changeName!, self.myPageViewModel.choiceImage!)
         }
         navigationController?.popViewController(animated: true)
     }
@@ -258,7 +257,8 @@ extension ChangeViewController: PHPickerViewControllerDelegate {
                 DispatchQueue.main.async {
                     guard let selectedImage = image as? UIImage else { return }
                     
-                    self.userImage.image = selectedImage
+                    self.myPageViewModel.choiceImage = selectedImage
+                    self.userImage.image = self.myPageViewModel.choiceImage
                 }
             }
         }

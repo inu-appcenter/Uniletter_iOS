@@ -55,6 +55,8 @@ class MyPageViewModel {
     var userName: String?
     var userImageUrl: String?
     var userImage: UIImage?
+    var choiceImage: UIImage?
+    var changeName: String?
     
     var numOfSection: Int {
         return type.count
@@ -91,6 +93,9 @@ class MyPageViewModel {
     }
     
     func uploadUserInfo(_ nickname: String, _ image: UIImage) {
+        
+        self.userName = self.changeName
+        self.userImage = self.choiceImage
         
         API.uploadMeImage(image: image) { images in
             self.patchUserInfo(nickname, images.uuid)
