@@ -20,6 +20,11 @@ final class WritingTextFieldView: UIView {
         textView.layer.borderColor = CGColor.customColor(.defaultGray)
         textView.tintColor = UIColor.customColor(.blueGreen)
         textView.font = .systemFont(ofSize: 16)
+        textView.textContainerInset = UIEdgeInsets(
+            top: 12,
+            left: 16,
+            bottom: 10,
+            right: 0)
         
         return textView
     }()

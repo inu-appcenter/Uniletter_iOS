@@ -152,6 +152,7 @@ final class CommentsView: UIView {
             $0.bottom.equalToSuperview().inset(18)
             $0.left.equalToSuperview().offset(20)
             $0.right.equalTo(submitButton.snp.left).offset(-4)
+            $0.height.lessThanOrEqualTo(80)
         }
         
         submitButton.snp.makeConstraints {

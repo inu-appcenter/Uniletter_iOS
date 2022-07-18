@@ -179,6 +179,8 @@ extension CommentsViewController: UITextViewDelegate {
             commentsView.submitButton.isUserInteractionEnabled = true
             commentsView.submitButton.configuration?.baseBackgroundColor = UIColor.customColor(.blueGreen)
         }
+        
+        textView.isScrollEnabled = textView.frame.height >= 80 ? true : false
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {

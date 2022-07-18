@@ -11,6 +11,10 @@ import SnapKit
 final class WritingPictureView: UIView {
     
     // MARK: - UI
+    let scrollView = UIScrollView()
+    
+    let contentView = UIView()
+    
     let titleLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 18, weight: .bold)
@@ -38,7 +42,9 @@ final class WritingPictureView: UIView {
         return label
     }()
     
-    lazy var checkView = WritingCheckView(frame: CGRect(x: 0, y: 0, width: 44, height: 19))
+    lazy var checkView = WritingCheckView()
+    
+    let clearView = UIView()
     
     // MARK: - Init
     override init(frame: CGRect) {
@@ -62,11 +68,26 @@ final class WritingPictureView: UIView {
             imageButton,
             defaultLabel,
             checkView,
+            clearView,
         ]
-            .forEach { addSubview($0) }
+            .forEach { contentView.addSubview($0) }
+        
+        scrollView.addSubview(contentView)
+        
+        addSubview(scrollView)
     }
     
     func setLayout() {
+        scrollView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
+        contentView.snp.makeConstraints {
+            $0.top.left.right.equalToSuperview()
+            $0.bottom.equalToSuperview().offset(-20)
+            $0.width.equalToSuperview()
+        }
+        
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(24)
             $0.left.right.equalToSuperview().inset(20)
@@ -86,6 +107,11 @@ final class WritingPictureView: UIView {
         checkView.snp.makeConstraints {
             $0.top.equalTo(defaultLabel)
             $0.right.equalTo(titleLabel)
+        }
+        
+        clearView.snp.makeConstraints {
+            $0.top.equalTo(defaultLabel.snp.bottom)
+            $0.bottom.left.right.equalToSuperview()
         }
     }
 }
