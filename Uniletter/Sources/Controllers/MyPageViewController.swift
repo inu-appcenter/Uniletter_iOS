@@ -201,7 +201,6 @@ final class MyPageViewController: UIViewController {
     }
     
     @objc func changeBtnClicked(_ sender: UIGestureRecognizer) {
-        print("changeBtnClicked() - called")
         let view = ChangeViewController()
         
         self.navigationController?.pushViewController(view, animated: true)
@@ -257,9 +256,20 @@ extension MyPageViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let view = myPageViewModel.viewOfSection(indexPath.section, indexPath.row)
-        
-        self.navigationController?.pushViewController(view, animated: true)
+
+        if indexPath.section == 3 && indexPath.row == 0 {
+            LoginManager.shared.logout()
+            
+            let homeViewController = UINavigationController(rootViewController: HomeViewController())
+            view.window?.rootViewController = homeViewController
+            view.window?.rootViewController?.dismiss(animated: false)
+
+        } else {
+
+            let pushView = myPageViewModel.viewOfSection(indexPath.section, indexPath.row)
+            
+            self.navigationController?.pushViewController(pushView, animated: true)
+        }
         
     }
 }

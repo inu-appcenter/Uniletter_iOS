@@ -108,7 +108,6 @@ class PrivacyPolicyViewModel {
         bodyLabel.text = polices[index].body
         bodyLabel.sizeToFit()
         
-        print(titleLabel.frame.size)
         return CGFloat(titleLabel.frame.size.height + bodyLabel.frame.size.height + 40)
     }
     

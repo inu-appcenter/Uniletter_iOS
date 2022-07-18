@@ -37,7 +37,6 @@ enum SectionType: CaseIterable {
         case .shortcut: return [MyEventViewController(), MyCommentViewController(), BlockListViewController()]
         case .infomation: return [PrivacyPolicyViewController(), UIViewController(), UIViewController()]
         case .etc: return [UIViewController()]
-            
         }
     }
 }
@@ -120,11 +119,5 @@ class MyPageViewModel {
         userName = nickname
         
         return nickname
-    }
-    
-    func limitNickName() -> String {
-        
-        
-        return ""
     }
 }
