@@ -10,69 +10,23 @@ import SnapKit
 
 class PrivacyPolicyViewController: UIViewController {
     
-    let privacyPolicyViewModel = PrivacyPolicyViewModel()
     
-    lazy var scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        
-        return scrollView
-    }()
+    let viewModel = PrivacyPolicyViewModel()
     
-    let subView: UIView = {
-        let view = UIView()
-        
-        return view
-    }()
+    lazy var collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
     
-    let firstTitleLabel: UILabel = {
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         
-        let label = UILabel()
-        
-        label.font = .systemFont(ofSize: 18, weight: .semibold)
-        return label
-    }()
-    
-    let firstBodyLabel: UILabel = {
-        
-        let label = UILabel()
-        
-        label.font = .systemFont(ofSize: 16)
-        label.numberOfLines = 0
-        return label
-    }()
-    
-    let secondTitleLabel: UILabel = {
-        
-        let label = UILabel()
-        
-        label.font = .systemFont(ofSize: 18, weight: .semibold)
-        return label
-    }()
-    
-    let secondBodyLabel: UILabel = {
-        
-        let label = UILabel()
-        
-        label.font = .systemFont(ofSize: 16)
-        label.numberOfLines = 0
+        return collectionView
 
-        return label
     }()
     
     override func viewDidLoad() {
-        super.viewDidLoad()
         view.backgroundColor = .white
+        super.viewDidLoad()
         configureNavigationBar()
         configureUI()
-        setting()
-    }
-    
-    func setting() {
-        
-        firstTitleLabel.text = privacyPolicyViewModel.TitleOfPolicy(policy: .first)
-        firstBodyLabel.text = privacyPolicyViewModel.bodyOfPolicy(policy: .first)
-        secondTitleLabel.text = privacyPolicyViewModel.TitleOfPolicy(policy: .second)
-        secondBodyLabel.text = privacyPolicyViewModel.bodyOfPolicy(policy: .second)
     }
     
     func configureNavigationBar() {
@@ -81,48 +35,42 @@ class PrivacyPolicyViewController: UIViewController {
     
     func configureUI() {
         
-        view.addSubview(scrollView)
-        scrollView.addSubview(subView)
+        collectionView.delegate = self
+        collectionView.dataSource = self
         
-        [
-            firstTitleLabel,
-            firstBodyLabel,
-            secondTitleLabel,
-            secondBodyLabel
-        ]
-            .forEach { subView.addSubview($0) }
+        collectionView.register(PrivacyPolicyCell.self, forCellWithReuseIdentifier: PrivacyPolicyCell.identifier)
+        
+        view.addSubview(collectionView)
+        
+        collectionView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+    }
+}
+
+extension PrivacyPolicyViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+    
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return viewModel.numOfItem
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PrivacyPolicyCell.identifier, for: indexPath) as? PrivacyPolicyCell else { return UICollectionViewCell() }
+        
+        cell.titleLabel.text = viewModel.titleOfPolicy(index: indexPath.item)
+        cell.bodyLabel.text = viewModel.bodyOfPolicy(index: indexPath.item)
                 
-        scrollView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide)
-            $0.leading.trailing.bottom.equalTo(view)
-        }
-        
-        subView.snp.makeConstraints {
-            $0.edges.equalTo(scrollView.contentLayoutGuide)
-            $0.height.equalTo(830)
-            $0.width.equalTo(scrollView)
-        }
-        
-        firstTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(scrollView).offset(24)
-            $0.leading.equalTo(scrollView).offset(20)
-        }
-        
-        firstBodyLabel.snp.makeConstraints {
-            $0.top.equalTo(firstTitleLabel.snp.bottom).inset(-16)
-            $0.leading.equalTo(scrollView).offset(20)
-            $0.width.equalTo(view.frame.size.width - 40)
-        }
-        
-        secondTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(firstBodyLabel.snp.bottom).inset(-50)
-            $0.leading.equalTo(scrollView).offset(20)
-        }
-        
-        secondBodyLabel.snp.makeConstraints {
-            $0.top.equalTo(secondTitleLabel.snp.bottom).inset(-16)
-            $0.leading.equalTo(scrollView).offset(20)
-            $0.width.equalTo(view.frame.size.width - 40)
-        }
+        return cell
+    }
+}
+
+extension PrivacyPolicyViewController: UICollectionViewDelegateFlowLayout {
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+
+        let height = viewModel.sizeOfCell(index: indexPath.item, width: view.frame.size.width)
+                
+        return CGSize(width: view.frame.size.width, height: height)
     }
 }
