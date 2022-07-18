@@ -28,6 +28,10 @@ class SaveListViewController: UIViewController {
         configureUI()
         setAPI()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        setAPI()
+    }
     func setAPI() {
         DispatchQueue.main.async {
             self.saveListViewModel.getLike {

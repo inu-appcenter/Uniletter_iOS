@@ -41,11 +41,11 @@ enum SectionType: CaseIterable {
     }
 }
 
-class MyPageViewModel {
+class MyPageManager {
     
-    static let shared = MyPageViewModel()
+    static let shared = MyPageManager()
     
-//    private init() { }
+    private init() { }
     
     var me: Me?
     

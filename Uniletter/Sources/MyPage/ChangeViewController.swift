@@ -11,7 +11,7 @@ import PhotosUI
 
 class ChangeViewController: UIViewController {
     
-    var myPageViewModel = MyPageViewModel.shared
+    var viewModel = ChangeViewModel()
     
     let infoView: UIView = {
        
@@ -109,8 +109,8 @@ class ChangeViewController: UIViewController {
 
     func setUserInfo() {
         DispatchQueue.main.async {
-            self.textField.text = self.myPageViewModel.userName
-            self.userImage.image = self.myPageViewModel.userImage
+            self.textField.text = self.viewModel.userName
+            self.userImage.image = self.viewModel.userImage
         }
     }
     
@@ -208,9 +208,9 @@ class ChangeViewController: UIViewController {
         
         actionSheetViewController.basicPhotoCompletionClosure = {
             
-            self.myPageViewModel.choiceImage = UIImage(named: "UserImage")
+            self.viewModel.choiceImage = UIImage(named: "UserImage")
             
-            self.userImage.image = self.myPageViewModel.choiceImage
+            self.userImage.image = self.viewModel.choiceImage
         }
         present(actionSheetViewController, animated: true)
     }
@@ -237,11 +237,15 @@ class ChangeViewController: UIViewController {
     
     @objc func notificationButtonClicked() {
         guard let text = textField.text else { return }
-       
-        myPageViewModel.changeName = text
+      
+        viewModel.changeName = text
         
+        if viewModel.choiceImage == nil {
+            viewModel.choiceImage = viewModel.userImage
+        }
+
         DispatchQueue.global().async {
-            self.myPageViewModel.uploadUserInfo(self.myPageViewModel.changeName!, self.myPageViewModel.choiceImage!)
+            self.viewModel.uploadUserInfo(self.viewModel.changeName!, self.viewModel.choiceImage!)
         }
         navigationController?.popViewController(animated: true)
     }
@@ -257,8 +261,8 @@ extension ChangeViewController: PHPickerViewControllerDelegate {
                 DispatchQueue.main.async {
                     guard let selectedImage = image as? UIImage else { return }
                     
-                    self.myPageViewModel.choiceImage = selectedImage
-                    self.userImage.image = self.myPageViewModel.choiceImage
+                    self.viewModel.choiceImage = selectedImage
+                    self.userImage.image = self.viewModel.choiceImage
                 }
             }
         }

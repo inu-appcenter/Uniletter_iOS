@@ -15,7 +15,7 @@ final class ActionSheetViewController: UIViewController {
     let twoOptionsActionSheetView = TwoOptionsActionSheetView()
     var actionSheet: ActionSheet?
     var option: Int?
-    var myPageViewModel = MyPageViewModel.shared
+    var myPageViewModel = MyPageManager.shared
     var selectPhotoCompletionClosure: (() -> Void)?
     var basicPhotoCompletionClosure: (() -> Void)?
     

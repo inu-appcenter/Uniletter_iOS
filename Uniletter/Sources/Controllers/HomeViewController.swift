@@ -14,8 +14,6 @@ final class HomeViewController: UIViewController {
     let homeView = HomeView()
     let viewModel = HomeViewModel()
     let loginManager = LoginManager.shared
-    // FIXME: viewModel 싱글톤 안쓰셔도 돼요! 밑에 FIXME에 주석 달아놓을게요!
-    let myPageViewModel = MyPageViewModel.shared
     
     // MARK: - Life cycle
     override func loadView() {
