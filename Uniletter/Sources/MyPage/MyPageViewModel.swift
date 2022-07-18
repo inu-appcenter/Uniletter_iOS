@@ -46,14 +46,14 @@ class MyPageViewModel {
     
     static let shared = MyPageViewModel()
     
-    private init() { }
+//    private init() { }
     
     var me: Me?
     
     var type: [SectionType] = [.setting, .shortcut, .infomation, .etc]
     
     var userName: String?
-    
+    var userImageUrl: String?
     var userImage: UIImage?
     
     var numOfSection: Int {
@@ -75,6 +75,7 @@ class MyPageViewModel {
     func setUserInfo(completion: @escaping () -> Void) {
         API.getMeInfo { Me in
             self.me = Me
+
             completion()
         }
     }
@@ -85,14 +86,14 @@ class MyPageViewModel {
                                     "nickname": nickname,
                                     "imageUuid": imageUuid
                                 ]
-    
+        
         API.patchMeInfo(data: data)
     }
     
-    func uploadUserImage(_ image: UIImage) {
+    func uploadUserInfo(_ nickname: String, _ image: UIImage) {
         
         API.uploadMeImage(image: image) { images in
-            self.patchUserInfo(self.userName!, images.uuid)
+            self.patchUserInfo(nickname, images.uuid)
         }
     }
 
@@ -114,5 +115,11 @@ class MyPageViewModel {
         userName = nickname
         
         return nickname
+    }
+    
+    func limitNickName() -> String {
+        
+        
+        return ""
     }
 }

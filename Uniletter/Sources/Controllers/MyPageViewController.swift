@@ -7,9 +7,12 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
 
 final class MyPageViewController: UIViewController {
-    
+
+    var myPageViewModel = MyPageViewModel.shared
+
     let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -36,8 +39,10 @@ final class MyPageViewController: UIViewController {
         
         imageView.clipsToBounds = true
         
-        imageView.layer.borderWidth = 0.3
+        imageView.layer.borderWidth = 1
         imageView.layer.cornerRadius = 38
+        imageView.layer.borderColor = UIColor.customColor(.darkGray).cgColor
+
         return imageView
     }()
     
@@ -89,9 +94,7 @@ final class MyPageViewController: UIViewController {
         return button
         
     }()
-    
-    var myPageViewModel = MyPageViewModel.shared
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -100,15 +103,19 @@ final class MyPageViewController: UIViewController {
         fetchUserInfo()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(true)
-        fetchUserInfo()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        userName.text = myPageViewModel.userName
+        userImage.image = myPageViewModel.userImage
     }
-    
+
+
     func fetchUserInfo() {
         DispatchQueue.main.async {
-            self.userImage.image = self.myPageViewModel.userImage
-            self.userName.text = self.myPageViewModel.userName
+            self.myPageViewModel.setUserInfo {
+                self.userImage.image = self.myPageViewModel.setUserImage()
+                self.userName.text = self.myPageViewModel.setUserNickName()
+            }
         }
     }
     

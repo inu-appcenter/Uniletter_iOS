@@ -9,8 +9,6 @@ import UIKit
 import SnapKit
 import PhotosUI
 
-// [] 빈공칸 클릭시 키보드 내려가게
-// [] 리턴 누르면 키보드 내려가게
 class ChangeViewController: UIViewController {
     
     var myPageViewModel = MyPageViewModel.shared
@@ -104,15 +102,15 @@ class ChangeViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         settingTextField()
     }
-    
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        textField.resignFirstResponder()
+    }
 
     func setUserInfo() {
-        
-            self.myPageViewModel.setUserInfo {
-                DispatchQueue.main.async {
-                    self.userImage.image = self.myPageViewModel.userImage
-                    self.textField.text = self.myPageViewModel.userName
-            }
+        DispatchQueue.main.async {
+            self.textField.text = self.myPageViewModel.userName
+            self.userImage.image = self.myPageViewModel.userImage
         }
     }
     
@@ -130,6 +128,8 @@ class ChangeViewController: UIViewController {
         textField.rightViewMode = .always
         
         textField.tintColor = UIColor.customColor(.blueGreen)
+        
+        textField.delegate = self
     }
     
     func configureNavigationBar() {
@@ -188,8 +188,6 @@ class ChangeViewController: UIViewController {
     }
     
     @objc func changeImageButtonClicked() {
-
-        print("changeImageButton - clicked")
         
         let actionSheetViewController = ActionSheetViewController()
         actionSheetViewController.actionSheet = .modifyInfo
@@ -197,7 +195,6 @@ class ChangeViewController: UIViewController {
         actionSheetViewController.modalTransitionStyle = .crossDissolve
         
         actionSheetViewController.selectPhotoCompletionClosure = {
-            print("ChangeViewController - completionTest() 호출됨")
             var configuration = PHPickerConfiguration()
             configuration.selectionLimit = 1
             configuration.filter = .images
@@ -210,8 +207,10 @@ class ChangeViewController: UIViewController {
         }
         
         actionSheetViewController.basicPhotoCompletionClosure = {
-            // 리팩토링 필요
-            self.userImage.image = UIImage(named: "UserImage") 
+
+            self.myPageViewModel.userImage = UIImage(named: "UserImage")
+            
+            self.userImage.image = self.myPageViewModel.userImage
         }
         present(actionSheetViewController, animated: true)
     }
@@ -220,25 +219,30 @@ class ChangeViewController: UIViewController {
         guard let notiTextField = notification.object as? UITextField else { return }
         
         guard let text = notiTextField.text else { return }
-        
+
         if text.count < 1 {
             warningLabel.isHidden = true
             border.backgroundColor = UIColor.customColor(.darkGray).cgColor
-        } else {
+        } else if 0 < text.count && text.count < 8 {
             warningLabel.isHidden = false
             border.backgroundColor = UIColor.customColor(.blueGreen).cgColor
+        } else if text.count > 8 {
+            textField.resignFirstResponder()
+            let index = text.index(text.startIndex, offsetBy: 8)
+            let newString = text[text.startIndex..<index]
+            textField.text = String(newString)
         }
     }
+    
     
     @objc func notificationButtonClicked() {
         guard let text = textField.text else { return }
        
-        // 리팩토링 필요
         myPageViewModel.userName = text
-        myPageViewModel.userImage = self.userImage.image
+        myPageViewModel.userImage = userImage.image
         
         DispatchQueue.global().async {
-            self.myPageViewModel.uploadUserImage(self.myPageViewModel.userImage!)
+            self.myPageViewModel.uploadUserInfo(text, self.myPageViewModel.userImage!)
         }
         navigationController?.popViewController(animated: true)
     }
@@ -254,10 +258,17 @@ extension ChangeViewController: PHPickerViewControllerDelegate {
                 DispatchQueue.main.async {
                     guard let selectedImage = image as? UIImage else { return }
                     
-                    // 리팩토링 필요
                     self.userImage.image = selectedImage
                 }
             }
         }
+    }
+}
+
+extension ChangeViewController: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }
