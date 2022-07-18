@@ -16,6 +16,7 @@ class WritingContentViewController: UIViewController {
     let dropDown = DropDown()
     let categories = [
         "동아리/소모임",
+        "학생회",
         "간식나눔",
         "대회/공모전",
         "스터디",
@@ -97,8 +98,9 @@ class WritingContentViewController: UIViewController {
         dropDown.anchorView = writingContentView.categoryButton
         dropDown.dismissMode = .automatic
         dropDown.bottomOffset = CGPoint(x: 0, y: 44)
-        dropDown.selectionAction = { _, item in
+        dropDown.selectionAction = { index, item in
             self.writingManager.category = item
+            self.writingManager.basicImage = self.writingManager.basicImageUUID[index]
             self.writingContentView.categoryView.textField.text = item
             self.writingContentView.categoryButton.isSelected = false
         }
@@ -132,11 +134,12 @@ class WritingContentViewController: UIViewController {
         if sender.isSelected {
             writingContentView.hostView.textField.text = placeholer
             writingContentView.hostView.textField.textColor = UIColor.customColor(.lightGray)
+            
+            writingManager.host = ""
         }
     }
     
     @objc func didTapEqaulCheckButton(_ sender: UIButton) {
-        print("zz")
         changeCheckButton(sender)
         if sender.isSelected {
             writingContentView.eventEndView.dateButton.setAttributedTitle(
@@ -145,6 +148,8 @@ class WritingContentViewController: UIViewController {
             writingContentView.eventEndView.timeButton.setAttributedTitle(
                 showUnderline((writingContentView.eventStartView.timeButton.titleLabel?.text)!),
                 for: .normal)
+            
+            writingManager.endAt = writingManager.startAt
         }
     }
     
@@ -221,6 +226,22 @@ extension WritingContentViewController: UITextViewDelegate {
         textView.layer.borderColor = CGColor.customColor(.defaultGray)
         
         switch textView {
+        case writingContentView.titleView.textField:
+            if textView.text == "" {
+                textView.layer.borderColor = #colorLiteral(red: 0.9664621949, green: 0.2374898791, blue: 0.1274906397, alpha: 1).cgColor
+                writingManager.title = nil
+            } else {
+                writingManager.title = textView.text
+            }
+            
+        case writingContentView.targetView.textField:
+            if textView.text == "" {
+                textView.layer.borderColor = #colorLiteral(red: 0.9664621949, green: 0.2374898791, blue: 0.1274906397, alpha: 1).cgColor
+                writingManager.target = nil
+            } else {
+                writingManager.target = textView.text
+            }
+            
         case writingContentView.hostView.textField:
             if textView.text == "" {
                 textView.text = placeholer

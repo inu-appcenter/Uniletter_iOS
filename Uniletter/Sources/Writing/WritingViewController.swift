@@ -110,7 +110,13 @@ final class WritingViewController: UIViewController {
             contentViewController.view.removeFromSuperview()
             changeViewController(detailViewController)
         case 2:
-            // TODO: 이벤트 등록
+            if writingManager.checkEventInfo() {
+                writingManager.createEvent()
+                // TODO: 이벤트 등록
+            } else {
+                // TODO: 필수정보 입력 알림
+            }
+            
             break
         default: break
         }
