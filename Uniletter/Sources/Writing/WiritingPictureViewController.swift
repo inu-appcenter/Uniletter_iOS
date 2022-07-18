@@ -8,7 +8,7 @@
 import UIKit
 import PhotosUI
 
-final class WiritingPictureViewController: UIViewController {
+final class WritingPictureViewController: UIViewController {
 
     // MARK: - Property
     let writingPictureView = WritingPictureView()
@@ -72,7 +72,7 @@ final class WiritingPictureViewController: UIViewController {
 }
 
 // MARK: - PHPickerViewController
-extension WiritingPictureViewController: PHPickerViewControllerDelegate {
+extension WritingPictureViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         picker.dismiss(animated: true)
         

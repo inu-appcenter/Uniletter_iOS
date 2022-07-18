@@ -107,19 +107,19 @@ class WritingContentViewController: UIViewController {
         print("d")
     }
     
-    @objc func didTapStartDate(_ sender: UIButton) {
+    @objc func didTapStartDate(_ sender: UITapGestureRecognizer) {
         
     }
     
-    @objc func didTapStartTime(_ sender: UIButton) {
+    @objc func didTapStartTime(_ sender: UITapGestureRecognizer) {
         
     }
     
-    @objc func didTapEndDate(_ sender: UIButton) {
+    @objc func didTapEndDate(_ sender: UITapGestureRecognizer) {
         
     }
     
-    @objc func didTapEndTime(_ sender: UIButton) {
+    @objc func didTapEndTime(_ sender: UITapGestureRecognizer) {
         
     }
     

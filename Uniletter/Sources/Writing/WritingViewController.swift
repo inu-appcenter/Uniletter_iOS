@@ -28,7 +28,7 @@ final class WritingViewController: UIViewController {
     let containerView = UIView()
     
     // MARK: - Property
-    let pictureViewController = WiritingPictureViewController()
+    let pictureViewController = WritingPictureViewController()
     let contentViewController = WritingContentViewController()
     let detailViewController = WritingDetailViewController()
     var page = 0

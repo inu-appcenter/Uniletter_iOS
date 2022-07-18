@@ -79,7 +79,7 @@ func caculateDDay(_ endAt: String) -> String {
 func convertTodayToString() -> String {
     let now = Date()
     let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "yyyy.MMdd"
+    dateFormatter.dateFormat = "yyyy.MM.dd"
     
     return dateFormatter.string(from: now)
 }
