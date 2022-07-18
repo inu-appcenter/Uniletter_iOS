@@ -16,10 +16,15 @@ func spacingItem(_ spacing: CGFloat) -> UIBarButtonItem {
 }
 
 // text 밑줄 긋기
-func showUnderline(_ text: String) -> NSAttributedString {
-    let attributedString = NSAttributedString(
+func showUnderline(_ text: String) -> NSMutableAttributedString {
+    let attributedString = NSMutableAttributedString(
         string: text,
-        attributes: [NSAttributedString.Key.underlineStyle: NSUnderlineStyle.thick.rawValue])
+        attributes: [NSAttributedString.Key.underlineStyle: NSUnderlineStyle.single.rawValue])
+    
+    attributedString.addAttribute(
+        .font,
+        value: UIFont.systemFont(ofSize: 16),
+        range: NSRange(location: 0, length: text.count))
     
     return attributedString
 }
