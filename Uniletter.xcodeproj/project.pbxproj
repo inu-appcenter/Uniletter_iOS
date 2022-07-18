@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C0D039A288596EE0026F3F0 /* PrivacyPolicyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0D0399288596EE0026F3F0 /* PrivacyPolicyCell.swift */; };
+		2C0D039C2885ACF60026F3F0 /* ChangeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0D039B2885ACF60026F3F0 /* ChangeViewModel.swift */; };
 		2C0DBE562880099E004A933A /* SaveListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE552880099E004A933A /* SaveListViewController.swift */; };
 		2C0DBE5828800A29004A933A /* SaveListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE5728800A29004A933A /* SaveListCell.swift */; };
 		2C0DBE5A28800B29004A933A /* MyEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE5928800B29004A933A /* MyEventView.swift */; };
@@ -95,6 +97,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2C0D0399288596EE0026F3F0 /* PrivacyPolicyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyCell.swift; sourceTree = "<group>"; };
+		2C0D039B2885ACF60026F3F0 /* ChangeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeViewModel.swift; sourceTree = "<group>"; };
 		2C0DBE552880099E004A933A /* SaveListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveListViewController.swift; sourceTree = "<group>"; };
 		2C0DBE5728800A29004A933A /* SaveListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveListCell.swift; sourceTree = "<group>"; };
 		2C0DBE5928800B29004A933A /* MyEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyEventView.swift; sourceTree = "<group>"; };
@@ -209,12 +213,14 @@
 				2C80F390286DE20000ECAB60 /* MyPageSectionView.swift */,
 				2CB69D0A287443870089A922 /* MeInfo.swift */,
 				2CB69D0C287456C60089A922 /* ChangeViewController.swift */,
+				2C0D039B2885ACF60026F3F0 /* ChangeViewModel.swift */,
 				2CB8AA2F2878384300BDA358 /* MyCommentViewController.swift */,
 				2CB8AA31287838EE00BDA358 /* MyEventCell.swift */,
 				2CB8AA3328787D3900BDA358 /* MyCommentViewModel.swift */,
 				2CB8AAA7287EA34400BDA358 /* MyEventViewController.swift */,
 				2CB8AAA9287EA7A200BDA358 /* MyEventViewModel.swift */,
 				2CB8AAAB287EAE5400BDA358 /* PrivacyPolicyViewController.swift */,
+				2C0D0399288596EE0026F3F0 /* PrivacyPolicyCell.swift */,
 				2CB8AAAD287EAEA700BDA358 /* PrivacyPolicyViewModel.swift */,
 				2CB8AAAF287F1EDA00BDA358 /* Topic.swift */,
 				2C0DBE552880099E004A933A /* SaveListViewController.swift */,
@@ -578,6 +584,7 @@
 				2C0DBE6A288192E5004A933A /* BlockListViewController.swift in Sources */,
 				2CB69D0D287456C60089A922 /* ChangeViewController.swift in Sources */,
 				766F38502872FC3900EC9593 /* NewNoticeViewModel.swift in Sources */,
+				2C0D039C2885ACF60026F3F0 /* ChangeViewModel.swift in Sources */,
 				2CB8AA32287838EE00BDA358 /* MyEventCell.swift in Sources */,
 				7681D58A286A29970081C644 /* DateFormatter.swift in Sources */,
 				7610DD7728848BD300CA03BC /* WritingDateView.swift in Sources */,
@@ -606,6 +613,7 @@
 				7681D57D2869ECDF0081C644 /* Event.swift in Sources */,
 				76AC783E2872D7FB00D303C4 /* TwoOptionsActionSheetView.swift in Sources */,
 				765DCDB12868DBF800961EA8 /* HomeViewController.swift in Sources */,
+				2C0D039A288596EE0026F3F0 /* PrivacyPolicyCell.swift in Sources */,
 				2C0DBE5A28800B29004A933A /* MyEventView.swift in Sources */,
 				2C80F391286DE20000ECAB60 /* MyPageSectionView.swift in Sources */,
 				76FCB545286C253900AC4F70 /* EventDetailViewController.swift in Sources */,

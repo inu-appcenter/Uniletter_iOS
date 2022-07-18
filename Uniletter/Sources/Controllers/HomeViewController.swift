@@ -14,8 +14,6 @@ final class HomeViewController: UIViewController {
     let homeView = HomeView()
     let viewModel = HomeViewModel()
     let loginManager = LoginManager.shared
-    // FIXME: viewModel 싱글톤 안쓰셔도 돼요! 밑에 FIXME에 주석 달아놓을게요!
-    let myPageViewModel = MyPageViewModel.shared
     
     // MARK: - Life cycle
     override func loadView() {
@@ -134,13 +132,7 @@ final class HomeViewController: UIViewController {
         if loginManager.isLoggedIn {
             let myPageViewController = MyPageViewController()
             self.navigationController?.pushViewController(myPageViewController, animated: true)
-            // FIXME: MyPageVC didLoad나 willAppear에서 fetch 전에 API 호출하시면 될거 같아요!
-            myPageViewModel.setUserInfo {
-                DispatchQueue.global().async {
-                    self.myPageViewModel.userName = self.myPageViewModel.setUserNickName()
-                    self.myPageViewModel.userImage = self.myPageViewModel.setUserImage()
-                }
-            }
+
         } else {
             presentAlertView(.login)
         }

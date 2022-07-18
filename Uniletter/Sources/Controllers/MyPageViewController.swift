@@ -7,9 +7,12 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
 
 final class MyPageViewController: UIViewController {
-    
+
+    var myPageManager = MyPageManager.shared
+
     let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -36,8 +39,10 @@ final class MyPageViewController: UIViewController {
         
         imageView.clipsToBounds = true
         
-        imageView.layer.borderWidth = 0.3
+        imageView.layer.borderWidth = 1
         imageView.layer.cornerRadius = 38
+        imageView.layer.borderColor = UIColor.customColor(.darkGray).cgColor
+
         return imageView
     }()
     
@@ -89,9 +94,7 @@ final class MyPageViewController: UIViewController {
         return button
         
     }()
-    
-    var myPageViewModel = MyPageViewModel.shared
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -100,15 +103,19 @@ final class MyPageViewController: UIViewController {
         fetchUserInfo()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(true)
-        fetchUserInfo()
+    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(true)
+        userName.text = myPageManager.userName
+        userImage.image = myPageManager.userImage
     }
-    
+
+
     func fetchUserInfo() {
         DispatchQueue.main.async {
-            self.userImage.image = self.myPageViewModel.userImage
-            self.userName.text = self.myPageViewModel.userName
+            self.myPageManager.setUserInfo {
+                self.userImage.image = self.myPageManager.setUserImage()
+                self.userName.text = self.myPageManager.setUserNickName()
+            }
         }
     }
     
@@ -194,7 +201,6 @@ final class MyPageViewController: UIViewController {
     }
     
     @objc func changeBtnClicked(_ sender: UIGestureRecognizer) {
-        print("changeBtnClicked() - called")
         let view = ChangeViewController()
         
         self.navigationController?.pushViewController(view, animated: true)
@@ -216,14 +222,14 @@ final class MyPageViewController: UIViewController {
 extension MyPageViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return myPageViewModel.numOfSection
+        return myPageManager.numOfSection
     }
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         
         guard let headerView = view as? MyPageSectionView else { return }
         
-        headerView.updateUI(myPageViewModel.titleOfSection(at: section))
+        headerView.updateUI(myPageManager.titleOfSection(at: section))
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -238,21 +244,32 @@ extension MyPageViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return myPageViewModel.numOfCell(at: section)
+        return myPageManager.numOfCell(at: section)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: MyPageCell.identifier, for: indexPath) as? MyPageCell else { return UITableViewCell() }
         
-        let text = myPageViewModel.type[indexPath.section].cell
+        let text = myPageManager.type[indexPath.section].cell
         cell.updateUI(at: text[indexPath.row])
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let view = myPageViewModel.viewOfSection(indexPath.section, indexPath.row)
-        
-        self.navigationController?.pushViewController(view, animated: true)
+
+        if indexPath.section == 3 && indexPath.row == 0 {
+            LoginManager.shared.logout()
+            
+            let homeViewController = UINavigationController(rootViewController: HomeViewController())
+            view.window?.rootViewController = homeViewController
+            view.window?.rootViewController?.dismiss(animated: false)
+
+        } else {
+
+            let pushView = myPageManager.viewOfSection(indexPath.section, indexPath.row)
+            
+            self.navigationController?.pushViewController(pushView, animated: true)
+        }
         
     }
 }

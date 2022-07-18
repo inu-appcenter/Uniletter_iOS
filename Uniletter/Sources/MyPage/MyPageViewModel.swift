@@ -37,14 +37,13 @@ enum SectionType: CaseIterable {
         case .shortcut: return [MyEventViewController(), MyCommentViewController(), BlockListViewController()]
         case .infomation: return [PrivacyPolicyViewController(), UIViewController(), UIViewController()]
         case .etc: return [UIViewController()]
-            
         }
     }
 }
 
-class MyPageViewModel {
+class MyPageManager {
     
-    static let shared = MyPageViewModel()
+    static let shared = MyPageManager()
     
     private init() { }
     
@@ -53,8 +52,10 @@ class MyPageViewModel {
     var type: [SectionType] = [.setting, .shortcut, .infomation, .etc]
     
     var userName: String?
-    
+    var userImageUrl: String?
     var userImage: UIImage?
+    var choiceImage: UIImage?
+    var changeName: String?
     
     var numOfSection: Int {
         return type.count
@@ -75,6 +76,7 @@ class MyPageViewModel {
     func setUserInfo(completion: @escaping () -> Void) {
         API.getMeInfo { Me in
             self.me = Me
+
             completion()
         }
     }
@@ -85,14 +87,17 @@ class MyPageViewModel {
                                     "nickname": nickname,
                                     "imageUuid": imageUuid
                                 ]
-    
+        
         API.patchMeInfo(data: data)
     }
     
-    func uploadUserImage(_ image: UIImage) {
+    func uploadUserInfo(_ nickname: String, _ image: UIImage) {
+        
+        self.userName = self.changeName
+        self.userImage = self.choiceImage
         
         API.uploadMeImage(image: image) { images in
-            self.patchUserInfo(self.userName!, images.uuid)
+            self.patchUserInfo(nickname, images.uuid)
         }
     }
 
