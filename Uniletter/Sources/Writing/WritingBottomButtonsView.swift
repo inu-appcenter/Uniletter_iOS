@@ -35,7 +35,7 @@ final class WritingBottomButtonsView: UIView {
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .white
+        backgroundColor = .clear
         addViews()
     }
     

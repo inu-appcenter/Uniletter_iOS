@@ -95,6 +95,8 @@ final class WritingContentView: UIView {
         let view = WritingCheckView()
         view.label.writingDefault("위와 동일")
         view.checkButton.isSelected = false
+        view.checkButton.layer.borderColor = #colorLiteral(red: 0.8980392157, green: 0.8980392157, blue: 0.8980392157, alpha: 1).cgColor
+        view.checkButton.backgroundColor = .white
         
         return view
     }()
@@ -115,11 +117,6 @@ final class WritingContentView: UIView {
     
     let clearView = UIView()
     
-    let startDateTapRecognize = UITapGestureRecognizer()
-    let startTimeTapRecognize = UITapGestureRecognizer()
-    let endDateTapRecognize = UITapGestureRecognizer()
-    let endTimeTapRecognize = UITapGestureRecognizer()
-    
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -139,11 +136,6 @@ final class WritingContentView: UIView {
 
     // MARK: - Setup
     func addViews() {
-        eventStartView.dateTextField.addGestureRecognizer(startDateTapRecognize)
-        eventStartView.timeTextField.addGestureRecognizer(startTimeTapRecognize)
-        eventEndView.dateTextField.addGestureRecognizer(endDateTapRecognize)
-        eventEndView.timeTextField.addGestureRecognizer(endTimeTapRecognize)
-        
         [
             titleView,
             hostView,

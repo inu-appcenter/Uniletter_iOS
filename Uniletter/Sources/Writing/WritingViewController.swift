@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 
 final class WritingViewController: UIViewController {
-
+    
     // MARK: - UI
     lazy var bottomView: WritingBottomButtonsView = {
         let view = WritingBottomButtonsView()
@@ -34,7 +34,6 @@ final class WritingViewController: UIViewController {
     var page = 0
     let writingManager = WritingManager.shared
     
-    
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,7 +41,7 @@ final class WritingViewController: UIViewController {
         setContainerView()
         setViewController()
     }
-
+    
     // MARK: - Setup
     func setNavigationBar() {
         setNavigationTitleAndBackButton("레터등록")
@@ -70,7 +69,7 @@ final class WritingViewController: UIViewController {
         }
         
         bottomView.snp.makeConstraints {
-            $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
+            $0.bottom.equalTo(view.keyboardLayoutGuide.snp.top).offset(-16)
             $0.left.right.equalToSuperview().inset(20)
             $0.height.equalTo(52)
         }

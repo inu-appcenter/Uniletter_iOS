@@ -15,16 +15,14 @@ final class WritingTextFieldView: UIView {
     
     lazy var textField: UITextView = {
         let textView = UITextView()
-        textView.layer.cornerRadius = 4
-        textView.layer.borderWidth = 1
-        textView.layer.borderColor = CGColor.customColor(.defaultGray)
-        textView.tintColor = UIColor.customColor(.blueGreen)
-        textView.font = .systemFont(ofSize: 16)
+        textView.writingTextView()
+        textView.textContainer.maximumNumberOfLines = 1
+        textView.textContainer.lineBreakMode = .byTruncatingHead
         textView.textContainerInset = UIEdgeInsets(
             top: 12,
             left: 16,
             bottom: 10,
-            right: 0)
+            right: 16)
         
         return textView
     }()

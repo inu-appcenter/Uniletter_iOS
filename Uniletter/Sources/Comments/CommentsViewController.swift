@@ -33,7 +33,7 @@ final class CommentsViewController: UIViewController {
     
     // MARK: - Keyboard
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
+        commentsView.endEditing(true)
     }
     
     // MARK: - Setup
@@ -175,9 +175,13 @@ extension CommentsViewController: UITableViewDataSource,
 // MARK: - TextView
 extension CommentsViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
-        if textView.text != "" {
+        if textView.text != ""
+            && textView.text.trimmingCharacters(in: .whitespaces) != "" {
             commentsView.submitButton.isUserInteractionEnabled = true
             commentsView.submitButton.configuration?.baseBackgroundColor = UIColor.customColor(.blueGreen)
+        } else {
+            commentsView.submitButton.isUserInteractionEnabled = false
+            commentsView.submitButton.configuration?.baseBackgroundColor = UIColor.customColor(.lightGray)
         }
         
         textView.isScrollEnabled = textView.frame.height >= 80 ? true : false

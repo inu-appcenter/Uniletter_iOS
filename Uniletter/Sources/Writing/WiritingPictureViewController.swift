@@ -35,23 +35,6 @@ final class WritingPictureViewController: UIViewController {
             action: #selector(didTapCheckButton(_:)),
             for: .touchUpInside)
     }
-    
-    func changeCheckButton(_ bool: Bool) {
-        writingManager.basicImage = bool
-        
-        let button = writingPictureView.checkView.checkButton
-        if bool {
-            button.layer.borderColor = CGColor.customColor(.blueGreen)
-            button.backgroundColor = UIColor.customColor(.blueGreen)
-            
-            writingPictureView.imageButton.setImage(
-                UIImage(named: "UniletterLabel"),
-                for: .normal)
-        } else {
-            button.layer.borderColor = #colorLiteral(red: 0.8980392157, green: 0.8980392157, blue: 0.8980392157, alpha: 1).cgColor
-            button.backgroundColor = .white
-        }
-    }
 
     // MARK: - Actions
     @objc func didTapImageButton(_ sender: UIButton) {
@@ -66,8 +49,13 @@ final class WritingPictureViewController: UIViewController {
     
     @objc func didTapCheckButton(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
+        sender.updateUI(sender.isSelected)
         
-        changeCheckButton(sender.isSelected)
+        if sender.isSelected {
+            writingPictureView.imageButton.setImage(
+                UIImage(named: "UniletterLabel"),
+                for: .normal)
+        }
     }
 }
 
@@ -80,7 +68,6 @@ extension WritingPictureViewController: PHPickerViewControllerDelegate {
         if let itemProvider = itemProvider,
            itemProvider.canLoadObject(ofClass: UIImage.self) {
             itemProvider.loadObject(ofClass: UIImage.self) { image, error in
-                self.writingManager.basicImage = false
                 self.writingManager.setImage(image as! UIImage)
                 
                 DispatchQueue.main.async {
@@ -89,7 +76,7 @@ extension WritingPictureViewController: PHPickerViewControllerDelegate {
                         for: .normal)
                     
                     self.writingPictureView.checkView.checkButton.isSelected = false
-                    self.changeCheckButton(false)
+                    self.writingPictureView.checkView.checkButton.updateUI(false)
                 }
             }
         }

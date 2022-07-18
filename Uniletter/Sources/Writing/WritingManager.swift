@@ -38,30 +38,6 @@ final class WritingManager {
         // TODO: API 호출하여 UUID 얻기
     }
     
-    func setTitle(_ text: String) {
-        self.title = text
-    }
-    
-    func setHost(_ text: String) {
-        self.host = text
-    }
-    
-    func setCategory(_ text: String) {
-        self.category = text
-    }
-    
-    func setTarget(_ text: String) {
-        self.target = text
-    }
-    
-    func setStartDate(_ text: String) {
-        self.startDate = text
-    }
-    
-    func setStartTime(_ text: String) {
-        self.startTime = text
-    }
-    
     func setStartAt() {
         guard let startDate = startDate,
               let startTime = startTime else {
@@ -71,14 +47,6 @@ final class WritingManager {
         self.startAt = "\(startDate) \(startTime)"
     }
     
-    func setEndDate(_ text: String) {
-        self.endDate = text
-    }
-    
-    func setEndTime(_ text: String) {
-        self.endTime = text
-    }
-    
     func setEndAt() {
         guard let endDate = endDate,
               let endTime = endTime else {
@@ -86,18 +54,6 @@ final class WritingManager {
         }
         
         self.endAt = "\(endDate) \(endTime)"
-    }
-    
-    func setContact(_ text: String) {
-        self.contact = text
-    }
-    
-    func setLocation(_ text: String) {
-        self.location = text
-    }
-    
-    func setBody(_ text: String) {
-        self.body = text
     }
     
 }

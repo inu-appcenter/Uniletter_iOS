@@ -47,6 +47,7 @@
 		7610DD73288456A300CA03BC /* WritingDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7610DD72288456A300CA03BC /* WritingDetailViewController.swift */; };
 		7610DD7528846FCE00CA03BC /* WritingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7610DD7428846FCE00CA03BC /* WritingManager.swift */; };
 		7610DD7728848BD300CA03BC /* WritingDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7610DD7628848BD300CA03BC /* WritingDateView.swift */; };
+		7610DD7B288587A200CA03BC /* UITextView++Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7610DD7A288587A200CA03BC /* UITextView++Extensions.swift */; };
 		7616B813286B50A000935257 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7616B812286B50A000935257 /* MyPageViewController.swift */; };
 		764386642874021600375CE6 /* LoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764386632874021600375CE6 /* LoginManager.swift */; };
 		765BC9FD2868C00C0098BBF2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765BC9FC2868C00C0098BBF2 /* AppDelegate.swift */; };
@@ -137,6 +138,7 @@
 		7610DD72288456A300CA03BC /* WritingDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritingDetailViewController.swift; sourceTree = "<group>"; };
 		7610DD7428846FCE00CA03BC /* WritingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritingManager.swift; sourceTree = "<group>"; };
 		7610DD7628848BD300CA03BC /* WritingDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritingDateView.swift; sourceTree = "<group>"; };
+		7610DD7A288587A200CA03BC /* UITextView++Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView++Extensions.swift"; sourceTree = "<group>"; };
 		7616B812286B50A000935257 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		764386632874021600375CE6 /* LoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginManager.swift; sourceTree = "<group>"; };
 		765BC9F92868C00C0098BBF2 /* Uniletter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Uniletter.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -381,6 +383,7 @@
 				76FCB542286B955F00AC4F70 /* Colors++Extensions.swift */,
 				76FCB54D286CA16700AC4F70 /* UILabel++Extensions.swift */,
 				76AC78352871FF1900D303C4 /* UIViewController++Extensions.swift */,
+				7610DD7A288587A200CA03BC /* UITextView++Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -589,6 +592,7 @@
 				764386642874021600375CE6 /* LoginManager.swift in Sources */,
 				76AC78442872E14A00D303C4 /* ActionSheet.swift in Sources */,
 				76E9648B286B8F6400D5299A /* UI.swift in Sources */,
+				7610DD7B288587A200CA03BC /* UITextView++Extensions.swift in Sources */,
 				7610DD5F28841F0700CA03BC /* WritingViewController.swift in Sources */,
 				7610DD6728842D8600CA03BC /* WritingBottomButtonsView.swift in Sources */,
 				769AEB3B287C267300C697FC /* CommentsView.swift in Sources */,

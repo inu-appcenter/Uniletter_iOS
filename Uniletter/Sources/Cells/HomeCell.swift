@@ -22,7 +22,6 @@ class HomeCell: UICollectionViewCell {
         
         homeCellView.frame = contentView.frame
         contentView.addSubview(homeCellView)
-        homeCellView.bookmarkButton.isSelected = false
         homeCellView.bookmarkButton.addTarget(
             self,
             action: #selector(didTapBookmarkButton(_:)),
