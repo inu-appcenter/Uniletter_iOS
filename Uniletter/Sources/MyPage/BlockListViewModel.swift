@@ -27,10 +27,4 @@ class BlockListViewModel {
             completion()
         }
     }
-    
-    func postBlock() {
-        API.postBlock(data: ["targetUserId": 54]) {
-            print("성공")
-        }
-    }
 }

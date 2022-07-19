@@ -57,8 +57,8 @@ class BlockListViewController: UIViewController {
         configureNavigationBar()
         configureUI()
         settingAPI()
-        blockListViewModel.postBlock()
     }
+    
     func settingAPI() {
         DispatchQueue.main.async {
             self.blockListViewModel.getBlock {
@@ -107,6 +107,12 @@ class BlockListViewController: UIViewController {
         }
     }
     
+    func postBlockNotification() {
+        NotificationCenter.default.post(
+            name: Notification.Name("HomeReload"),
+            object: nil)
+    }
+    
     @objc func arrowButtonClicked(_ sender: UIGestureRecognizer) {
         arrowButton.isSelected = !arrowButton.isSelected
         tableView.isHidden = !tableView.isHidden
@@ -125,16 +131,13 @@ extension BlockListViewController: UITableViewDelegate, UITableViewDataSource {
         cell.setUI(block: blockListViewModel.blocks[indexPath.row])
         
         cell.blockCancleButtonClosure = {
-            let alertViewController = AlertViewController()
-            alertViewController.alert = .blockOff
-            alertViewController.modalPresentationStyle = .overFullScreen
-            alertViewController.modalTransitionStyle = .crossDissolve
+            let alertViewController = self.AlertVC(.blockOff)
             self.present(alertViewController, animated: true)
             
             alertViewController.alertIsBlockOffClosure = {
                 self.blockListViewModel.deleteBlock(index: indexPath.row) {
                     self.settingAPI()
-                    self.dismiss(animated: true)
+                    self.postBlockNotification()
                 }
             }
         }

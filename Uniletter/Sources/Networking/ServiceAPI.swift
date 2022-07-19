@@ -398,6 +398,7 @@ final class API {
                 switch result {
                 case .success(_):
                     print("성공")
+                    completion()
                 case .failure(let error):
                     if error.errorDescription! == errorString {
                         completion()
