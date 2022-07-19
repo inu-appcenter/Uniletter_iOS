@@ -156,11 +156,10 @@ final class ActionSheetViewController: UIViewController {
     func blockUserForComment(_ targetUserID: Int) {
         API.postBlock(data: ["targetUserId": targetUserID]) {
             self.dismiss(animated: true)
+            NotificationCenter.default.post(
+                name: Notification.Name("reload"),
+                object: nil)
         }
-        
-        NotificationCenter.default.post(
-            name: Notification.Name("reload"),
-            object: nil)
     }
     
     func notifyBeforeStart() {
