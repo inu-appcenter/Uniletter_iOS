@@ -67,6 +67,13 @@ class BlockListViewController: UIViewController {
             }
         }
     }
+    
+    func reload(block: Block) {
+        blockListViewModel.deleteBlockList(block)
+        listCountLabel.text = String(blockListViewModel.numOfCell)
+        tableView.reloadData()
+    }
+    
     func configureNavigationBar() {
         setNavigationTitleAndBackButton("차단한 계정")
     }
@@ -136,8 +143,8 @@ extension BlockListViewController: UITableViewDelegate, UITableViewDataSource {
             
             alertViewController.alertIsBlockOffClosure = {
                 self.blockListViewModel.deleteBlock(index: indexPath.row) {
-                    self.settingAPI()
                     self.postBlockNotification()
+                    self.reload(block: self.blockListViewModel.blocks[indexPath.row])
                 }
             }
         }

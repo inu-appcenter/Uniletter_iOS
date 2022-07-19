@@ -27,4 +27,8 @@ class BlockListViewModel {
             completion()
         }
     }
+    
+    func deleteBlockList(_ block: Block) {
+        self.blocks = self.blocks.filter { $0.user.id != block.user.id }
+    }
 }
