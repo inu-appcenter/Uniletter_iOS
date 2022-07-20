@@ -16,6 +16,9 @@ final class AlertViewController: UIViewController {
     var alertIsNotificationClosure: (() -> Void)?
     var alertIsBlockOffClosure: (() -> Void)?
     var alertIsBlockOnClosure: (() -> Void)?
+    var cancleButtonClosure: (() -> Void)?
+    
+    var warning: Warning?
     
     // MARK: - Life cycle
     override func loadView() {
@@ -38,7 +41,7 @@ final class AlertViewController: UIViewController {
         
         alertView.cancleButton.addTarget(
             self,
-            action: #selector(dismissViewController(_:)),
+            action: #selector(didTapCancle),
             for: .touchUpInside)
         
         alertView.okButton.addTarget(
@@ -69,6 +72,14 @@ final class AlertViewController: UIViewController {
         }
     }
     
+    @objc func didTapCancle(_ sender: UIButton) {
+        
+        dismiss(animated: true)
+        
+        if let cancleButtonClosure = cancleButtonClosure {
+            cancleButtonClosure()
+        }
+    }
     func alertIsLogin() {
         view.window?.rootViewController = LoginViewController()
         view.window?.rootViewController?.dismiss(animated: false)

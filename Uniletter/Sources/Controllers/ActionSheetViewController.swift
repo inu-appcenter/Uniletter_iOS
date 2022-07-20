@@ -16,15 +16,17 @@ final class ActionSheetViewController: UIViewController {
     var actionSheet: ActionSheet?
     var option: Int?
     var myPageViewModel = MyPageManager.shared
+    var loginManager = LoginManager.shared
     var selectPhotoCompletionClosure: (() -> Void)?
     var basicPhotoCompletionClosure: (() -> Void)?
     var blockUserCompletionClousre: (() -> Void)?
+    var reportUserCompletionClosure: (() -> Void)?
     
     // 기능 별 필요한 Property
     var commentID: Int!
     var eventID: Int!
     var setFor: String!
-    var targetUserID: Int!
+    var targetUserID: Int?
     
     // MARK: - Life cycle
     override func loadView() {
@@ -133,7 +135,12 @@ final class ActionSheetViewController: UIViewController {
     }
     
     func reportUser() {
-        // TODO: 유저 신고
+        self.dismiss(animated: true)
+        if !loginManager.isLoggedIn {
+            if let reportUserCompletionClosure = reportUserCompletionClosure {
+                reportUserCompletionClosure()
+            }
+        }
     }
     
     func modifyWriting() {
@@ -145,20 +152,33 @@ final class ActionSheetViewController: UIViewController {
     }
     
     func blockUserForEvent() {
-        
         self.dismiss(animated: true)
-
-        if let blockUserCompletionClousre = blockUserCompletionClousre {
-            blockUserCompletionClousre()
+        if loginManager.isLoggedIn {
+            if let blockUserCompletionClousre = blockUserCompletionClousre {
+                blockUserCompletionClousre()
+            }
+        } else {
+            if let blockUserCompletionClousre = blockUserCompletionClousre {
+                blockUserCompletionClousre()
+            }
         }
     }
     
-    func blockUserForComment(_ targetUserID: Int) {
-        API.postBlock(data: ["targetUserId": targetUserID]) {
+    func blockUserForComment(_ targetUserID: Int?) {
+        
+        if loginManager.isLoggedIn {
+            API.postBlock(data: ["targetUserId": targetUserID!]) {
+                self.dismiss(animated: true)
+                NotificationCenter.default.post(
+                    name: Notification.Name("reload"),
+                    object: nil)
+            }
+        } else {
             self.dismiss(animated: true)
-            NotificationCenter.default.post(
-                name: Notification.Name("reload"),
-                object: nil)
+            
+            if let blockUserCompletionClousre = blockUserCompletionClousre {
+                blockUserCompletionClousre()
+            }
         }
     }
     
