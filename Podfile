@@ -13,6 +13,7 @@ target 'Uniletter' do
   pod "DropDown"
   pod "FSCalendar"
   pod 'SwiftEntryKit'
+  pod 'SwiftMessages'
   # Pods for Uniletter
 
 end
