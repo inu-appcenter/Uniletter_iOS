@@ -55,6 +55,7 @@ final class WritingPictureViewController: UIViewController {
             writingPictureView.imageButton.setImage(
                 UIImage(named: "UniletterLabel"),
                 for: .normal)
+            writingManager.imageUUID = nil
         }
     }
 }

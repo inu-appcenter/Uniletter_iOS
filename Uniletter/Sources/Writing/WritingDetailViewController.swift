@@ -25,6 +25,11 @@ final class WritingDetailViewController: UIViewController {
         setViewController()
     }
     
+    // MARK: - Keyboard
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        writingDetailView.endEditing(true)
+    }
+    
     // MARK: - Setup
     func setViewController() {
         writingDetailView.textField.delegate = self
@@ -44,10 +49,16 @@ extension WritingDetailViewController: UITextViewDelegate {
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.trimmingCharacters(in: .whitespaces) == "" {
+            textView.text = ""
+        }
+        
         textView.layer.borderColor = CGColor.customColor(.defaultGray)
         if textView.text == "" {
             textView.text = initText
             textView.textColor = UIColor.customColor(.lightGray)
+            textView.layer.borderColor = #colorLiteral(red: 0.9664621949, green: 0.2374898791, blue: 0.1274906397, alpha: 1).cgColor
+            writingManager.body = nil
         } else {
             checkText = textView.text
             writingManager.body = textView.text

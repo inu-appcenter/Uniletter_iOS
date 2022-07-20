@@ -84,6 +84,14 @@ func convertTodayToString() -> String {
     return dateFormatter.string(from: now)
 }
 
+func convertDefaultDate() -> String {
+    let now = Date()
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss"
+    
+    return dateFormatter.string(from: now)
+}
+
 func StringToYearMonthDay(_ dataStr: String) -> [String] {
     let YearMonthDay = dataStr.components(separatedBy: "-")
     

@@ -115,7 +115,6 @@ final class WritingContentView: UIView {
         return view
     }()
     
-    let clearView = UIView()
     
     // MARK: - Init
     override init(frame: CGRect) {
@@ -136,6 +135,8 @@ final class WritingContentView: UIView {
 
     // MARK: - Setup
     func addViews() {
+        eventEndView.addSubview(equalView)
+        
         [
             titleView,
             hostView,
@@ -145,13 +146,11 @@ final class WritingContentView: UIView {
             eventEndView,
             contactView,
             locationView,
-            clearView,
         ]
             .forEach { stackView.addArrangedSubview($0) }
         
         [
             titleLabel,
-            equalView,
             stackView,
             categoryButton,
         ]
@@ -192,10 +191,8 @@ final class WritingContentView: UIView {
         
         equalView.snp.makeConstraints {
             $0.centerY.equalTo(eventEndView.titleLabel)
-            $0.right.equalToSuperview().offset(-20)
+            $0.right.equalToSuperview()
         }
-        
-        clearView.setContentHuggingPriority(.init(rawValue: 100), for: .vertical)
         
     }
 }
