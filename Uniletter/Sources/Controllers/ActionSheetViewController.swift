@@ -18,6 +18,7 @@ final class ActionSheetViewController: UIViewController {
     var myPageViewModel = MyPageManager.shared
     var selectPhotoCompletionClosure: (() -> Void)?
     var basicPhotoCompletionClosure: (() -> Void)?
+    var blockUserCompletionClousre: (() -> Void)?
     
     // 기능 별 필요한 Property
     var commentID: Int!
@@ -107,7 +108,7 @@ final class ActionSheetViewController: UIViewController {
         switch actionSheet {
         case .topForUser: reportUser()
         case .topForWriter: modifyWriting()
-        case .profile: blockUser()
+        case .profile: blockUserForEvent()
         case .notification: notifyBeforeStart()
         case .commentForUser: reportUser()
         case .commentForWriter: deleteComment(commentID)
@@ -125,7 +126,7 @@ final class ActionSheetViewController: UIViewController {
         case .topForWriter: deleteWriting()
         case .profile: break
         case .notification: notifyBeforeEnd()
-        case .commentForUser: blockUser()
+        case .commentForUser: blockUserForComment(targetUserID)
         case .commentForWriter: break
         case .modifyInfo: basicPhoto()
         }
@@ -143,8 +144,22 @@ final class ActionSheetViewController: UIViewController {
         // TODO: 글 삭제
     }
     
-    func blockUser() {
-        // TODO: 유저 차단
+    func blockUserForEvent() {
+        
+        self.dismiss(animated: true)
+
+        if let blockUserCompletionClousre = blockUserCompletionClousre {
+            blockUserCompletionClousre()
+        }
+    }
+    
+    func blockUserForComment(_ targetUserID: Int) {
+        API.postBlock(data: ["targetUserId": targetUserID]) {
+            self.dismiss(animated: true)
+            NotificationCenter.default.post(
+                name: Notification.Name("reload"),
+                object: nil)
+        }
     }
     
     func notifyBeforeStart() {

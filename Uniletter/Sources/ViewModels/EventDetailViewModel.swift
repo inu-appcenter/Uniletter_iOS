@@ -130,4 +130,10 @@ final class EventDetailViewModel {
             completion()
         }
     }
+    
+    func postBlock(userId: Int, completion: @escaping () -> Void) {
+        API.postBlock(data: ["targetUserId": userId]) {
+            completion()
+        }
+    }
 }

@@ -163,6 +163,12 @@ final class EventDetailViewController: UIViewController {
         }
     }
     
+    func postBlockNotification() {
+        NotificationCenter.default.post(
+            name: Notification.Name("HomeReload"),
+            object: nil)
+    }
+    
     // MARK: - Actions
     @objc func didTapBookmarkButton(_ sender: UIButton) {
         if loginManager.isLoggedIn {
@@ -195,7 +201,16 @@ final class EventDetailViewController: UIViewController {
     
     @objc func didTapProfileMoreButton(_ sender: UIButton) {
         if loginManager.isLoggedIn {
-            self.present(presentActionSheetView(.profile), animated: true)
+            
+            let presentActionVC = presentActionSheetView(.profile)
+            self.present(presentActionVC, animated: true)
+            
+            presentActionVC.blockUserCompletionClousre = {
+                self.viewModel.postBlock(userId: self.viewModel.event!.userID) {
+                    self.postBlockNotification()
+                    self.navigationController?.popViewController(animated: true)
+                }
+            }
         } else {
             presentAlertView(.login)
         }

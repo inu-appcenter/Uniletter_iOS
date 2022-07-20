@@ -104,7 +104,6 @@ final class MyPageViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(true)
         userName.text = myPageManager.userName
         userImage.image = myPageManager.userImage
     }

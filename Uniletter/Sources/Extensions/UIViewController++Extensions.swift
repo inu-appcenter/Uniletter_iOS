@@ -38,6 +38,15 @@ extension UIViewController {
         present(alertViewController, animated: true)
     }
     
+    func AlertVC(_ alert: Alert) -> AlertViewController {
+        let alertViewController = AlertViewController()
+        alertViewController.alert = alert
+        alertViewController.modalPresentationStyle = .overFullScreen
+        alertViewController.modalTransitionStyle = .crossDissolve
+        
+        return alertViewController
+    }
+    
     // 액션 시트 띄우는 부분에서 변수에 이 함수로 뷰컨 리턴 받고 데이터 추가해서 present
     func presentActionSheetView(_ actionSheet: ActionSheet) -> ActionSheetViewController {
         let actionSheetViewController = ActionSheetViewController()

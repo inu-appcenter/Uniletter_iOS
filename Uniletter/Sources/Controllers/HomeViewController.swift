@@ -28,6 +28,7 @@ final class HomeViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        homeView.collectionView.reloadData()
         addGradientLayer()
     }
     
@@ -80,6 +81,12 @@ final class HomeViewController: UIViewController {
             self,
             selector: #selector(updateBookmark(_:)),
             name: NSNotification.Name("like"),
+            object: nil)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(reloadCollectionView(_:)),
+            name: NSNotification.Name("HomeReload"),
             object: nil)
     }
     
@@ -156,6 +163,12 @@ final class HomeViewController: UIViewController {
         
         viewModel.updateBookmarkButton(id: id as! Int, isChecked: like as! Bool)
         homeView.collectionView.reloadData()
+    }
+    
+    @objc func reloadCollectionView(_ noti: NSNotification) {
+
+        setLoadingIndicator(true)
+        fetchEvents()
     }
 }
 

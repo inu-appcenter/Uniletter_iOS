@@ -28,9 +28,7 @@ class BlockListViewModel {
         }
     }
     
-    func postBlock() {
-        API.postBlock(data: ["targetUserId": 54]) {
-            print("성공")
-        }
+    func deleteBlockList(_ block: Block) {
+        self.blocks = self.blocks.filter { $0.user.id != block.user.id }
     }
 }

@@ -15,6 +15,7 @@ final class AlertViewController: UIViewController {
     var alertIsSaveClosure: (() -> Void)?
     var alertIsNotificationClosure: (() -> Void)?
     var alertIsBlockOffClosure: (() -> Void)?
+    var alertIsBlockOnClosure: (() -> Void)?
     
     // MARK: - Life cycle
     override func loadView() {
@@ -86,14 +87,15 @@ final class AlertViewController: UIViewController {
     }
     
     func alertIsBlockOn() {
-        // TODO: 차단
     }
     
     func alertIsBlockOff() {
+        
+        self.dismiss(animated: true)
+
         if let alertIsBlockOffClosure = alertIsBlockOffClosure {
             alertIsBlockOffClosure()
         }
-        // TODO: 차단 해제
     }
     
     func alertIsDelete() {
