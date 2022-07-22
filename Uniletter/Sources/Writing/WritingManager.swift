@@ -31,8 +31,6 @@ final class WritingManager {
     var host = ""
     var category = ""
     var target: String?
-    var startAt = convertDefaultDate()
-    var endAt = convertDefaultDate()
     var contact = ""
     var location = ""
     var body: String?
@@ -57,26 +55,12 @@ final class WritingManager {
         self.startTime = text
     }
     
-    func setStartAt() {
-        guard let date = startDate,
-              let time = startTime else { return }
-        
-        self.startAt = "\(date) \(time)"
-    }
-    
     func setEndDate(_ text: String) {
         self.endDate = text
     }
     
     func setEndTime(_ text: String) {
         self.endTime = text
-    }
-    
-    func setEndAt() {
-        guard let date = endDate,
-              let time = endTime else { return }
-        
-        self.endAt = "\(date) \(time)"
     }
     
     func checkEventInfo() -> Bool {
@@ -89,6 +73,9 @@ final class WritingManager {
     }
     
     func createEvent() {
+        let startAt = "\(startDate ?? convertDefaultDate()) \(startTime ?? "18:00:00")"
+        let endAt = "\(endDate ?? convertDefaultDate()) \(endTime ?? "18:00:00")"
+        
         let parameter: [String: Any] =
         [
             "title": title!,

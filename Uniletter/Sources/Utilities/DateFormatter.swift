@@ -87,7 +87,7 @@ func convertTodayToString() -> String {
 func convertDefaultDate() -> String {
     let now = Date()
     let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss"
+    dateFormatter.dateFormat = "yyyy-MM-dd"
     
     return dateFormatter.string(from: now)
 }
