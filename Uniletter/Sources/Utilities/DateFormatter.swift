@@ -7,6 +7,13 @@
 
 import Foundation
 
+func dateToString(_ date: Date) -> String {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd"
+    
+    return formatter.string(from: date)
+}
+
 /// 받아온 날짜 년-월-일 구하기
 func subDateString(_ dateStr: String) -> String {
     return String(dateStr.prefix(10))

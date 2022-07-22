@@ -149,7 +149,8 @@ class WritingContentViewController: UIViewController {
                 showUnderline((writingContentView.eventStartView.timeButton.titleLabel?.text)!),
                 for: .normal)
             
-//            writingManager.endAt = writingManager.startAt
+            writingManager.endDate = writingManager.startDate
+            writingManager.endTime = writingManager.startTime
         }
     }
     
@@ -173,7 +174,12 @@ class WritingContentViewController: UIViewController {
     }
     
     @objc func didTapStartDate(_ sender: UIButton) {
+        let vc = CalendarViewController()
+        vc.style = .start
+        vc.modalTransitionStyle = .crossDissolve
+        vc.modalPresentationStyle = .overFullScreen
         
+        present(vc, animated: true)
     }
     
     @objc func didTapStartTime(_ sender: UIButton) {
@@ -181,7 +187,12 @@ class WritingContentViewController: UIViewController {
     }
     
     @objc func didTapEndDate(_ sender: UIButton) {
+        let vc = CalendarViewController()
+        vc.style = .end
+        vc.modalTransitionStyle = .crossDissolve
+        vc.modalPresentationStyle = .overFullScreen
         
+        present(vc, animated: true)
     }
     
     @objc func didTapEndTime(_ sender: UIButton) {

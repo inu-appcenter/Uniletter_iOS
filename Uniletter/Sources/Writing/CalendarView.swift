@@ -9,7 +9,7 @@ import UIKit
 import FSCalendar
 import SnapKit
 
-class CalendarView: UIView {
+final class CalendarView: UIView {
 
     // MARK: - UI
     lazy var calendar: FSCalendar = {
@@ -20,17 +20,20 @@ class CalendarView: UIView {
         
         // 헤더 뷰 관련
         calendar.headerHeight = 0
+        calendar.appearance.headerMinimumDissolvedAlpha = 0
         
         // 날짜 관련
         calendar.appearance.weekdayTextColor = UIColor.customColor(.darkGray)
         calendar.appearance.weekdayFont = .systemFont(ofSize: 13)
         calendar.appearance.titleFont = .systemFont(ofSize: 14, weight: .medium)
         calendar.appearance.selectionColor = UIColor.customColor(.blueGreen)
-        calendar.calendarWeekdayView.weekdayLabels[0].textColor = #colorLiteral(red: 0.9921568627, green: 0.231372549, blue: 0.1921568627, alpha: 1)
-        calendar.calendarWeekdayView.weekdayLabels[6].textColor = #colorLiteral(red: 0.2666666667, green: 0.4274509804, blue: 1, alpha: 1)
         
         // Today 관련
         calendar.appearance.todayColor = .clear
+        calendar.appearance.titleTodayColor = .black
+        
+        calendar.calendarWeekdayView.weekdayLabels[0].textColor = #colorLiteral(red: 0.9921568627, green: 0.231372549, blue: 0.1921568627, alpha: 1)
+        calendar.calendarWeekdayView.weekdayLabels[6].textColor = #colorLiteral(red: 0.2666666667, green: 0.4274509804, blue: 1, alpha: 1)
         
         return calendar
     }()
@@ -165,13 +168,14 @@ class CalendarView: UIView {
             $0.left.equalToSuperview().offset(26)
         }
         
-        leftButton.snp.makeConstraints {
+        rightButton.snp.makeConstraints {
             $0.centerY.equalTo(yearMonthLabel)
             $0.right.equalToSuperview().offset(-26)
         }
         
         calendar.snp.makeConstraints {
             $0.top.equalTo(topView.snp.bottom).offset(20)
+            $0.bottom.equalTo(cancleButton.snp.top)
             $0.left.right.equalToSuperview().inset(14)
         }
         
