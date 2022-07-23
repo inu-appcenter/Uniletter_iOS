@@ -14,6 +14,7 @@ final class TimePickerView: UIView {
     let subView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
+        view.layer.cornerRadius = 12
         
         return view
     }()
@@ -97,12 +98,13 @@ final class TimePickerView: UIView {
         
         pickerView.snp.makeConstraints {
             $0.center.equalToSuperview()
+            $0.left.right.equalToSuperview().inset(25)
             $0.height.equalTo(150)
         }
         
         selectedView.snp.makeConstraints {
             $0.centerY.equalTo(pickerView)
-            $0.left.right.equalTo(pickerView)
+            $0.left.right.equalToSuperview().inset(16)
             $0.height.equalTo(42)
         }
         

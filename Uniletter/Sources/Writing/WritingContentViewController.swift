@@ -177,8 +177,7 @@ class WritingContentViewController: UIViewController {
         let vc = CalendarViewController()
         vc.style = .start
         vc.delegate = self
-        vc.modalTransitionStyle = .crossDissolve
-        vc.modalPresentationStyle = .overFullScreen
+        vc.setModalStyle()
         
         present(vc, animated: true)
     }
@@ -187,8 +186,7 @@ class WritingContentViewController: UIViewController {
         let vc = TimePickerViewController()
         vc.style = .start
         vc.delegate = self
-        vc.modalTransitionStyle = .crossDissolve
-        vc.modalPresentationStyle = .overFullScreen
+        vc.setModalStyle()
         
         present(vc, animated: true)
     }
@@ -197,8 +195,7 @@ class WritingContentViewController: UIViewController {
         let vc = CalendarViewController()
         vc.style = .end
         vc.delegate = self
-        vc.modalTransitionStyle = .crossDissolve
-        vc.modalPresentationStyle = .overFullScreen
+        vc.setModalStyle()
         
         present(vc, animated: true)
     }
@@ -207,8 +204,7 @@ class WritingContentViewController: UIViewController {
         let vc = TimePickerViewController()
         vc.style = .end
         vc.delegate = self
-        vc.modalTransitionStyle = .crossDissolve
-        vc.modalPresentationStyle = .overFullScreen
+        vc.setModalStyle()
         
         present(vc, animated: true)
     }

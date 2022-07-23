@@ -48,6 +48,19 @@ class TimePickerViewController: UIViewController {
             self,
             action: #selector(didTapOKButton(_:)),
             for: .touchUpInside)
+        
+        timePickerView.pickerView.selectRow(
+            5004,
+            inComponent: 0,
+            animated: true)
+        timePickerView.pickerView.selectRow(
+            5004,
+            inComponent: 1,
+            animated: true)
+        timePickerView.pickerView.selectRow(
+            1,
+            inComponent: 2,
+            animated: true)
     }
     
     // MARK: - Actions
@@ -89,10 +102,8 @@ extension TimePickerViewController: UIPickerViewDelegate,
         case 0: return hours.count * 10000
         case 1: return minutes.count * 10000
         case 2: return timeUnit.count
-        default: break
+        default: return 0
         }
-        
-        return 0
     }
     
     func pickerView(
@@ -125,12 +136,12 @@ extension TimePickerViewController: UIPickerViewDelegate,
         pickerView.subviews.forEach {
             $0.backgroundColor = .clear
         }
-        
+
         let label: UILabel = {
             let label = UILabel(frame: CGRect(x: 0, y: 0, width: 56, height: 30))
             label.font = .systemFont(ofSize: 30)
             label.layer.cornerRadius = 10
-            
+
             switch component {
             case 0:
                 label.text = String(hours[row % hours.count])
@@ -140,18 +151,19 @@ extension TimePickerViewController: UIPickerViewDelegate,
                 label.textAlignment = .center
             case 2:
                 label.text = String(timeUnits[row])
+                label.textAlignment = .left
             default: break
             }
-            
+
             return label
         }()
-        
+
         if pickerView.selectedRow(inComponent: component) == row {
             label.textColor = .white
         } else {
             label.textColor = UIColor.customColor(.darkGray)
         }
-        
+
         return label
     }
     
