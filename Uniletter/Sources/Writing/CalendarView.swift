@@ -15,8 +15,9 @@ final class CalendarView: UIView {
     lazy var calendar: FSCalendar = {
         let calendar = FSCalendar()
         
-        // 영어로
+        // 기본 설정
         calendar.locale = Locale(identifier: "en_US")
+        calendar.placeholderType = .none
         
         // 헤더 뷰 관련
         calendar.headerHeight = 0
@@ -32,6 +33,7 @@ final class CalendarView: UIView {
         calendar.appearance.todayColor = .clear
         calendar.appearance.titleTodayColor = .black
         
+        // 요일 색상 관련
         calendar.calendarWeekdayView.weekdayLabels[0].textColor = #colorLiteral(red: 0.9921568627, green: 0.231372549, blue: 0.1921568627, alpha: 1)
         calendar.calendarWeekdayView.weekdayLabels[6].textColor = #colorLiteral(red: 0.2666666667, green: 0.4274509804, blue: 1, alpha: 1)
         

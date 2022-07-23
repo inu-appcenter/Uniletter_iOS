@@ -176,6 +176,7 @@ class WritingContentViewController: UIViewController {
     @objc func didTapStartDate(_ sender: UIButton) {
         let vc = CalendarViewController()
         vc.style = .start
+        vc.delegate = self
         vc.modalTransitionStyle = .crossDissolve
         vc.modalPresentationStyle = .overFullScreen
         
@@ -189,6 +190,7 @@ class WritingContentViewController: UIViewController {
     @objc func didTapEndDate(_ sender: UIButton) {
         let vc = CalendarViewController()
         vc.style = .end
+        vc.delegate = self
         vc.modalTransitionStyle = .crossDissolve
         vc.modalPresentationStyle = .overFullScreen
         
@@ -197,6 +199,16 @@ class WritingContentViewController: UIViewController {
     
     @objc func didTapEndTime(_ sender: UIButton) {
         
+    }
+}
+
+extension WritingContentViewController: DateSetDelegate {
+    func setDate(date: String, style: Style) {
+        style == .start
+        ? writingContentView.eventStartView.dateButton
+            .setAttributedTitle(showUnderline(date), for: .normal)
+        : writingContentView.eventEndView.dateButton
+            .setAttributedTitle(showUnderline(date), for: .normal)
     }
 }
 

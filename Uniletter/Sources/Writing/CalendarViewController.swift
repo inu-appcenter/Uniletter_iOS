@@ -8,6 +8,10 @@
 import UIKit
 import FSCalendar
 
+protocol DateSetDelegate {
+    func setDate(date: String, style: Style)
+}
+
 enum Style {
     case start
     case end
@@ -18,7 +22,9 @@ final class CalendarViewController: UIViewController {
     // MARK: - Property
     let calendarView = CalendarView()
     let writingManager = WritingManager.shared
+    var delegate: DateSetDelegate?
     var style: Style!
+    var selectedDate: Date!
     
     // MARK: - Life cycle
     override func loadView() {
@@ -102,13 +108,26 @@ final class CalendarViewController: UIViewController {
     }
     
     @objc func didTapOKButton(_ sender: UIButton) {
+        delegate?.setDate(date: dateToString(selectedDate), style: style)
         
+        style == .start
+        ? writingManager.setStartDate(dateToString(selectedDate))
+        : writingManager.setEndDate(dateToString(selectedDate))
+        
+        dismiss(animated: true)
     }
 }
 
 extension CalendarViewController: FSCalendarDelegate,
                                   FSCalendarDataSource,
                                   FSCalendarDelegateAppearance {
+    func calendar(
+        _ calendar: FSCalendar,
+        didSelect date: Date,
+        at monthPosition: FSCalendarMonthPosition) {
+            selectedDate = date
+        }
+    
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
         formatYearDate(calendar.currentPage)
     }
@@ -123,7 +142,7 @@ extension CalendarViewController: FSCalendarDelegate,
         for date: Date,
         at monthPosition: FSCalendarMonthPosition) {
             cell.eventIndicator.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-    }
+        }
     
     func calendar(
         _ calendar: FSCalendar,
