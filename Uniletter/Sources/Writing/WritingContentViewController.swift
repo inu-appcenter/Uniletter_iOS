@@ -184,7 +184,13 @@ class WritingContentViewController: UIViewController {
     }
     
     @objc func didTapStartTime(_ sender: UIButton) {
+        let vc = TimePickerViewController()
+        vc.style = .start
+        vc.delegate = self
+        vc.modalTransitionStyle = .crossDissolve
+        vc.modalPresentationStyle = .overFullScreen
         
+        present(vc, animated: true)
     }
     
     @objc func didTapEndDate(_ sender: UIButton) {
@@ -198,17 +204,32 @@ class WritingContentViewController: UIViewController {
     }
     
     @objc func didTapEndTime(_ sender: UIButton) {
+        let vc = TimePickerViewController()
+        vc.style = .end
+        vc.delegate = self
+        vc.modalTransitionStyle = .crossDissolve
+        vc.modalPresentationStyle = .overFullScreen
         
+        present(vc, animated: true)
     }
 }
 
-extension WritingContentViewController: DateSetDelegate {
+extension WritingContentViewController: DateSetDelegate,
+                                        TimeSetDelegate {
     func setDate(date: String, style: Style) {
         style == .start
         ? writingContentView.eventStartView.dateButton
             .setAttributedTitle(showUnderline(date), for: .normal)
         : writingContentView.eventEndView.dateButton
             .setAttributedTitle(showUnderline(date), for: .normal)
+    }
+    
+    func setTime(time: String, style: Style) {
+        style == .start
+        ? writingContentView.eventStartView.timeButton
+            .setAttributedTitle(showUnderline(time), for: .normal)
+        : writingContentView.eventEndView.timeButton
+            .setAttributedTitle(showUnderline(time), for: .normal)
     }
 }
 

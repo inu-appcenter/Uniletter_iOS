@@ -8,15 +8,6 @@
 import UIKit
 import FSCalendar
 
-protocol DateSetDelegate {
-    func setDate(date: String, style: Style)
-}
-
-enum Style {
-    case start
-    case end
-}
-
 final class CalendarViewController: UIViewController {
     
     // MARK: - Property
