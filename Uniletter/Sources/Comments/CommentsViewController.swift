@@ -14,6 +14,7 @@ final class CommentsViewController: UIViewController {
     let commentsView = CommentsView()
     let viewModel = CommentsViewModel()
     var eventID: Int?
+    var userID: Int!
     var checkText = ""
     
     // MARK: - Life cycle
@@ -135,7 +136,7 @@ extension CommentsViewController: UITableViewDataSource,
         
         let comment = viewModel.infoOfComment(indexPath.row)
         cell.selectionStyle = .none
-        cell.updateUI(comment)
+        cell.updateUI(comment: comment, id: userID)
         
         cell.moreButtonTapHandler = {
             guard let wrote = comment.wroteByMe else {
