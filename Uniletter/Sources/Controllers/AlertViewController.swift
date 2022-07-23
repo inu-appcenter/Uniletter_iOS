@@ -77,9 +77,7 @@ final class AlertViewController: UIViewController {
     func alertIsLogOut() {
         LoginManager.shared.logout()
         
-        let homeViewController = UINavigationController(rootViewController: HomeViewController())
-        view.window?.rootViewController = homeViewController
-        view.window?.rootViewController?.dismiss(animated: false)
+        goToInitialViewController()
     }
     
     func alertIsReport() {

@@ -193,7 +193,16 @@ final class EventDetailViewController: UIViewController {
     
     @objc func didTapTopMoreButton(_ sender: UIButton) {
         if loginManager.isLoggedIn {
-            self.present(presentActionSheetView(.topForUser), animated: true)
+            if viewModel.event?.wroteByMe == true {
+                let id = viewModel.event?.id
+                let vc = presentActionSheetView(.topForWriter)
+                
+                vc.eventID = id
+                
+                self.present(vc, animated: true)
+            } else {
+                self.present(presentActionSheetView(.topForUser), animated: false)
+            }
         } else {
             presentAlertView(.login)
         }

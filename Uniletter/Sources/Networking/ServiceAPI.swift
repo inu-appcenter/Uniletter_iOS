@@ -497,13 +497,34 @@ final class API {
     }
     
     // 행사 생성
-    static func createEvent(data: [String : String], completion: @escaping() -> Void) {
+    static func createEvent(_ data: [String : String], completion: @escaping() -> Void) {
         guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
         
         networking(
-            urlStr: Address.comments.url,
+            urlStr: Address.events.url,
             method: .post,
             data: data,
+            model: Event.self) { result in
+                switch result {
+                case .success(_):
+                    completion()
+                case .failure(let error):
+                    if error.errorDescription! == errorString {
+                        print("성공")
+                        completion()
+                    } else {
+                        print(error)
+                    }
+                }
+            }
+    }
+    
+    // 행사 삭제
+    static func deleteEvent(_ id: Int, completion: @escaping() -> Void) {
+        networking(
+            urlStr: Address.events.url + "/\(id)",
+            method: .delete,
+            data: nil,
             model: Event.self) { result in
                 switch result {
                 case .success(_):

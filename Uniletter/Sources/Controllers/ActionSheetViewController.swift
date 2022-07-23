@@ -141,7 +141,9 @@ final class ActionSheetViewController: UIViewController {
     }
     
     func deleteWriting() {
-        // TODO: 글 삭제
+        API.deleteEvent(eventID) {
+            self.goToInitialViewController()
+        }
     }
     
     func blockUserForEvent() {

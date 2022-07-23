@@ -276,8 +276,8 @@
 				7610DD7428846FCE00CA03BC /* WritingManager.swift */,
 				76239186288AFDB100790775 /* CalendarView.swift */,
 				76239188288AFDC000790775 /* CalendarViewController.swift */,
-				7623918A288C38DB00790775 /* TimePickerViewController.swift */,
 				7623918C288C38ED00790775 /* TimePickerView.swift */,
+				7623918A288C38DB00790775 /* TimePickerViewController.swift */,
 				7623918E288C3CC100790775 /* WritingSubFile.swift */,
 			);
 			path = Writing;

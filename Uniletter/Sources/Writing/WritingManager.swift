@@ -72,11 +72,11 @@ final class WritingManager {
         return true
     }
     
-    func createEvent() {
+    func createEvent(completion: @escaping () -> Void) {
         let startAt = "\(startDate ?? convertDefaultDate()) \(startTime ?? "18:00:00")"
         let endAt = "\(endDate ?? convertDefaultDate()) \(endTime ?? "18:00:00")"
         
-        let parameter: [String: Any] =
+        let parameter: [String: String] =
         [
             "title": title!,
             "host": host,
@@ -90,6 +90,9 @@ final class WritingManager {
             "imageUuid": imageUUID ?? basicImage,
         ]
         
-        print(parameter)
+        API.createEvent(parameter) {
+            print("이벤트 생성 성공")
+            completion()
+        }
     }
 }

@@ -50,7 +50,7 @@ class TimePickerViewController: UIViewController {
             for: .touchUpInside)
         
         timePickerView.pickerView.selectRow(
-            5004,
+            5009,
             inComponent: 0,
             animated: true)
         timePickerView.pickerView.selectRow(
@@ -61,6 +61,11 @@ class TimePickerViewController: UIViewController {
             1,
             inComponent: 2,
             animated: true)
+    }
+    
+    // MARK: - Funcs
+    func formatNumbers(_ num: Int) -> String {
+        return String(format: "%02d", num)
     }
     
     // MARK: - Actions
@@ -77,10 +82,14 @@ class TimePickerViewController: UIViewController {
                 }
             }
             
-            return "\(hour):\(minute) \(timeUnit)"
+            return "\(formatNumbers(hour)):\(formatNumbers(minute))"
         }()
-
-        delegate?.setTime(time: time, style: style)
+        
+        delegate?.setTime(time: "\(time) \(timeUnit)", style: style)
+        
+        style == .start
+        ? writingManager.setStartTime("\(time):00")
+        : writingManager.setEndTime("\(time):00")
         
         dismiss(animated: true)
     }
@@ -157,7 +166,7 @@ extension TimePickerViewController: UIPickerViewDelegate,
 
             return label
         }()
-
+        
         if pickerView.selectedRow(inComponent: component) == row {
             label.textColor = .white
         } else {

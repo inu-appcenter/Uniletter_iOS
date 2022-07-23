@@ -29,6 +29,13 @@ extension UIViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
+    func goToInitialViewController() {
+        let homeViewController = UINavigationController(
+            rootViewController: HomeViewController())
+        view.window?.rootViewController = homeViewController
+        view.window?.rootViewController?.dismiss(animated: false)
+    }
+    
     // Present modal 통합
     func setModalStyle() {
         self.modalTransitionStyle = .crossDissolve

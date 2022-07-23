@@ -111,8 +111,9 @@ final class WritingViewController: UIViewController {
             changeViewController(detailViewController)
         case 2:
             if writingManager.checkEventInfo() {
-                writingManager.createEvent()
-                // TODO: 이벤트 등록
+                writingManager.createEvent() {
+                    self.goToInitialViewController()
+                }
             } else {
                 // TODO: 필수정보 입력 알림
             }
