@@ -35,7 +35,7 @@ enum SectionType: CaseIterable {
         switch self {
         case .setting: return [NewNoticeViewController()]
         case .shortcut: return [MyEventViewController(), MyCommentViewController(), BlockListViewController()]
-        case .infomation: return [PrivacyPolicyViewController(), UIViewController(), UIViewController()]
+        case .infomation: return [PrivacyPolicyViewController(), LicenseViewController()]
         case .etc: return [UIViewController()]
         }
     }
@@ -76,38 +76,21 @@ class MyPageManager {
     func setUserInfo(completion: @escaping () -> Void) {
         API.getMeInfo { Me in
             self.me = Me
-
             completion()
-        }
-    }
-    
-    func patchUserInfo(_ nickname: String, _ imageUuid: String) {
-        
-        let data: [String: Any] = [
-                                    "nickname": nickname,
-                                    "imageUuid": imageUuid
-                                ]
-        
-        API.patchMeInfo(data: data)
-    }
-    
-    func uploadUserInfo(_ nickname: String, _ image: UIImage) {
-        
-        self.userName = self.changeName
-        self.userImage = self.choiceImage
-        
-        API.uploadMeImage(image: image) { images in
-            self.patchUserInfo(nickname, images.uuid)
         }
     }
 
     func setUserImage() -> UIImage {
         
-        guard let imageUrl = me?.imageUrl else { return UIImage(named: "UserImage") ?? UIImage() }
+        guard let imageUrl = me?.imageUrl else {
+            self.userImage = UIImage(named: "UserImage")
+            return UIImage(named: "UserImage") ?? UIImage()
+        }
         
         let url = URL(string: imageUrl)!
 
-        guard let data = try? Data(contentsOf: url) else { return UIImage(named: "UserImage") ?? UIImage() }
+        guard let data = try? Data(contentsOf: url) else { return UIImage(named: "UserImage") ?? UIImage()
+        }
         
         userImage = UIImage(data: data)!
         return UIImage(data: data)!
