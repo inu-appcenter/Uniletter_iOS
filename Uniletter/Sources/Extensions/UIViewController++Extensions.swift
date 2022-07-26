@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftMessages
 
 extension UIViewController {
     /// parameter에 넣은 제목대로 네비게이션 바 왼쪽 커스텀
@@ -73,5 +74,14 @@ extension UIViewController {
         noticeAlertViewController.setModalStyle()
         
         present(noticeAlertViewController, animated: true)
+    }
+    
+    func presentWaringView(_ warningType: Warning) {
+        let warningView = WarningView()
+        warningView.warninglabel.text = warningType.body
+
+        var config = SwiftMessages.Config()
+        config.presentationStyle = .center
+        SwiftMessages.show(config: config, view: warningView)
     }
 }

@@ -105,7 +105,11 @@ final class CommentsViewController: UIViewController {
                 self.fetchComments()
             }
         } else {
-            presentAlertView(.login)
+            let alertView = AlertVC(.login)
+            present(alertView, animated: true)
+            alertView.cancleButtonClosure = {
+                self.presentWaringView(.loginComment)
+            }
         }
     }
     
@@ -139,10 +143,29 @@ extension CommentsViewController: UITableViewDataSource,
         cell.updateUI(comment: comment, id: userID)
         
         cell.moreButtonTapHandler = {
-            guard let wrote = comment.wroteByMe else {
-                self.presentAlertView(.login)
-                return }
             var vc = ActionSheetViewController()
+
+            guard let wrote = comment.wroteByMe else {
+                vc = self.presentActionSheetView(.commentForUser)
+                self.present(vc, animated: true)
+
+                let AlertView = self.AlertVC(.login)
+
+                vc.blockUserCompletionClousre = {
+                    self.present(AlertView, animated: true)
+                    AlertView.cancleButtonClosure = {
+                        self.presentWaringView(.loginBlock)
+                    }
+                }
+
+                vc.reportUserCompletionClosure = {
+                    self.present(AlertView, animated: true)
+                    AlertView.cancleButtonClosure = {
+                        self.presentWaringView(.loginReport)
+                    }
+                }
+                
+                return }
             
             if wrote {
                 vc = self.presentActionSheetView(.commentForWriter)

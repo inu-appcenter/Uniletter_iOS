@@ -19,6 +19,9 @@ PODS:
   - Kingfisher (7.2.4)
   - MarqueeLabel (4.3.0)
   - SnapKit (5.6.0)
+  - SwiftMessages (9.0.6):
+    - SwiftMessages/App (= 9.0.6)
+  - SwiftMessages/App (9.0.6)
 
 DEPENDENCIES:
   - Alamofire
@@ -28,6 +31,7 @@ DEPENDENCIES:
   - Kingfisher
   - MarqueeLabel
   - SnapKit
+  - SwiftMessages
 
 SPEC REPOS:
   trunk:
@@ -41,6 +45,7 @@ SPEC REPOS:
     - Kingfisher
     - MarqueeLabel
     - SnapKit
+    - SwiftMessages
 
 SPEC CHECKSUMS:
   Alamofire: 87bd8c952f9a4454320fce00d9cc3de57bcadaf5
@@ -53,7 +58,8 @@ SPEC CHECKSUMS:
   Kingfisher: 2457be2121734e69e54a2312ecc0150eb9ae70b3
   MarqueeLabel: 02f5ac8fd6877c94564556cb93fa86c70c08baeb
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
+  SwiftMessages: f0c7ef4705a570ad6c5e208b611f4333e660ed92
 
-PODFILE CHECKSUM: d061b9d4a244f6eac79c07c93c325c3a18084fe6
+PODFILE CHECKSUM: f171f84748241ce33b40d8df676ed8e63646b374
 
 COCOAPODS: 1.11.3

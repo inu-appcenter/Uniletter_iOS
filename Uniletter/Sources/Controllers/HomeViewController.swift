@@ -150,7 +150,12 @@ final class HomeViewController: UIViewController {
             let writingViewController = WritingViewController()
             self.navigationController?.pushViewController(writingViewController, animated: true)
         } else {
-            presentAlertView(.login)
+            let AlertView = AlertVC(.login)
+            present(AlertView, animated: true)
+
+            AlertView.cancleButtonClosure = {
+                self.presentWaringView(.loginWriting)
+            }
         }
     }
     
@@ -201,7 +206,11 @@ extension HomeViewController: UICollectionViewDelegate,
                     self.viewModel.likeEvent(event.id)
                 }
             } else {
-                self.presentAlertView(.login)
+                let alertView = self.AlertVC(.login)
+                self.present(alertView, animated: true)
+                alertView.cancleButtonClosure = {
+                    self.presentWaringView(.loginLike)
+                }
             }
         }
         

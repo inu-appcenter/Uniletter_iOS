@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C01D080288FDF7800AEF20F /* WarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C01D07F288FDF7800AEF20F /* WarningView.swift */; };
+		2C01D082288FDF9400AEF20F /* Warning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C01D081288FDF9400AEF20F /* Warning.swift */; };
 		2C0D039A288596EE0026F3F0 /* PrivacyPolicyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0D0399288596EE0026F3F0 /* PrivacyPolicyCell.swift */; };
 		2C0D039C2885ACF60026F3F0 /* ChangeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0D039B2885ACF60026F3F0 /* ChangeViewModel.swift */; };
 		2C0DBE562880099E004A933A /* SaveListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE552880099E004A933A /* SaveListViewController.swift */; };
@@ -103,6 +105,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2C01D07F288FDF7800AEF20F /* WarningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningView.swift; sourceTree = "<group>"; };
+		2C01D081288FDF9400AEF20F /* Warning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Warning.swift; sourceTree = "<group>"; };
 		2C0D0399288596EE0026F3F0 /* PrivacyPolicyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyCell.swift; sourceTree = "<group>"; };
 		2C0D039B2885ACF60026F3F0 /* ChangeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeViewModel.swift; sourceTree = "<group>"; };
 		2C0DBE552880099E004A933A /* SaveListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveListViewController.swift; sourceTree = "<group>"; };
@@ -344,6 +348,7 @@
 				76AC783D2872D7FB00D303C4 /* TwoOptionsActionSheetView.swift */,
 				76AC783F2872DF9300D303C4 /* OneOptionActionSheetView.swift */,
 				2C0DBE652881591B004A933A /* NoticeAlertView.swift */,
+				2C01D07F288FDF7800AEF20F /* WarningView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -445,6 +450,7 @@
 				76AC78432872E14A00D303C4 /* ActionSheet.swift */,
 				7681D589286A29970081C644 /* DateFormatter.swift */,
 				76E9648A286B8F6400D5299A /* UI.swift */,
+				2C01D081288FDF9400AEF20F /* Warning.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -603,6 +609,7 @@
 				2CB69D0D287456C60089A922 /* ChangeViewController.swift in Sources */,
 				766F38502872FC3900EC9593 /* NewNoticeViewModel.swift in Sources */,
 				2C0D039C2885ACF60026F3F0 /* ChangeViewModel.swift in Sources */,
+				2C01D080288FDF7800AEF20F /* WarningView.swift in Sources */,
 				2CB8AA32287838EE00BDA358 /* MyEventCell.swift in Sources */,
 				7681D58A286A29970081C644 /* DateFormatter.swift in Sources */,
 				7610DD7728848BD300CA03BC /* WritingDateView.swift in Sources */,
@@ -676,6 +683,7 @@
 				765BC9FF2868C00C0098BBF2 /* SceneDelegate.swift in Sources */,
 				2CB8AAAC287EAE5400BDA358 /* PrivacyPolicyViewController.swift in Sources */,
 				76239189288AFDC000790775 /* CalendarViewController.swift in Sources */,
+				2C01D082288FDF9400AEF20F /* Warning.swift in Sources */,
 				76FCB547286C254B00AC4F70 /* EventDetailView.swift in Sources */,
 				2C0DBE6828815CA6004A933A /* NoticeAlertViewController.swift in Sources */,
 				2C0DBE702881AC5B004A933A /* Block.swift in Sources */,
