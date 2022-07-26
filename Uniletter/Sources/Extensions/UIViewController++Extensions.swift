@@ -29,11 +29,23 @@ extension UIViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
+    func goToInitialViewController() {
+        let homeViewController = UINavigationController(
+            rootViewController: HomeViewController())
+        view.window?.rootViewController = homeViewController
+        view.window?.rootViewController?.dismiss(animated: false)
+    }
+    
+    // Present modal 통합
+    func setModalStyle() {
+        self.modalTransitionStyle = .crossDissolve
+        self.modalPresentationStyle = .overFullScreen
+    }
+    
     func presentAlertView(_ alert: Alert) {
         let alertViewController = AlertViewController()
         alertViewController.alert = alert
-        alertViewController.modalPresentationStyle = .overFullScreen
-        alertViewController.modalTransitionStyle = .crossDissolve
+        alertViewController.setModalStyle()
         
         present(alertViewController, animated: true)
     }
@@ -41,8 +53,7 @@ extension UIViewController {
     func AlertVC(_ alert: Alert) -> AlertViewController {
         let alertViewController = AlertViewController()
         alertViewController.alert = alert
-        alertViewController.modalPresentationStyle = .overFullScreen
-        alertViewController.modalTransitionStyle = .crossDissolve
+        alertViewController.setModalStyle()
         
         return alertViewController
     }
@@ -51,8 +62,7 @@ extension UIViewController {
     func presentActionSheetView(_ actionSheet: ActionSheet) -> ActionSheetViewController {
         let actionSheetViewController = ActionSheetViewController()
         actionSheetViewController.actionSheet = actionSheet
-        actionSheetViewController.modalPresentationStyle = .overFullScreen
-        actionSheetViewController.modalTransitionStyle = .crossDissolve
+        actionSheetViewController.setModalStyle()
         
         return actionSheetViewController
     }
@@ -60,8 +70,7 @@ extension UIViewController {
     func presentNoticeAlertView(_ noticeAlert: NoticeAlert) {
         let noticeAlertViewController = NoticeAlertViewController()
         noticeAlertViewController.noticeAlert = noticeAlert
-        noticeAlertViewController.modalPresentationStyle = .overFullScreen
-        noticeAlertViewController.modalTransitionStyle = .crossDissolve
+        noticeAlertViewController.setModalStyle()
         
         present(noticeAlertViewController, animated: true)
     }

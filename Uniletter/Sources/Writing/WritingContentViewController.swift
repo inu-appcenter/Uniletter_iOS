@@ -149,7 +149,8 @@ class WritingContentViewController: UIViewController {
                 showUnderline((writingContentView.eventStartView.timeButton.titleLabel?.text)!),
                 for: .normal)
             
-            writingManager.endAt = writingManager.startAt
+            writingManager.endDate = writingManager.startDate
+            writingManager.endTime = writingManager.startTime
         }
     }
     
@@ -173,19 +174,58 @@ class WritingContentViewController: UIViewController {
     }
     
     @objc func didTapStartDate(_ sender: UIButton) {
+        let vc = CalendarViewController()
+        vc.style = .start
+        vc.delegate = self
+        vc.setModalStyle()
         
+        present(vc, animated: true)
     }
     
     @objc func didTapStartTime(_ sender: UIButton) {
+        let vc = TimePickerViewController()
+        vc.style = .start
+        vc.delegate = self
+        vc.setModalStyle()
         
+        present(vc, animated: true)
     }
     
     @objc func didTapEndDate(_ sender: UIButton) {
+        let vc = CalendarViewController()
+        vc.style = .end
+        vc.delegate = self
+        vc.setModalStyle()
         
+        present(vc, animated: true)
     }
     
     @objc func didTapEndTime(_ sender: UIButton) {
+        let vc = TimePickerViewController()
+        vc.style = .end
+        vc.delegate = self
+        vc.setModalStyle()
         
+        present(vc, animated: true)
+    }
+}
+
+extension WritingContentViewController: DateSetDelegate,
+                                        TimeSetDelegate {
+    func setDate(date: String, style: Style) {
+        style == .start
+        ? writingContentView.eventStartView.dateButton
+            .setAttributedTitle(showUnderline(date), for: .normal)
+        : writingContentView.eventEndView.dateButton
+            .setAttributedTitle(showUnderline(date), for: .normal)
+    }
+    
+    func setTime(time: String, style: Style) {
+        style == .start
+        ? writingContentView.eventStartView.timeButton
+            .setAttributedTitle(showUnderline(time), for: .normal)
+        : writingContentView.eventEndView.timeButton
+            .setAttributedTitle(showUnderline(time), for: .normal)
     }
 }
 

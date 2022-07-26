@@ -187,15 +187,36 @@ final class EventDetailViewController: UIViewController {
                 object: nil,
                 userInfo: ["id": id, "like": sender.isSelected])
         } else {
-            presentAlertView(.login)
+            let AlertView = self.AlertVC(.login)
+            self.present(AlertView, animated: true)
+            AlertView.cancleButtonClosure = {
+                self.presentWaringView(.loginLike)
+            }
         }
     }
     
     @objc func didTapTopMoreButton(_ sender: UIButton) {
+        let presentActionVC = presentActionSheetView(.topForUser)
         if loginManager.isLoggedIn {
-            self.present(presentActionSheetView(.topForUser), animated: true)
+            if viewModel.event?.wroteByMe == true {
+                let id = viewModel.event?.id
+                let vc = presentActionSheetView(.topForWriter)
+                
+                vc.eventID = id
+                
+                self.present(vc, animated: true)
+            } else {
+                self.present(presentActionVC, animated: false)
+            }
         } else {
-            presentAlertView(.login)
+            presentActionVC.reportUserCompletionClosure = {
+                let alertView = self.AlertVC(.login)
+                self.present(alertView, animated: true)
+                
+                alertView.cancleButtonClosure = {
+                    self.presentWaringView(.loginReport)
+                }
+            }
         }
     }
     
@@ -212,13 +233,23 @@ final class EventDetailViewController: UIViewController {
                 }
             }
         } else {
-            presentAlertView(.login)
+            let presentActionVC = presentActionSheetView(.profile)
+            self.present(presentActionVC, animated: true)
+            presentActionVC.blockUserCompletionClousre = {
+                let alertView = self.AlertVC(.login)
+                self.present(alertView, animated: true)
+                
+                alertView.cancleButtonClosure = {
+                    self.presentWaringView(.loginBlock)
+                }
+            }
         }
     }
     
     @objc func didTapCommentesLabel(_ sender: UIButton) {
         let vc = CommentsViewController()
         vc.eventID = id
+        vc.userID = viewModel.event?.userID
         
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -229,7 +260,11 @@ final class EventDetailViewController: UIViewController {
                 self.present(presentActionSheetView(.notification), animated: true)
             }
         } else {
-            presentAlertView(.login)
+            let AlertView = self.AlertVC(.login)
+            self.present(AlertView, animated: true)
+            AlertView.cancleButtonClosure = {
+                self.presentWaringView(.loginNoti)
+            }
         }
     }
     

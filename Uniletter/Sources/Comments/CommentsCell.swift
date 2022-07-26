@@ -31,8 +31,13 @@ final class CommentsCell: UITableViewCell {
     let wroteLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 13)
+        label.text = "글쓴이"
         label.textColor = UIColor.customColor(.blueGreen)
         label.textAlignment = .center
+        label.layer.cornerRadius = 10.5
+        label.layer.borderColor = CGColor.customColor(.blueGreen)
+        label.layer.borderWidth = 1
+        
         label.isHidden = true
         
         return label
@@ -85,16 +90,13 @@ final class CommentsCell: UITableViewCell {
     }
     
     // MARK: - Update
-    func updateUI(_ comment: Comment) {
+    func updateUI(comment: Comment, id: Int) {
         guard let url = URL(string: comment.profileImage) else { return }
         profileImageView.kf.setImage(with: url)
         nicknameLabel.text = comment.nickname
         contentLabel.text = comment.content
         dateLabel.text = formatDateForComments(comment.createdAt)
-        
-        if comment.wroteByMe != nil {
-            wroteLabel.isHidden = false
-        }
+        wroteLabel.isHidden = comment.userID == id ? false : true
     }
     
     // MARK: - Actions
@@ -130,6 +132,8 @@ final class CommentsCell: UITableViewCell {
         wroteLabel.snp.makeConstraints {
             $0.centerY.equalTo(nicknameLabel)
             $0.left.equalTo(nicknameLabel.snp.right).offset(8)
+            $0.width.equalTo(56)
+            $0.height.equalTo(21)
         }
         
         moreButton.snp.makeConstraints {
