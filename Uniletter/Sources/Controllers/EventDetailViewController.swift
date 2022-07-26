@@ -187,11 +187,16 @@ final class EventDetailViewController: UIViewController {
                 object: nil,
                 userInfo: ["id": id, "like": sender.isSelected])
         } else {
-            presentAlertView(.login)
+            let AlertView = self.AlertVC(.login)
+            self.present(AlertView, animated: true)
+            AlertView.cancleButtonClosure = {
+                self.presentWaringView(.loginLike)
+            }
         }
     }
     
     @objc func didTapTopMoreButton(_ sender: UIButton) {
+        let presentActionVC = presentActionSheetView(.topForUser)
         if loginManager.isLoggedIn {
             if viewModel.event?.wroteByMe == true {
                 let id = viewModel.event?.id
@@ -201,10 +206,17 @@ final class EventDetailViewController: UIViewController {
                 
                 self.present(vc, animated: true)
             } else {
-                self.present(presentActionSheetView(.topForUser), animated: false)
+                self.present(presentActionVC, animated: false)
             }
         } else {
-            presentAlertView(.login)
+            presentActionVC.reportUserCompletionClosure = {
+                let alertView = self.AlertVC(.login)
+                self.present(alertView, animated: true)
+                
+                alertView.cancleButtonClosure = {
+                    self.presentWaringView(.loginReport)
+                }
+            }
         }
     }
     
@@ -221,7 +233,16 @@ final class EventDetailViewController: UIViewController {
                 }
             }
         } else {
-            presentAlertView(.login)
+            let presentActionVC = presentActionSheetView(.profile)
+            self.present(presentActionVC, animated: true)
+            presentActionVC.blockUserCompletionClousre = {
+                let alertView = self.AlertVC(.login)
+                self.present(alertView, animated: true)
+                
+                alertView.cancleButtonClosure = {
+                    self.presentWaringView(.loginBlock)
+                }
+            }
         }
     }
     
@@ -239,7 +260,11 @@ final class EventDetailViewController: UIViewController {
                 self.present(presentActionSheetView(.notification), animated: true)
             }
         } else {
-            presentAlertView(.login)
+            let AlertView = self.AlertVC(.login)
+            self.present(AlertView, animated: true)
+            AlertView.cancleButtonClosure = {
+                self.presentWaringView(.loginNoti)
+            }
         }
     }
     
