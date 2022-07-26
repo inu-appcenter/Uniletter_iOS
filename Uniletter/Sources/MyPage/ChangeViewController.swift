@@ -46,7 +46,7 @@ class ChangeViewController: UIViewController {
        
         var config = UIButton.Configuration.plain()
         config.baseBackgroundColor = .clear
-        config.image = UIImage(named: "Camera")
+        config.image = UIImage(named: "camera")
         
         var button = UIButton()
         button.configuration = config
@@ -243,10 +243,16 @@ class ChangeViewController: UIViewController {
         if viewModel.choiceImage == nil {
             viewModel.choiceImage = viewModel.userImage
         }
-
-        DispatchQueue.global().async {
-            self.viewModel.uploadUserInfo(self.viewModel.changeName!, self.viewModel.choiceImage!)
+        
+        if viewModel.choiceImage == UIImage(named: "UserImage") {
+            self.viewModel.uploadUserInfo(self.viewModel.changeName!, nil)
+        } else {
+            DispatchQueue.global().async {
+                self.viewModel.uploadUserInfo(self.viewModel.changeName!, self.viewModel.choiceImage!)
+            }
         }
+
+        
         navigationController?.popViewController(animated: true)
     }
 }

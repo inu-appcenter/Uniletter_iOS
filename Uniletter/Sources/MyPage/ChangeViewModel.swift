@@ -24,7 +24,6 @@ class ChangeViewModel {
     }
     
     func patchUserInfo(_ nickname: String, _ imageUuid: String) {
-        
         let data: [String: Any] = [
                                     "nickname": nickname,
                                     "imageUuid": imageUuid
@@ -33,13 +32,26 @@ class ChangeViewModel {
         API.patchMeInfo(data: data)
     }
     
-    func uploadUserInfo(_ nickname: String, _ image: UIImage) {
+    func patchUserInfoNil(_ nickname: String) {
+        let data: [String: Any?] = [
+                                    "nickname": nickname,
+                                    "imageUuid": nil
+                                    ]
+        
+        API.patchMeInfo(data: data)
+    }
+    
+    func uploadUserInfo(_ nickname: String, _ image: UIImage?) {
         
         myPageManager.userName = self.changeName
         myPageManager.userImage = self.choiceImage
         
-        API.uploadMeImage(image: image) { images in
-            self.patchUserInfo(nickname, images.uuid)
+        if let userImage = image {
+            API.uploadMeImage(image: userImage) { images in
+                self.patchUserInfo(nickname, images.uuid)
+            }
+        } else {
+            self.patchUserInfoNil(nickname)
         }
     }
 }
