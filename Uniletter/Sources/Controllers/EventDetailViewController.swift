@@ -239,6 +239,7 @@ final class EventDetailViewController: UIViewController {
     @objc func didTapCommentesLabel(_ sender: UIButton) {
         let vc = CommentsViewController()
         vc.eventID = id
+        vc.userID = viewModel.event?.userID
         
         self.navigationController?.pushViewController(vc, animated: true)
     }
