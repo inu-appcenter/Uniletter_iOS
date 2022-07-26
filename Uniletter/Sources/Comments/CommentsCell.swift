@@ -91,8 +91,12 @@ final class CommentsCell: UITableViewCell {
     
     // MARK: - Update
     func updateUI(comment: Comment, id: Int) {
-        guard let url = URL(string: comment.profileImage) else { return }
-        profileImageView.kf.setImage(with: url)
+        if let imageURL = comment.profileImage,
+            let url = URL(string: imageURL) {
+            profileImageView.kf.setImage(with: url)
+        } else {
+            profileImageView.image = UIImage(named: "UserImage")
+        }
         nicknameLabel.text = comment.nickname
         contentLabel.text = comment.content
         dateLabel.text = formatDateForComments(comment.createdAt)
