@@ -187,25 +187,15 @@ final class EventDetailViewController: UIViewController {
                 object: nil,
                 userInfo: ["id": id, "like": sender.isSelected])
         } else {
-            let AlertView = self.AlertVC(.login)
-            self.present(AlertView, animated: true)
-            AlertView.cancleButtonClosure = {
-                self.presentWaringView(.loginLike)
-            }
+            presentAlertView(.login)
         }
     }
     
     @objc func didTapTopMoreButton(_ sender: UIButton) {
-        let presentActionVC = presentActionSheetView(.topForUser)
-        self.present(presentActionVC, animated: true)
-        
-        presentActionVC.reportUserCompletionClosure = {
-            let alertView = self.AlertVC(.login)
-            self.present(alertView, animated: true)
-            
-            alertView.cancleButtonClosure = {
-                self.presentWaringView(.loginReport)
-            }
+        if loginManager.isLoggedIn {
+            self.present(presentActionSheetView(.topForUser), animated: true)
+        } else {
+            presentAlertView(.login)
         }
     }
     
@@ -222,17 +212,7 @@ final class EventDetailViewController: UIViewController {
                 }
             }
         } else {
-            let presentActionVC = presentActionSheetView(.profile)
-            self.present(presentActionVC, animated: true)
-            presentActionVC.blockUserCompletionClousre = {
-                let alertView = self.AlertVC(.login)
-                self.present(alertView, animated: true)
-                
-                alertView.cancleButtonClosure = {
-                    self.presentWaringView(.loginBlock)
-                }
-            }
-            
+            presentAlertView(.login)
         }
     }
     
@@ -249,11 +229,7 @@ final class EventDetailViewController: UIViewController {
                 self.present(presentActionSheetView(.notification), animated: true)
             }
         } else {
-            let AlertView = self.AlertVC(.login)
-            self.present(AlertView, animated: true)
-            AlertView.cancleButtonClosure = {
-                self.presentWaringView(.loginNoti)
-            }
+            presentAlertView(.login)
         }
     }
     

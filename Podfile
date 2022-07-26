@@ -12,8 +12,7 @@ target 'Uniletter' do
   pod "GoogleSignIn"
   pod "DropDown"
   pod "FSCalendar"
-  pod 'SwiftEntryKit'
-  pod 'SwiftMessages'
+
   # Pods for Uniletter
 
 end
