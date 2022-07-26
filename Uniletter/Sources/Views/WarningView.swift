@@ -43,7 +43,8 @@ class WarningView: UIView {
         subView.addSubview(warninglabel)
 
         subView.snp.makeConstraints {
-            $0.centerX.centerY.equalToSuperview()
+            $0.top.equalToSuperview().inset(200)
+            $0.centerX.equalToSuperview()
             $0.leading.equalToSuperview().inset(20)
             $0.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(52)
