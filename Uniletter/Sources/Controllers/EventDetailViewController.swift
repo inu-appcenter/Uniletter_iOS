@@ -209,10 +209,13 @@ final class EventDetailViewController: UIViewController {
                 self.present(presentActionVC, animated: false)
             }
         } else {
+            let presentActionVC = presentActionSheetView(.topForUser)
+            self.present(presentActionVC, animated: true)
+
             presentActionVC.reportUserCompletionClosure = {
                 let alertView = self.AlertVC(.login)
                 self.present(alertView, animated: true)
-                
+
                 alertView.cancleButtonClosure = {
                     self.presentWaringView(.loginReport)
                 }
