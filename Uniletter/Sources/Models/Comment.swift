@@ -11,7 +11,7 @@ struct Comment: Codable {
     let id: Int
     let userID: Int
     let nickname: String
-    let profileImage: String
+    let profileImage: String?
     let eventID: Int
     let content: String
     let createdAt: String
