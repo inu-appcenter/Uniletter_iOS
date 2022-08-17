@@ -33,7 +33,7 @@ final class WritingManager {
     var target: String?
     var contact = ""
     var location = ""
-    var body: String?
+    var body = ""
     var imageUUID: String?
     var startDate: String?
     var startTime: String?
@@ -49,13 +49,12 @@ final class WritingManager {
         }
     }
     
-    func checkEventInfo() -> Bool {
-        guard title != nil,
-              target != nil,
-              body != nil else {
-            return false
+    func checkEventInfo() -> Int {
+        if title == nil {
+            // TODO:  유효성 검사
         }
-        return true
+        
+        return 0
     }
     
     func showPreview() -> Preview {
@@ -69,7 +68,7 @@ final class WritingManager {
             endAt: "\(endDate ?? convertDefaultDate()) \(endTime ?? "18:00:00")",
             contact: self.contact,
             location: self.location,
-            body: self.body!)
+            body: self.body)
         
         return preview
     }
@@ -88,7 +87,7 @@ final class WritingManager {
             "endAt": endAt,
             "contact": contact,
             "location": location,
-            "body": body!,
+            "body": body,
             "imageUuid": imageUUID ?? basicImage,
         ]
         

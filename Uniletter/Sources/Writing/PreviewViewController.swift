@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 import Kingfisher
 
 final class PreviewViewController: UIViewController {
@@ -37,6 +38,7 @@ final class PreviewViewController: UIViewController {
         ]
             .forEach { $0.isHidden = true }
         
+        setImageSize()
         eventDetailView.mainImageView.image = mainImage
         eventDetailView.titleTextView.text = preview.title
         eventDetailView.categoryContentsLabel.text = preview.category
@@ -50,6 +52,12 @@ final class PreviewViewController: UIViewController {
     }
     
     // MARK: - Funcs
+    
+    func setImageSize() {
+        if mainImage == UIImage(named: "uniletter_big") {
+            eventDetailView.mainImageView.contentMode = .scaleAspectFit
+        }
+    }
     
     func updateDDay() {
         let dday = Int(caculateDDay(preview.endAt)) ?? 0

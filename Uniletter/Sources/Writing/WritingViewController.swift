@@ -101,6 +101,21 @@ final class WritingViewController: UIViewController {
         self.title = bool ? "미리보기" : "레터등록"
     }
     
+    func validation() {
+        let check = writingManager.checkEventInfo()
+        
+        switch check {
+        case 0:
+            writingManager.createEvent {
+                self.goToInitialViewController()
+            }
+        case 1: break
+        case 2: break
+        case 3: break
+        default: break
+        }
+    }
+    
     // MARK: - Actions
     @objc func didTapCancleButton(_ sender: UIButton) {
         switch page {
@@ -132,7 +147,7 @@ final class WritingViewController: UIViewController {
             contentViewController.view.removeFromSuperview()
             changeViewController(detailViewController)
         case 2:
-            if writingManager.checkEventInfo() {
+            if writingManager.checkEventInfo() == 0 {
                 detailViewController.view.removeFromSuperview()
                 previewController.preview = self.writingManager.showPreview()
                 previewController.mainImage = self.writingManager.mainImage
@@ -142,10 +157,7 @@ final class WritingViewController: UIViewController {
                 // TODO: 필수정보 입력 알림
             }
         case 3:
-//            writingManager.createEvent() {
-//                self.goToInitialViewController()
-//            }
-            break
+            validation()
         default: break
         }
         
