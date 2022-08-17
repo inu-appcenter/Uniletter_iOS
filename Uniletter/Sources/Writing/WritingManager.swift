@@ -17,7 +17,6 @@ final class WritingManager {
     // MARK: - Property
     let basicImageUUID =
     [
-        "1ec96f4e-970e-6780-792a-5dc26eec006c",     // 기본
         "1ec94c4d-284e-6b70-6eba-0ecc1b8dd491",     // 동아리 / 소모임
         "1ec94c3f-2c9d-6590-1fd7-cb603aa85e1e",     // 학생회
         "1ec94c15-ee15-6f30-8bdd-76769baf2a97",     // 간식나눔
@@ -27,6 +26,7 @@ final class WritingManager {
         "1ec96f4e-970e-6780-792a-5dc26eec006c",     // 기타
     ]
     var basicImage = "1ec96f4e-970e-6780-792a-5dc26eec006c"
+    var mainImage = UIImage(named: "uniletter_big")
     var title: String?
     var host = ""
     var category = ""
@@ -42,25 +42,11 @@ final class WritingManager {
     
     // MARK: - Funcs
     func setImage(_ image: UIImage) {
+        self.mainImage = image
+        
         API.uploadMeImage(image: image) { result in
             self.imageUUID = result.uuid
         }
-    }
-    
-    func setStartDate(_ text: String) {
-        self.startDate = text
-    }
-    
-    func setStartTime(_ text: String) {
-        self.startTime = text
-    }
-    
-    func setEndDate(_ text: String) {
-        self.endDate = text
-    }
-    
-    func setEndTime(_ text: String) {
-        self.endTime = text
     }
     
     func checkEventInfo() -> Bool {
@@ -70,6 +56,22 @@ final class WritingManager {
             return false
         }
         return true
+    }
+    
+    func showPreview() -> Preview {
+        let preview = Preview(
+            imageUUID: "",
+            title: self.title!,
+            host: self.host,
+            category: self.category,
+            target: self.target!,
+            startAt: "\(startDate ?? convertDefaultDate()) \(startTime ?? "18:00:00")",
+            endAt: "\(endDate ?? convertDefaultDate()) \(endTime ?? "18:00:00")",
+            contact: self.contact,
+            location: self.location,
+            body: self.body!)
+        
+        return preview
     }
     
     func createEvent(completion: @escaping () -> Void) {

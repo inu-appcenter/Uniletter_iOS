@@ -24,6 +24,7 @@ class WritingContentViewController: UIViewController {
         "기타",
     ]
     let placeholer = "ex)총학생회, 디자인학부"
+    var event: Event?
     
     // MARK: - Life cycle
     override func loadView() {
@@ -116,6 +117,13 @@ class WritingContentViewController: UIViewController {
         dropDownAppearance.backgroundColor = .white
         dropDownAppearance.selectionBackgroundColor = UIColor.customColor(.blueGreen).withAlphaComponent(0.15)
         dropDownAppearance.setupCornerRadius(4)
+    }
+    
+    func initUpdating() {
+        guard let event = event else { return }
+        
+        
+        
     }
     
     // MARK: - Funcs

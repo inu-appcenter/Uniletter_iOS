@@ -28,7 +28,7 @@ final class WritingPictureView: UIView {
         button.layer.cornerRadius = 12
         button.layer.borderWidth = 1
         button.layer.borderColor = CGColor.customColor(.lightGray)
-        button.setImage(UIImage(named: "UniletterLabel"), for: .normal)
+        button.setImage(UIImage(named: "uniletter_big"), for: .normal)
         button.clipsToBounds = true
         
         return button

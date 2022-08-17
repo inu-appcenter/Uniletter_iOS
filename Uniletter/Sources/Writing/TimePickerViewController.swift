@@ -6,10 +6,9 @@
 //
 
 import UIKit
-import SwiftUI
 
 class TimePickerViewController: UIViewController {
-
+    
     // MARK: - Property
     let timePickerView = TimePickerView()
     let writingManager = WritingManager.shared
@@ -21,6 +20,7 @@ class TimePickerViewController: UIViewController {
     var hour = 6
     var minute = 0
     var timeUnit = "PM"
+    var isPM: Bool?
     
     // MARK: - Life cycle
     override func loadView() {
@@ -39,6 +39,23 @@ class TimePickerViewController: UIViewController {
         
         timePickerView.pickerView.delegate = self
         timePickerView.pickerView.dataSource = self
+        timePickerView.pickerView.selectRow(
+            503 + hour,
+            inComponent: 0,
+            animated: false)
+        timePickerView.pickerView.selectRow(
+            504 + (minute / 5),
+            inComponent: 1,
+            animated: false)
+        
+        if let isPM = isPM {
+            timeUnit = isPM ? "PM" : "AM"
+        }
+        
+        timePickerView.pickerView.selectRow(
+            timeUnit == "PM" ? 1 : 0,
+            inComponent: 2,
+            animated: false)
         
         timePickerView.cancleButton.addTarget(
             self,
@@ -49,18 +66,21 @@ class TimePickerViewController: UIViewController {
             action: #selector(didTapOKButton(_:)),
             for: .touchUpInside)
         
-        timePickerView.pickerView.selectRow(
-            5009,
-            inComponent: 0,
-            animated: true)
-        timePickerView.pickerView.selectRow(
-            5004,
-            inComponent: 1,
-            animated: true)
-        timePickerView.pickerView.selectRow(
-            1,
-            inComponent: 2,
-            animated: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.pickerView(
+                self.timePickerView.pickerView,
+                didSelectRow: 503 + self.hour,
+                inComponent: 0)
+            self.pickerView(
+                self.timePickerView.pickerView,
+                didSelectRow: 504 + (self.minute / 5),
+                inComponent: 1)
+            self.pickerView(
+                self.timePickerView.pickerView,
+                didSelectRow: self.timeUnit == "PM" ? 1 : 0,
+                inComponent: 2)
+        }
+        
     }
     
     // MARK: - Funcs
@@ -74,26 +94,19 @@ class TimePickerViewController: UIViewController {
     }
     
     @objc func didTapOKButton(_ sender: UIButton) {
-        let time: String = {
-            if timeUnit == "PM" {
-                hour += 12
-                if hour == 24 {
-                    hour = 0
-                }
-            }
-            
-            return "\(formatNumbers(hour)):\(formatNumbers(minute))"
-        }()
+        let time = "\(formatNumbers(hour)):\(formatNumbers(minute))"
         
         delegate?.setTime(time: "\(time) \(timeUnit)", style: style)
         
-        style == .start
-        ? writingManager.setStartTime("\(time):00")
-        : writingManager.setEndTime("\(time):00")
+        if style == .start {
+            writingManager.startTime = "\(time):00"
+        } else {
+            writingManager.endTime = "\(time):00"
+        }
         
         dismiss(animated: true)
     }
-
+    
 }
 
 // MARK: - PickerView
@@ -106,11 +119,12 @@ extension TimePickerViewController: UIPickerViewDelegate,
     func pickerView(
         _ pickerView: UIPickerView,
         numberOfRowsInComponent component: Int)
-    -> Int {
+    -> Int
+    {
         switch component {
-        case 0: return hours.count * 10000
-        case 1: return minutes.count * 10000
-        case 2: return timeUnit.count
+        case 0: return hours.count * 1000
+        case 1: return minutes.count * 1000
+        case 2: return timeUnits.count
         default: return 0
         }
     }
@@ -118,21 +132,25 @@ extension TimePickerViewController: UIPickerViewDelegate,
     func pickerView(
         _ pickerView: UIPickerView,
         didSelectRow row: Int,
-        inComponent component: Int) {
-            switch component {
-            case 0: hour = hours[row % hours.count]
-            case 1: minute = minutes[row % minutes.count]
-            case 2: timeUnit = timeUnits[row]
-            default: break
-            }
-            
-            pickerView.reloadComponent(component)
+        inComponent component: Int)
+    {
+        switch component {
+        case 0: hour = hours[row % hours.count]
+        case 1: minute = minutes[row % minutes.count]
+        case 2: timeUnit = timeUnits[row]
+        default: break
         }
+        
+        let select = pickerView.view(forRow: row, forComponent: component) as? UILabel
+        select?.textColor = .white
+        print("didSelectRow -> component: \(component), row: \(row)")
+    }
     
     func pickerView(
         _ pickerView: UIPickerView,
         rowHeightForComponent component: Int)
-    -> CGFloat {
+    -> CGFloat
+    {
         return 42
     }
     
@@ -141,16 +159,18 @@ extension TimePickerViewController: UIPickerViewDelegate,
         viewForRow row: Int,
         forComponent component: Int,
         reusing view: UIView?)
-    -> UIView {
+    -> UIView
+    {
         pickerView.subviews.forEach {
             $0.backgroundColor = .clear
         }
-
+        
         let label: UILabel = {
             let label = UILabel(frame: CGRect(x: 0, y: 0, width: 56, height: 30))
             label.font = .systemFont(ofSize: 30)
             label.layer.cornerRadius = 10
-
+            label.textColor = UIColor.customColor(.darkGray)
+            
             switch component {
             case 0:
                 label.text = String(hours[row % hours.count])
@@ -159,20 +179,14 @@ extension TimePickerViewController: UIPickerViewDelegate,
                 label.text = String(minutes[row % minutes.count])
                 label.textAlignment = .center
             case 2:
-                label.text = String(timeUnits[row])
+                label.text = timeUnits[row]
                 label.textAlignment = .left
             default: break
             }
-
+            
             return label
         }()
         
-        if pickerView.selectedRow(inComponent: component) == row {
-            label.textColor = .white
-        } else {
-            label.textColor = UIColor.customColor(.darkGray)
-        }
-
         return label
     }
     

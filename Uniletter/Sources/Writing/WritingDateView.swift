@@ -37,7 +37,7 @@ final class WritingDateView: UIView {
         button.layer.cornerRadius = 4
         button.layer.borderWidth = 1
         button.layer.borderColor = CGColor.customColor(.defaultGray)
-        button.setAttributedTitle(showUnderline("6:00 PM"), for: .normal)
+        button.setAttributedTitle(showUnderline("06:00 PM"), for: .normal)
         
         return button
     }()

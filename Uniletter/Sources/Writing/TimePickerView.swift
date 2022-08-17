@@ -26,7 +26,7 @@ final class TimePickerView: UIView {
         return label
     }()
     
-    lazy var pickerView = UIPickerView()
+    let pickerView = UIPickerView()
     
     let selectedView: UIView = {
         let view = UIView()
