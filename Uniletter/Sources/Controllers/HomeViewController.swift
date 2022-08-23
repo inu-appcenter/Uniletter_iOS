@@ -7,6 +7,7 @@
 
 import UIKit
 import GoogleSignIn
+import Firebase
 
 final class HomeViewController: UIViewController {
     
@@ -106,6 +107,9 @@ final class HomeViewController: UIViewController {
         setLoadingIndicator(true)
         loginManager.checkLogin() {
             print("로그인 상태: \(self.loginManager.isLoggedIn)")
+            if self.loginManager.isLoggedIn == true {
+                self.viewModel.postFCM()
+            }
             self.fetchEvents()
         }
     }

@@ -20,6 +20,7 @@ class NotiViewModel {
     
     func getAlarm(completion: @escaping() -> Void) {
         API.getAlarm { result in
+            print(result)
             self.notis = result
             completion()
         }

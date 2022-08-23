@@ -561,5 +561,27 @@ final class API {
             }
     }
     
-    
+    // FCM 토큰 등록
+    static func postFcmToken(_ params: [String: String], completion: @escaping() -> Void) {
+        guard let data = try? JSONSerialization.data(withJSONObject: params, options: .prettyPrinted) else {
+            return
+        }
+
+        networking(
+            urlStr: Address.token.url,
+            method: .post,
+            data: data,
+            model: String.self) { result in
+                switch result {
+                case .success(_):
+                    print("성공")
+                case .failure(let error):
+                    if error.errorDescription! == errorString {
+                        completion()
+                    } else {
+                        print(error)
+                    }
+                }
+            }
+    }
 }

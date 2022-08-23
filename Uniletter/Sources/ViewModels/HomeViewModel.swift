@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Firebase
 
 final class HomeViewModel {
     
@@ -53,6 +54,18 @@ final class HomeViewModel {
             self.events = events
             self.ids = events.map { $0.id }
             completion()
+        }
+    }
+    
+    func postFCM() {
+        Messaging.messaging().token { token, error in
+          if let error = error {
+            print("Error fetching FCM registration token: \(error)")
+          } else if let token = token {
+              API.postFcmToken(["token": token]) {
+                  print("FCM registration token: \(token)")
+              }
+          }
         }
     }
 }
