@@ -27,7 +27,6 @@ class MyCommentViewModel {
         firstDispatchGroup.enter()
         
         API.getMyComment { result in
-            print(result)
             self.myComments = result
             self.returnEventIdList(CommentList: self.myComments)
             firstDispatchGroup.leave()
