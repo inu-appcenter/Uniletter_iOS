@@ -165,6 +165,7 @@ final class EventDetailView : UIView {
         let label = UILabel()
         label.font = .systemFont(ofSize: 14)
         label.textColor = UIColor.customColor(.darkGray)
+        label.text = "0회"
         
         return label
     }()
@@ -173,6 +174,7 @@ final class EventDetailView : UIView {
         let label = UILabel()
         label.font = .systemFont(ofSize: 14)
         label.textColor = UIColor.customColor(.darkGray)
+        label.text = "저장 0 ∙ 댓글 0개"
         
         return label
     }()

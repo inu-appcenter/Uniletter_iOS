@@ -99,11 +99,14 @@ final class CalendarViewController: UIViewController {
     }
     
     @objc func didTapOKButton(_ sender: UIButton) {
+        let dateStr = dateToString(selectedDate)
         delegate?.setDate(date: dateToString(selectedDate), style: style)
         
-        style == .start
-        ? writingManager.setStartDate(dateToString(selectedDate))
-        : writingManager.setEndDate(dateToString(selectedDate))
+        if style == .start {
+            writingManager.startDate = dateStr
+        } else {
+            writingManager.endDate = dateStr
+        }
         
         dismiss(animated: true)
     }
@@ -115,9 +118,10 @@ extension CalendarViewController: FSCalendarDelegate,
     func calendar(
         _ calendar: FSCalendar,
         didSelect date: Date,
-        at monthPosition: FSCalendarMonthPosition) {
-            selectedDate = date
-        }
+        at monthPosition: FSCalendarMonthPosition)
+    {
+        selectedDate = date
+    }
     
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
         formatYearDate(calendar.currentPage)
@@ -131,9 +135,10 @@ extension CalendarViewController: FSCalendarDelegate,
         _ calendar: FSCalendar,
         willDisplay cell: FSCalendarCell,
         for date: Date,
-        at monthPosition: FSCalendarMonthPosition) {
-            cell.eventIndicator.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-        }
+        at monthPosition: FSCalendarMonthPosition)
+    {
+        cell.eventIndicator.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+    }
     
     func calendar(
         _ calendar: FSCalendar,

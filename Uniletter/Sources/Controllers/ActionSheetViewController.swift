@@ -144,7 +144,8 @@ final class ActionSheetViewController: UIViewController {
     }
     
     func modifyWriting() {
-        // TODO: 글 수정
+//        let writingViewController = WritingViewController()
+//        self.navigationController?.pushViewController(writingViewController, animated: true)
     }
     
     func deleteWriting() {

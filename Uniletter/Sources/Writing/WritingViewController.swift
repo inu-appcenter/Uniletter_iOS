@@ -31,6 +31,8 @@ final class WritingViewController: UIViewController {
     let pictureViewController = WritingPictureViewController()
     let contentViewController = WritingContentViewController()
     let detailViewController = WritingDetailViewController()
+    let previewController = PreviewViewController()
+    var updateID: Int?
     var page = 0
     let writingManager = WritingManager.shared
     
@@ -57,6 +59,7 @@ final class WritingViewController: UIViewController {
             pictureViewController,
             contentViewController,
             detailViewController,
+            previewController,
         ]
             .forEach { addChild($0) }
         
@@ -64,7 +67,7 @@ final class WritingViewController: UIViewController {
         
         containerView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide)
-            $0.bottom.equalTo(bottomView.snp.top)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide)
             $0.left.right.equalToSuperview()
         }
         
@@ -84,6 +87,35 @@ final class WritingViewController: UIViewController {
         vc.didMove(toParent: self)
     }
     
+    func changeCancleButtonTitle(_ bool: Bool) {
+        let title = bool ? "취소" : "이전"
+        bottomView.cancleButton.setTitle(title, for: .normal)
+    }
+    
+    func changeNextButtonTitle(_ bool: Bool) {
+        let title = bool ? "완료" : "다음"
+        bottomView.okButton.setTitle(title, for: .normal)
+    }
+    
+    func changePreviewTitle(_ bool: Bool) {
+        self.title = bool ? "미리보기" : "레터등록"
+    }
+    
+    func validation() {
+        let check = writingManager.checkEventInfo()
+        
+        switch check {
+        case 0:
+            writingManager.createEvent {
+                self.goToInitialViewController()
+            }
+        case 1: break
+        case 2: break
+        case 3: break
+        default: break
+        }
+    }
+    
     // MARK: - Actions
     @objc func didTapCancleButton(_ sender: UIButton) {
         switch page {
@@ -95,10 +127,15 @@ final class WritingViewController: UIViewController {
         case 2:
             detailViewController.view.removeFromSuperview()
             changeViewController(contentViewController)
+        case 3:
+            previewController.view.removeFromSuperview()
+            changeViewController(detailViewController)
         default: break
         }
         
         page -= 1
+        page == 0 ? changeCancleButtonTitle(true) : changeCancleButtonTitle(false)
+        changePreviewTitle(false)
     }
     
     @objc func didTapOKButton(_ sender: UIButton) {
@@ -110,18 +147,27 @@ final class WritingViewController: UIViewController {
             contentViewController.view.removeFromSuperview()
             changeViewController(detailViewController)
         case 2:
-            if writingManager.checkEventInfo() {
-                writingManager.createEvent() {
-                    self.goToInitialViewController()
-                }
+            if writingManager.checkEventInfo() == 0 {
+                detailViewController.view.removeFromSuperview()
+                previewController.preview = self.writingManager.showPreview()
+                previewController.mainImage = self.writingManager.mainImage
+                changeViewController(previewController)
+                page += 1
             } else {
                 // TODO: 필수정보 입력 알림
             }
-            
-            break
+        case 3:
+            validation()
         default: break
         }
         
-        page = page >= 2 ? 2 : page + 1
+        page = page < 2 ? page + 1 : page
+        if page == 3 {
+            changeNextButtonTitle(true)
+            changePreviewTitle(true)
+        } else {
+            changeNextButtonTitle(false)
+        }
+        changeCancleButtonTitle(false)
     }
 }

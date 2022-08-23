@@ -102,6 +102,27 @@ final class API {
             }
     }
     
+    static func updateEvent(id: Int, params: [String: String], completion: @escaping () -> Void) {
+        guard let data = try? JSONSerialization.data(
+            withJSONObject: params, options: .prettyPrinted) else {
+            return
+        }
+        
+        networking(
+            urlStr: Address.events.url + "/\(id)",
+            method: .patch,
+            data: data,
+            model: String.self) { result in
+                print(result)
+                switch result {
+                case .success(_):
+                    completion()
+                case .failure(let error):
+                    print(error)
+                }
+            }
+    }
+    
     // 댓글 전체 받아오기
     static func getComments(_ id: Int, completion: @escaping([Comment]) -> Void) {
         networking(
