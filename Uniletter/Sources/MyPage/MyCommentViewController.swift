@@ -28,6 +28,9 @@ class MyCommentViewController: UIViewController {
         view.backgroundColor = .white
         configureNavigationBar()
         configureUI()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         settingAPI()
     }
     

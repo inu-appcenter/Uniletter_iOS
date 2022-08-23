@@ -13,6 +13,7 @@ target 'Uniletter' do
   pod "DropDown"
   pod "FSCalendar"
   pod "SwiftMessages"
+  pod "Firebase/Messaging"
 
   # Pods for Uniletter
 

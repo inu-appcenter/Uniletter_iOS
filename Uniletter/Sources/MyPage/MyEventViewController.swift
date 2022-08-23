@@ -29,10 +29,11 @@ class MyEventViewController: UIViewController {
         view.backgroundColor = .white
         configureNavigationBar()
         configureUI()
-        settingAPI()
-        
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        settingAPI()
+    }
     func configureNavigationBar() {
         setNavigationTitleAndBackButton("내가 쓴 글")
     }

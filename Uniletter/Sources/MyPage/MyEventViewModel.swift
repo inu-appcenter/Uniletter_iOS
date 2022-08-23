@@ -20,6 +20,7 @@ class MyEventViewModel {
     func getMyEvents(completion: @escaping() -> Void) {
         
         API.getMyEvent { result in
+            print(result)
             self.myEvents = result
             self.myEvents = self.sortedEventList(event: self.myEvents)
             completion()

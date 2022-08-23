@@ -64,18 +64,21 @@ class MyCommentViewModel {
     func returnEventIdList(CommentList: [Comment]) {
 
         var eventIdList = [Int]()
-
-        for i in 0...CommentList.count - 1 {
-            if eventIdList.isEmpty == true {
-                eventIdList.append(CommentList[i].eventID)
-            } else {
-                if eventIdList.contains(CommentList[i].eventID) == false {
+        
+        if CommentList.count >= 1{
+            for i in 0...CommentList.count - 1 {
+                if eventIdList.isEmpty == true {
                     eventIdList.append(CommentList[i].eventID)
+                } else {
+                    if eventIdList.contains(CommentList[i].eventID) == false {
+                        eventIdList.append(CommentList[i].eventID)
+                    }
                 }
             }
+            self.eventIdList = eventIdList
+        } else {
+            self.eventIdList = []
         }
-
-        self.eventIdList = eventIdList
     }
     
     func sortedEventList(event: [Event]) {
