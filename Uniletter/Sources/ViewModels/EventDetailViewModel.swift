@@ -11,12 +11,15 @@ final class EventDetailViewModel {
     
     // MARK: - Property
     let manager = EventManager.shared
-    var event: Event?
     let defaultDate = "2022-02-02T00:00"
     
     // MARK: - Func
     var like: Bool {
         return manager.like
+    }
+    
+    var event: Event {
+        return manager.event!
     }
     
     var profileImage: UIImage {
