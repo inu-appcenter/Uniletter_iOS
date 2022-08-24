@@ -261,8 +261,21 @@ final class EventDetailViewController: UIViewController {
     @objc func didTapNotificationButton(_ sender: UIButton) {
         if loginManager.isLoggedIn {
             if viewModel.dday > 0 {
-                self.present(presentActionSheetView(.notification), animated: true)
+                
+                let vc = presentActionSheetView(.notification)
+                vc.eventID = id
+                
+                present(vc, animated: true)
+                
+                vc.notifyBeforeStartCompletionClosure = {
+                    self.presentNoticeAlertView(.startNotice)
+                }
+                
+                vc.notifyBeforeEndCompletionClosure = {
+                    self.presentNoticeAlertView(.deadlineNotice)
+                }
             }
+            
         } else {
             let AlertView = self.AlertVC(.login)
             self.present(AlertView, animated: true)

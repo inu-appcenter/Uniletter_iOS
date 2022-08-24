@@ -329,6 +329,31 @@ final class API {
             }
     }
     
+    
+    // 행사 알림 등록하기
+    static func postAlarm(_ params: [String: Any], completion: @escaping() -> Void) {
+        
+        guard let data = try? JSONSerialization.data(withJSONObject: params, options: .prettyPrinted) else { return }
+    
+        networking(
+            urlStr: Address.nofifications.url,
+            method: .post,
+            data: data,
+            model: String.self) { result in
+                switch result {
+                case .success(_):
+                    completion()
+                case .failure(let error):
+                    if error.errorDescription! == errorString {
+                        completion()
+                    } else {
+                        print(error)
+                    }
+                    
+                }
+            }
+    }
+    
     // 행사 알림 가져오기
     static func getAlarm(completion: @escaping([Noti]) -> Void) {
         networking(
