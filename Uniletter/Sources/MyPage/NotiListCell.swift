@@ -5,9 +5,8 @@
 //  Created by 임현규 on 2022/07/15.
 //
 
-import Foundation
 import UIKit
-import SwiftUI
+import SnapKit
 
 class NotiListCell: UICollectionViewCell {
     
