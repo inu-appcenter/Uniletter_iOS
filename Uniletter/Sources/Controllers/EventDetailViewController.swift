@@ -198,8 +198,9 @@ final class EventDetailViewController: UIViewController {
     @objc func didTapTopMoreButton(_ sender: UIButton) {
         let presentActionVC = presentActionSheetView(.topForUser)
         if loginManager.isLoggedIn {
-            if viewModel.event?.wroteByMe == true {
-                let id = viewModel.event?.id
+            if viewModel.event.wroteByMe == true {
+                print("내가쓴글")
+                let id = viewModel.event.id
                 let vc = presentActionSheetView(.topForWriter)
                 
                 vc.eventID = id
@@ -230,7 +231,7 @@ final class EventDetailViewController: UIViewController {
             self.present(presentActionVC, animated: true)
             
             presentActionVC.blockUserCompletionClousre = {
-                self.viewModel.postBlock(userId: self.viewModel.event!.userID) {
+                self.viewModel.postBlock(userId: self.viewModel.event.userID) {
                     self.postBlockNotification()
                     self.navigationController?.popViewController(animated: true)
                 }
@@ -252,7 +253,7 @@ final class EventDetailViewController: UIViewController {
     @objc func didTapCommentesLabel(_ sender: UIButton) {
         let vc = CommentsViewController()
         vc.eventID = id
-        vc.userID = viewModel.event?.userID
+        vc.userID = viewModel.event.userID
         
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -260,8 +261,21 @@ final class EventDetailViewController: UIViewController {
     @objc func didTapNotificationButton(_ sender: UIButton) {
         if loginManager.isLoggedIn {
             if viewModel.dday > 0 {
-                self.present(presentActionSheetView(.notification), animated: true)
+                
+                let vc = presentActionSheetView(.notification)
+                vc.eventID = id
+                
+                present(vc, animated: true)
+                
+                vc.notifyBeforeStartCompletionClosure = {
+                    self.presentNoticeAlertView(.startNotice)
+                }
+                
+                vc.notifyBeforeEndCompletionClosure = {
+                    self.presentNoticeAlertView(.deadlineNotice)
+                }
             }
+            
         } else {
             let AlertView = self.AlertVC(.login)
             self.present(AlertView, animated: true)

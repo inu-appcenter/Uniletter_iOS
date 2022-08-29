@@ -29,6 +29,7 @@
 		2C0DBE6C2881A13E004A933A /* BlockListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE6B2881A13E004A933A /* BlockListViewModel.swift */; };
 		2C0DBE6E2881A158004A933A /* BlockListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE6D2881A158004A933A /* BlockListCell.swift */; };
 		2C0DBE702881AC5B004A933A /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE6F2881AC5B004A933A /* Block.swift */; };
+		2C6AB54A28B500A700FF6DC5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2C6AB54928B500A700FF6DC5 /* GoogleService-Info.plist */; };
 		2C80F388286D997300ECAB60 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C80F387286D997300ECAB60 /* MyPageViewModel.swift */; };
 		2C80F38B286DA01600ECAB60 /* MyPageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C80F38A286DA01500ECAB60 /* MyPageCell.swift */; };
 		2C80F391286DE20000ECAB60 /* MyPageSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C80F390286DE20000ECAB60 /* MyPageSectionView.swift */; };
@@ -134,6 +135,8 @@
 		2C0DBE6B2881A13E004A933A /* BlockListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockListViewModel.swift; sourceTree = "<group>"; };
 		2C0DBE6D2881A158004A933A /* BlockListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockListCell.swift; sourceTree = "<group>"; };
 		2C0DBE6F2881AC5B004A933A /* Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
+		2C6AB54928B500A700FF6DC5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2C6AB54B28B5017400FF6DC5 /* UniletterDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UniletterDebug.entitlements; sourceTree = "<group>"; };
 		2C80F387286D997300ECAB60 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		2C80F38A286DA01500ECAB60 /* MyPageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageCell.swift; sourceTree = "<group>"; };
 		2C80F390286DE20000ECAB60 /* MyPageSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSectionView.swift; sourceTree = "<group>"; };
@@ -336,6 +339,7 @@
 		765BC9FB2868C00C0098BBF2 /* Uniletter */ = {
 			isa = PBXGroup;
 			children = (
+				2C6AB54B28B5017400FF6DC5 /* UniletterDebug.entitlements */,
 				765BCA172868CAA60098BBF2 /* Supporting Files */,
 				765BCA152868CA7C0098BBF2 /* Resources */,
 				765BCA162868CA840098BBF2 /* Sources */,
@@ -409,6 +413,7 @@
 			isa = PBXGroup;
 			children = (
 				765BCA0A2868C0110098BBF2 /* Info.plist */,
+				2C6AB54928B500A700FF6DC5 /* GoogleService-Info.plist */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -565,6 +570,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				765BCA092868C0110098BBF2 /* LaunchScreen.storyboard in Resources */,
+				2C6AB54A28B500A700FF6DC5 /* GoogleService-Info.plist in Resources */,
 				765BCA062868C0110098BBF2 /* Assets.xcassets in Resources */,
 				765BCA042868C00C0098BBF2 /* Main.storyboard in Resources */,
 			);
@@ -862,6 +868,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Uniletter/UniletterDebug.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = AANGG4Q668;

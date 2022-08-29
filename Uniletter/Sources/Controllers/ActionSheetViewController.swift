@@ -21,6 +21,8 @@ final class ActionSheetViewController: UIViewController {
     var basicPhotoCompletionClosure: (() -> Void)?
     var blockUserCompletionClousre: (() -> Void)?
     var reportUserCompletionClosure: (() -> Void)?
+    var notifyBeforeStartCompletionClosure: (() -> Void)?
+    var notifyBeforeEndCompletionClosure: (() -> Void)?
     
     // 기능 별 필요한 Property
     var commentID: Int!
@@ -111,7 +113,7 @@ final class ActionSheetViewController: UIViewController {
         case .topForUser: reportUser()
         case .topForWriter: modifyWriting()
         case .profile: blockUserForEvent()
-        case .notification: notifyBeforeStart()
+        case .notification: notifyBeforeStart(eventID)
         case .commentForUser: reportUser()
         case .commentForWriter: deleteComment(commentID)
         case .modifyInfo: selectPhoto()
@@ -127,7 +129,7 @@ final class ActionSheetViewController: UIViewController {
         case .topForUser: break
         case .topForWriter: deleteWriting()
         case .profile: break
-        case .notification: notifyBeforeEnd()
+        case .notification: notifyBeforeEnd(eventID)
         case .commentForUser: blockUserForComment(targetUserID)
         case .commentForWriter: break
         case .modifyInfo: basicPhoto()
@@ -185,12 +187,25 @@ final class ActionSheetViewController: UIViewController {
         }
     }
     
-    func notifyBeforeStart() {
+    func notifyBeforeStart(_ eventId: Int) {
         // TODO: 시작 전 알림
+        
+        API.postAlarm(["eventId": eventId, "setFor": "start"]) {
+            if let notifyBeforeStartCompletionClosure = self.notifyBeforeStartCompletionClosure {
+                notifyBeforeStartCompletionClosure()
+            }
+        }
+        self.dismiss(animated: true)
     }
     
-    func notifyBeforeEnd() {
+    func notifyBeforeEnd(_ eventId: Int) {
         // TODO: 마감 전 알림
+        API.postAlarm(["eventId": eventId, "setFor": "end"]) {
+            if let notifyBeforeEndCompletionClosure = self.notifyBeforeEndCompletionClosure {
+                notifyBeforeEndCompletionClosure()
+            }
+        }
+        self.dismiss(animated: true)
     }
     
     func deleteComment(_ commentID: Int) {

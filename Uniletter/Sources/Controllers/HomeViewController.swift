@@ -7,6 +7,7 @@
 
 import UIKit
 import GoogleSignIn
+import Firebase
 
 final class HomeViewController: UIViewController {
     
@@ -66,6 +67,7 @@ final class HomeViewController: UIViewController {
         navigationBarLayer?.shadowColor = #colorLiteral(red: 0.8980392157, green: 0.8980392157, blue: 0.8980392157, alpha: 1).cgColor
         navigationBarLayer?.shadowOpacity = 0.6
         navigationBarLayer?.shadowOffset = CGSize(width: 0, height: 5)
+        setNavigationGesutre()
     }
     
     func setViewController() {
@@ -106,6 +108,9 @@ final class HomeViewController: UIViewController {
         setLoadingIndicator(true)
         loginManager.checkLogin() {
             print("로그인 상태: \(self.loginManager.isLoggedIn)")
+            if self.loginManager.isLoggedIn == true {
+                self.viewModel.postFCM()
+            }
             self.fetchEvents()
         }
     }
@@ -226,4 +231,11 @@ extension HomeViewController: UICollectionViewDelegate,
             
             self.navigationController?.pushViewController(eventDetailViewController, animated: true)
         }
+}
+
+extension HomeViewController: UIGestureRecognizerDelegate {
+    
+    func setNavigationGesutre() {
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+    }
 }

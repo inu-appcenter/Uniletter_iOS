@@ -127,6 +127,7 @@ class MyEventView: UIView {
                 
         eventTitleLabel.snp.makeConstraints {
             $0.width.equalTo(175)
+            $0.height.equalTo(20)
         }
                 
         eventBodyLabel.snp.makeConstraints {
