@@ -8,6 +8,7 @@
 import UIKit
 import GoogleSignIn
 import Firebase
+import AuthenticationServices
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -51,6 +52,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Messaging.messaging().delegate = self
                 
         application.registerForRemoteNotifications()
+        
+        // MARK: 애플 로그인
+        
+        if let userID = keyChain.read(key: "userID") {
+            let appleIDProvider = ASAuthorizationAppleIDProvider()
+            appleIDProvider.getCredentialState(forUserID: userID) { credentialState, error in
+                switch credentialState {
+                case .authorized:
+                    // 인증 성공 상태
+                    print("애플 로그인 인증 성공")
+                    break
+                case .revoked:
+                    // 인증 만료 상태
+                    print("애플 로그인 인증 만료")
+                    break
+                case .notFound:
+                    // Credential을 찾을 수 없는 상태
+                    print("애플 Credential을 찾을 수 없음")
+                    break
+                default:
+                    break
+                }
+            }
+        }
+        
         return true
     }
     
