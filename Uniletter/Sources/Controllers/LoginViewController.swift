@@ -8,6 +8,7 @@
 import UIKit
 import GoogleSignIn
 import SnapKit
+import AuthenticationServices
 
 final class LoginViewController: UIViewController {
     
@@ -44,7 +45,7 @@ final class LoginViewController: UIViewController {
         button.setTitleColor(.black, for: .normal)
         button.setTitle("애플 계정으로 로그인", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 14)
-        button.addTarget(self, action: #selector(didTapLoginButton(_:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didTapAppleLoginButton(_:)), for: .touchUpInside)
         
         return button
     }()
@@ -154,5 +155,40 @@ final class LoginViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    // MARK: - 애플 로그인
+    @objc func didTapAppleLoginButton(_ sender: UIButton) {
+        let request = ASAuthorizationAppleIDProvider().createRequest()
+        request.requestedScopes = [.fullName, .email]
+        
+        let controller = ASAuthorizationController(authorizationRequests: [request])
+        controller.delegate = self as? ASAuthorizationControllerDelegate
+        controller.presentationContextProvider = self as? ASAuthorizationControllerPresentationContextProviding
+        controller.performRequests()
+    }
+}
+
+extension LoginViewController: ASAuthorizationControllerDelegate {
+
+    // 성공 후 동작
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        if let credential = authorization.credential as? ASAuthorizationAppleIDCredential {
+            let idToken = credential.identityToken!
+            let tokeStr = String(data: idToken, encoding: .utf8)
+            print("token = \(tokeStr)")
+
+            guard let code = credential.authorizationCode else { return }
+            let codeStr = String(data: code, encoding: .utf8)
+            print("code = \(codeStr)")
+
+            let user = credential.user
+            print("user = \(user)")
+        }
+    }
+    
+    // 실패 후 동작
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        print("애플 로그인 실패")
     }
 }
