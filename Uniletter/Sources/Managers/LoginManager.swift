@@ -78,7 +78,9 @@ final class LoginManager {
         loginInfo = nil
         UserDefaults.standard.removeObject(forKey: "LoginInfo")
         
-        keyChain.delete(key: "userID")
+        if let userId = keyChain.read(key: "userID") {
+            keyChain.delete(key: "userID")
+        }
     }
     
     func loadLoginInfo() {

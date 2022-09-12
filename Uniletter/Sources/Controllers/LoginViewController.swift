@@ -31,7 +31,8 @@ final class LoginViewController: UIViewController {
         button.layer.borderColor = CGColor.customColor(.lightGray)
         button.setTitleColor(.black, for: .normal)
         button.setTitle("구글 계정으로 로그인", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 14)
+
+        button.titleLabel?.font = .systemFont(ofSize: 15)
         button.addTarget(self, action: #selector(didTapLoginButton(_:)), for: .touchUpInside)
         
         return button
@@ -43,10 +44,10 @@ final class LoginViewController: UIViewController {
         button.layer.borderWidth = 1
         button.layer.borderColor = CGColor.customColor(.lightGray)
         button.setTitleColor(.black, for: .normal)
-        button.setTitle("애플 계정으로 로그인", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 14)
+        button.setTitle("Apple로 로그인", for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 15)
         button.addTarget(self, action: #selector(didTapAppleLoginButton(_:)), for: .touchUpInside)
-        
+
         return button
     }()
     
@@ -57,13 +58,13 @@ final class LoginViewController: UIViewController {
         
         return imageView
     }()
-    
+
     let appleLogo: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "applelogo")
-        imageView.tintColor = UIColor.customColor(.lightGray)
+        imageView.tintColor = UIColor.black
         imageView.contentMode = .scaleAspectFit
-        
+
         return imageView
     }()
     
@@ -77,6 +78,7 @@ final class LoginViewController: UIViewController {
     
     // MARK: - Setup
     func addViews() {
+        
         [
             launchLogo,
             googleLoginButton,
@@ -96,26 +98,26 @@ final class LoginViewController: UIViewController {
         
         googleLoginButton.snp.makeConstraints {
             $0.top.equalTo(launchLogo.snp.bottom).offset(12)
-            $0.left.right.equalToSuperview().inset(20)
+            $0.left.right.equalToSuperview().inset(40)
             $0.height.equalTo(45)
         }
         
         googleLogo.snp.makeConstraints {
             $0.top.bottom.equalTo(googleLoginButton).inset(8)
             $0.left.equalTo(googleLoginButton).offset(16)
-            $0.width.equalTo(googleLogo.snp.height)
+            $0.width.equalTo(appleLogo.snp.height)
         }
         
         appleLoginButton.snp.makeConstraints {
             $0.top.equalTo(googleLoginButton.snp.bottom).offset(12)
-            $0.left.right.equalToSuperview().inset(20)
+            $0.left.right.equalToSuperview().inset(40)
             $0.height.equalTo(45)
         }
-        
+
         appleLogo.snp.makeConstraints {
-            $0.top.bottom.equalTo(appleLoginButton).inset(8)
+            $0.centerY.equalTo(appleLoginButton)
             $0.left.equalTo(appleLoginButton).offset(16)
-            $0.width.equalTo(appleLogo.snp.height)
+            $0.width.height.equalTo(20)
         }
     }
     
