@@ -64,8 +64,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     print("애플 로그인 인증 성공")
                     break
                 case .revoked:
-                    // 인증 만료 상태
+                    // 인증 만료 상태 (사용자가 백그라운드에서 ID중지했을 경우)
                     print("애플 로그인 인증 만료")
+                    // 로그인 상태를 X로 만들어야 됨 -> 로그인이 안된 상태로
                     break
                 case .notFound:
                     // Credential을 찾을 수 없는 상태
@@ -75,8 +76,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     break
                 }
             }
+        } else {
+            print("애플 로그아웃 상태")
         }
-        
         return true
     }
     

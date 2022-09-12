@@ -177,7 +177,8 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
             let idToken = credential.identityToken!
             let tokeStr = String(data: idToken, encoding: .utf8)
             print("token = \(tokeStr)")
-
+            
+            // authorizationCode 서버로 넘겨주면 됨
             guard let code = credential.authorizationCode else { return }
             let codeStr = String(data: code, encoding: .utf8)
             print("code = \(codeStr)")
