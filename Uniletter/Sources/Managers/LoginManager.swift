@@ -20,13 +20,28 @@ final class LoginManager {
     
     // MARK: - Funcs
     func checkLogin(completion: @escaping() -> Void) {
+
         loadLoginInfo()
+        
         guard let loginInfo = loginInfo else {
+            // 구글 로그인 정보가 없는 경우
+
+            // 만약 애플 로그인 정보가 있으면
+            if let appleUserId = keyChain.read(key: "userID") {
+                print("LoginManager - checkLogin : 애플 유저 아이디 = \(appleUserId)")
+                // 이후 로직 나중에 구현
+                // self.isLoggedIn = true
+                // completion()
+                
+            }
+            
+            // 구글 로그인, 애플 로그인 둘다 정보가 없는 경우
             self.isLoggedIn = false
             completion()
             return
         }
         
+        // 구글 로그인 정보가 있는 경우
         let parameter: [String: Any] = [
             "id": loginInfo.userID,
             "token": loginInfo.rememberMeToken
@@ -62,16 +77,43 @@ final class LoginManager {
         
         loginInfo = nil
         UserDefaults.standard.removeObject(forKey: "LoginInfo")
+        
+        if let userId = keyChain.read(key: "userID") {
+            keyChain.delete(key: "userID")
+        }
     }
     
     func loadLoginInfo() {
-        guard let data = UserDefaults.standard.data(forKey: "LoginInfo") else {
-            print("로그인 정보 없음")
-            return
+
+        var googleLogin: Bool
+        var appleLogin: Bool
+        
+        // 구글 로그인 한 경우
+        if let data = UserDefaults.standard.data(forKey: "LoginInfo") {
+            
+            loginInfo = try? PropertyListDecoder().decode(
+                LoginInfo.self,
+                from: data)
+            
+            googleLogin = true
+            
+        } else { googleLogin = false }
+        
+        // 애플 로그인 한 경우
+        if let userId = keyChain.read(key: "userID") {
+            
+            appleLogin = true
+        } else {
+            appleLogin = false
         }
         
-        loginInfo = try? PropertyListDecoder().decode(
-            LoginInfo.self,
-            from: data)
+        if appleLogin == false, googleLogin == false {
+            print("loadLoginInfo() - 로그인 정보 없음")
+        } else if appleLogin == true, googleLogin == false {
+            print("loadLoginInfo() - 애플 로그인 정보 있음, 구글 로그인 정보 없음")
+        } else if appleLogin == false, googleLogin == true {
+            print("loadLoginInfo() - 애플 로그인 정보 있음, 구글 로그인 정보 있음")
+        }
+
     }
 }

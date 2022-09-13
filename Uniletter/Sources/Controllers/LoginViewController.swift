@@ -8,6 +8,7 @@
 import UIKit
 import GoogleSignIn
 import SnapKit
+import AuthenticationServices
 
 final class LoginViewController: UIViewController {
     
@@ -30,7 +31,8 @@ final class LoginViewController: UIViewController {
         button.layer.borderColor = CGColor.customColor(.lightGray)
         button.setTitleColor(.black, for: .normal)
         button.setTitle("구글 계정으로 로그인", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 14)
+
+        button.titleLabel?.font = .systemFont(ofSize: 15)
         button.addTarget(self, action: #selector(didTapLoginButton(_:)), for: .touchUpInside)
         
         return button
@@ -42,10 +44,10 @@ final class LoginViewController: UIViewController {
         button.layer.borderWidth = 1
         button.layer.borderColor = CGColor.customColor(.lightGray)
         button.setTitleColor(.black, for: .normal)
-        button.setTitle("애플 계정으로 로그인", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 14)
-        button.addTarget(self, action: #selector(didTapLoginButton(_:)), for: .touchUpInside)
-        
+        button.setTitle("Apple로 로그인", for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 15)
+        button.addTarget(self, action: #selector(didTapAppleLoginButton(_:)), for: .touchUpInside)
+
         return button
     }()
     
@@ -56,13 +58,13 @@ final class LoginViewController: UIViewController {
         
         return imageView
     }()
-    
+
     let appleLogo: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "applelogo")
-        imageView.tintColor = UIColor.customColor(.lightGray)
+        imageView.tintColor = UIColor.black
         imageView.contentMode = .scaleAspectFit
-        
+
         return imageView
     }()
     
@@ -76,6 +78,7 @@ final class LoginViewController: UIViewController {
     
     // MARK: - Setup
     func addViews() {
+        
         [
             launchLogo,
             googleLoginButton,
@@ -95,26 +98,26 @@ final class LoginViewController: UIViewController {
         
         googleLoginButton.snp.makeConstraints {
             $0.top.equalTo(launchLogo.snp.bottom).offset(12)
-            $0.left.right.equalToSuperview().inset(20)
+            $0.left.right.equalToSuperview().inset(40)
             $0.height.equalTo(45)
         }
         
         googleLogo.snp.makeConstraints {
             $0.top.bottom.equalTo(googleLoginButton).inset(8)
             $0.left.equalTo(googleLoginButton).offset(16)
-            $0.width.equalTo(googleLogo.snp.height)
+            $0.width.equalTo(appleLogo.snp.height)
         }
         
         appleLoginButton.snp.makeConstraints {
             $0.top.equalTo(googleLoginButton.snp.bottom).offset(12)
-            $0.left.right.equalToSuperview().inset(20)
+            $0.left.right.equalToSuperview().inset(40)
             $0.height.equalTo(45)
         }
-        
+
         appleLogo.snp.makeConstraints {
-            $0.top.bottom.equalTo(appleLoginButton).inset(8)
+            $0.centerY.equalTo(appleLoginButton)
             $0.left.equalTo(appleLoginButton).offset(16)
-            $0.width.equalTo(appleLogo.snp.height)
+            $0.width.height.equalTo(20)
         }
     }
     
@@ -154,5 +157,49 @@ final class LoginViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    // MARK: - 애플 로그인
+    @objc func didTapAppleLoginButton(_ sender: UIButton) {
+        let request = ASAuthorizationAppleIDProvider().createRequest()
+        request.requestedScopes = [.fullName, .email]
+        
+        let controller = ASAuthorizationController(authorizationRequests: [request])
+        controller.delegate = self as? ASAuthorizationControllerDelegate
+        controller.presentationContextProvider = self as? ASAuthorizationControllerPresentationContextProviding
+        controller.performRequests()
+    }
+}
+
+extension LoginViewController: ASAuthorizationControllerDelegate {
+
+    // 성공 후 동작
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        if let credential = authorization.credential as? ASAuthorizationAppleIDCredential {
+            let idToken = credential.identityToken!
+            let tokeStr = String(data: idToken, encoding: .utf8)
+            print("token = \(tokeStr)")
+            
+            // authorizationCode 서버로 넘겨주면 됨
+            guard let code = credential.authorizationCode else { return }
+            let codeStr = String(data: code, encoding: .utf8)
+            print("code = \(codeStr)")
+
+            let user = credential.user
+            print("user = \(user)")
+            
+            let email = credential.email
+            print("email = \(email)")
+            
+            // 로그인 성공 후 userID를 키체인으로 저장
+            keyChain.create(key: "userID", userID: user)
+            // 홈 화면으로 이동
+            self.goToHomeViewController()
+        }
+    }
+    
+    // 실패 후 동작
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        print("애플 로그인 실패")
     }
 }
