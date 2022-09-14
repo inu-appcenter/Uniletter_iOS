@@ -53,8 +53,9 @@ final class WritingPictureViewController: UIViewController {
         
         if sender.isSelected {
             writingPictureView.imageButton.setImage(
-                UIImage(named: "UniletterLabel"),
+                UIImage(named: "uniletter_big"),
                 for: .normal)
+            writingManager.imageType = .basic
             writingManager.imageUUID = nil
         }
     }

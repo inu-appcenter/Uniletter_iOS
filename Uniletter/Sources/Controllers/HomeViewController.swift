@@ -94,12 +94,10 @@ final class HomeViewController: UIViewController {
     
     // MARK: - Funcs
     func fetchEvents() {
-        DispatchQueue.global().async {
-            self.viewModel.loadEvents() {
-                DispatchQueue.main.async {
-                    self.homeView.collectionView.reloadData()
-                    self.setLoadingIndicator(false)
-                }
+        self.viewModel.loadEvents() {
+            DispatchQueue.main.async {
+                self.homeView.collectionView.reloadData()
+                self.setLoadingIndicator(false)
             }
         }
     }
@@ -110,6 +108,7 @@ final class HomeViewController: UIViewController {
             print("로그인 상태: \(self.loginManager.isLoggedIn)")
             if self.loginManager.isLoggedIn == true {
                 self.viewModel.postFCM()
+                self.presentWaringView(.login)
             }
             self.fetchEvents()
         }

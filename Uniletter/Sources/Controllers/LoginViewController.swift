@@ -147,12 +147,10 @@ final class LoginViewController: UIViewController {
                 let token = authentication.accessToken
                 let parameter = ["accessToken": token]
                 
-                DispatchQueue.global().async {
-                    API.oAuthLogin(parameter) { info in
-                        DispatchQueue.main.async {
-                            LoginManager.shared.saveLoginInfo(info)
-                            self.goToHomeViewController()
-                        }
+                API.oAuthLogin(parameter) { info in
+                    DispatchQueue.main.async {
+                        LoginManager.shared.saveLoginInfo(info)
+                        self.goToHomeViewController()
                     }
                 }
             }

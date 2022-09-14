@@ -154,11 +154,9 @@ final class EventDetailViewController: UIViewController {
     }
     
     func fetchEvents() {
-        DispatchQueue.global().async {
-            self.viewModel.loadEvent(self.id) {
-                DispatchQueue.main.async {
-                    self.updateUI()
-                }
+        self.viewModel.loadEvent(self.id) {
+            DispatchQueue.main.async {
+                self.updateUI()
             }
         }
     }

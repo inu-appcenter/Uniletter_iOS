@@ -81,12 +81,10 @@ final class CommentsViewController: UIViewController {
     func fetchComments() {
         guard let id = eventID else { return }
         
-        DispatchQueue.global().async {
-            self.viewModel.loadComments(id) {
-                DispatchQueue.main.async {
-                    self.updateUI()
-                    self.commentsView.tableView.reloadData()
-                }
+        self.viewModel.loadComments(id) {
+            DispatchQueue.main.async {
+                self.updateUI()
+                self.commentsView.tableView.reloadData()
             }
         }
     }

@@ -57,7 +57,6 @@ extension WritingDetailViewController: UITextViewDelegate {
         if textView.text == "" {
             textView.text = initText
             textView.textColor = UIColor.customColor(.lightGray)
-            textView.layer.borderColor = #colorLiteral(red: 0.9664621949, green: 0.2374898791, blue: 0.1274906397, alpha: 1).cgColor
             writingManager.body = ""
         } else {
             checkText = textView.text

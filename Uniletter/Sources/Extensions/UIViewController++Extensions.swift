@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 import SwiftMessages
 
 extension UIViewController {
@@ -81,7 +82,7 @@ extension UIViewController {
         warningView.warninglabel.text = warningType.body
 
         var config = SwiftMessages.Config()
-        config.duration = .seconds(seconds: 1)
+        config.duration = .seconds(seconds: 1.5)
         config.keyboardTrackingView = KeyboardTrackingView()
         config.presentationStyle = .center
         SwiftMessages.show(config: config, view: warningView)

@@ -5,9 +5,16 @@
 //  Created by 권오준 on 2022/08/17.
 //
 
-import Foundation
+import UIKit
+
+enum ImageType {
+    case basic
+    case custom
+}
 
 struct Preview {
+    var mainImage: UIImage
+    var imageType: ImageType
     var imageUUID: String
     var title: String
     var host: String
