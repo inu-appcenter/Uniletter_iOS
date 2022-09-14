@@ -21,5 +21,3 @@ protocol TimeSetDelegate {
 protocol DateSetDelegate {
     func setDate(date: String, style: Style)
 }
-
-

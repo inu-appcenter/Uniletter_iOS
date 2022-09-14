@@ -55,6 +55,7 @@ final class WritingPictureViewController: UIViewController {
             writingPictureView.imageButton.setImage(
                 UIImage(named: "uniletter_big"),
                 for: .normal)
+            writingManager.imageType = .basic
             writingManager.imageUUID = nil
         }
     }

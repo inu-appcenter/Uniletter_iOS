@@ -59,9 +59,9 @@ final class PreviewViewController: UIViewController {
     // MARK: - Funcs
     
     func setImageSize() {
-        if preview.imageType == .basic {
-            eventDetailView.mainImageView.contentMode = .scaleAspectFit
-        }
+        eventDetailView.mainImageView.contentMode = preview.imageType == .basic
+        ? .scaleAspectFit
+        : .scaleToFill
     }
     
     func updateDDay() {

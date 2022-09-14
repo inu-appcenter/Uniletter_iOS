@@ -105,7 +105,7 @@ final class WritingViewController: UIViewController {
             page == 0 ? changeCancleButtonTitle(true) : changeCancleButtonTitle(false)
             changePreviewTitle(false)
         } else {
-            page = page < 2 ? page + 1 : page
+            page += 1
             if page == 3 {
                 changeNextButtonTitle(true)
                 changePreviewTitle(true)
@@ -128,24 +128,6 @@ final class WritingViewController: UIViewController {
     
     func changePreviewTitle(_ bool: Bool) {
         self.title = bool ? "미리보기" : "레터등록"
-    }
-    
-    func checkValidation() {
-        let validation = writingManager.checkEventInfo()
-        
-        switch validation {
-        case .success:
-            break
-        case .title:
-            // TODO: 제목
-            break
-        case .target:
-            // TODO: 대상
-            break
-        case .both:
-            // TODO: 둘 다
-            break
-        }
     }
     
     // MARK: - Actions
@@ -178,26 +160,31 @@ final class WritingViewController: UIViewController {
         case 0:
             pictureViewController.view.removeFromSuperview()
             changeViewController(contentViewController)
+            changePage(false)
         case 1:
-            contentViewController.view.removeFromSuperview()
-            changeViewController(detailViewController)
+            if writingManager.checkEventInfo() == .success {
+                contentViewController.view.removeFromSuperview()
+                changeViewController(detailViewController)
+                changePage(false)
+            } else {
+                NotificationCenter.default.post(
+                    name: Notification.Name("validation"),
+                    object: nil)
+            }
         case 2:
             if writingManager.checkEventInfo() == .success {
                 detailViewController.view.removeFromSuperview()
                 previewController.preview = self.writingManager.showPreview()
                 changeViewController(previewController)
-                page += 1
-            } else {
-                checkValidation()
+                changePage(false)
             }
         case 3:
 //            writingManager.createEvent {
+//                self.writingManager.removeData()
 //                self.goToInitialViewController()
 //            }
             break
         default: break
         }
-        
-        changePage(false)
     }
 }

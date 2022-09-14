@@ -12,8 +12,7 @@ class WarningView: UIView {
     var subView: UIView = {
         let view = UIView()
 
-        view.backgroundColor = UIColor.customColor(.lightBlack)
-
+        view.backgroundColor = .black.withAlphaComponent(0.6)
         view.layer.cornerRadius = 25
 
         return view
@@ -41,9 +40,11 @@ class WarningView: UIView {
     func configureUI() {
         addSubview(subView)
         subView.addSubview(warninglabel)
-
+        
+        let height = UIScreen.main.bounds.height / 3
+        
         subView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(200)
+            $0.top.equalToSuperview().inset(height)
             $0.centerX.equalToSuperview()
             $0.leading.equalToSuperview().inset(20)
             $0.trailing.equalToSuperview().inset(20)

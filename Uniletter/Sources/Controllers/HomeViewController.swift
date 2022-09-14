@@ -110,6 +110,7 @@ final class HomeViewController: UIViewController {
             print("로그인 상태: \(self.loginManager.isLoggedIn)")
             if self.loginManager.isLoggedIn == true {
                 self.viewModel.postFCM()
+                self.presentWaringView(.login)
             }
             self.fetchEvents()
         }

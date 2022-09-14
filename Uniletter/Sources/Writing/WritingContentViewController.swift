@@ -93,6 +93,12 @@ class WritingContentViewController: UIViewController {
             self,
             action: #selector(didTapLocationCheckButton(_:)),
             for: .touchUpInside)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(checkValidation(_:)),
+            name: Notification.Name("validation"),
+            object: nil)
     }
 
     func setDropDown() {
@@ -102,7 +108,7 @@ class WritingContentViewController: UIViewController {
         dropDown.bottomOffset = CGPoint(x: 0, y: 44)
         dropDown.selectionAction = { index, item in
             self.writingManager.category = item
-            self.writingManager.setBasicImage(index)
+            self.writingManager.imageIndex = index
             self.writingContentView.categoryView.textField.text = item
             self.writingContentView.categoryButton.isSelected = false
         }
@@ -133,6 +139,7 @@ class WritingContentViewController: UIViewController {
         button.isSelected = !button.isSelected
         button.updateUI(button.isSelected)
     }
+
     
     // MARK: - Actions
     @objc func downKeyboard(_ sender: UITapGestureRecognizer) {
@@ -218,6 +225,25 @@ class WritingContentViewController: UIViewController {
         
         present(vc, animated: true)
     }
+    
+    @objc func checkValidation(_ sender: Any) {
+        let validation = writingManager.checkEventInfo()
+        
+        if validation != .success {
+            presentWaringView(.writing)
+        }
+        
+        switch validation {
+        case .success: break
+        case .title:
+            writingContentView.titleView.textField.layer.borderColor = #colorLiteral(red: 0.9664621949, green: 0.2374898791, blue: 0.1274906397, alpha: 1).cgColor
+        case .target:
+            writingContentView.targetView.textField.layer.borderColor = #colorLiteral(red: 0.9664621949, green: 0.2374898791, blue: 0.1274906397, alpha: 1).cgColor
+        case .both:
+            writingContentView.titleView.textField.layer.borderColor = #colorLiteral(red: 0.9664621949, green: 0.2374898791, blue: 0.1274906397, alpha: 1).cgColor
+            writingContentView.targetView.textField.layer.borderColor = #colorLiteral(red: 0.9664621949, green: 0.2374898791, blue: 0.1274906397, alpha: 1).cgColor
+        }
+    }
 }
 
 extension WritingContentViewController: DateSetDelegate,
@@ -242,20 +268,27 @@ extension WritingContentViewController: DateSetDelegate,
 // MARK: - TextView
 extension WritingContentViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
-        if textView.text.count > 0 {
-            switch textView {
-            case writingContentView.hostView.textField:
-                writingContentView.hostView.checkView.checkButton.updateUI(false)
-                
-            case writingContentView.contactView.textField:
-                writingContentView.contactView.checkView.checkButton.updateUI(false)
-                
-            case writingContentView.locationView.textField:
-                writingContentView.locationView.checkView.checkButton.updateUI(false)
-                
-            default:
-                break
-            }
+        switch textView {
+        case writingContentView.titleView.textField:
+            writingManager.title = textView.text
+            
+        case writingContentView.targetView.textField:
+            writingManager.target = textView.text
+            
+        case writingContentView.hostView.textField:
+            writingManager.host = textView.text
+            writingContentView.hostView.checkView.checkButton.updateUI(false)
+            
+        case writingContentView.contactView.textField:
+            writingManager.contact = textView.text
+            writingContentView.contactView.checkView.checkButton.updateUI(false)
+            
+        case writingContentView.locationView.textField:
+            writingManager.location = textView.text
+            writingContentView.locationView.checkView.checkButton.updateUI(false)
+            
+        default:
+            break
         }
     }
     
@@ -276,22 +309,6 @@ extension WritingContentViewController: UITextViewDelegate {
         textView.layer.borderColor = CGColor.customColor(.defaultGray)
         
         switch textView {
-        case writingContentView.titleView.textField:
-            if textView.text == "" {
-                textView.layer.borderColor = #colorLiteral(red: 0.9664621949, green: 0.2374898791, blue: 0.1274906397, alpha: 1).cgColor
-                writingManager.title = nil
-            } else {
-                writingManager.title = textView.text
-            }
-            
-        case writingContentView.targetView.textField:
-            if textView.text == "" {
-                textView.layer.borderColor = #colorLiteral(red: 0.9664621949, green: 0.2374898791, blue: 0.1274906397, alpha: 1).cgColor
-                writingManager.target = nil
-            } else {
-                writingManager.target = textView.text
-            }
-            
         case writingContentView.hostView.textField:
             if textView.text == "" {
                 textView.text = placeholer

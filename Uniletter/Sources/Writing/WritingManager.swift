@@ -57,6 +57,7 @@ final class WritingManager {
     
     // MARK: - Property
     var basicImage = BasicInfo.none.uuid
+    var imageIndex = 0
     var mainImage = BasicInfo.none.image
     var imageType: ImageType = .basic
     var title: String?
@@ -101,8 +102,8 @@ final class WritingManager {
         }
     }
     
-    func setBasicImage(_ index: Int) {
-        switch index {
+    func setBasicImage() {
+        switch self.imageIndex {
         case 0, 7: changeImage(.none)
         case 1: changeImage(.group)
         case 2: changeImage(.council)
@@ -123,36 +124,39 @@ final class WritingManager {
     }
     
     func checkEventInfo() -> WritingValidation {
-        if title == nil {
-            return self.target == nil ? .both : .title
+        if self.title == nil || self.title == "" {
+            return (self.target == nil || self.target == "") ? .both : .title
         } else {
-            return self.target == nil ? .target : .success
+            return (self.target == nil || self.target == "") ? .target : .success
         }
     }
     
     func showPreview() -> Preview {
+        setBasicImage()
+        
+        let start = (self.startDate ?? convertDefaultDate()) + (self.startTime ?? "18:00:00")
+        let end = (self.endDate ?? convertDefaultDate()) + (self.endTime ?? "18:00:00")
+        
         let preview = Preview(
             mainImage: self.mainImage,
-            imageType: .basic,
+            imageType: self.imageType,
             imageUUID: self.imageUUID ?? self.basicImage,
             title: self.title!,
             host: self.host,
             category: self.category,
             target: self.target!,
-            startAt: "\(startDate ?? convertDefaultDate()) \(startTime ?? "18:00:00")",
-            endAt: "\(endDate ?? convertDefaultDate()) \(endTime ?? "18:00:00")",
+            startAt: start,
+            endAt: end,
             contact: self.contact,
             location: self.location,
             body: self.body)
-        
-        print(preview)
         
         return preview
     }
     
     func createEvent(completion: @escaping () -> Void) {
-        let startAt = "\(startDate ?? convertDefaultDate()) \(startTime ?? "18:00:00")"
-        let endAt = "\(endDate ?? convertDefaultDate()) \(endTime ?? "18:00:00")"
+        let start = (self.startDate ?? convertDefaultDate()) + (self.startTime ?? "18:00:00")
+        let end = (self.endDate ?? convertDefaultDate()) + (self.endTime ?? "18:00:00")
         
         let parameter: [String: String] =
         [
@@ -160,8 +164,8 @@ final class WritingManager {
             "host": host,
             "category": category,
             "target": target!,
-            "startAt": startAt,
-            "endAt": endAt,
+            "startAt": start,
+            "endAt": end,
             "contact": contact,
             "location": location,
             "body": body,
