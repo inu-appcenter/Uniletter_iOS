@@ -139,6 +139,24 @@ class WritingContentViewController: UIViewController {
         button.isSelected = !button.isSelected
         button.updateUI(button.isSelected)
     }
+    
+    func presentCalendar(_ style: Style) {
+        let vc = CalendarViewController()
+        vc.style = style
+        vc.delegate = self
+        vc.setModalStyle()
+        
+        present(vc, animated: true)
+    }
+    
+    func presentTimePicker(_ style: Style) {
+        let vc = TimePickerViewController()
+        vc.style = style
+        vc.delegate = self
+        vc.setModalStyle()
+        
+        present(vc, animated: true)
+    }
 
     
     // MARK: - Actions
@@ -191,39 +209,19 @@ class WritingContentViewController: UIViewController {
     }
     
     @objc func didTapStartDate(_ sender: UIButton) {
-        let vc = CalendarViewController()
-        vc.style = .start
-        vc.delegate = self
-        vc.setModalStyle()
-        
-        present(vc, animated: true)
+        presentCalendar(.start)
     }
     
     @objc func didTapStartTime(_ sender: UIButton) {
-        let vc = TimePickerViewController()
-        vc.style = .start
-        vc.delegate = self
-        vc.setModalStyle()
-        
-        present(vc, animated: true)
+        presentTimePicker(.start)
     }
     
     @objc func didTapEndDate(_ sender: UIButton) {
-        let vc = CalendarViewController()
-        vc.style = .end
-        vc.delegate = self
-        vc.setModalStyle()
-        
-        present(vc, animated: true)
+        presentCalendar(.end)
     }
     
     @objc func didTapEndTime(_ sender: UIButton) {
-        let vc = TimePickerViewController()
-        vc.style = .end
-        vc.delegate = self
-        vc.setModalStyle()
-        
-        present(vc, animated: true)
+        presentTimePicker(.end)
     }
     
     @objc func checkValidation(_ sender: Any) {

@@ -94,12 +94,10 @@ final class HomeViewController: UIViewController {
     
     // MARK: - Funcs
     func fetchEvents() {
-        DispatchQueue.global().async {
-            self.viewModel.loadEvents() {
-                DispatchQueue.main.async {
-                    self.homeView.collectionView.reloadData()
-                    self.setLoadingIndicator(false)
-                }
+        self.viewModel.loadEvents() {
+            DispatchQueue.main.async {
+                self.homeView.collectionView.reloadData()
+                self.setLoadingIndicator(false)
             }
         }
     }
