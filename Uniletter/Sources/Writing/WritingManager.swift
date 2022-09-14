@@ -7,6 +7,47 @@
 
 import UIKit
 
+enum BasicInfo {
+    case none        // 선택없음, 기타
+    case group       // 동아리, 소모임
+    case council     // 학생회
+    case snacks      // 간식나눔
+    case contest     // 대회, 공모전
+    case study       // 스터디
+    case offer       // 구인
+    
+    var uuid: String {
+        switch self {
+        case .none: return "1ec96f4e-970e-6780-792a-5dc26eec006c"
+        case .group: return "1ec94c4d-284e-6b70-6eba-0ecc1b8dd491"
+        case .council: return "1ec94c3f-2c9d-6590-1fd7-cb603aa85e1e"
+        case .snacks: return "1ec94c15-ee15-6f30-8bdd-76769baf2a97"
+        case .contest: return "1ec94c15-786e-6520-ea08-df4f8c716b04"
+        case .study: return "1ec94c49-4fd6-6ca0-1497-d8b902900844"
+        case .offer: return "1ec94c42-4e1a-6030-9859-6dc8e7afe7df"
+        }
+    }
+    
+    var image: UIImage {
+        switch self {
+        case .none: return UIImage(named: "uniletter_big")!
+        case .group: return UIImage(named: "Club_p")!
+        case .council: return UIImage(named: "StudentCountcil_p")!
+        case .snacks: return UIImage(named: "Sharing_p")!
+        case .contest: return UIImage(named: "Competition_p")!
+        case .study: return UIImage(named: "Study_p")!
+        case .offer: return UIImage(named: "Job_p")!
+        }
+    }
+}
+
+enum WritingValidation {
+    case success
+    case title
+    case target
+    case both
+}
+
 final class WritingManager {
     
     static let shared = WritingManager()
@@ -15,18 +56,9 @@ final class WritingManager {
     private init() { }
     
     // MARK: - Property
-    let basicImageUUID =
-    [
-        "1ec94c4d-284e-6b70-6eba-0ecc1b8dd491",     // 동아리 / 소모임
-        "1ec94c3f-2c9d-6590-1fd7-cb603aa85e1e",     // 학생회
-        "1ec94c15-ee15-6f30-8bdd-76769baf2a97",     // 간식나눔
-        "1ec94c15-786e-6520-ea08-df4f8c716b04",     // 대회 / 공모전
-        "1ec94c49-4fd6-6ca0-1497-d8b902900844",     // 스터디
-        "1ec94c42-4e1a-6030-9859-6dc8e7afe7df",     // 구인
-        "1ec96f4e-970e-6780-792a-5dc26eec006c",     // 기타
-    ]
-    var basicImage = "1ec96f4e-970e-6780-792a-5dc26eec006c"
-    var mainImage = UIImage(named: "uniletter_big")
+    var basicImage = BasicInfo.none.uuid
+    var mainImage = BasicInfo.none.image
+    var imageType: ImageType = .basic
     var title: String?
     var host = ""
     var category = ""
@@ -41,25 +73,68 @@ final class WritingManager {
     var endTime: String?
     
     // MARK: - Funcs
+    
+    func removeData() {
+        self.basicImage = BasicInfo.none.uuid
+        self.imageType = .basic
+        self.mainImage = BasicInfo.none.image
+        self.title = nil
+        self.host = ""
+        self.category = ""
+        self.target = nil
+        self.contact = ""
+        self.location = ""
+        self.body = ""
+        self.imageUUID = nil
+        self.startDate = nil
+        self.startTime = nil
+        self.endDate = nil
+        self.endTime = nil
+    }
+    
     func setImage(_ image: UIImage) {
         self.mainImage = image
+        self.imageType = .custom
         
         API.uploadMeImage(image: image) { result in
             self.imageUUID = result.uuid
         }
     }
     
-    func checkEventInfo() -> Int {
-        if title == nil {
-            // TODO:  유효성 검사
+    func setBasicImage(_ index: Int) {
+        switch index {
+        case 0, 7: changeImage(.none)
+        case 1: changeImage(.group)
+        case 2: changeImage(.council)
+        case 3: changeImage(.snacks)
+        case 4: changeImage(.contest)
+        case 5: changeImage(.study)
+        case 6: changeImage(.offer)
+        default: break
         }
+    }
+    
+    func changeImage(_ basic : BasicInfo) {
+        self.basicImage = basic.uuid
         
-        return 0
+        if self.imageType == .basic {
+            self.mainImage = basic.image
+        }
+    }
+    
+    func checkEventInfo() -> WritingValidation {
+        if title == nil {
+            return self.target == nil ? .both : .title
+        } else {
+            return self.target == nil ? .target : .success
+        }
     }
     
     func showPreview() -> Preview {
         let preview = Preview(
-            imageUUID: "",
+            mainImage: self.mainImage,
+            imageType: .basic,
+            imageUUID: self.imageUUID ?? self.basicImage,
             title: self.title!,
             host: self.host,
             category: self.category,
@@ -69,6 +144,8 @@ final class WritingManager {
             contact: self.contact,
             location: self.location,
             body: self.body)
+        
+        print(preview)
         
         return preview
     }
@@ -95,5 +172,10 @@ final class WritingManager {
             print("이벤트 생성 성공")
             completion()
         }
+    }
+    
+    func loadEvent() {
+        let manager = EventManager.shared
+        
     }
 }

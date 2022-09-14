@@ -15,6 +15,7 @@ class WritingContentViewController: UIViewController {
     let writingManager = WritingManager.shared
     let dropDown = DropDown()
     let categories = [
+        "선택없음",
         "동아리/소모임",
         "학생회",
         "간식나눔",
@@ -101,7 +102,7 @@ class WritingContentViewController: UIViewController {
         dropDown.bottomOffset = CGPoint(x: 0, y: 44)
         dropDown.selectionAction = { index, item in
             self.writingManager.category = item
-            self.writingManager.basicImage = self.writingManager.basicImageUUID[index]
+            self.writingManager.setBasicImage(index)
             self.writingContentView.categoryView.textField.text = item
             self.writingContentView.categoryButton.isSelected = false
         }
@@ -117,6 +118,7 @@ class WritingContentViewController: UIViewController {
         dropDownAppearance.backgroundColor = .white
         dropDownAppearance.selectionBackgroundColor = UIColor.customColor(.blueGreen).withAlphaComponent(0.15)
         dropDownAppearance.setupCornerRadius(4)
+        dropDown.selectRow(at: 0)
     }
     
     func initUpdating() {

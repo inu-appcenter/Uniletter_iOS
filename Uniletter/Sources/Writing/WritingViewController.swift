@@ -46,7 +46,19 @@ final class WritingViewController: UIViewController {
     
     // MARK: - Setup
     func setNavigationBar() {
-        setNavigationTitleAndBackButton("레터등록")
+        self.navigationItem.title = "레터등록"
+        self.navigationItem.hidesBackButton = true
+        let config = UIImage.SymbolConfiguration(
+            pointSize: 18,
+            weight: .semibold)
+        let backButton = UIBarButtonItem(
+            image: UIImage(systemName: "chevron.left", withConfiguration: config)?
+                .withTintColor(.black, renderingMode: .alwaysOriginal),
+            style: .done,
+            target: self,
+            action: #selector(didTapBackButton))
+        
+        self.navigationItem.leftBarButtonItems = [spacingItem(3), backButton]
     }
     
     func setViewController() {
@@ -67,7 +79,7 @@ final class WritingViewController: UIViewController {
         
         containerView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide)
+            $0.bottom.equalTo(bottomView.snp.top)
             $0.left.right.equalToSuperview()
         }
         
@@ -87,6 +99,23 @@ final class WritingViewController: UIViewController {
         vc.didMove(toParent: self)
     }
     
+    func changePage(_ isBack: Bool) {
+        if isBack {
+            page -= 1
+            page == 0 ? changeCancleButtonTitle(true) : changeCancleButtonTitle(false)
+            changePreviewTitle(false)
+        } else {
+            page = page < 2 ? page + 1 : page
+            if page == 3 {
+                changeNextButtonTitle(true)
+                changePreviewTitle(true)
+            } else {
+                changeNextButtonTitle(false)
+            }
+            changeCancleButtonTitle(false)
+        }
+    }
+    
     func changeCancleButtonTitle(_ bool: Bool) {
         let title = bool ? "취소" : "이전"
         bottomView.cancleButton.setTitle(title, for: .normal)
@@ -101,26 +130,34 @@ final class WritingViewController: UIViewController {
         self.title = bool ? "미리보기" : "레터등록"
     }
     
-    func validation() {
-        let check = writingManager.checkEventInfo()
+    func checkValidation() {
+        let validation = writingManager.checkEventInfo()
         
-        switch check {
-        case 0:
-            writingManager.createEvent {
-                self.goToInitialViewController()
-            }
-        case 1: break
-        case 2: break
-        case 3: break
-        default: break
+        switch validation {
+        case .success:
+            break
+        case .title:
+            // TODO: 제목
+            break
+        case .target:
+            // TODO: 대상
+            break
+        case .both:
+            // TODO: 둘 다
+            break
         }
     }
     
     // MARK: - Actions
+    @objc func didTapBackButton() {
+        writingManager.removeData()
+        self.navigationController?.popViewController(animated: true)
+    }
+    
     @objc func didTapCancleButton(_ sender: UIButton) {
         switch page {
         case 0:
-            self.navigationController?.popViewController(animated: true)
+            didTapBackButton()
         case 1:
             contentViewController.view.removeFromSuperview()
             changeViewController(pictureViewController)
@@ -133,9 +170,7 @@ final class WritingViewController: UIViewController {
         default: break
         }
         
-        page -= 1
-        page == 0 ? changeCancleButtonTitle(true) : changeCancleButtonTitle(false)
-        changePreviewTitle(false)
+        changePage(true)
     }
     
     @objc func didTapOKButton(_ sender: UIButton) {
@@ -147,27 +182,22 @@ final class WritingViewController: UIViewController {
             contentViewController.view.removeFromSuperview()
             changeViewController(detailViewController)
         case 2:
-            if writingManager.checkEventInfo() == 0 {
+            if writingManager.checkEventInfo() == .success {
                 detailViewController.view.removeFromSuperview()
                 previewController.preview = self.writingManager.showPreview()
-                previewController.mainImage = self.writingManager.mainImage
                 changeViewController(previewController)
                 page += 1
             } else {
-                // TODO: 필수정보 입력 알림
+                checkValidation()
             }
         case 3:
-            validation()
+//            writingManager.createEvent {
+//                self.goToInitialViewController()
+//            }
+            break
         default: break
         }
         
-        page = page < 2 ? page + 1 : page
-        if page == 3 {
-            changeNextButtonTitle(true)
-            changePreviewTitle(true)
-        } else {
-            changeNextButtonTitle(false)
-        }
-        changeCancleButtonTitle(false)
+        changePage(false)
     }
 }

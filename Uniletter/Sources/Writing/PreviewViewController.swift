@@ -14,7 +14,6 @@ final class PreviewViewController: UIViewController {
     // MARK: - Property
     let eventDetailView = EventDetailView()
     var preview: Preview!
-    var mainImage: UIImage!
     
     // MARK: - Life cycle
     override func loadView() {
@@ -23,6 +22,9 @@ final class PreviewViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         setViewController()
     }
     
@@ -35,11 +37,14 @@ final class PreviewViewController: UIViewController {
             eventDetailView.dateWroteLabel,
             eventDetailView.moreButton,
             eventDetailView.notificationButton,
+            eventDetailView.viewsLabel,
+            eventDetailView.likeAndCommentsLabel,
+            eventDetailView.eyeImageView,
         ]
             .forEach { $0.isHidden = true }
         
         setImageSize()
-        eventDetailView.mainImageView.image = mainImage
+        eventDetailView.mainImageView.image = preview.mainImage
         eventDetailView.titleTextView.text = preview.title
         eventDetailView.categoryContentsLabel.text = preview.category
         eventDetailView.startContentsLabel.text = preview.startAt
@@ -54,7 +59,7 @@ final class PreviewViewController: UIViewController {
     // MARK: - Funcs
     
     func setImageSize() {
-        if mainImage == UIImage(named: "uniletter_big") {
+        if preview.imageType == .basic {
             eventDetailView.mainImageView.contentMode = .scaleAspectFit
         }
     }
