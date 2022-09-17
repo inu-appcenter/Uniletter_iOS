@@ -99,7 +99,7 @@ final class CommentsCell: UITableViewCell {
         }
         nicknameLabel.text = comment.nickname
         contentLabel.text = comment.content
-        dateLabel.text = formatDateForComments(comment.createdAt)
+        dateLabel.text = CustomFormatter.formatDateForComments(comment.createdAt)
         wroteLabel.isHidden = comment.userID == id ? false : true
     }
     

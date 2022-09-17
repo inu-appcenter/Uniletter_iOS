@@ -40,7 +40,7 @@ class MyEventCell: UICollectionViewCell {
         self.EventView.eventImage.kf.setImage(with: url)
         self.EventView.eventBodyLabel.text = event.body
         self.EventView.eventTitleLabel.text = event.title
-        self.EventView.writeDayLabel.text = caculateWriteDay(event.createdAt)
+        self.EventView.writeDayLabel.text = CustomFormatter.caculateWriteDay(event.createdAt)
         self.EventView.commentCountLabel.text = String(event.comments)
     }
 }

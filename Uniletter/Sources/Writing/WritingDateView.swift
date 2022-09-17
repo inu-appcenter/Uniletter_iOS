@@ -19,7 +19,7 @@ final class WritingDateView: UIView {
         button.layer.borderWidth = 1
         button.layer.borderColor = CGColor.customColor(.defaultGray)
         button.setAttributedTitle(
-            showUnderline(convertTodayToString()),
+            showUnderline(CustomFormatter.convertTodayToString(false)),
             for: .normal)
         
         return button

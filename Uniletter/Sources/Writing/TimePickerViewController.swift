@@ -143,7 +143,6 @@ extension TimePickerViewController: UIPickerViewDelegate,
         
         let select = pickerView.view(forRow: row, forComponent: component) as? UILabel
         select?.textColor = .white
-        print("didSelectRow -> component: \(component), row: \(row)")
     }
     
     func pickerView(

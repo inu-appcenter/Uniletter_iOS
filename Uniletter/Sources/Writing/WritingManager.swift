@@ -134,8 +134,8 @@ final class WritingManager {
     func showPreview() -> Preview {
         setBasicImage()
         
-        let start = (self.startDate ?? convertDefaultDate()) + (self.startTime ?? "18:00:00")
-        let end = (self.endDate ?? convertDefaultDate()) + (self.endTime ?? "18:00:00")
+        let start = (self.startDate ?? CustomFormatter.convertTodayToString(true)) + (self.startTime ?? "18:00:00")
+        let end = (self.endDate ?? CustomFormatter.convertTodayToString(true)) + (self.endTime ?? "18:00:00")
         
         let preview = Preview(
             mainImage: self.mainImage,
@@ -155,21 +155,23 @@ final class WritingManager {
     }
     
     func createEvent(completion: @escaping () -> Void) {
-        let start = (self.startDate ?? convertDefaultDate()) + (self.startTime ?? "18:00:00")
-        let end = (self.endDate ?? convertDefaultDate()) + (self.endTime ?? "18:00:00")
+        let start = (self.startDate ?? CustomFormatter.convertTodayToString(true)) + " " +
+        (self.startTime ?? "18:00:00")
+        let end = (self.endDate ?? CustomFormatter.convertTodayToString(true)) + " " +
+        (self.endTime ?? "18:00:00")
         
         let parameter: [String: String] =
         [
-            "title": title!,
-            "host": host,
-            "category": category,
-            "target": target!,
+            "title": self.title!,
+            "host": self.host,
+            "category": self.category,
+            "target": self.target!,
             "startAt": start,
             "endAt": end,
-            "contact": contact,
-            "location": location,
-            "body": body,
-            "imageUuid": imageUUID ?? basicImage,
+            "contact": self.contact,
+            "location": self.location,
+            "body": self.body,
+            "imageUuid": self.imageUUID ?? self.basicImage,
         ]
         
         API.createEvent(parameter) {

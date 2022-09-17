@@ -44,7 +44,7 @@ final class EventManager {
     
     var dateWrote: String {
         let dateStr = event?.createdAt ?? defaultDate
-        return subDateString(dateStr)
+        return CustomFormatter.subDateString(dateStr)
     }
     
     var mainImage: UIImage {
@@ -64,7 +64,7 @@ final class EventManager {
     }
     
     var dday: Int {
-        return Int(caculateDDay(event?.endAt ?? defaultDate)) ?? 0
+        return Int(CustomFormatter.caculateDDay(event?.endAt ?? defaultDate)) ?? 0
     }
     
     var categoryContent: String {
@@ -72,15 +72,15 @@ final class EventManager {
     }
     
     var startContent: String {
-        let date = subDateString(event?.startAt ?? defaultDate)
-        let time = convertTime(event?.startAt ?? defaultDate)
+        let date = CustomFormatter.subDateString(event?.startAt ?? defaultDate)
+        let time = CustomFormatter.convertTime(event?.startAt ?? defaultDate)
         
         return "\(date) - \(time)"
     }
     
     var endContent: String {
-        let date = subDateString(event?.endAt ?? defaultDate)
-        let time = convertTime(event?.endAt ?? defaultDate)
+        let date = CustomFormatter.subDateString(event?.endAt ?? defaultDate)
+        let time = CustomFormatter.convertTime(event?.endAt ?? defaultDate)
         
         return "\(date) - \(time)"
     }

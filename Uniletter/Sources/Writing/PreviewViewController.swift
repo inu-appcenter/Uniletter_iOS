@@ -65,7 +65,7 @@ final class PreviewViewController: UIViewController {
     }
     
     func updateDDay() {
-        let dday = Int(caculateDDay(preview.endAt)) ?? 0
+        let dday = Int(CustomFormatter.caculateDDay(preview.endAt)) ?? 0
         let ddayText: String
         
         if dday < 0 {
