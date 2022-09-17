@@ -68,10 +68,10 @@ final class WritingManager {
     var location = ""
     var body = ""
     var imageUUID: String?
-    var startDate: String?
-    var startTime: String?
-    var endDate: String?
-    var endTime: String?
+    var startDate = CustomFormatter.convertTodayToString(true)
+    var startTime = CustomFormatter.convertNowTime(false)
+    var endDate = CustomFormatter.convertTodayToString(true)
+    var endTime = CustomFormatter.convertNowTime(false)
     
     // MARK: - Funcs
     
@@ -87,10 +87,10 @@ final class WritingManager {
         self.location = ""
         self.body = ""
         self.imageUUID = nil
-        self.startDate = nil
-        self.startTime = nil
-        self.endDate = nil
-        self.endTime = nil
+        self.startDate = CustomFormatter.convertTodayToString(true)
+        self.startTime = CustomFormatter.convertNowTime(false)
+        self.endDate = CustomFormatter.convertTodayToString(true)
+        self.endTime = CustomFormatter.convertNowTime(false)
     }
     
     func setImage(_ image: UIImage) {
@@ -123,6 +123,22 @@ final class WritingManager {
         }
     }
     
+    func convertTime(_ isStart: Bool) -> String {
+        let hour = isStart
+        ? Int(self.startTime.subStringByIndex(sOffset: 0, eOffset: 2))!
+        : Int(self.endTime.subStringByIndex(sOffset: 3, eOffset: 5))!
+
+        let min = isStart
+        ? self.startTime.subStringByIndex(sOffset: 0, eOffset: 2)
+        : self.endTime.subStringByIndex(sOffset: 3, eOffset: 5)
+        
+        if hour > 12 {
+            return (" - \(hour % 12):\(min) 오후")
+        } else {
+            return (" - \(hour):\(min) 오전")
+        }
+    }
+    
     func checkEventInfo() -> WritingValidation {
         if self.title == nil || self.title == "" {
             return (self.target == nil || self.target == "") ? .both : .title
@@ -134,9 +150,6 @@ final class WritingManager {
     func showPreview() -> Preview {
         setBasicImage()
         
-        let start = (self.startDate ?? CustomFormatter.convertTodayToString(true)) + (self.startTime ?? "18:00:00")
-        let end = (self.endDate ?? CustomFormatter.convertTodayToString(true)) + (self.endTime ?? "18:00:00")
-        
         let preview = Preview(
             mainImage: self.mainImage,
             imageType: self.imageType,
@@ -145,8 +158,8 @@ final class WritingManager {
             host: self.host,
             category: self.category,
             target: self.target!,
-            startAt: start,
-            endAt: end,
+            startAt: self.startDate + self.convertTime(true),
+            endAt: self.endDate + self.convertTime(false),
             contact: self.contact,
             location: self.location,
             body: self.body)
@@ -155,19 +168,14 @@ final class WritingManager {
     }
     
     func createEvent(completion: @escaping () -> Void) {
-        let start = (self.startDate ?? CustomFormatter.convertTodayToString(true)) + " " +
-        (self.startTime ?? "18:00:00")
-        let end = (self.endDate ?? CustomFormatter.convertTodayToString(true)) + " " +
-        (self.endTime ?? "18:00:00")
-        
         let parameter: [String: String] =
         [
             "title": self.title!,
             "host": self.host,
             "category": self.category,
             "target": self.target!,
-            "startAt": start,
-            "endAt": end,
+            "startAt": self.startDate + " " + self.startTime,
+            "endAt": self.endDate + " " + self.endTime,
             "contact": self.contact,
             "location": self.location,
             "body": self.body,

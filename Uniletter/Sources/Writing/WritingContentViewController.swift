@@ -152,20 +152,12 @@ class WritingContentViewController: UIViewController {
     func presentTimePicker(_ style: Style) {
         let vc = TimePickerViewController()
         vc.style = style
-        switch style {
-        case .start:
-            if let start = writingManager.startTime {
-                let time = CustomFormatter.subTimeForTimePicker(start)
-                vc.hour = time[0]
-                vc.minute = time[1]
-            }
-        case .end:
-            if let end = writingManager.endTime {
-                let time = CustomFormatter.subTimeForTimePicker(end)
-                vc.hour = time[0]
-                vc.minute = time[1]
-            }
-        }
+        let time = style == .start ? writingManager.startTime : writingManager.endTime
+        let subTime = CustomFormatter.subTimeForTimePicker(time)
+        
+        vc.hour = subTime[0]
+        vc.minute = subTime[1]
+        vc.isPM = CustomFormatter.convertNowTime(true).contains("오후") ? true : false
         vc.delegate = self
         vc.setModalStyle()
         

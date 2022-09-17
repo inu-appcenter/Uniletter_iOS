@@ -75,14 +75,14 @@ final class EventManager {
         let date = CustomFormatter.subDateString(event?.startAt ?? defaultDate)
         let time = CustomFormatter.convertTime(event?.startAt ?? defaultDate)
         
-        return "\(date) - \(time)"
+        return date + time
     }
     
     var endContent: String {
         let date = CustomFormatter.subDateString(event?.endAt ?? defaultDate)
         let time = CustomFormatter.convertTime(event?.endAt ?? defaultDate)
         
-        return "\(date) - \(time)"
+        return date + time
     }
     
     var target: String {

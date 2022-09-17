@@ -8,15 +8,6 @@
 
 import Foundation
 
-/// 인덱스 받아서 슬라이싱
-fileprivate func subStringToIndex(str: String, sOffset: Int, eOffset: Int) -> String {
-    let start = str.index(str.startIndex, offsetBy: sOffset)
-    let end = str.index(str.startIndex, offsetBy: eOffset)
-    let range = start..<end
-    
-    return String(str[range])
-}
-
 /// 날짜, 시간 관련 기능을 담은 custom class
 final class CustomFormatter {
     
@@ -34,19 +25,19 @@ final class CustomFormatter {
 
     /// 받아온 날짜 시간:분 구하기
     static func subTimeString(_ dateStr: String) -> String {
-        return subStringToIndex(str: dateStr, sOffset: 11, eOffset: 16)
+        return dateStr.subStringByIndex(sOffset: 11, eOffset: 16)
     }
 
     static func subTimeForTimePicker(_ time: String) -> [Int] {
         let hour = Int(time.prefix(2))!
-        let min = Int(subStringToIndex(str: time, sOffset: 3, eOffset: 5))!
+        let min = Int(time.subStringByIndex(sOffset: 3, eOffset: 5))!
         
         return [hour, min]
     }
 
     /// 받아온 날짜 년.월.일 시간:분 구하기(댓글용)
     static func formatDateForComments(_ dateStr: String) -> String {
-        let date = subStringToIndex(str: dateStr, sOffset: 2, eOffset: 10)
+        let date = dateStr.subStringByIndex(sOffset: 2, eOffset: 10)
             .replacingOccurrences(of: "-", with: ".")
         let time = subTimeString(dateStr)
         
@@ -56,14 +47,14 @@ final class CustomFormatter {
     /// 시간 AM, PM으로 변환
     static func convertTime(_ dateStr: String) -> String {
         let time = subTimeString(dateStr)
-        let hour = subStringToIndex(str: time, sOffset: 0, eOffset: 2)
-        let min = subStringToIndex(str: time, sOffset: 3, eOffset: time.count)
+        let hour = time.subStringByIndex(sOffset: 0, eOffset: 2)
+        let min = time.subStringByIndex(sOffset: 3, eOffset: time.count)
         
         let int = Int(hour)!
         if int > 12 {
-            return ("\(int % 12):\(min) PM")
+            return (" - \(int % 12):\(min) 오후")
         } else {
-            return ("\(int):\(min) AM")
+            return (" - \(int):\(min) 오전")
         }
     }
 
@@ -90,13 +81,21 @@ final class CustomFormatter {
 
     /// 현재 날짜 형식 맞춰 반환
     static func convertTodayToString(_ isDefault: Bool) -> String {
-        let now = Date()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = isDefault ? "yyyy-MM-dd" : "yyyy.MM.dd"
         
-        return dateFormatter.string(from: now)
+        return dateFormatter.string(from: Date())
     }
-
+    
+    /// 현재 시간
+    static func convertNowTime(_ isButton: Bool) -> String {
+        let dateformatter = DateFormatter()
+        dateformatter.dateFormat = isButton ? "hh:mm a" : "HH:mm:00"
+        
+        return dateformatter.string(from: Date())
+    }
+    
+    /// 글쓴 날짜 형식 맞춰 반환
     static func caculateWriteDay(_ dateStr: String) -> String {
         let date = subDateString(dateStr).components(separatedBy: "-")
         let month = date[1]
@@ -113,4 +112,5 @@ final class CustomFormatter {
             return "\(month)/\(day)"
         }
     }
+    
 }

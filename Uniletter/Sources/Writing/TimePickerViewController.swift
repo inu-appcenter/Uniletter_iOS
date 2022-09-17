@@ -16,10 +16,10 @@ class TimePickerViewController: UIViewController {
     var delegate: TimeSetDelegate?
     let hours = [Int](1...12)
     let minutes = [Int](0...11).map { $0 * 5 }
-    let timeUnits = ["AM", "PM"]
+    let timeUnits = ["오전", "오후"]
     var hour = 6
     var minute = 0
-    var timeUnit = "PM"
+    var timeUnit = "오후"
     var isPM: Bool?
     
     // MARK: - Life cycle
@@ -49,11 +49,11 @@ class TimePickerViewController: UIViewController {
             animated: false)
         
         if let isPM = isPM {
-            timeUnit = isPM ? "PM" : "AM"
+            timeUnit = isPM ? "오후" : "오전"
         }
         
         timePickerView.pickerView.selectRow(
-            timeUnit == "PM" ? 1 : 0,
+            timeUnit == "오후" ? 1 : 0,
             inComponent: 2,
             animated: false)
         
@@ -77,7 +77,7 @@ class TimePickerViewController: UIViewController {
                 inComponent: 1)
             self.pickerView(
                 self.timePickerView.pickerView,
-                didSelectRow: self.timeUnit == "PM" ? 1 : 0,
+                didSelectRow: self.timeUnit == "오후" ? 1 : 0,
                 inComponent: 2)
         }
         
@@ -88,20 +88,27 @@ class TimePickerViewController: UIViewController {
         return String(format: "%02d", num)
     }
     
+    func formatTime() -> String {
+        return "\(formatNumbers(hour)):\(formatNumbers(minute))"
+    }
+    
     // MARK: - Actions
     @objc func didTapCancleButton(_ sender: UIButton) {
         dismiss(animated: true)
     }
     
     @objc func didTapOKButton(_ sender: UIButton) {
-        let time = "\(formatNumbers(hour)):\(formatNumbers(minute))"
+        delegate?.setTime(
+            time: formatTime() + " " + timeUnit,
+            style: style)
         
-        delegate?.setTime(time: "\(time) \(timeUnit)", style: style)
+        hour = timeUnit == "오후" ? hour + 12 : hour
+        hour = hour == 24 ? 0 : hour
         
         if style == .start {
-            writingManager.startTime = "\(time):00"
+            writingManager.startTime = formatTime() + ":00"
         } else {
-            writingManager.endTime = "\(time):00"
+            writingManager.endTime = formatTime() + ":00"
         }
         
         dismiss(animated: true)
