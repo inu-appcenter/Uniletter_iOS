@@ -78,11 +78,10 @@ final class CalendarViewController: UIViewController {
     }
     
     func compareDates(_ date: Date) -> Bool {
-        let first = dateToString(date)
-        let second = dateToString(Date())
+        let first = CustomFormatter.dateToString(date)
+        let second = CustomFormatter.dateToString(Date())
         
-        return subDateString(first) == subDateString(second)
-        ? true : false
+        return CustomFormatter.subDateString(first) == CustomFormatter.subDateString(second)
     }
     
     // MARK: - Actions
@@ -99,8 +98,8 @@ final class CalendarViewController: UIViewController {
     }
     
     @objc func didTapOKButton(_ sender: UIButton) {
-        let dateStr = dateToString(selectedDate)
-        delegate?.setDate(date: dateToString(selectedDate), style: style)
+        let dateStr = CustomFormatter.dateToString(selectedDate)
+        delegate?.setDate(date: CustomFormatter.dateToString(selectedDate), style: style)
         
         if style == .start {
             writingManager.startDate = dateStr

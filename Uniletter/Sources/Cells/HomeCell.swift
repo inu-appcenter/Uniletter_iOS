@@ -50,7 +50,7 @@ class HomeCell: UICollectionViewCell {
     }
     
     func updateDDay(_ dateStr: String) {
-        let intDDay = Int(caculateDDay(dateStr)) ?? 0
+        let intDDay = Int(CustomFormatter.caculateDDay(dateStr)) ?? 0
         let dday: String
         
         if intDDay < 0 {
