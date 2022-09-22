@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 import SwiftMessages
+import Toast_Swift
 
 extension UIViewController {
     /// parameter에 넣은 제목대로 네비게이션 바 왼쪽 커스텀
@@ -78,13 +79,16 @@ extension UIViewController {
     }
     
     func presentWaringView(_ warningType: Warning) {
-        let warningView = WarningView()
+        
+        let warningViewWidth = UIScreen.main.bounds.width - 40
+        
+        let toastPointX = UIScreen.main.bounds.width / 2
+        
+        let toastPointY = UIScreen.main.bounds.height / 1.2
+        
+        let warningView = WarningView(frame: CGRect(x: 0, y: 0, width: warningViewWidth, height: 52))
         warningView.warninglabel.text = warningType.body
 
-        var config = SwiftMessages.Config()
-        config.duration = .seconds(seconds: 1.5)
-        config.keyboardTrackingView = KeyboardTrackingView()
-        config.presentationStyle = .center
-        SwiftMessages.show(config: config, view: warningView)
+        self.view.showToast(warningView, duration: 1.5, point: CGPoint(x: toastPointX, y: toastPointY))
     }
 }

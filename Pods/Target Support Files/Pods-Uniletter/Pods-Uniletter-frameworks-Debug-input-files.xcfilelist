@@ -18,4 +18,5 @@ ${BUILT_PRODUCTS_DIR}/MarqueeLabel/MarqueeLabel.framework
 ${BUILT_PRODUCTS_DIR}/PromisesObjC/FBLPromises.framework
 ${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework
 ${BUILT_PRODUCTS_DIR}/SwiftMessages/SwiftMessages.framework
+${BUILT_PRODUCTS_DIR}/Toast-Swift/Toast_Swift.framework
 ${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework

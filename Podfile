@@ -14,7 +14,7 @@ target 'Uniletter' do
   pod "FSCalendar"
   pod "SwiftMessages"
   pod "Firebase/Messaging"
-
+  pod "Toast-Swift"
   # Pods for Uniletter
 
 end

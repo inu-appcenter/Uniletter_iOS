@@ -80,6 +80,7 @@ PODS:
   - SwiftMessages (9.0.6):
     - SwiftMessages/App (= 9.0.6)
   - SwiftMessages/App (9.0.6)
+  - Toast-Swift (5.0.1)
 
 DEPENDENCIES:
   - Alamofire
@@ -91,6 +92,7 @@ DEPENDENCIES:
   - MarqueeLabel
   - SnapKit
   - SwiftMessages
+  - Toast-Swift
 
 SPEC REPOS:
   trunk:
@@ -115,6 +117,7 @@ SPEC REPOS:
     - PromisesObjC
     - SnapKit
     - SwiftMessages
+    - Toast-Swift
 
 SPEC CHECKSUMS:
   Alamofire: 87bd8c952f9a4454320fce00d9cc3de57bcadaf5
@@ -138,7 +141,8 @@ SPEC CHECKSUMS:
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
   SwiftMessages: f0c7ef4705a570ad6c5e208b611f4333e660ed92
+  Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
 
-PODFILE CHECKSUM: 0caf3912f618efcd5e2fb73b1ce249a1f440a1f6
+PODFILE CHECKSUM: 82429b9e2679affa62c692b5845026c2857edd1e
 
 COCOAPODS: 1.11.3
