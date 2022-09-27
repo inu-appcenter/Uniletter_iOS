@@ -108,25 +108,27 @@ final class EventDetailViewController: UIViewController {
     }
     
     func updateDDay() {
-        let dday = viewModel.dday
-        let ddayText: String
+        let dateStr = viewModel.endAt
+        let day = dateStr.caculateDateDiff()[0]
+        let min = dateStr.caculateDateDiff()[1]
+        let dday: String
         let buttonText: String
         
-        if dday < 0 {
+        if day < 0 || (day == 0 && min < 0) {
             eventDetailView.ddayButton.configuration?.baseBackgroundColor = UIColor.customColor(.darkGray)
             eventDetailView.notificationButton.backgroundColor = UIColor.customColor(.lightGray)
             
-            ddayText = "마감"
+            dday = "마감"
             buttonText = "행사 마감"
         } else {
             eventDetailView.ddayButton.configuration?.baseBackgroundColor = UIColor.customColor(.blueGreen)
             eventDetailView.notificationButton.backgroundColor = UIColor.customColor(.blueGreen)
             
-            ddayText = dday == 0 ? "D-day" : "D-\(dday)"
+            dday = day == 0 ? "D-day" : "D-\(day)"
             buttonText = "알림 신청"
         }
         
-        var ddayAttributed = AttributedString(ddayText)
+        var ddayAttributed = AttributedString(dday)
         ddayAttributed.font = .systemFont(ofSize: 13)
         
         eventDetailView.ddayButton.configuration?.attributedTitle = ddayAttributed
@@ -258,7 +260,7 @@ final class EventDetailViewController: UIViewController {
     
     @objc func didTapNotificationButton(_ sender: UIButton) {
         if loginManager.isLoggedIn {
-            if viewModel.dday > 0 {
+            if viewModel.endAt.caculateDateDiff()[0] > 0 {
                 
                 let vc = presentActionSheetView(.notification)
                 vc.eventID = id

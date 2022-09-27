@@ -47,13 +47,13 @@ final class PreviewViewController: UIViewController {
         eventDetailView.mainImageView.image = preview.mainImage
         eventDetailView.titleTextView.text = preview.title
         eventDetailView.categoryContentsLabel.text = preview.category
-        eventDetailView.startContentsLabel.text = preview.startAt
-        eventDetailView.endContentsLabel.text = preview.endAt
+        eventDetailView.startContentsLabel.text = self.convertTime(true)
+        eventDetailView.endContentsLabel.text = self.convertTime(false)
         eventDetailView.targetContentsLabel.text = preview.target
         eventDetailView.contactContentsLabel.text = preview.contact
         eventDetailView.bodyContentsLabel.text = preview.body
         
-        updateDDay()
+        updateDDay(preview.endAt)
     }
     
     // MARK: - Funcs
@@ -64,26 +64,40 @@ final class PreviewViewController: UIViewController {
         : .scaleToFill
     }
     
-    func updateDDay() {
-        let dday = Int(CustomFormatter.caculateDDay(preview.endAt)) ?? 0
-        let ddayText: String
+    func convertTime(_ isStart: Bool) -> String {
+        print(preview.startAt, preview.endAt)
+        let hour = isStart
+        ? Int(preview.startAt.subStringByIndex(sOffset: 11, eOffset: 13))!
+        : Int(preview.endAt.subStringByIndex(sOffset: 11, eOffset: 13))!
+
+        let min = isStart
+        ? preview.startAt.subStringByIndex(sOffset: 14, eOffset: 16)
+        : preview.endAt.subStringByIndex(sOffset: 14, eOffset: 16)
         
-        if dday < 0 {
+        if hour >= 12 {
+            return (" - \(hour % 12):\(min) 오후")
+        } else {
+            return (" - \(hour):\(min) 오전")
+        }
+    }
+    
+    func updateDDay(_ dateStr: String) {
+        let day = dateStr.caculateDateDiff()[0]
+        let min = dateStr.caculateDateDiff()[1]
+        let dday: String
+        
+        if day < 0 || (day == 0 && min < 0) {
             eventDetailView.ddayButton.configuration?.baseBackgroundColor = UIColor.customColor(.darkGray)
-            eventDetailView.notificationButton.backgroundColor = UIColor.customColor(.lightGray)
-            
-            ddayText = "마감"
+            dday = "마감"
         } else {
             eventDetailView.ddayButton.configuration?.baseBackgroundColor = UIColor.customColor(.blueGreen)
-            eventDetailView.notificationButton.backgroundColor = UIColor.customColor(.blueGreen)
-            
-            ddayText = dday == 0 ? "D-day" : "D-\(dday)"
+            dday = day == 0 ? "D-day" : "D-\(day)"
         }
         
-        var ddayAttributed = AttributedString(ddayText)
-        ddayAttributed.font = .systemFont(ofSize: 13)
+        var attributedString = AttributedString(dday)
+        attributedString.font = .systemFont(ofSize: 13)
         
-        eventDetailView.ddayButton.configuration?.attributedTitle = ddayAttributed
+        eventDetailView.ddayButton.configuration?.attributedTitle = attributedString
     }
     
 }

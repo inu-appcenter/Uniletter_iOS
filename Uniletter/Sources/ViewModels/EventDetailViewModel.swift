@@ -42,8 +42,8 @@ final class EventDetailViewModel {
         return manager.title
     }
     
-    var dday: Int {
-        return manager.dday
+    var endAt: String {
+        return manager.endAt
     }
     
     var categoryContent: String {

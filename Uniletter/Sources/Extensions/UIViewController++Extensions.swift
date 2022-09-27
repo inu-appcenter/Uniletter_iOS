@@ -79,12 +79,12 @@ extension UIViewController {
     }
     
     func presentWaringView(_ warningType: Warning) {
+        let width = UIScreen.main.bounds.width
+        let height = UIScreen.main.bounds.height / 1.3
         
-        let warningViewWidth = UIScreen.main.bounds.width - 40
-        
-        let toastPointX = UIScreen.main.bounds.width / 2
-        
-        let toastPointY = UIScreen.main.bounds.height / 1.2
+        let warningViewWidth = width - 40
+        let toastPointX = width / 2
+        let toastPointY = warningType == .writing ? height - 52 : height
         
         let warningView = WarningView(frame: CGRect(x: 0, y: 0, width: warningViewWidth, height: 52))
         warningView.warninglabel.text = warningType.body

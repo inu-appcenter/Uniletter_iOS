@@ -72,9 +72,10 @@ final class CustomFormatter {
     /// D-day 계산
     static func caculateDDay(_ endAt: String) -> String {
         let endAt = formatStringToDate(endAt)
-        let now = Date()
-        let interval = endAt.timeIntervalSince(now)
-        let dday = Int(interval / 86400) + 1
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm"
+        let interval = endAt.timeIntervalSinceNow
+        let dday = Int(interval / 3600)
         
         return "\(dday)"
     }
