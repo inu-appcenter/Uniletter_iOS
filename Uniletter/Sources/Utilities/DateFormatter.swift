@@ -53,6 +53,8 @@ final class CustomFormatter {
         let int = Int(hour)!
         if int > 12 {
             return (" - \(int % 12):\(min) 오후")
+        } else if int == 12 {
+            return (" - \(int):\(min) 오후")
         } else {
             return (" - \(int):\(min) 오전")
         }
@@ -67,17 +69,6 @@ final class CustomFormatter {
         let date = dateFormatter.date(from: String(str)) ?? Date()
         
         return date
-    }
-
-    /// D-day 계산
-    static func caculateDDay(_ endAt: String) -> String {
-        let endAt = formatStringToDate(endAt)
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm"
-        let interval = endAt.timeIntervalSinceNow
-        let dday = Int(interval / 3600)
-        
-        return "\(dday)"
     }
 
     /// 현재 날짜 형식 맞춰 반환

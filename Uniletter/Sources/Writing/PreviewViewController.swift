@@ -13,6 +13,7 @@ final class PreviewViewController: UIViewController {
 
     // MARK: - Property
     let eventDetailView = EventDetailView()
+    let viewModel = PreviewViewModel()
     var preview: Preview!
     
     // MARK: - Life cycle
@@ -22,10 +23,12 @@ final class PreviewViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.viewModel.preview = self.preview
+        setViewController()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        setViewController()
+        
     }
     
     // MARK: - Setup
@@ -45,15 +48,15 @@ final class PreviewViewController: UIViewController {
         
         setImageSize()
         eventDetailView.mainImageView.image = preview.mainImage
-        eventDetailView.titleTextView.text = preview.title
-        eventDetailView.categoryContentsLabel.text = preview.category
-        eventDetailView.startContentsLabel.text = self.convertTime(true)
-        eventDetailView.endContentsLabel.text = self.convertTime(false)
-        eventDetailView.targetContentsLabel.text = preview.target
-        eventDetailView.contactContentsLabel.text = preview.contact
-        eventDetailView.bodyContentsLabel.text = preview.body
+        eventDetailView.titleTextView.text = viewModel.title
+        eventDetailView.categoryContentsLabel.text = viewModel.category
+        eventDetailView.startContentsLabel.text = viewModel.startAt
+        eventDetailView.endContentsLabel.text = viewModel.endAt
+        eventDetailView.targetContentsLabel.text = viewModel.target
+        eventDetailView.contactContentsLabel.text = viewModel.contact
+        eventDetailView.bodyContentsLabel.text = viewModel.body
         
-        updateDDay(preview.endAt)
+        updateDDay(viewModel.dday)
     }
     
     // MARK: - Funcs
@@ -62,23 +65,6 @@ final class PreviewViewController: UIViewController {
         eventDetailView.mainImageView.contentMode = preview.imageType == .basic
         ? .scaleAspectFit
         : .scaleToFill
-    }
-    
-    func convertTime(_ isStart: Bool) -> String {
-        print(preview.startAt, preview.endAt)
-        let hour = isStart
-        ? Int(preview.startAt.subStringByIndex(sOffset: 11, eOffset: 13))!
-        : Int(preview.endAt.subStringByIndex(sOffset: 11, eOffset: 13))!
-
-        let min = isStart
-        ? preview.startAt.subStringByIndex(sOffset: 14, eOffset: 16)
-        : preview.endAt.subStringByIndex(sOffset: 14, eOffset: 16)
-        
-        if hour >= 12 {
-            return (" - \(hour % 12):\(min) 오후")
-        } else {
-            return (" - \(hour):\(min) 오전")
-        }
     }
     
     func updateDDay(_ dateStr: String) {

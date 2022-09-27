@@ -103,6 +103,7 @@
 		76AC78422872E02500D303C4 /* ActionSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76AC78412872E02500D303C4 /* ActionSheetViewController.swift */; };
 		76AC78442872E14A00D303C4 /* ActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76AC78432872E14A00D303C4 /* ActionSheet.swift */; };
 		76ACABEE28ACEF0400B961C4 /* Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76ACABED28ACEF0400B961C4 /* Preview.swift */; };
+		76B0B99028E301640083ED06 /* PreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B0B98F28E301640083ED06 /* PreviewViewModel.swift */; };
 		76DEA2E028D61562006C3D06 /* String++Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76DEA2DF28D61562006C3D06 /* String++Extensions.swift */; };
 		76E96489286B6F4700D5299A /* UIImage++Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E96488286B6F4700D5299A /* UIImage++Extensions.swift */; };
 		76E9648B286B8F6400D5299A /* UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E9648A286B8F6400D5299A /* UI.swift */; };
@@ -216,6 +217,7 @@
 		76AC78412872E02500D303C4 /* ActionSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSheetViewController.swift; sourceTree = "<group>"; };
 		76AC78432872E14A00D303C4 /* ActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSheet.swift; sourceTree = "<group>"; };
 		76ACABED28ACEF0400B961C4 /* Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preview.swift; sourceTree = "<group>"; };
+		76B0B98F28E301640083ED06 /* PreviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewModel.swift; sourceTree = "<group>"; };
 		76DEA2DF28D61562006C3D06 /* String++Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String++Extensions.swift"; sourceTree = "<group>"; };
 		76E96488286B6F4700D5299A /* UIImage++Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage++Extensions.swift"; sourceTree = "<group>"; };
 		76E9648A286B8F6400D5299A /* UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UI.swift; sourceTree = "<group>"; };
@@ -309,6 +311,7 @@
 				7623918A288C38DB00790775 /* TimePickerViewController.swift */,
 				7623918E288C3CC100790775 /* WritingSubFile.swift */,
 				769F6E6728A8F66A00619269 /* PreviewViewController.swift */,
+				76B0B98F28E301640083ED06 /* PreviewViewModel.swift */,
 			);
 			path = Writing;
 			sourceTree = "<group>";
@@ -686,6 +689,7 @@
 				76FCB545286C253900AC4F70 /* EventDetailViewController.swift in Sources */,
 				76FCB543286B955F00AC4F70 /* Colors++Extensions.swift in Sources */,
 				7681D5822869F46A0081C644 /* ServiceAPI.swift in Sources */,
+				76B0B99028E301640083ED06 /* PreviewViewModel.swift in Sources */,
 				2CB8AAAA287EA7A200BDA358 /* MyEventViewModel.swift in Sources */,
 				2CB8AA3428787D3900BDA358 /* MyCommentViewModel.swift in Sources */,
 				7610DD6B288432F100CA03BC /* WritingDetailView.swift in Sources */,
