@@ -27,8 +27,7 @@ final class LoginManager {
             // 구글 로그인 정보가 없는 경우
 
             // 만약 애플 로그인 정보가 있으면
-            if let appleUserId = keyChain.read(key: "userID") {
-                print("LoginManager - checkLogin : 애플 유저 아이디 = \(appleUserId)")
+            if keyChain.read() != "" {
                 // 이후 로직 나중에 구현
                 // self.isLoggedIn = true
                 // completion()
@@ -78,15 +77,15 @@ final class LoginManager {
         loginInfo = nil
         UserDefaults.standard.removeObject(forKey: "LoginInfo")
         
-        if let userId = keyChain.read(key: "userID") {
-            keyChain.delete(key: "userID")
+        if keyChain.read() != "" {
+            keyChain.delete()
         }
     }
     
     func loadLoginInfo() {
 
-        var googleLogin: Bool
-        var appleLogin: Bool
+        var googleLogin = false
+        var appleLogin = false
         
         // 구글 로그인 한 경우
         if let data = UserDefaults.standard.data(forKey: "LoginInfo") {
@@ -97,14 +96,11 @@ final class LoginManager {
             
             googleLogin = true
             
-        } else { googleLogin = false }
+        }
         
         // 애플 로그인 한 경우
-        if let userId = keyChain.read(key: "userID") {
-            
+        if keyChain.read() != "" {
             appleLogin = true
-        } else {
-            appleLogin = false
         }
         
         if appleLogin == false, googleLogin == false {
@@ -112,8 +108,7 @@ final class LoginManager {
         } else if appleLogin == true, googleLogin == false {
             print("loadLoginInfo() - 애플 로그인 정보 있음, 구글 로그인 정보 없음")
         } else if appleLogin == false, googleLogin == true {
-            print("loadLoginInfo() - 애플 로그인 정보 있음, 구글 로그인 정보 있음")
+            print("loadLoginInfo() - 애플 로그인 정보 없음, 구글 로그인 정보 있음")
         }
-
     }
 }

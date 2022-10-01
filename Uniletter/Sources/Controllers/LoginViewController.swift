@@ -190,7 +190,7 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
             print("email = \(email)")
             
             // 로그인 성공 후 userID를 키체인으로 저장
-            keyChain.create(key: "userID", userID: user)
+            keyChain.create(userID: user)
             // 홈 화면으로 이동
             self.goToHomeViewController()
         }

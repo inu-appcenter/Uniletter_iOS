@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AuthenticationServices
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -33,7 +34,30 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func sceneDidBecomeActive(_ scene: UIScene) {
-    
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        appleIDProvider.getCredentialState(forUserID: keyChain.read()!) { credentialState, error in
+            switch credentialState {
+            case .authorized:
+                // 인증 성공 상태
+                print("sceneDidBecomeActive - 애플 로그인 인증 성공")
+                break
+            case .revoked:
+                // 인증 만료 상태 (사용자가 백그라운드에서 ID중지했을 경우)
+                print("sceneDidBecomeActive - 애플 로그인 인증 만료")
+                // 만약 애플 로그인이 로그인 상태였으면 로그아웃 상태로 해야 함
+                if keyChain.read() != "" {
+                    keyChain.delete()
+                }
+        
+                break
+            case .notFound:
+                // Credential을 찾을 수 없는 상태 (로그아웃 상태)
+                print("sceneDidBecomeActive - 애플 Credential을 찾을 수 없음")
+                break
+            default:
+                break
+            }
+        }
     }
 
     func sceneWillResignActive(_ scene: UIScene) {
