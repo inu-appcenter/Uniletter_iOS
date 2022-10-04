@@ -75,7 +75,6 @@
 		765DCDB12868DBF800961EA8 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765DCDB02868DBF800961EA8 /* HomeViewController.swift */; };
 		765DCDB32868DCD300961EA8 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765DCDB22868DCD300961EA8 /* HomeView.swift */; };
 		7669C5BC28EC7865008DBFD2 /* Int++Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7669C5BB28EC7865008DBFD2 /* Int++Extensions.swift */; };
-		7669C5BE28EC9266008DBFD2 /* NetworkingFailedAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7669C5BD28EC9266008DBFD2 /* NetworkingFailedAlert.swift */; };
 		766F384E2872FC3900EC9593 /* NewNoticeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766F384B2872FC3900EC9593 /* NewNoticeViewController.swift */; };
 		766F384F2872FC3900EC9593 /* NewNoticeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766F384C2872FC3900EC9593 /* NewNoticeCell.swift */; };
 		766F38502872FC3900EC9593 /* NewNoticeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766F384D2872FC3900EC9593 /* NewNoticeViewModel.swift */; };
@@ -190,7 +189,6 @@
 		765DCDB02868DBF800961EA8 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		765DCDB22868DCD300961EA8 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		7669C5BB28EC7865008DBFD2 /* Int++Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int++Extensions.swift"; sourceTree = "<group>"; };
-		7669C5BD28EC9266008DBFD2 /* NetworkingFailedAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingFailedAlert.swift; sourceTree = "<group>"; };
 		766F384B2872FC3900EC9593 /* NewNoticeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewNoticeViewController.swift; sourceTree = "<group>"; };
 		766F384C2872FC3900EC9593 /* NewNoticeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewNoticeCell.swift; sourceTree = "<group>"; };
 		766F384D2872FC3900EC9593 /* NewNoticeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewNoticeViewModel.swift; sourceTree = "<group>"; };
@@ -455,7 +453,6 @@
 				7681D5792869D2300081C644 /* Address.swift */,
 				7681D5812869F46A0081C644 /* ServiceAPI.swift */,
 				2CB8AAA5287E918500BDA358 /* BaseURL.swift */,
-				7669C5BD28EC9266008DBFD2 /* NetworkingFailedAlert.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -690,7 +687,6 @@
 				2C80F391286DE20000ECAB60 /* MyPageSectionView.swift in Sources */,
 				76FCB545286C253900AC4F70 /* EventDetailViewController.swift in Sources */,
 				76FCB543286B955F00AC4F70 /* Colors++Extensions.swift in Sources */,
-				7669C5BE28EC9266008DBFD2 /* NetworkingFailedAlert.swift in Sources */,
 				7681D5822869F46A0081C644 /* ServiceAPI.swift in Sources */,
 				76B0B99028E301640083ED06 /* PreviewViewModel.swift in Sources */,
 				2CB8AAAA287EA7A200BDA358 /* MyEventViewModel.swift in Sources */,
@@ -905,7 +901,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -935,7 +931,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
