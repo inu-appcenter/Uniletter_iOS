@@ -204,6 +204,7 @@ final class EventDetailViewController: UIViewController {
                 let vc = presentActionSheetView(.topForWriter)
                 
                 vc.eventID = id
+                vc.event = viewModel.event
                 
                 self.present(vc, animated: true)
             } else {

@@ -32,7 +32,7 @@ final class WritingViewController: UIViewController {
     let contentViewController = WritingContentViewController()
     let detailViewController = WritingDetailViewController()
     let previewController = PreviewViewController()
-    var updateID: Int?
+    var event: Event?
     var page = 0
     let writingManager = WritingManager.shared
     
@@ -63,6 +63,16 @@ final class WritingViewController: UIViewController {
     
     func setViewController() {
         view.backgroundColor = .white
+        
+        if let event = self.event {
+            self.writingManager.loadEvent(event)
+            
+            let navigationBarLayer = self.navigationController?.navigationBar.layer
+            navigationBarLayer?.shadowColor = #colorLiteral(red: 0.8980392157, green: 0.8980392157, blue: 0.8980392157, alpha: 1).cgColor
+            navigationBarLayer?.shadowOpacity = 0.6
+            navigationBarLayer?.shadowOffset = CGSize(width: 0, height: 5)
+        }
+        
         changeViewController(pictureViewController)
     }
     
@@ -133,7 +143,14 @@ final class WritingViewController: UIViewController {
     // MARK: - Actions
     @objc func didTapBackButton() {
         writingManager.removeData()
-        self.navigationController?.popViewController(animated: true)
+        
+        if self.event == nil {
+            self.navigationController?.popViewController(animated: true)
+        } else {
+            self.bottomView.removeFromSuperview()
+            self.dismiss(animated: true)
+        }
+        
     }
     
     @objc func didTapCancleButton(_ sender: UIButton) {
@@ -179,11 +196,10 @@ final class WritingViewController: UIViewController {
                 changePage(false)
             }
         case 3:
-//            writingManager.createEvent {
-//                self.writingManager.removeData()
-//                self.goToInitialViewController()
-//            }
-            break
+            writingManager.createEvent {
+                self.writingManager.removeData()
+                self.goToInitialViewController()
+            }
         default: break
         }
     }

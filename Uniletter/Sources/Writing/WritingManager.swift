@@ -193,8 +193,7 @@ final class WritingManager {
         }
     }
     
-    func loadEvent() {
-        let manager = EventManager.shared
-        
+    func loadEvent(_ event: Event) {
+        print(event)
     }
 }
