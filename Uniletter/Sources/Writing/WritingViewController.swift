@@ -65,12 +65,15 @@ final class WritingViewController: UIViewController {
         view.backgroundColor = .white
         
         if let event = self.event {
+            print("글 수정 시작")
             self.writingManager.loadEvent(event)
             
             let navigationBarLayer = self.navigationController?.navigationBar.layer
             navigationBarLayer?.shadowColor = #colorLiteral(red: 0.8980392157, green: 0.8980392157, blue: 0.8980392157, alpha: 1).cgColor
             navigationBarLayer?.shadowOpacity = 0.6
             navigationBarLayer?.shadowOffset = CGSize(width: 0, height: 5)
+        } else {
+            print("글 작성 시작")
         }
         
         changeViewController(pictureViewController)
@@ -147,6 +150,7 @@ final class WritingViewController: UIViewController {
         if self.event == nil {
             self.navigationController?.popViewController(animated: true)
         } else {
+            self.containerView.removeFromSuperview()
             self.bottomView.removeFromSuperview()
             self.dismiss(animated: true)
         }
@@ -196,9 +200,16 @@ final class WritingViewController: UIViewController {
                 changePage(false)
             }
         case 3:
-            writingManager.createEvent {
-                self.writingManager.removeData()
-                self.goToInitialViewController()
+            if self.event == nil {
+                writingManager.createEvent {
+                    self.writingManager.removeData()
+                    self.goToInitialViewController()
+                }
+            } else {
+                writingManager.updateEvent {
+                    self.writingManager.removeData()
+                    self.goToInitialViewController()
+                }
             }
         default: break
         }

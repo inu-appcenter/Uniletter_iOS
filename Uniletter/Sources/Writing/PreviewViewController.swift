@@ -53,6 +53,7 @@ final class PreviewViewController: UIViewController {
         eventDetailView.endContentsLabel.text = viewModel.endAt
         eventDetailView.targetContentsLabel.text = viewModel.target
         eventDetailView.contactContentsLabel.text = viewModel.contact
+        eventDetailView.linkContentsLabel.text = viewModel.location
         eventDetailView.bodyContentsLabel.text = viewModel.body
         
         updateDDay(viewModel.dday)

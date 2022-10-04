@@ -14,6 +14,14 @@ final class EventDetailViewModel {
     let defaultDate = "2022-02-02T00:00"
     
     // MARK: - Func
+    var wroteByMe: Bool {
+        guard let wroteByMe = manager.event?.wroteByMe else {
+            return false
+        }
+        
+        return wroteByMe
+    }
+    
     var like: Bool {
         return manager.like
     }

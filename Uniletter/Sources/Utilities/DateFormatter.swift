@@ -46,17 +46,17 @@ final class CustomFormatter {
 
     /// 시간 AM, PM으로 변환
     static func convertTime(_ dateStr: String) -> String {
-        let time = subTimeString(dateStr)
-        let hour = time.subStringByIndex(sOffset: 0, eOffset: 2)
-        let min = time.subStringByIndex(sOffset: 3, eOffset: time.count)
+        let time = dateStr.count > 10 ? subTimeString(dateStr) : dateStr
+        let minEOffset = dateStr.count > 10 ? time.count : 5
+        let hour = Int(time.subStringByIndex(sOffset: 0, eOffset: 2))!
+        let min = time.subStringByIndex(sOffset: 3, eOffset: minEOffset)
         
-        let int = Int(hour)!
-        if int > 12 {
-            return (" - \(int % 12):\(min) 오후")
-        } else if int == 12 {
-            return (" - \(int):\(min) 오후")
+        if hour > 12 {
+            return ("\((hour % 12).formatNumbers()):\(min) 오후")
+        } else if hour == 12 {
+            return ("\(hour):\(min) 오후")
         } else {
-            return (" - \(int):\(min) 오전")
+            return ("\(hour.formatNumbers()):\(min) 오전")
         }
     }
 

@@ -118,7 +118,11 @@ final class API {
                 case .success(_):
                     completion()
                 case .failure(let error):
-                    print(error)
+                    if error.errorDescription! == errorString {
+                        completion()
+                    } else {
+                        print(error)
+                    }
                 }
             }
     }

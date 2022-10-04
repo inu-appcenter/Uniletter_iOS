@@ -74,6 +74,7 @@
 		765BCA122868CA1B0098BBF2 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765BCA112868CA1B0098BBF2 /* LoginViewController.swift */; };
 		765DCDB12868DBF800961EA8 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765DCDB02868DBF800961EA8 /* HomeViewController.swift */; };
 		765DCDB32868DCD300961EA8 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765DCDB22868DCD300961EA8 /* HomeView.swift */; };
+		7669C5BC28EC7865008DBFD2 /* Int++Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7669C5BB28EC7865008DBFD2 /* Int++Extensions.swift */; };
 		766F384E2872FC3900EC9593 /* NewNoticeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766F384B2872FC3900EC9593 /* NewNoticeViewController.swift */; };
 		766F384F2872FC3900EC9593 /* NewNoticeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766F384C2872FC3900EC9593 /* NewNoticeCell.swift */; };
 		766F38502872FC3900EC9593 /* NewNoticeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766F384D2872FC3900EC9593 /* NewNoticeViewModel.swift */; };
@@ -188,6 +189,7 @@
 		765BCA112868CA1B0098BBF2 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		765DCDB02868DBF800961EA8 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		765DCDB22868DCD300961EA8 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		7669C5BB28EC7865008DBFD2 /* Int++Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int++Extensions.swift"; sourceTree = "<group>"; };
 		766F384B2872FC3900EC9593 /* NewNoticeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewNoticeViewController.swift; sourceTree = "<group>"; };
 		766F384C2872FC3900EC9593 /* NewNoticeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewNoticeCell.swift; sourceTree = "<group>"; };
 		766F384D2872FC3900EC9593 /* NewNoticeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewNoticeViewModel.swift; sourceTree = "<group>"; };
@@ -443,6 +445,7 @@
 				76AC78352871FF1900D303C4 /* UIViewController++Extensions.swift */,
 				7610DD7A288587A200CA03BC /* UITextView++Extensions.swift */,
 				76DEA2DF28D61562006C3D06 /* String++Extensions.swift */,
+				7669C5BB28EC7865008DBFD2 /* Int++Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -731,6 +734,7 @@
 				76239189288AFDC000790775 /* CalendarViewController.swift in Sources */,
 				2C01D082288FDF9400AEF20F /* Warning.swift in Sources */,
 				76FCB547286C254B00AC4F70 /* EventDetailView.swift in Sources */,
+				7669C5BC28EC7865008DBFD2 /* Int++Extensions.swift in Sources */,
 				2C0DBE6828815CA6004A933A /* NoticeAlertViewController.swift in Sources */,
 				2C0DBE702881AC5B004A933A /* Block.swift in Sources */,
 				2C0DBE6228814308004A933A /* NotiViewModel.swift in Sources */,

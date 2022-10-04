@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Kingfisher
 
 final class EventDetailViewController: UIViewController {
     
@@ -90,6 +89,7 @@ final class EventDetailViewController: UIViewController {
     // MARK: - Funcs
     func updateUI() {
         bookmarkButton.isSelected = viewModel.like
+        eventDetailView.moreButton.isHidden = viewModel.wroteByMe
         eventDetailView.profileImageView.image = viewModel.profileImage
         eventDetailView.nicknameLabel.text = viewModel.nickname
         eventDetailView.dateWroteLabel.text = viewModel.dateWrote

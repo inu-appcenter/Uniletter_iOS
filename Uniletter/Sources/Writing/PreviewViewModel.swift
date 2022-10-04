@@ -20,7 +20,7 @@ final class PreviewViewModel {
     }
     
     var category: String {
-        return self.preview.category
+        return self.preview.category + " | " + self.preview.host
     }
     
     var startAt: String {
@@ -43,6 +43,10 @@ final class PreviewViewModel {
         return self.preview.contact
     }
     
+    var location: String {
+        return self.preview.location
+    }
+    
     var body: String {
         return self.preview.body
     }
@@ -54,8 +58,8 @@ final class PreviewViewModel {
         ? CustomFormatter.subDateString(self.preview.startAt)
         : CustomFormatter.subDateString(self.preview.endAt)
         let time = isStart
-        ? CustomFormatter.convertTime(self.preview.startAt)
-        : CustomFormatter.convertTime(self.preview.endAt)
+        ? " - " + CustomFormatter.convertTime(self.preview.startAt)
+        : " - " + CustomFormatter.convertTime(self.preview.endAt)
         
         return date + time
     }
