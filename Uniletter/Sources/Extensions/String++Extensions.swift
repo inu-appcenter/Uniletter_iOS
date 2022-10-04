@@ -25,7 +25,13 @@ extension String {
         
         let date = formatter.date(from: self)!
         let time = Int(date.timeIntervalSinceNow)
-        let diff = Calendar.current.dateComponents([.day], from: Date(), to: date).day!
+        
+        let calendar = Calendar.current
+        let diff = calendar.dateComponents(
+            [.day],
+            from: calendar.startOfDay(for: Date()),
+            to: calendar.startOfDay(for: date))
+            .day!
         
         return [diff, time]
     }
