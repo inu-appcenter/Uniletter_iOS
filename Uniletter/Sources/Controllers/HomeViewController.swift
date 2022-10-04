@@ -105,7 +105,7 @@ final class HomeViewController: UIViewController {
     func checkLogin() {
         setLoadingIndicator(true)
         loginManager.checkLogin() {
-            print("로그인 상태: \(self.loginManager.isLoggedIn)")
+            print("checkLogin() - 로그인 상태: \(self.loginManager.isLoggedIn)")
             if self.loginManager.isLoggedIn == true {
                 self.viewModel.postFCM()
                 self.presentWaringView(.login)
