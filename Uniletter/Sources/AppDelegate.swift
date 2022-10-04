@@ -55,29 +55,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // MARK: 애플 로그인
         
-        if let userID = keyChain.read(key: "userID") {
-            let appleIDProvider = ASAuthorizationAppleIDProvider()
-            appleIDProvider.getCredentialState(forUserID: userID) { credentialState, error in
-                switch credentialState {
-                case .authorized:
-                    // 인증 성공 상태
-                    print("애플 로그인 인증 성공")
-                    break
-                case .revoked:
-                    // 인증 만료 상태 (사용자가 백그라운드에서 ID중지했을 경우)
-                    print("애플 로그인 인증 만료")
-                    // 로그인 상태를 X로 만들어야 됨 -> 로그인이 안된 상태로
-                    break
-                case .notFound:
-                    // Credential을 찾을 수 없는 상태
-                    print("애플 Credential을 찾을 수 없음")
-                    break
-                default:
-                    break
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        appleIDProvider.getCredentialState(forUserID: keyChain.read()!) { credentialState, error in
+            switch credentialState {
+            case .authorized:
+                // 인증 성공 상태
+                print("애플 로그인 인증 성공")
+                break
+            case .revoked:
+                // 인증 만료 상태 (사용자가 백그라운드에서 ID중지했을 경우)
+                print("애플 로그인 인증 만료")
+                // 만약 애플 로그인이 로그인 상태였으면 로그아웃 상태로 해야 함
+                if keyChain.read() != "" {
+                    keyChain.delete()
                 }
+        
+                break
+            case .notFound:
+                // Credential을 찾을 수 없는 상태 (로그아웃 상태)
+                print("애플 Credential을 찾을 수 없음")
+                break
+            default:
+                break
             }
-        } else {
-            print("애플 로그아웃 상태")
         }
         return true
     }

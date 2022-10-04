@@ -17,45 +17,43 @@ final class LoginManager {
     // MARK: - Property
     var loginInfo: LoginInfo?
     var isLoggedIn = false
+    var googleLogin = false
+    var appleLogin = false
     
     // MARK: - Funcs
     func checkLogin(completion: @escaping() -> Void) {
 
         loadLoginInfo()
         
-        guard let loginInfo = loginInfo else {
-            // 구글 로그인 정보가 없는 경우
-
-            // 만약 애플 로그인 정보가 있으면
-            if let appleUserId = keyChain.read(key: "userID") {
-                print("LoginManager - checkLogin : 애플 유저 아이디 = \(appleUserId)")
-                // 이후 로직 나중에 구현
-                // self.isLoggedIn = true
-                // completion()
-                
-            }
+        // 구글 로그인 한 경우
+        if googleLogin == true {
+            let parameter: [String: Any] = [
+                "id": loginInfo!.userID,
+                "token": loginInfo!.rememberMeToken
+            ]
             
-            // 구글 로그인, 애플 로그인 둘다 정보가 없는 경우
-            self.isLoggedIn = false
-            completion()
-            return
+            API.rememberedLogin(parameter) { info in
+                guard let info = info else {
+                    self.isLoggedIn = false
+                    completion()
+                    return
+                }
+                
+                self.saveLoginInfo(info)
+                self.isLoggedIn = true
+                completion()
+            }
         }
         
-        // 구글 로그인 정보가 있는 경우
-        let parameter: [String: Any] = [
-            "id": loginInfo.userID,
-            "token": loginInfo.rememberMeToken
-        ]
-        
-        API.rememberedLogin(parameter) { info in
-            guard let info = info else {
-                self.isLoggedIn = false
-                completion()
-                return
-            }
-            
-            self.saveLoginInfo(info)
+        // 애플 로그인 한 경우
+        if appleLogin == true {
             self.isLoggedIn = true
+            completion()
+        }
+        
+        // 둘다 로그인 하지 않은 경우
+        if googleLogin == false && appleLogin == false {
+            self.isLoggedIn = false
             completion()
         }
     }
@@ -78,15 +76,15 @@ final class LoginManager {
         loginInfo = nil
         UserDefaults.standard.removeObject(forKey: "LoginInfo")
         
-        if let userId = keyChain.read(key: "userID") {
-            keyChain.delete(key: "userID")
+        if keyChain.read() != "" {
+            keyChain.delete()
         }
+        
+        googleLogin = false
+        appleLogin = false
     }
     
     func loadLoginInfo() {
-
-        var googleLogin: Bool
-        var appleLogin: Bool
         
         // 구글 로그인 한 경우
         if let data = UserDefaults.standard.data(forKey: "LoginInfo") {
@@ -96,24 +94,11 @@ final class LoginManager {
                 from: data)
             
             googleLogin = true
-            
-        } else { googleLogin = false }
+        }
         
         // 애플 로그인 한 경우
-        if let userId = keyChain.read(key: "userID") {
-            
+        if keyChain.read() != "" {
             appleLogin = true
-        } else {
-            appleLogin = false
         }
-        
-        if appleLogin == false, googleLogin == false {
-            print("loadLoginInfo() - 로그인 정보 없음")
-        } else if appleLogin == true, googleLogin == false {
-            print("loadLoginInfo() - 애플 로그인 정보 있음, 구글 로그인 정보 없음")
-        } else if appleLogin == false, googleLogin == true {
-            print("loadLoginInfo() - 애플 로그인 정보 있음, 구글 로그인 정보 있음")
-        }
-
     }
 }

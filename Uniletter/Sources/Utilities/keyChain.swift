@@ -9,10 +9,10 @@ import UIKit
 
 class keyChain {
     
-    class func create(key: String, userID: String) {
+    class func create(userID: String) {
         let query: NSDictionary = [
             kSecClass: kSecClassGenericPassword,
-            kSecAttrAccount: key,
+            kSecAttrAccount: "userID",
             kSecValueData: userID.data(using: .utf8, allowLossyConversion: false) as Any
         ]
         
@@ -22,10 +22,10 @@ class keyChain {
         assert(status == noErr, "아이디 저장 실패")
     }
     
-    class func read(key: String) -> String? {
+    class func read() -> String? {
         let query: NSDictionary = [
             kSecClass: kSecClassGenericPassword,
-            kSecAttrAccount: key,
+            kSecAttrAccount: "userID",
             kSecReturnData: kCFBooleanTrue as Any,
             kSecMatchLimit: kSecMatchLimitOne
         ]
@@ -38,15 +38,14 @@ class keyChain {
             let value = String(data: retrievedData, encoding: String.Encoding.utf8)
             return value
         } else {
-            print("애플 로그인 정보가 없음")
-            return nil
+            return ""
         }
     }
     
-    class func delete(key: String) {
+    class func delete() {
         let query: NSDictionary = [
             kSecClass: kSecClassGenericPassword,
-            kSecAttrAccount: key
+            kSecAttrAccount: "userID"
         ]
         
         let status = SecItemDelete(query)
