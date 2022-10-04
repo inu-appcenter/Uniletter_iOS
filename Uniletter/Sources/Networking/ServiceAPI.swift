@@ -19,27 +19,28 @@ fileprivate func networking<T: Decodable>(
     data: Data?,
     model: T.Type,
     completion: @escaping(Result<T, AFError>) -> Void) {
-    guard let url = URL(string: baseURL + urlStr) else {
-        print("URL을 찾을 수 없습니다.")
-        return
-    }
-    
-    var request = URLRequest(url: url)
-    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-    request.httpBody = data
-    request.method = method
-    
-    AF.request(request)
-        .validate(statusCode: 200..<500)
-        .responseDecodable(of: model.self) { response in
-            switch response.result {
-            case .success(let result):
-                completion(.success(result))
-            case .failure(let error):
-                completion(.failure(error))
-            }
+        guard let url = URL(string: baseURL + urlStr) else {
+            print("URL을 찾을 수 없습니다.")
+            return
         }
-}
+        
+        var request = URLRequest(url: url)
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = data
+        request.method = method
+        
+        AF.request(request)
+            .validate(statusCode: 200..<500)
+            .responseDecodable(of: model.self) { response in
+                switch response.result {
+                case .success(let result):
+                    completion(.success(result))
+                case .failure(let error):
+                    completion(.failure(error))
+                    failedAlert()
+                }
+            }
+    }
 
 /// 이미지 업로드 메소드
 fileprivate func uploadNetworking<T: Decodable>(
@@ -48,25 +49,56 @@ fileprivate func uploadNetworking<T: Decodable>(
     data: Data?,
     model: T.Type,
     completion: @escaping(Result<T, AFError>) -> Void) {
-    guard let url = URL(string: baseURL + urlStr) else {
-        print("URL을 찾을 수 없습니다.")
-        return
-    }
-    
-    AF.upload(multipartFormData: { multipartFormData in
-        multipartFormData.append(
-            data!,
-            withName: "file",
-            fileName: "test.jpg",
-            mimeType: "image/jpg")},
-              to: url)
-    .responseDecodable(of: model.self) { response in
-        switch response.result {
-        case .success(let result):
-            completion(.success(result))
-        case .failure(let error):
-            completion(.failure(error))
+        guard let url = URL(string: baseURL + urlStr) else {
+            print("URL을 찾을 수 없습니다.")
+            return
         }
+        
+        AF.upload(multipartFormData: { multipartFormData in
+            multipartFormData.append(
+                data!,
+                withName: "file",
+                fileName: "test.jpg",
+                mimeType: "image/jpg")},
+                  to: url)
+        .responseDecodable(of: model.self) { response in
+            switch response.result {
+            case .success(let result):
+                completion(.success(result))
+            case .failure(let error):
+                completion(.failure(error))
+                failedAlert()
+            }
+        }
+    }
+
+/// 네트워킹 실패 알림
+fileprivate func failedAlert() {
+    DispatchQueue.main.async {
+        // 최상단에 있는 ViewController
+
+        guard let firstScene = UIApplication.shared.connectedScenes.first
+                as? UIWindowScene else {
+            return
+        }
+
+        guard let firstWindow = firstScene.windows.first else {
+            return
+        }
+
+        guard let vc = firstWindow.rootViewController else {
+            return
+        }
+        
+        let alertVC = UIAlertController(
+            title: "네트워크 연결 상태가 좋지 않거나 네트워킹에 실패하였습니다.\n다시 시도해주세요.",
+            message: nil,
+            preferredStyle: .alert)
+        let cancleAction = UIAlertAction(title: "확인", style: .default)
+        
+        alertVC.addAction(cancleAction)
+        
+        vc.present(alertVC, animated: true)
     }
 }
 
@@ -121,7 +153,7 @@ final class API {
         guard let data = try? JSONSerialization.data(withJSONObject: params, options: .prettyPrinted) else {
             return
         }
-
+        
         networking(
             urlStr: Address.token.url,
             method: .post,
@@ -378,7 +410,7 @@ final class API {
     static func postAlarm(_ params: [String: Any], completion: @escaping() -> Void) {
         
         guard let data = try? JSONSerialization.data(withJSONObject: params, options: .prettyPrinted) else { return }
-    
+        
         networking(
             urlStr: Address.nofifications.url,
             method: .post,
