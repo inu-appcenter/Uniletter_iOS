@@ -194,8 +194,7 @@ class WritingContentViewController: UIViewController {
                 showUnderline((writingContentView.eventStartView.timeButton.titleLabel?.text)!),
                 for: .normal)
             
-            writingManager.endDate = writingManager.startDate
-            writingManager.endTime = writingManager.startTime
+            writingManager.equalDateTime()
         }
     }
     

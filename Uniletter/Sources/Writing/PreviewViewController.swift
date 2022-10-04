@@ -23,12 +23,11 @@ final class PreviewViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.viewModel.preview = self.preview
-        setViewController()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
+        self.viewModel.preview = self.preview
+        setViewController()
     }
     
     // MARK: - Setup

@@ -123,6 +123,11 @@ final class WritingManager {
         }
     }
     
+    func equalDateTime() {
+        self.endDate = self.startDate
+        self.endTime = self.startTime
+    }
+    
     func convertTime(_ isStart: Bool) -> String {
         let hour = isStart
         ? Int(self.startTime.subStringByIndex(sOffset: 0, eOffset: 2))!
