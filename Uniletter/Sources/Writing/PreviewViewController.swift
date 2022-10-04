@@ -13,6 +13,7 @@ final class PreviewViewController: UIViewController {
 
     // MARK: - Property
     let eventDetailView = EventDetailView()
+    let viewModel = PreviewViewModel()
     var preview: Preview!
     
     // MARK: - Life cycle
@@ -25,6 +26,7 @@ final class PreviewViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        self.viewModel.preview = self.preview
         setViewController()
     }
     
@@ -45,15 +47,15 @@ final class PreviewViewController: UIViewController {
         
         setImageSize()
         eventDetailView.mainImageView.image = preview.mainImage
-        eventDetailView.titleTextView.text = preview.title
-        eventDetailView.categoryContentsLabel.text = preview.category
-        eventDetailView.startContentsLabel.text = preview.startAt
-        eventDetailView.endContentsLabel.text = preview.endAt
-        eventDetailView.targetContentsLabel.text = preview.target
-        eventDetailView.contactContentsLabel.text = preview.contact
-        eventDetailView.bodyContentsLabel.text = preview.body
+        eventDetailView.titleTextView.text = viewModel.title
+        eventDetailView.categoryContentsLabel.text = viewModel.category
+        eventDetailView.startContentsLabel.text = viewModel.startAt
+        eventDetailView.endContentsLabel.text = viewModel.endAt
+        eventDetailView.targetContentsLabel.text = viewModel.target
+        eventDetailView.contactContentsLabel.text = viewModel.contact
+        eventDetailView.bodyContentsLabel.text = viewModel.body
         
-        updateDDay()
+        updateDDay(viewModel.dday)
     }
     
     // MARK: - Funcs
@@ -64,26 +66,23 @@ final class PreviewViewController: UIViewController {
         : .scaleToFill
     }
     
-    func updateDDay() {
-        let dday = Int(CustomFormatter.caculateDDay(preview.endAt)) ?? 0
-        let ddayText: String
+    func updateDDay(_ dateStr: String) {
+        let day = dateStr.caculateDateDiff()[0]
+        let min = dateStr.caculateDateDiff()[1]
+        let dday: String
         
-        if dday < 0 {
+        if day < 0 || (day == 0 && min < 0) {
             eventDetailView.ddayButton.configuration?.baseBackgroundColor = UIColor.customColor(.darkGray)
-            eventDetailView.notificationButton.backgroundColor = UIColor.customColor(.lightGray)
-            
-            ddayText = "마감"
+            dday = "마감"
         } else {
             eventDetailView.ddayButton.configuration?.baseBackgroundColor = UIColor.customColor(.blueGreen)
-            eventDetailView.notificationButton.backgroundColor = UIColor.customColor(.blueGreen)
-            
-            ddayText = dday == 0 ? "D-day" : "D-\(dday)"
+            dday = day == 0 ? "D-day" : "D-\(day)"
         }
         
-        var ddayAttributed = AttributedString(ddayText)
-        ddayAttributed.font = .systemFont(ofSize: 13)
+        var attributedString = AttributedString(dday)
+        attributedString.font = .systemFont(ofSize: 13)
         
-        eventDetailView.ddayButton.configuration?.attributedTitle = ddayAttributed
+        eventDetailView.ddayButton.configuration?.attributedTitle = attributedString
     }
     
 }

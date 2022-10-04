@@ -50,12 +50,11 @@ class TimePickerViewController: UIViewController {
         
         if let isPM = isPM {
             timeUnit = isPM ? "오후" : "오전"
+            timePickerView.pickerView.selectRow(
+                isPM ? 1 : 0,
+                inComponent: 2,
+                animated: false)
         }
-        
-        timePickerView.pickerView.selectRow(
-            timeUnit == "오후" ? 1 : 0,
-            inComponent: 2,
-            animated: false)
         
         timePickerView.cancleButton.addTarget(
             self,
@@ -102,8 +101,8 @@ class TimePickerViewController: UIViewController {
             time: formatTime() + " " + timeUnit,
             style: style)
         
-        hour = timeUnit == "오후" ? hour + 12 : hour
-        hour = hour == 24 ? 0 : hour
+        hour = timeUnit == "오후" && hour != 12 ? hour + 12 : hour
+        hour = timeUnit == "오전" && hour == 12 ? 0 : hour
         
         if style == .start {
             writingManager.startTime = formatTime() + ":00"

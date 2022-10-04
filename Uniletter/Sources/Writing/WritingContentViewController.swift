@@ -151,13 +151,17 @@ class WritingContentViewController: UIViewController {
     
     func presentTimePicker(_ style: Style) {
         let vc = TimePickerViewController()
-        vc.style = style
-        let time = style == .start ? writingManager.startTime : writingManager.endTime
-        let subTime = CustomFormatter.subTimeForTimePicker(time)
+        var time: String?
         
+        time = style == .start ? writingManager.startTime : writingManager.endTime
+        let subTime = CustomFormatter.subTimeForTimePicker(time!)
+        
+        vc.isPM = Int(time!.subStringByIndex(sOffset: 0, eOffset: 2))! < 12
+        ? false : true
+        
+        vc.style = style
         vc.hour = subTime[0]
         vc.minute = subTime[1]
-        vc.isPM = CustomFormatter.convertNowTime(true).contains("오후") ? true : false
         vc.delegate = self
         vc.setModalStyle()
         
@@ -190,8 +194,7 @@ class WritingContentViewController: UIViewController {
                 showUnderline((writingContentView.eventStartView.timeButton.titleLabel?.text)!),
                 for: .normal)
             
-            writingManager.endDate = writingManager.startDate
-            writingManager.endTime = writingManager.startTime
+            writingManager.equalDateTime()
         }
     }
     

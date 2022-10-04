@@ -50,15 +50,16 @@ class HomeCell: UICollectionViewCell {
     }
     
     func updateDDay(_ dateStr: String) {
-        let intDDay = Int(CustomFormatter.caculateDDay(dateStr)) ?? 0
+        let day = dateStr.caculateDateDiff()[0]
+        let min = dateStr.caculateDateDiff()[1]
         let dday: String
         
-        if intDDay < 0 {
+        if day < 0 || (day == 0 && min < 0) {
             homeCellView.ddayButton.configuration?.baseBackgroundColor = UIColor.customColor(.darkGray)
             dday = "마감"
         } else {
             homeCellView.ddayButton.configuration?.baseBackgroundColor = UIColor.customColor(.blueGreen)
-            dday = intDDay == 0 ? "D-day" : "D-\(intDDay)"
+            dday = day == 0 ? "D-day" : "D-\(day)"
         }
         
         var attributedString = AttributedString(dday)

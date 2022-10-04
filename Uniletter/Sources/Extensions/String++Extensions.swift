@@ -18,4 +18,16 @@ extension String {
         return String(self[range])
     }
     
+    func caculateDateDiff() -> [Int] {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        formatter.locale = Locale(identifier: "ko")
+        
+        let date = formatter.date(from: self)!
+        let time = Int(date.timeIntervalSinceNow)
+        let diff = Calendar.current.dateComponents([.day], from: Date(), to: date).day!
+        
+        return [diff, time]
+    }
+    
 }

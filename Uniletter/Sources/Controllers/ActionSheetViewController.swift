@@ -27,6 +27,7 @@ final class ActionSheetViewController: UIViewController {
     // 기능 별 필요한 Property
     var commentID: Int!
     var eventID: Int!
+    var event: Event!
     var setFor: String!
     var targetUserID: Int?
     
@@ -146,8 +147,16 @@ final class ActionSheetViewController: UIViewController {
     }
     
     func modifyWriting() {
-//        let writingViewController = WritingViewController()
-//        self.navigationController?.pushViewController(writingViewController, animated: true)
+        let vc: UINavigationController = {
+            let writingVC = WritingViewController()
+            writingVC.event = self.event
+            
+            return UINavigationController(rootViewController: writingVC)
+        }()
+        
+        vc.modalPresentationStyle = .fullScreen
+        
+        self.present(vc, animated: true)
     }
     
     func deleteWriting() {

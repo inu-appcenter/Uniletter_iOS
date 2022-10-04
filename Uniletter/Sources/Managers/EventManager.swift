@@ -63,8 +63,8 @@ final class EventManager {
         return event?.title ?? ""
     }
     
-    var dday: Int {
-        return Int(CustomFormatter.caculateDDay(event?.endAt ?? defaultDate)) ?? 0
+    var endAt: String {
+        return event?.endAt ?? defaultDate
     }
     
     var categoryContent: String {

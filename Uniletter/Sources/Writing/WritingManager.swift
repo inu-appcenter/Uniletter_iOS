@@ -123,16 +123,21 @@ final class WritingManager {
         }
     }
     
+    func equalDateTime() {
+        self.endDate = self.startDate
+        self.endTime = self.startTime
+    }
+    
     func convertTime(_ isStart: Bool) -> String {
         let hour = isStart
         ? Int(self.startTime.subStringByIndex(sOffset: 0, eOffset: 2))!
-        : Int(self.endTime.subStringByIndex(sOffset: 3, eOffset: 5))!
+        : Int(self.endTime.subStringByIndex(sOffset: 0, eOffset: 2))!
 
         let min = isStart
-        ? self.startTime.subStringByIndex(sOffset: 0, eOffset: 2)
+        ? self.startTime.subStringByIndex(sOffset: 3, eOffset: 5)
         : self.endTime.subStringByIndex(sOffset: 3, eOffset: 5)
         
-        if hour > 12 {
+        if hour >= 12 {
             return (" - \(hour % 12):\(min) 오후")
         } else {
             return (" - \(hour):\(min) 오전")
@@ -158,8 +163,8 @@ final class WritingManager {
             host: self.host,
             category: self.category,
             target: self.target!,
-            startAt: self.startDate + self.convertTime(true),
-            endAt: self.endDate + self.convertTime(false),
+            startAt: self.startDate + "T" + self.startTime + ".000+09:00",
+            endAt: self.endDate + "T" + self.endTime + ".000+09:00",
             contact: self.contact,
             location: self.location,
             body: self.body)
@@ -188,8 +193,7 @@ final class WritingManager {
         }
     }
     
-    func loadEvent() {
-        let manager = EventManager.shared
-        
+    func loadEvent(_ event: Event) {
+        print(event)
     }
 }
