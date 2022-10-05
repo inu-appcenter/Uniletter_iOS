@@ -33,6 +33,15 @@ final class WritingDetailViewController: UIViewController {
     // MARK: - Setup
     func setViewController() {
         writingDetailView.textField.delegate = self
+        
+        if writingManager.isUpdating() {
+            writingDetailView.textField.text = writingManager.body
+            checkText = writingManager.body
+            
+            if !(writingManager.body.isEmpty) {
+                writingDetailView.textField.textColor = .black
+            }
+        }
     }
 }
 

@@ -7,14 +7,14 @@
 
 import UIKit
 
-enum BasicInfo {
-    case none        // 선택없음, 기타
-    case group       // 동아리, 소모임
-    case council     // 학생회
-    case snacks      // 간식나눔
-    case contest     // 대회, 공모전
-    case study       // 스터디
-    case offer       // 구인
+enum BasicInfo: Int, CaseIterable {
+    case none = 0        // 선택없음, 기타
+    case group = 1       // 동아리, 소모임
+    case council = 2     // 학생회
+    case snacks = 3      // 간식나눔
+    case contest = 4     // 대회, 공모전
+    case study = 5       // 스터디
+    case offer = 6       // 구인
     
     var uuid: String {
         switch self {
@@ -56,10 +56,12 @@ final class WritingManager {
     private init() { }
     
     // MARK: - Property
+    var id: Int?
     var basicImage = BasicInfo.none.uuid
     var imageIndex = 0
     var mainImage = BasicInfo.none.image
     var imageType: ImageType = .basic
+    var imageURL: String?
     var title: String?
     var host = ""
     var category = ""
@@ -93,6 +95,10 @@ final class WritingManager {
         self.endTime = CustomFormatter.convertNowTime(false)
     }
     
+    func isUpdating() -> Bool {
+        return self.id == nil ? false : true
+    }
+    
     func setImage(_ image: UIImage) {
         self.mainImage = image
         self.imageType = .custom
@@ -116,32 +122,15 @@ final class WritingManager {
     }
     
     func changeImage(_ basic : BasicInfo) {
-        self.basicImage = basic.uuid
-        
         if self.imageType == .basic {
             self.mainImage = basic.image
+            self.imageUUID = basic.uuid
         }
     }
     
     func equalDateTime() {
         self.endDate = self.startDate
         self.endTime = self.startTime
-    }
-    
-    func convertTime(_ isStart: Bool) -> String {
-        let hour = isStart
-        ? Int(self.startTime.subStringByIndex(sOffset: 0, eOffset: 2))!
-        : Int(self.endTime.subStringByIndex(sOffset: 0, eOffset: 2))!
-
-        let min = isStart
-        ? self.startTime.subStringByIndex(sOffset: 3, eOffset: 5)
-        : self.endTime.subStringByIndex(sOffset: 3, eOffset: 5)
-        
-        if hour >= 12 {
-            return (" - \(hour % 12):\(min) 오후")
-        } else {
-            return (" - \(hour):\(min) 오전")
-        }
     }
     
     func checkEventInfo() -> WritingValidation {
@@ -172,9 +161,35 @@ final class WritingManager {
         return preview
     }
     
-    func createEvent(completion: @escaping () -> Void) {
-        let parameter: [String: String] =
-        [
+    func loadEvent(_ event: Event) {
+        self.title = event.title
+        self.host = event.host ?? ""
+        self.category = event.category
+        self.target = event.target
+        self.startDate = CustomFormatter.subDateString(event.startAt)
+        self.startTime = CustomFormatter.subTimeString(event.startAt) + ":00"
+        self.endDate = CustomFormatter.subDateString(event.endAt)
+        self.endTime = CustomFormatter.subTimeString(event.endAt) + ":00"
+        self.contact = event.contact ?? ""
+        self.location = event.location ?? ""
+        self.body = event.body
+        self.imageUUID = event.imageUUID
+        self.imageURL = event.imageURL
+        self.id = event.id
+        self.imageType = .custom
+        
+        BasicInfo.allCases.forEach {
+            if $0.uuid == event.imageUUID {
+                self.imageIndex = $0.rawValue
+                self.imageType = .basic
+            }
+        }
+    }
+    
+    // MARK: - networking
+    
+    func createParameter() -> [String: String] {
+        return [
             "title": self.title!,
             "host": self.host,
             "category": self.category,
@@ -186,14 +201,25 @@ final class WritingManager {
             "body": self.body,
             "imageUuid": self.imageUUID ?? self.basicImage,
         ]
-        
-        API.createEvent(parameter) {
+    }
+    
+    func createEvent(completion: @escaping () -> Void) {
+        API.createEvent(createParameter()) {
             print("이벤트 생성 성공")
             completion()
         }
     }
     
-    func loadEvent(_ event: Event) {
-        print(event)
+    func updateEvent(completion: @escaping () -> Void) {
+        guard let id = id else {
+            return
+        }
+
+        API.updateEvent(id: id, params: createParameter()) {
+            print("이벤트 수정 성공")
+            completion()
+        }
     }
+    
+    
 }

@@ -7,6 +7,7 @@
 
 import UIKit
 import PhotosUI
+import Kingfisher
 
 final class WritingPictureViewController: UIViewController {
 
@@ -34,6 +35,25 @@ final class WritingPictureViewController: UIViewController {
             self,
             action: #selector(didTapCheckButton(_:)),
             for: .touchUpInside)
+        
+        if writingManager.isUpdating() {
+            self.writingPictureView.imageButton.kf.setImage(
+                with: URL(string: writingManager.imageURL!)!,
+                for: .normal)
+            self.writingPictureView.checkView.checkButton.isSelected = false
+            self.writingPictureView.checkView.checkButton.updateUI(false)
+        }
+    }
+    
+    // MARK: - Func
+    
+    func updateImage(_ image: UIImage) {
+        DispatchQueue.main.async {
+            self.writingPictureView.imageButton.setImage(image, for: .normal)
+            
+            self.writingPictureView.checkView.checkButton.isSelected = false
+            self.writingPictureView.checkView.checkButton.updateUI(false)
+        }
     }
 
     // MARK: - Actions
@@ -70,16 +90,13 @@ extension WritingPictureViewController: PHPickerViewControllerDelegate {
         if let itemProvider = itemProvider,
            itemProvider.canLoadObject(ofClass: UIImage.self) {
             itemProvider.loadObject(ofClass: UIImage.self) { image, error in
-                self.writingManager.setImage(image as! UIImage)
-                
-                DispatchQueue.main.async {
-                    self.writingPictureView.imageButton.setImage(
-                        image as? UIImage,
-                        for: .normal)
-                    
-                    self.writingPictureView.checkView.checkButton.isSelected = false
-                    self.writingPictureView.checkView.checkButton.updateUI(false)
+                guard let image = image as? UIImage else {
+                    print("이미지를 찾을 수 없습니다.")
+                    return
                 }
+
+                self.writingManager.setImage(image)
+                self.updateImage(image)
             }
         }
     }

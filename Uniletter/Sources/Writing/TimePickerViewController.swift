@@ -83,12 +83,9 @@ class TimePickerViewController: UIViewController {
     }
     
     // MARK: - Funcs
-    func formatNumbers(_ num: Int) -> String {
-        return String(format: "%02d", num)
-    }
     
     func formatTime() -> String {
-        return "\(formatNumbers(hour)):\(formatNumbers(minute))"
+        return "\(hour.formatNumbers()):\(minute.formatNumbers())"
     }
     
     // MARK: - Actions

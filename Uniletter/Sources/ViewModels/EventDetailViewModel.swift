@@ -5,111 +5,127 @@
 //  Created by 권오준 on 2022/06/28.
 //
 
-import UIKit
+import Foundation
 
 final class EventDetailViewModel {
     
     // MARK: - Property
-    let manager = EventManager.shared
+    
+    var event: Event?
     let defaultDate = "2022-02-02T00:00"
     
-    // MARK: - Func
+    // MARK: - UI
+    
+    var wroteByMe: Bool {
+        guard let wroteByMe = event?.wroteByMe else {
+            return false
+        }
+        
+        return wroteByMe
+    }
+    
     var like: Bool {
-        return manager.like
+        return event?.likedByMe ?? false
     }
     
-    var event: Event {
-        return manager.event!
-    }
-    
-    var profileImage: UIImage {
-        return manager.profileImage
+    var profileImage: String {
+        return event?.profileImage ?? ""
     }
     
     var nickname: String {
-        return manager.nickname
+        return event?.nickname ?? ""
     }
     
     var dateWrote: String {
-        return manager.dateWrote
+        let dateStr = event?.createdAt ?? defaultDate
+        return CustomFormatter.subDateString(dateStr)
     }
     
-    var mainImage: UIImage {
-        return manager.mainImage
+    var mainImage: String {
+        return event?.imageURL ?? ""
     }
     
     var title: String {
-        return manager.title
+        return event?.title ?? ""
     }
     
     var endAt: String {
-        return manager.endAt
+        return event?.endAt ?? defaultDate
     }
     
     var categoryContent: String {
-        return manager.categoryContent
+        return "\(event?.category ?? "") | \(event?.host ?? "")"
     }
     
     var startContent: String {
-        return manager.startContent
+        let date = CustomFormatter.subDateString(event?.startAt ?? defaultDate)
+        let time = " - " + CustomFormatter.convertTime(event?.startAt ?? defaultDate)
+        
+        return date + time
     }
     
     var endContent: String {
-        return manager.endContent
+        let date = CustomFormatter.subDateString(event?.endAt ?? defaultDate)
+        let time = " - " + CustomFormatter.convertTime(event?.endAt ?? defaultDate)
+        
+        return date + time
     }
     
     var target: String {
-        return manager.target
+        return event?.target ?? ""
     }
     
     var contact: String {
-        return manager.contact
+        return event?.contact ?? ""
     }
     
     var link: String {
-        return manager.link
+        return event?.location ?? ""
     }
     
     var body: String {
-        return manager.body
+        return event?.body ?? ""
     }
     
     var views: String {
-        return manager.views
+        return "\(event?.views ?? 0)회"
     }
     
     var likeAndComments: String {
-        return manager.likeAndComments
+        return "저장\(event?.likes ?? 0) ∙ 댓글 \(event?.comments ?? 0)개"
     }
     
     func changeLikes(_ num: Int) -> String {
-        return manager.changeLikes(num)
+        return "저장\((event?.likes ?? 0) + num) ∙ 댓글 \(event?.comments ?? 0)개"
     }
     
     // MARK: - Funcs
+    
+    func loadEvent(_ id: Int, completion: @escaping () -> Void) {
+        API.getEventOne(id) { event in
+            self.event = event
+            completion()
+        }
+    }
+    
+    func postBlock(userId: Int, completion: @escaping () -> Void) {
+        API.postBlock(data: ["targetUserId": userId]) {
+            completion()
+        }
+    }
+
     func likeEvent(completion: @escaping (String) -> Void) {
-        guard let id = manager.event?.id else { return }
+        guard let id = event?.id else { return }
         API.likeEvent(["eventId": id]) {
             completion(self.changeLikes(1))
         }
     }
     
     func deleteLike(completion: @escaping (String) -> Void) {
-        guard let id = manager.event?.id else { return }
+        guard let id = event?.id else { return }
         API.deleteLikes(data: ["eventId": id]) {
             completion(self.changeLikes(0))
         }
     }
     
-    func loadEvent(_ id: Int, completion: @escaping () -> Void) {
-        manager.loadEvent(id) {
-            completion()
-        }
-    }
-    
-    func postBlock(userId: Int, completion: @escaping () -> Void) {
-        manager.postBlock(userId: userId) {
-            completion()
-        }
-    }
 }

@@ -7,6 +7,7 @@
 
 import UIKit
 import DropDown
+import Kingfisher
 
 class WritingContentViewController: UIViewController {
 
@@ -35,8 +36,10 @@ class WritingContentViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setViewController()
+        initDateTime()
         setDropDown()
         initDropDown()
+        initUpdating()
     }
     
     // MARK: - Setup
@@ -100,6 +103,21 @@ class WritingContentViewController: UIViewController {
             name: Notification.Name("validation"),
             object: nil)
     }
+    
+    func initDateTime() {
+        writingContentView.eventStartView.dateButton.setAttributedTitle(
+            showUnderline(writingManager.startDate),
+            for: .normal)
+        writingContentView.eventStartView.timeButton.setAttributedTitle(
+            showUnderline(CustomFormatter.convertTime(writingManager.startTime)),
+            for: .normal)
+        writingContentView.eventEndView.dateButton.setAttributedTitle(
+            showUnderline(writingManager.endDate),
+            for: .normal)
+        writingContentView.eventEndView.timeButton.setAttributedTitle(
+            showUnderline(CustomFormatter.convertTime(writingManager.endTime)),
+            for: .normal)
+    }
 
     func setDropDown() {
         dropDown.dataSource = categories
@@ -128,10 +146,27 @@ class WritingContentViewController: UIViewController {
     }
     
     func initUpdating() {
-        guard let event = event else { return }
-        
-        
-        
+        if writingManager.isUpdating() {
+            writingContentView.titleView.textField.text = writingManager.title
+            writingContentView.hostView.textField.text = writingManager.host
+            writingContentView.categoryView.textField.text = writingManager.category
+            writingContentView.targetView.textField.text = writingManager.target
+            writingContentView.contactView.textField.text = writingManager.contact
+            writingContentView.locationView.textField.text = writingManager.location
+            
+            if !(writingManager.host.isEmpty) {
+                writingContentView.hostView.textField.textColor = .black
+                changeCheckButton(writingContentView.hostView.checkView.checkButton)
+            }
+            if !(writingManager.contact.isEmpty) {
+                writingContentView.contactView.textField.textColor = .black
+                changeCheckButton(writingContentView.contactView.checkView.checkButton)
+            }
+            if !(writingManager.location.isEmpty) {
+                writingContentView.locationView.textField.textColor = .black
+                changeCheckButton(writingContentView.locationView.checkView.checkButton)
+            }
+        }
     }
     
     // MARK: - Funcs
@@ -167,7 +202,6 @@ class WritingContentViewController: UIViewController {
         
         present(vc, animated: true)
     }
-
     
     // MARK: - Actions
     @objc func downKeyboard(_ sender: UITapGestureRecognizer) {

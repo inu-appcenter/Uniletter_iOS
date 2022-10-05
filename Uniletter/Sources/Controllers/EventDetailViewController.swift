@@ -90,10 +90,9 @@ final class EventDetailViewController: UIViewController {
     // MARK: - Funcs
     func updateUI() {
         bookmarkButton.isSelected = viewModel.like
-        eventDetailView.profileImageView.image = viewModel.profileImage
+        eventDetailView.moreButton.isHidden = viewModel.wroteByMe
         eventDetailView.nicknameLabel.text = viewModel.nickname
         eventDetailView.dateWroteLabel.text = viewModel.dateWrote
-        eventDetailView.mainImageView.image = viewModel.mainImage
         eventDetailView.titleTextView.text = viewModel.title
         eventDetailView.categoryContentsLabel.text = viewModel.categoryContent
         eventDetailView.startContentsLabel.text = viewModel.startContent
@@ -103,6 +102,10 @@ final class EventDetailViewController: UIViewController {
         eventDetailView.bodyContentsLabel.text = viewModel.body
         eventDetailView.viewsLabel.text = viewModel.views
         eventDetailView.likeAndCommentsLabel.text = viewModel.likeAndComments
+        
+        eventDetailView.profileImageView.kf.setImage(with: URL(string: viewModel.profileImage)!)
+        eventDetailView.mainImageView.kf.setImage(with: URL(string: viewModel.mainImage)!)
+        
         updateDDay()
         convertTextToHyperLink()
     }
@@ -198,9 +201,9 @@ final class EventDetailViewController: UIViewController {
     @objc func didTapTopMoreButton(_ sender: UIButton) {
         let presentActionVC = presentActionSheetView(.topForUser)
         if loginManager.isLoggedIn {
-            if viewModel.event.wroteByMe == true {
+            if viewModel.wroteByMe {
                 print("내가쓴글")
-                let id = viewModel.event.id
+                let id = viewModel.event?.id
                 let vc = presentActionSheetView(.topForWriter)
                 
                 vc.eventID = id
@@ -232,7 +235,7 @@ final class EventDetailViewController: UIViewController {
             self.present(presentActionVC, animated: true)
             
             presentActionVC.blockUserCompletionClousre = {
-                self.viewModel.postBlock(userId: self.viewModel.event.userID) {
+                self.viewModel.postBlock(userId: self.viewModel.event!.userID) {
                     self.postBlockNotification()
                     self.navigationController?.popViewController(animated: true)
                 }
@@ -254,7 +257,7 @@ final class EventDetailViewController: UIViewController {
     @objc func didTapCommentesLabel(_ sender: UIButton) {
         let vc = CommentsViewController()
         vc.eventID = id
-        vc.userID = viewModel.event.userID
+        vc.userID = viewModel.event?.userID
         
         self.navigationController?.pushViewController(vc, animated: true)
     }
