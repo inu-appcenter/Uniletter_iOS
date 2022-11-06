@@ -66,8 +66,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 // 인증 만료 상태 (사용자가 백그라운드에서 ID중지했을 경우)
                 print("애플 로그인 인증 만료")
                 // 만약 애플 로그인이 로그인 상태였으면 로그아웃 상태로 해야 함
+                
                 if keyChain.read() != "" {
-                    keyChain.delete()
+                    LoginManager.shared.logout()
                 }
         
                 break

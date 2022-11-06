@@ -45,10 +45,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 // 인증 만료 상태 (사용자가 백그라운드에서 ID중지했을 경우)
                 print("sceneDidBecomeActive - 애플 로그인 인증 만료")
                 // 만약 애플 로그인이 로그인 상태였으면 로그아웃 상태로 해야 함
+                
                 if keyChain.read() != "" {
-                    keyChain.delete()
+                    LoginManager.shared.logout()
+                    
+                    DispatchQueue.main.async {
+                        let homeViewController = UINavigationController(rootViewController: HomeViewController())
+                        
+                        self.window?.rootViewController = homeViewController
+                        self.window?.rootViewController?.dismiss(animated: false)
+                    }
                 }
-        
+                
                 break
             case .notFound:
                 // Credential을 찾을 수 없는 상태 (로그아웃 상태)

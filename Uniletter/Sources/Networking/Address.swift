@@ -16,7 +16,8 @@ enum Address {
     case token              // FCM 토큰
     case images             // 이미지
     case likes              // 북마크
-    case loginOauth         // OAuth 로그인
+    case loginOauthApple    // Apple OAuth 로그인
+    case loginOauthGoogle   // Google OAuth 로그인
     case loginRemembered    // OAuth 로그인
     case nofifications      // 행사 알림
     case subscribing        // 새 행사 구독 여부
@@ -36,7 +37,8 @@ enum Address {
         case .token: return "fcm/token"
         case .images: return "images"   // + imageId
         case .likes: return "likes"
-        case .loginOauth: return "login/oauth"
+        case .loginOauthApple: return "login/oauth/apple"
+        case .loginOauthGoogle: return "login/oauth/google"
         case .loginRemembered: return "login/remembered"
         case .nofifications: return "notifications"
         case .subscribing: return "subscription/subscribing"
