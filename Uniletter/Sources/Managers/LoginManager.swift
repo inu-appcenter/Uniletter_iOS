@@ -13,9 +13,10 @@ final class LoginManager {
     static let shared = LoginManager()
     
     private init() { }
-    
+      
     // MARK: - Property
-    var loginInfo: LoginInfo?
+    var googleLoginInfo: LoginInfo?
+    var appleLoginInfo: LoginInfo?
     var isLoggedIn = false
     var googleLogin = false
     var appleLogin = false
@@ -28,8 +29,8 @@ final class LoginManager {
         // 구글 로그인 한 경우
         if googleLogin == true {
             let parameter: [String: Any] = [
-                "id": loginInfo!.userID,
-                "token": loginInfo!.rememberMeToken
+                "id": googleLoginInfo!.userID,
+                "token": googleLoginInfo!.rememberMeToken
             ]
             
             API.rememberedLogin(parameter) { info in
@@ -39,7 +40,7 @@ final class LoginManager {
                     return
                 }
                 
-                self.saveLoginInfo(info)
+                self.saveGoogleLoginInfo(info)
                 self.isLoggedIn = true
                 completion()
             }
@@ -47,8 +48,23 @@ final class LoginManager {
         
         // 애플 로그인 한 경우
         if appleLogin == true {
-            self.isLoggedIn = true
-            completion()
+            
+            let parameter: [String: Any] = [
+                "id": appleLoginInfo!.userID,
+                "token": appleLoginInfo!.rememberMeToken
+            ]
+            
+            API.rememberedLogin(parameter) { info in
+                guard let info = info else {
+                    self.isLoggedIn = false
+                    completion()
+                    return
+                }
+                
+                self.saveAppleLoginInfo(info)
+                self.isLoggedIn = true
+                completion()
+            }
         }
         
         // 둘다 로그인 하지 않은 경우
@@ -58,38 +74,48 @@ final class LoginManager {
         }
     }
     
-    func saveLoginInfo(_ info: LoginInfo) {
-        loginInfo = info
+    func saveGoogleLoginInfo(_ info: LoginInfo) {
+        googleLoginInfo = info
         UserDefaults.standard.set(
             try? PropertyListEncoder().encode(info),
-            forKey: "LoginInfo")
-        print("로그인 정보 저장 완료")
+            forKey: "GoogleLoginInfo")
+        print("구글 로그인 정보 저장 완료")
+    }
+    
+    func saveAppleLoginInfo(_ info: LoginInfo) {
+        appleLoginInfo = info
+        UserDefaults.standard.set(try? PropertyListEncoder().encode(info), forKey: "AppleLoginInfo")
+        
+        print("애플 로그인 정보 저장 완료")
     }
     
     func logout() {
+        
         guard let cookies = HTTPCookieStorage.shared.cookies else { return }
         
         for cookie in cookies {
             HTTPCookieStorage.shared.deleteCookie(cookie)
         }
         
-        loginInfo = nil
-        UserDefaults.standard.removeObject(forKey: "LoginInfo")
-        
-        if keyChain.read() != "" {
+        // 구글 로그인, 애플 로그인 분기 처리
+        if googleLogin {
+            googleLoginInfo = nil
+            UserDefaults.standard.removeObject(forKey: "GoogleLoginInfo")
+            googleLogin = false
+        } else {
             keyChain.delete()
+            appleLoginInfo = nil
+            UserDefaults.standard.removeObject(forKey: "AppleLoginInfo")
+            appleLogin = false
         }
-        
-        googleLogin = false
-        appleLogin = false
     }
     
     func loadLoginInfo() {
         
         // 구글 로그인 한 경우
-        if let data = UserDefaults.standard.data(forKey: "LoginInfo") {
+        if let data = UserDefaults.standard.data(forKey: "GoogleLoginInfo") {
             
-            loginInfo = try? PropertyListDecoder().decode(
+            googleLoginInfo = try? PropertyListDecoder().decode(
                 LoginInfo.self,
                 from: data)
             
@@ -98,7 +124,14 @@ final class LoginManager {
         
         // 애플 로그인 한 경우
         if keyChain.read() != "" {
-            appleLogin = true
+            if let data = UserDefaults.standard.data(forKey: "AppleLoginInfo") {
+                
+                appleLoginInfo = try? PropertyListDecoder().decode(
+                    LoginInfo.self,
+                    from: data)
+                
+                appleLogin = true
+            }
         }
     }
 }
