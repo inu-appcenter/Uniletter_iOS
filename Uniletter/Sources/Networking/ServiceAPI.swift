@@ -36,8 +36,10 @@ fileprivate func networking<T: Decodable>(
                 case .success(let result):
                     completion(.success(result))
                 case .failure(let error):
+                    if error.errorDescription! != errorString {
+                        failedAlert()
+                    }
                     completion(.failure(error))
-                    failedAlert()
                 }
             }
     }
@@ -106,15 +108,37 @@ final class API {
     
     // MARK: - Login
     
-    /// oAuth 로그인
-    static func oAuthLogin(_ params: [String: String], completion: @escaping(LoginInfo) -> Void) {
+    /// 애플 로그인
+    static func appleOAuthLogin(_ params: [String: String], completion: @escaping(LoginInfo) -> Void) {
         guard let data = try? JSONSerialization.data(
             withJSONObject: params, options: .prettyPrinted) else {
             return
         }
         
         networking(
-            urlStr: Address.loginOauth.url,
+            urlStr: Address.loginOauthApple.url,
+            method: .post,
+            data: data,
+            model: LoginInfo.self) { result in
+                switch result {
+                case .success(let info):
+                    completion(info)
+                case .failure(let error):
+                    print(error)
+                }
+            }
+    }
+    
+    
+    /// 구글 oAuth 로그인
+    static func googleOAuthLogin(_ params: [String: String], completion: @escaping(LoginInfo) -> Void) {
+        guard let data = try? JSONSerialization.data(
+            withJSONObject: params, options: .prettyPrinted) else {
+            return
+        }
+        
+        networking(
+            urlStr: Address.loginOauthGoogle.url,
             method: .post,
             data: data,
             model: LoginInfo.self) { result in
@@ -161,12 +185,12 @@ final class API {
             model: String.self) { result in
                 switch result {
                 case .success(_):
-                    print("성공")
+                    completion()
                 case .failure(let error):
                     if error.errorDescription! == errorString {
                         completion()
                     } else {
-                        print(error)
+                        print("FCM에러 \(error)")
                     }
                 }
             }
@@ -663,4 +687,21 @@ final class API {
             }
     }
     
+    // MARK: - Report
+    
+    /// 게시글 신고하기
+    static func reportEvent(eventId: Int, completion: @escaping() -> Void) {
+        networking(
+            urlStr: Address.reports.url + "/\(eventId)",
+            method: .post,
+            data: nil,
+            model: Report.self) { result in
+                switch result {
+                case .success(_):
+                    completion()
+                case .failure(let error):
+                    print(error)
+                }
+            }
+    }
 }

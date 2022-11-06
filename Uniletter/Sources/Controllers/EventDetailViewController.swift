@@ -200,6 +200,8 @@ final class EventDetailViewController: UIViewController {
     
     @objc func didTapTopMoreButton(_ sender: UIButton) {
         let presentActionVC = presentActionSheetView(.topForUser)
+        presentActionVC.eventID = id
+        
         if loginManager.isLoggedIn {
             if viewModel.wroteByMe {
                 print("내가쓴글")
@@ -212,12 +214,16 @@ final class EventDetailViewController: UIViewController {
                 self.present(vc, animated: true)
             } else {
                 self.present(presentActionVC, animated: false)
+                
+                presentActionVC.reportEventCompletionClosure = {
+                    self.presentWaringView(.reportEvent)
+                }
             }
         } else {
             let presentActionVC = presentActionSheetView(.topForUser)
             self.present(presentActionVC, animated: true)
 
-            presentActionVC.reportUserCompletionClosure = {
+            presentActionVC.reportEventCompletionClosure = {
                 let alertView = self.AlertVC(.login)
                 self.present(alertView, animated: true)
 

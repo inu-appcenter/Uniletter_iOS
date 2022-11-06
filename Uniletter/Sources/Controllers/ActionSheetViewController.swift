@@ -23,6 +23,7 @@ final class ActionSheetViewController: UIViewController {
     var reportUserCompletionClosure: (() -> Void)?
     var notifyBeforeStartCompletionClosure: (() -> Void)?
     var notifyBeforeEndCompletionClosure: (() -> Void)?
+    var reportEventCompletionClosure: (() -> Void)?
     
     // 기능 별 필요한 Property
     var commentID: Int!
@@ -111,7 +112,7 @@ final class ActionSheetViewController: UIViewController {
         }
         
         switch actionSheet {
-        case .topForUser: reportUser()
+        case .topForUser: reportEvent(eventID)
         case .topForWriter: modifyWriting()
         case .profile: blockUserForEvent()
         case .notification: notifyBeforeStart(eventID)
@@ -134,6 +135,21 @@ final class ActionSheetViewController: UIViewController {
         case .commentForUser: blockUserForComment(targetUserID)
         case .commentForWriter: break
         case .modifyInfo: basicPhoto()
+        }
+    }
+    
+    func reportEvent(_ eventId: Int) {
+        self.dismiss(animated: true)
+        if loginManager.isLoggedIn {
+            API.reportEvent(eventId: eventId) {
+                if let reportEventCompletionClosure = self.reportEventCompletionClosure {
+                    reportEventCompletionClosure()
+                }
+            }
+        } else {
+            if let reportEventCompletionClosure = reportEventCompletionClosure {
+                reportEventCompletionClosure()
+            }
         }
     }
     

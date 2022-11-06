@@ -147,9 +147,10 @@ final class LoginViewController: UIViewController {
                 let token = authentication.accessToken
                 let parameter = ["accessToken": token]
                 
-                API.oAuthLogin(parameter) { info in
+                API.googleOAuthLogin(parameter) { info in
+                    print("google login info : \(info)")
                     DispatchQueue.main.async {
-                        LoginManager.shared.saveLoginInfo(info)
+                        LoginManager.shared.saveGoogleLoginInfo(info)
                         self.goToHomeViewController()
                     }
                 }
@@ -174,26 +175,25 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
     // 성공 후 동작
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         if let credential = authorization.credential as? ASAuthorizationAppleIDCredential {
-            let idToken = credential.identityToken!
-            let tokeStr = String(data: idToken, encoding: .utf8)
-            print("token = \(tokeStr)")
-            
-            // authorizationCode 서버로 넘겨주면 됨
+     
             guard let code = credential.authorizationCode else { return }
-            let codeStr = String(data: code, encoding: .utf8)
-            print("code = \(codeStr)")
+            let autorizationCodeStr = String(data: code, encoding: .utf8)
 
+            let identityTokenStr = String(data: credential.identityToken!, encoding: .utf8)
+            
             let user = credential.user
-            print("user = \(user)")
-            
             let email = credential.email
-            print("email = \(email)")
+
+            let parameter = ["accessToken": autorizationCodeStr!]
             
-            // 로그인 성공 후 userID를 키체인으로 저장
-            // 서버로 token값 넘겨주고 넘겨지면 아래 코드 비동기로 수행되게
-            keyChain.create(userID: user)
-            // 홈 화면으로 이동
-            self.goToHomeViewController()
+            API.appleOAuthLogin(parameter) { info in
+                DispatchQueue.main.async {
+                    print("appleOAutoLogin 응답: \(info)")
+                    LoginManager.shared.saveAppleLoginInfo(info)
+                    keyChain.create(userID: user)
+                    self.goToHomeViewController()
+                }
+            }
         }
     }
     
