@@ -244,40 +244,9 @@
 		2C80F389286D9FF800ECAB60 /* MyPage */ = {
 			isa = PBXGroup;
 			children = (
-				766F384C2872FC3900EC9593 /* NewNoticeCell.swift */,
-				766F384B2872FC3900EC9593 /* NewNoticeViewController.swift */,
-				766F384D2872FC3900EC9593 /* NewNoticeViewModel.swift */,
-				2C80F387286D997300ECAB60 /* MyPageViewModel.swift */,
-				2C80F38A286DA01500ECAB60 /* MyPageCell.swift */,
-				2C80F390286DE20000ECAB60 /* MyPageSectionView.swift */,
-				2CB69D0A287443870089A922 /* MeInfo.swift */,
-				2CB69D0C287456C60089A922 /* ChangeViewController.swift */,
-				2C0D039B2885ACF60026F3F0 /* ChangeViewModel.swift */,
-				2CB8AA2F2878384300BDA358 /* MyCommentViewController.swift */,
-				2CB8AA31287838EE00BDA358 /* MyEventCell.swift */,
-				2CB8AA3328787D3900BDA358 /* MyCommentViewModel.swift */,
-				2CB8AAA7287EA34400BDA358 /* MyEventViewController.swift */,
-				2CB8AAA9287EA7A200BDA358 /* MyEventViewModel.swift */,
-				2CB8AAAB287EAE5400BDA358 /* PrivacyPolicyViewController.swift */,
-				2C0D0399288596EE0026F3F0 /* PrivacyPolicyCell.swift */,
-				2CB8AAAD287EAEA700BDA358 /* PrivacyPolicyViewModel.swift */,
-				2CB8AAAF287F1EDA00BDA358 /* Topic.swift */,
-				2C0DBE552880099E004A933A /* SaveListViewController.swift */,
-				2C0DBE5728800A29004A933A /* SaveListCell.swift */,
-				2C0DBE5B28801484004A933A /* SaveListViewModel.swift */,
-				2C0DBE5928800B29004A933A /* MyEventView.swift */,
-				2C0DBE5D28813FC3004A933A /* NotiListVIewController.swift */,
-				2C0DBE5F288140FD004A933A /* NotiListCell.swift */,
-				2C0DBE6128814308004A933A /* NotiViewModel.swift */,
-				2C0DBE632881507A004A933A /* Notification.swift */,
-				2C0DBE69288192E5004A933A /* BlockListViewController.swift */,
-				2C0DBE6D2881A158004A933A /* BlockListCell.swift */,
-				2C0DBE6B2881A13E004A933A /* BlockListViewModel.swift */,
-				2C0DBE6F2881AC5B004A933A /* Block.swift */,
-				2C01D083289020AF00AEF20F /* LicenseViewController.swift */,
-				2C01D0892890284700AEF20F /* LicenseInfoViewController.swift */,
-				2C01D087289026BF00AEF20F /* LicenseCell.swift */,
-				2C01D0852890219400AEF20F /* LicenseViewModel.swift */,
+				763BB609291811F800FFAF8B /* View */,
+				763BB608291811F200FFAF8B /* ViewController */,
+				763BB607291811EE00FFAF8B /* ViewModel */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -293,6 +262,18 @@
 		7610DD5D28841EC800CA03BC /* Writing */ = {
 			isa = PBXGroup;
 			children = (
+				763BB5C929180CEC00FFAF8B /* View */,
+				763BB5CA29180CF700FFAF8B /* ViewController */,
+				763BB5CC29180D4400FFAF8B /* ViewModel */,
+				763BB5CB29180D2300FFAF8B /* Manager */,
+				763BB5CE29180E0800FFAF8B /* Util */,
+			);
+			path = Writing;
+			sourceTree = "<group>";
+		};
+		763BB5C929180CEC00FFAF8B /* View */ = {
+			isa = PBXGroup;
+			children = (
 				7610DD6628842D8600CA03BC /* WritingBottomButtonsView.swift */,
 				7610DD642884299A00CA03BC /* WritingCheckView.swift */,
 				7610DD6C28843F8F00CA03BC /* WritingTextFieldView.swift */,
@@ -300,20 +281,553 @@
 				7610DD6028841F1500CA03BC /* WritingPictureView.swift */,
 				7610DD68288432E200CA03BC /* WritingContentView.swift */,
 				7610DD6A288432F100CA03BC /* WritingDetailView.swift */,
+				76239186288AFDB100790775 /* CalendarView.swift */,
+				7623918C288C38ED00790775 /* TimePickerView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		763BB5CA29180CF700FFAF8B /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
 				7610DD5E28841F0700CA03BC /* WritingViewController.swift */,
 				7610DD6E2884568000CA03BC /* WiritingPictureViewController.swift */,
 				7610DD702884569100CA03BC /* WritingContentViewController.swift */,
 				7610DD72288456A300CA03BC /* WritingDetailViewController.swift */,
-				7610DD7428846FCE00CA03BC /* WritingManager.swift */,
-				76239186288AFDB100790775 /* CalendarView.swift */,
-				76239188288AFDC000790775 /* CalendarViewController.swift */,
-				7623918C288C38ED00790775 /* TimePickerView.swift */,
-				7623918A288C38DB00790775 /* TimePickerViewController.swift */,
-				7623918E288C3CC100790775 /* WritingSubFile.swift */,
 				769F6E6728A8F66A00619269 /* PreviewViewController.swift */,
+				76239188288AFDC000790775 /* CalendarViewController.swift */,
+				7623918A288C38DB00790775 /* TimePickerViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		763BB5CB29180D2300FFAF8B /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				7610DD7428846FCE00CA03BC /* WritingManager.swift */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
+		763BB5CC29180D4400FFAF8B /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
 				76B0B98F28E301640083ED06 /* PreviewViewModel.swift */,
 			);
-			path = Writing;
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		763BB5CE29180E0800FFAF8B /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				7623918E288C3CC100790775 /* WritingSubFile.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
+		763BB5CF29180E3E00FFAF8B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				769AEB3A287C267300C697FC /* CommentsView.swift */,
+				769AEB3E287C4A1B00C697FC /* CommentsCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		763BB5D029180E4100FFAF8B /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				769AEB38287C25CE00C697FC /* CommentsViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		763BB5D129180E4700FFAF8B /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				769AEB42287C85AC00C697FC /* CommentsViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		763BB5D229180E7500FFAF8B /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				763BB5E029180FA000FFAF8B /* Alert */,
+				763BB5D729180EBA00FFAF8B /* Splash */,
+				763BB5D429180E8B00FFAF8B /* Login */,
+				763BB5D329180E8700FFAF8B /* Home */,
+				763BB5D529180E9000FFAF8B /* EventDetail */,
+				7610DD5D28841EC800CA03BC /* Writing */,
+				769AEB37287C256B00C697FC /* Comment */,
+				2C80F389286D9FF800ECAB60 /* MyPage */,
+				763BB6022918118600FFAF8B /* NewNotice */,
+				763BB5FF2918117200FFAF8B /* Change */,
+				763BB5FB2918114100FFAF8B /* Privacy */,
+				763BB5F72918112800FFAF8B /* Save */,
+				763BB5F32918110000FFAF8B /* MyComment */,
+				763BB5EF291810CA00FFAF8B /* MyEvent */,
+				763BB5EB291810A100FFAF8B /* Notification */,
+				763BB5E72918105500FFAF8B /* Block */,
+				763BB5E32918101600FFAF8B /* License */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		763BB5D329180E8700FFAF8B /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				763BB5D929180F1C00FFAF8B /* View */,
+				763BB5DA29180F2000FFAF8B /* ViewController */,
+				763BB5DB29180F2400FFAF8B /* ViewModel */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		763BB5D429180E8B00FFAF8B /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				763BB5D629180EAC00FFAF8B /* ViewController */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		763BB5D529180E9000FFAF8B /* EventDetail */ = {
+			isa = PBXGroup;
+			children = (
+				763BB5DE29180F4700FFAF8B /* View */,
+				763BB5DD29180F3D00FFAF8B /* ViewController */,
+				763BB5DC29180F3A00FFAF8B /* ViewModel */,
+			);
+			path = EventDetail;
+			sourceTree = "<group>";
+		};
+		763BB5D629180EAC00FFAF8B /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				765BCA112868CA1B0098BBF2 /* LoginViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		763BB5D729180EBA00FFAF8B /* Splash */ = {
+			isa = PBXGroup;
+			children = (
+				763BB5D829180EC900FFAF8B /* ViewController */,
+			);
+			path = Splash;
+			sourceTree = "<group>";
+		};
+		763BB5D829180EC900FFAF8B /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				765BCA002868C00C0098BBF2 /* LaunchViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		763BB5D929180F1C00FFAF8B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				7681D56F28698EC60081C644 /* HomeCell.swift */,
+				765DCDB22868DCD300961EA8 /* HomeView.swift */,
+				7681D57F2869F1870081C644 /* HomeCellView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		763BB5DA29180F2000FFAF8B /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				765DCDB02868DBF800961EA8 /* HomeViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		763BB5DB29180F2400FFAF8B /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				76AC78332871D6C100D303C4 /* HomeViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		763BB5DC29180F3A00FFAF8B /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				7681D583286A09DD0081C644 /* EventDetailViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		763BB5DD29180F3D00FFAF8B /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				76FCB544286C253900AC4F70 /* EventDetailViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		763BB5DE29180F4700FFAF8B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				76FCB546286C254B00AC4F70 /* EventDetailView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		763BB5E029180FA000FFAF8B /* Alert */ = {
+			isa = PBXGroup;
+			children = (
+				763BB5E229180FB200FFAF8B /* View */,
+				763BB5E129180FA900FFAF8B /* ViewController */,
+			);
+			path = Alert;
+			sourceTree = "<group>";
+		};
+		763BB5E129180FA900FFAF8B /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				76AC783928720B6C00D303C4 /* AlertViewController.swift */,
+				76AC78412872E02500D303C4 /* ActionSheetViewController.swift */,
+				2C0DBE6728815CA6004A933A /* NoticeAlertViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		763BB5E229180FB200FFAF8B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				76AC78372872053100D303C4 /* AlertView.swift */,
+				76AC783D2872D7FB00D303C4 /* TwoOptionsActionSheetView.swift */,
+				76AC783F2872DF9300D303C4 /* OneOptionActionSheetView.swift */,
+				2C0DBE652881591B004A933A /* NoticeAlertView.swift */,
+				2C01D07F288FDF7800AEF20F /* WarningView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		763BB5E32918101600FFAF8B /* License */ = {
+			isa = PBXGroup;
+			children = (
+				763BB5E62918102700FFAF8B /* View */,
+				763BB5E52918102100FFAF8B /* ViewController */,
+				763BB5E42918101C00FFAF8B /* ViewModel */,
+			);
+			path = License;
+			sourceTree = "<group>";
+		};
+		763BB5E42918101C00FFAF8B /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				2C01D0852890219400AEF20F /* LicenseViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		763BB5E52918102100FFAF8B /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				2C01D083289020AF00AEF20F /* LicenseViewController.swift */,
+				2C01D0892890284700AEF20F /* LicenseInfoViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		763BB5E62918102700FFAF8B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				2C01D087289026BF00AEF20F /* LicenseCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		763BB5E72918105500FFAF8B /* Block */ = {
+			isa = PBXGroup;
+			children = (
+				763BB5EA2918107400FFAF8B /* View */,
+				763BB5E92918106E00FFAF8B /* ViewController */,
+				763BB5E82918106700FFAF8B /* ViewModel */,
+			);
+			path = Block;
+			sourceTree = "<group>";
+		};
+		763BB5E82918106700FFAF8B /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				2C0DBE6B2881A13E004A933A /* BlockListViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		763BB5E92918106E00FFAF8B /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				2C0DBE69288192E5004A933A /* BlockListViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		763BB5EA2918107400FFAF8B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				2C0DBE6D2881A158004A933A /* BlockListCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		763BB5EB291810A100FFAF8B /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				763BB5EE291810B300FFAF8B /* View */,
+				763BB5ED291810AF00FFAF8B /* ViewController */,
+				763BB5EC291810A700FFAF8B /* ViewModel */,
+			);
+			path = Notification;
+			sourceTree = "<group>";
+		};
+		763BB5EC291810A700FFAF8B /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				2C0DBE6128814308004A933A /* NotiViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		763BB5ED291810AF00FFAF8B /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				2C0DBE5D28813FC3004A933A /* NotiListVIewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		763BB5EE291810B300FFAF8B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				2C0DBE5F288140FD004A933A /* NotiListCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		763BB5EF291810CA00FFAF8B /* MyEvent */ = {
+			isa = PBXGroup;
+			children = (
+				763BB5F2291810DB00FFAF8B /* View */,
+				763BB5F1291810D600FFAF8B /* ViewController */,
+				763BB5F0291810D100FFAF8B /* ViewModel */,
+			);
+			path = MyEvent;
+			sourceTree = "<group>";
+		};
+		763BB5F0291810D100FFAF8B /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				2CB8AAA9287EA7A200BDA358 /* MyEventViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		763BB5F1291810D600FFAF8B /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				2CB8AAA7287EA34400BDA358 /* MyEventViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		763BB5F2291810DB00FFAF8B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				2C0DBE5928800B29004A933A /* MyEventView.swift */,
+				2CB8AA31287838EE00BDA358 /* MyEventCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		763BB5F32918110000FFAF8B /* MyComment */ = {
+			isa = PBXGroup;
+			children = (
+				763BB5F62918110F00FFAF8B /* View */,
+				763BB5F52918110900FFAF8B /* ViewController */,
+				763BB5F42918110500FFAF8B /* ViewModel */,
+			);
+			path = MyComment;
+			sourceTree = "<group>";
+		};
+		763BB5F42918110500FFAF8B /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				2CB8AA3328787D3900BDA358 /* MyCommentViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		763BB5F52918110900FFAF8B /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				2CB8AA2F2878384300BDA358 /* MyCommentViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		763BB5F62918110F00FFAF8B /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		763BB5F72918112800FFAF8B /* Save */ = {
+			isa = PBXGroup;
+			children = (
+				763BB5FA2918113600FFAF8B /* View */,
+				763BB5F92918113000FFAF8B /* ViewController */,
+				763BB5F82918112D00FFAF8B /* ViewModel */,
+			);
+			path = Save;
+			sourceTree = "<group>";
+		};
+		763BB5F82918112D00FFAF8B /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				2C0DBE5B28801484004A933A /* SaveListViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		763BB5F92918113000FFAF8B /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				2C0DBE552880099E004A933A /* SaveListViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		763BB5FA2918113600FFAF8B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				2C0DBE5728800A29004A933A /* SaveListCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		763BB5FB2918114100FFAF8B /* Privacy */ = {
+			isa = PBXGroup;
+			children = (
+				763BB5FE2918115300FFAF8B /* View */,
+				763BB5FD2918114E00FFAF8B /* ViewController */,
+				763BB5FC2918114A00FFAF8B /* ViewModel */,
+			);
+			path = Privacy;
+			sourceTree = "<group>";
+		};
+		763BB5FC2918114A00FFAF8B /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				2CB8AAAD287EAEA700BDA358 /* PrivacyPolicyViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		763BB5FD2918114E00FFAF8B /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				2CB8AAAB287EAE5400BDA358 /* PrivacyPolicyViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		763BB5FE2918115300FFAF8B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				2C0D0399288596EE0026F3F0 /* PrivacyPolicyCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		763BB5FF2918117200FFAF8B /* Change */ = {
+			isa = PBXGroup;
+			children = (
+				763BB6012918117A00FFAF8B /* ViewController */,
+				763BB6002918117600FFAF8B /* ViewModel */,
+			);
+			path = Change;
+			sourceTree = "<group>";
+		};
+		763BB6002918117600FFAF8B /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				2C0D039B2885ACF60026F3F0 /* ChangeViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		763BB6012918117A00FFAF8B /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				2CB69D0C287456C60089A922 /* ChangeViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		763BB6022918118600FFAF8B /* NewNotice */ = {
+			isa = PBXGroup;
+			children = (
+				763BB6052918119600FFAF8B /* View */,
+				763BB6042918119100FFAF8B /* ViewController */,
+				763BB6032918118B00FFAF8B /* ViewModel */,
+			);
+			path = NewNotice;
+			sourceTree = "<group>";
+		};
+		763BB6032918118B00FFAF8B /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				766F384D2872FC3900EC9593 /* NewNoticeViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		763BB6042918119100FFAF8B /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				766F384B2872FC3900EC9593 /* NewNoticeViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		763BB6052918119600FFAF8B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				766F384C2872FC3900EC9593 /* NewNoticeCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		763BB607291811EE00FFAF8B /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				2C80F387286D997300ECAB60 /* MyPageViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		763BB608291811F200FFAF8B /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				7616B812286B50A000935257 /* MyPageViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		763BB609291811F800FFAF8B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				2C80F390286DE20000ECAB60 /* MyPageSectionView.swift */,
+				2C80F38A286DA01500ECAB60 /* MyPageCell.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		764386622874020100375CE6 /* Managers */ = {
@@ -353,36 +867,6 @@
 			path = Uniletter;
 			sourceTree = "<group>";
 		};
-		765BCA132868CA200098BBF2 /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				765BCA002868C00C0098BBF2 /* LaunchViewController.swift */,
-				765BCA112868CA1B0098BBF2 /* LoginViewController.swift */,
-				765DCDB02868DBF800961EA8 /* HomeViewController.swift */,
-				7616B812286B50A000935257 /* MyPageViewController.swift */,
-				76FCB544286C253900AC4F70 /* EventDetailViewController.swift */,
-				76AC783928720B6C00D303C4 /* AlertViewController.swift */,
-				76AC78412872E02500D303C4 /* ActionSheetViewController.swift */,
-				2C0DBE6728815CA6004A933A /* NoticeAlertViewController.swift */,
-			);
-			path = Controllers;
-			sourceTree = "<group>";
-		};
-		765BCA142868CA240098BBF2 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				765DCDB22868DCD300961EA8 /* HomeView.swift */,
-				7681D57F2869F1870081C644 /* HomeCellView.swift */,
-				76FCB546286C254B00AC4F70 /* EventDetailView.swift */,
-				76AC78372872053100D303C4 /* AlertView.swift */,
-				76AC783D2872D7FB00D303C4 /* TwoOptionsActionSheetView.swift */,
-				76AC783F2872DF9300D303C4 /* OneOptionActionSheetView.swift */,
-				2C0DBE652881591B004A933A /* NoticeAlertView.swift */,
-				2C01D07F288FDF7800AEF20F /* WarningView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
 		765BCA152868CA7C0098BBF2 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -397,18 +881,11 @@
 			isa = PBXGroup;
 			children = (
 				764386622874020100375CE6 /* Managers */,
-				2C80F389286D9FF800ECAB60 /* MyPage */,
-				76FCB54A286C35AD00AC4F70 /* CustomUI */,
+				763BB5D229180E7500FFAF8B /* Presentation */,
 				7681D588286A297F0081C644 /* Utilities */,
-				7681D57E2869F0E50081C644 /* ViewModels */,
-				7681D57B2869ECC20081C644 /* Models */,
+				7681D57B2869ECC20081C644 /* Model */,
 				7681D5782869D2220081C644 /* Networking */,
 				7681D571286993590081C644 /* Extensions */,
-				7681D56E28698E890081C644 /* Cells */,
-				765BCA142868CA240098BBF2 /* Views */,
-				765BCA132868CA200098BBF2 /* Controllers */,
-				7610DD5D28841EC800CA03BC /* Writing */,
-				769AEB37287C256B00C697FC /* Comments */,
 				765BC9FC2868C00C0098BBF2 /* AppDelegate.swift */,
 				765BC9FE2868C00C0098BBF2 /* SceneDelegate.swift */,
 			);
@@ -422,14 +899,6 @@
 				2C6AB54928B500A700FF6DC5 /* GoogleService-Info.plist */,
 			);
 			path = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		7681D56E28698E890081C644 /* Cells */ = {
-			isa = PBXGroup;
-			children = (
-				7681D56F28698EC60081C644 /* HomeCell.swift */,
-			);
-			path = Cells;
 			sourceTree = "<group>";
 		};
 		7681D571286993590081C644 /* Extensions */ = {
@@ -457,29 +926,25 @@
 			path = Networking;
 			sourceTree = "<group>";
 		};
-		7681D57B2869ECC20081C644 /* Models */ = {
+		7681D57B2869ECC20081C644 /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				769AEB3C287C271E00C697FC /* Comment.swift */,
 				7681D57C2869ECDF0081C644 /* Event.swift */,
 				766F385228733E3200EC9593 /* LoginInfo.swift */,
 				76ACABED28ACEF0400B961C4 /* Preview.swift */,
+				2C0DBE6F2881AC5B004A933A /* Block.swift */,
+				2C0DBE632881507A004A933A /* Notification.swift */,
+				2CB69D0A287443870089A922 /* MeInfo.swift */,
+				2CB8AAAF287F1EDA00BDA358 /* Topic.swift */,
 			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		7681D57E2869F0E50081C644 /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-				76AC78332871D6C100D303C4 /* HomeViewModel.swift */,
-				7681D583286A09DD0081C644 /* EventDetailViewModel.swift */,
-			);
-			path = ViewModels;
+			path = Model;
 			sourceTree = "<group>";
 		};
 		7681D588286A297F0081C644 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				76FCB54B286C35DE00AC4F70 /* DetailLabel.swift */,
 				76AC783B28721D0400D303C4 /* Alert.swift */,
 				76AC78432872E14A00D303C4 /* ActionSheet.swift */,
 				7681D589286A29970081C644 /* DateFormatter.swift */,
@@ -490,23 +955,14 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
-		769AEB37287C256B00C697FC /* Comments */ = {
+		769AEB37287C256B00C697FC /* Comment */ = {
 			isa = PBXGroup;
 			children = (
-				769AEB3A287C267300C697FC /* CommentsView.swift */,
-				769AEB38287C25CE00C697FC /* CommentsViewController.swift */,
-				769AEB3E287C4A1B00C697FC /* CommentsCell.swift */,
-				769AEB42287C85AC00C697FC /* CommentsViewModel.swift */,
+				763BB5CF29180E3E00FFAF8B /* View */,
+				763BB5D029180E4100FFAF8B /* ViewController */,
+				763BB5D129180E4700FFAF8B /* ViewModel */,
 			);
-			path = Comments;
-			sourceTree = "<group>";
-		};
-		76FCB54A286C35AD00AC4F70 /* CustomUI */ = {
-			isa = PBXGroup;
-			children = (
-				76FCB54B286C35DE00AC4F70 /* DetailLabel.swift */,
-			);
-			path = CustomUI;
+			path = Comment;
 			sourceTree = "<group>";
 		};
 		B02123CBA263BFA8ADC1249E /* Pods */ = {
