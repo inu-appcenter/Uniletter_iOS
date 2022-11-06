@@ -687,4 +687,21 @@ final class API {
             }
     }
     
+    // MARK: - Report
+    
+    /// 게시글 신고하기
+    static func reportEvent(eventId: Int, completion: @escaping() -> Void) {
+        networking(
+            urlStr: Address.reports.url + "/\(eventId)",
+            method: .post,
+            data: nil,
+            model: Report.self) { result in
+                switch result {
+                case .success(_):
+                    completion()
+                case .failure(let error):
+                    print(error)
+                }
+            }
+    }
 }
