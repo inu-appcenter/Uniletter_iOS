@@ -123,7 +123,7 @@ final class LoginManager {
         }
         
         // 애플 로그인 한 경우
-        if keyChain.read() != "" {
+        else if keyChain.read() != "" {
             if let data = UserDefaults.standard.data(forKey: "AppleLoginInfo") {
                 
                 appleLoginInfo = try? PropertyListDecoder().decode(
