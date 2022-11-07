@@ -267,7 +267,11 @@ extension ChangeViewController: PHPickerViewControllerDelegate {
                 DispatchQueue.main.async {
                     guard let selectedImage = image as? UIImage else { return }
                     
-                    self.viewModel.choiceImage = selectedImage
+                    let size = selectedImage.size.width
+                    
+                    let resizeImage = selectedImage.resizeImage(width: size, height: size)
+                    
+                    self.viewModel.choiceImage = resizeImage
                     self.userImage.image = self.viewModel.choiceImage
                 }
             }
