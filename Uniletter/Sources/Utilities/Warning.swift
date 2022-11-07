@@ -17,6 +17,7 @@ enum Warning {
     case loginNoti
     case loginReport
     case reportEvent
+    case reportComment
     
     var body: String {
         switch self {
@@ -40,6 +41,8 @@ enum Warning {
             return "로그인을 하셔야 신고를 하실 수 있습니다."
         case .reportEvent:
             return "게시글이 신고되었습니다."
+        case .reportComment:
+            return "댓글이 신고되었습니다."
         }
     }
 }

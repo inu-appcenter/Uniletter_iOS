@@ -156,7 +156,7 @@ extension CommentsViewController: UITableViewDataSource,
                     }
                 }
 
-                vc.reportUserCompletionClosure = {
+                vc.reportCommentCompletionClisure = {
                     self.present(AlertView, animated: true)
                     AlertView.cancleButtonClosure = {
                         self.presentWaringView(.loginReport)
@@ -172,6 +172,12 @@ extension CommentsViewController: UITableViewDataSource,
             } else {
                 vc = self.presentActionSheetView(.commentForUser)
                 vc.targetUserID = comment.userID
+                
+                // FIXME: 댓글 신고 API 업데이트되면 변경 예정
+                
+                vc.reportCommentCompletionClisure = {
+                    self.presentWaringView(.reportComment)
+                }
             }
             
             self.present(vc, animated: true)
