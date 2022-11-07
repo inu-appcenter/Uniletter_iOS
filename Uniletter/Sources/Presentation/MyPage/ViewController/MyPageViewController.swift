@@ -110,10 +110,12 @@ final class MyPageViewController: UIViewController {
 
 
     func fetchUserInfo() {
-        DispatchQueue.main.async {
-            self.myPageManager.setUserInfo {
-                self.userImage.image = self.myPageManager.setUserImage()
-                self.userName.text = self.myPageManager.setUserNickName()
+        self.myPageManager.setUserInfo {
+            self.myPageManager.setUserImage { image in
+                DispatchQueue.main.async {
+                    self.userImage.image = image
+                    self.userName.text = self.myPageManager.setUserNickName()
+                }
             }
         }
     }
