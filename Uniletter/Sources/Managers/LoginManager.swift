@@ -47,7 +47,7 @@ final class LoginManager {
         }
         
         // 애플 로그인 한 경우
-        if appleLogin == true {
+        else if appleLogin == true {
             
             let parameter: [String: Any] = [
                 "id": appleLoginInfo!.userID,
@@ -68,7 +68,7 @@ final class LoginManager {
         }
         
         // 둘다 로그인 하지 않은 경우
-        if googleLogin == false && appleLogin == false {
+        else {
             self.isLoggedIn = false
             completion()
         }
