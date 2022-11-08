@@ -120,6 +120,7 @@ final class LoginManager {
                 from: data)
             
             googleLogin = true
+            print("자동 로그인 정보 있음 - 구글")
         }
         
         // 애플 로그인 한 경우
@@ -131,7 +132,10 @@ final class LoginManager {
                     from: data)
                 
                 appleLogin = true
+                print("자동 로그인 정보 있음 - 애플")
             }
+        } else {
+            print("자동 로그인 정보 없음")
         }
     }
 }
