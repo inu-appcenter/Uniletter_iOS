@@ -24,7 +24,7 @@ class ChangeViewModel {
     }
     
     func patchUserInfo(_ nickname: String, _ imageUuid: String) {
-        let data: [String: Any] = [
+        let data: [String: String?] = [
                                     "nickname": nickname,
                                     "imageUuid": imageUuid
                                 ]
@@ -33,7 +33,7 @@ class ChangeViewModel {
     }
     
     func patchUserInfoNil(_ nickname: String) {
-        let data: [String: Any?] = [
+        let data: [String: String?] = [
                                     "nickname": nickname,
                                     "imageUuid": nil
                                     ]

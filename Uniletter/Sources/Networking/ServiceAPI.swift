@@ -580,7 +580,7 @@ final class API {
     // MARK: - My info
     
     /// 내 정보 업데이트
-    static func patchMeInfo(data: [String: Any]) {
+    static func patchMeInfo(data: [String: String?]) {
         
         if !myInfoIsPatching {
             myInfoIsPatching = true
