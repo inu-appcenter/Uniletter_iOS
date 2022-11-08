@@ -164,7 +164,7 @@ final class LoginViewController: UIViewController {
         request.requestedScopes = [.fullName, .email]
         
         let controller = ASAuthorizationController(authorizationRequests: [request])
-        controller.delegate = self as? ASAuthorizationControllerDelegate
+        controller.delegate = self
         controller.presentationContextProvider = self as? ASAuthorizationControllerPresentationContextProviding
         controller.performRequests()
     }
@@ -178,11 +178,8 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
      
             guard let code = credential.authorizationCode else { return }
             let autorizationCodeStr = String(data: code, encoding: .utf8)
-
-            let identityTokenStr = String(data: credential.identityToken!, encoding: .utf8)
             
             let user = credential.user
-            let email = credential.email
 
             let parameter = ["accessToken": autorizationCodeStr!]
             

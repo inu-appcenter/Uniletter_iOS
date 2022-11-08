@@ -203,8 +203,7 @@
 		7681D5812869F46A0081C644 /* ServiceAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceAPI.swift; sourceTree = "<group>"; };
 		7681D583286A09DD0081C644 /* EventDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailViewModel.swift; sourceTree = "<group>"; };
 		7681D589286A29970081C644 /* DateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatter.swift; sourceTree = "<group>"; };
-		768DA439291AA0420075CD9F /* Uniletter.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; name = Uniletter.entitlements; path = ../../../../.Trash/Uniletter.entitlements; sourceTree = "<group>"; };
-		768DA43A291AA2810075CD9F /* Uniletter.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Uniletter.entitlements; sourceTree = "<group>"; };
+		768DA43D291AAF820075CD9F /* Uniletter.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Uniletter.entitlements; sourceTree = "<group>"; };
 		769AEB38287C25CE00C697FC /* CommentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewController.swift; sourceTree = "<group>"; };
 		769AEB3A287C267300C697FC /* CommentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsView.swift; sourceTree = "<group>"; };
 		769AEB3C287C271E00C697FC /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
@@ -863,7 +862,6 @@
 		765BC9FB2868C00C0098BBF2 /* Uniletter */ = {
 			isa = PBXGroup;
 			children = (
-				768DA439291AA0420075CD9F /* Uniletter.entitlements */,
 				765BCA172868CAA60098BBF2 /* Supporting Files */,
 				765BCA152868CA7C0098BBF2 /* Resources */,
 				765BCA162868CA840098BBF2 /* Sources */,
@@ -899,7 +897,7 @@
 		765BCA172868CAA60098BBF2 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				768DA43A291AA2810075CD9F /* Uniletter.entitlements */,
+				768DA43D291AAF820075CD9F /* Uniletter.entitlements */,
 				2C6AB54B28B5017400FF6DC5 /* UniletterDebug.entitlements */,
 				765BCA0A2868C0110098BBF2 /* Info.plist */,
 				2C6AB54928B500A700FF6DC5 /* GoogleService-Info.plist */,
