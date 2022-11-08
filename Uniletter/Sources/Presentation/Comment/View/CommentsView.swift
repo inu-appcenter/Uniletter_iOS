@@ -64,6 +64,7 @@ final class CommentsView: UIView {
         let textView = UITextView()
         textView.font = .systemFont(ofSize: 16)
         textView.textColor = UIColor.customColor(.lightGray)
+        textView.sizeToFit()
         textView.text = "댓글을 입력해주세요."
         textView.isScrollEnabled = false
         textView.textContainerInset = UIEdgeInsets(

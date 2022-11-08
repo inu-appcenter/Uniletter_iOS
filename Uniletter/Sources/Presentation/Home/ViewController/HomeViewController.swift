@@ -73,6 +73,11 @@ final class HomeViewController: UIViewController {
     func setViewController() {
         homeView.collectionView.dataSource = self
         homeView.collectionView.delegate = self
+        homeView.collectionView.refreshControl = UIRefreshControl()
+        homeView.collectionView.refreshControl?.addTarget(
+                    self,
+                    action: #selector(didPullCollectionView(_:)),
+                    for: .valueChanged)
         
         homeView.writeButton.addTarget(
             self,
@@ -97,6 +102,7 @@ final class HomeViewController: UIViewController {
         self.viewModel.loadEvents() {
             DispatchQueue.main.async {
                 self.homeView.collectionView.reloadData()
+                self.homeView.collectionView.refreshControl?.endRefreshing()
                 self.setLoadingIndicator(false)
             }
         }
@@ -138,6 +144,11 @@ final class HomeViewController: UIViewController {
         homeView.gradientView.layer.addSublayer(gradient)
     }
     
+    // MARK: - Action
+    
+    @objc func didPullCollectionView(_ refreshControl: UIRefreshControl) {
+        fetchEvents()
+    }
     
     @objc func goToInfo(_ sender: UIBarButtonItem) {
         if loginManager.isLoggedIn {
@@ -230,6 +241,7 @@ extension HomeViewController: UICollectionViewDelegate,
             
             self.navigationController?.pushViewController(eventDetailViewController, animated: true)
         }
+    
 }
 
 extension HomeViewController: UIGestureRecognizerDelegate {

@@ -80,20 +80,24 @@ class MyPageManager {
         }
     }
 
-    func setUserImage() -> UIImage {
+    func setUserImage(completion: @escaping (UIImage) -> Void) {
         
         guard let imageUrl = me?.imageUrl else {
             self.userImage = UIImage(named: "UserImage")
-            return UIImage(named: "UserImage") ?? UIImage()
+            completion(UIImage(named: "UserImage") ?? UIImage())
+            return
         }
         
         let url = URL(string: imageUrl)!
-
-        guard let data = try? Data(contentsOf: url) else { return UIImage(named: "UserImage") ?? UIImage()
-        }
         
-        userImage = UIImage(data: data)!
-        return UIImage(data: data)!
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            if let data = data, let img = UIImage(data: data) {
+                self.userImage = UIImage(data: data)
+                completion(img)
+            } else {
+                completion(UIImage())
+            }
+        }.resume()
     }
     
     func setUserNickName() -> String {

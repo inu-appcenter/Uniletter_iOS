@@ -103,7 +103,11 @@ final class EventDetailViewController: UIViewController {
         eventDetailView.viewsLabel.text = viewModel.views
         eventDetailView.likeAndCommentsLabel.text = viewModel.likeAndComments
         
-        eventDetailView.profileImageView.kf.setImage(with: URL(string: viewModel.profileImage)!)
+        if viewModel.profileImage == "" {
+            eventDetailView.profileImageView.image = UIImage(named: "BasicProfileImage")
+        } else {
+            eventDetailView.profileImageView.kf.setImage(with: URL(string: viewModel.profileImage))
+        }
         eventDetailView.mainImageView.kf.setImage(with: URL(string: viewModel.mainImage)!)
         
         updateDDay()

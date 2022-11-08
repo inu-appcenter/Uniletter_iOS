@@ -20,10 +20,10 @@ final class ActionSheetViewController: UIViewController {
     var selectPhotoCompletionClosure: (() -> Void)?
     var basicPhotoCompletionClosure: (() -> Void)?
     var blockUserCompletionClousre: (() -> Void)?
-    var reportUserCompletionClosure: (() -> Void)?
     var notifyBeforeStartCompletionClosure: (() -> Void)?
     var notifyBeforeEndCompletionClosure: (() -> Void)?
     var reportEventCompletionClosure: (() -> Void)?
+    var reportCommentCompletionClisure: (() -> Void)?
     
     // 기능 별 필요한 Property
     var commentID: Int!
@@ -155,9 +155,11 @@ final class ActionSheetViewController: UIViewController {
     
     func reportUser() {
         self.dismiss(animated: true)
-        if !loginManager.isLoggedIn {
-            if let reportUserCompletionClosure = reportUserCompletionClosure {
-                reportUserCompletionClosure()
+        if loginManager.isLoggedIn {
+            // FIXME: 댓글 신고 API 업데이트되면 변경 예정
+            
+            API.reportEvent(eventId: 0) {
+                self.reportCommentCompletionClisure?()
             }
         }
     }
