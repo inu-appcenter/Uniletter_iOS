@@ -37,7 +37,9 @@ fileprivate func networking<T: Decodable>(
                     completion(.success(result))
                 case .failure(let error):
                     if error.errorDescription! != errorString {
-                        failedAlert()
+                        if urlStr != Address.loginRemembered.url {
+                            failedAlert()
+                        }
                     }
                     completion(.failure(error))
                 }
@@ -105,6 +107,12 @@ fileprivate func failedAlert() {
 }
 
 final class API {
+    
+    // MARK: - 중복 요청 방지 Property
+    
+    fileprivate static var eventIsCreating: Bool = false
+    fileprivate static var commentIsCreating: Bool = false
+    fileprivate static var myInfoIsPatching: Bool = false
     
     // MARK: - Login
     
@@ -232,25 +240,32 @@ final class API {
     
     /// 이벤트 생성하기
     static func createEvent(_ data: [String : String], completion: @escaping() -> Void) {
-        guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
-        
-        networking(
-            urlStr: Address.events.url,
-            method: .post,
-            data: data,
-            model: Event.self) { result in
-                switch result {
-                case .success(_):
-                    completion()
-                case .failure(let error):
-                    if error.errorDescription! == errorString {
-                        print("성공")
+        if !eventIsCreating {
+            eventIsCreating = true
+            
+            guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
+            
+            networking(
+                urlStr: Address.events.url,
+                method: .post,
+                data: data,
+                model: Event.self) { result in
+                    self.eventIsCreating = false
+                    switch result {
+                    case .success(_):
                         completion()
-                    } else {
-                        print(error)
+                    case .failure(let error):
+                        if error.errorDescription! == errorString {
+                            print("성공")
+                            completion()
+                        } else {
+                            print(error)
+                        }
                     }
                 }
-            }
+        }
+        
+        
     }
     
     /// 이벤트 삭제하기
@@ -320,26 +335,31 @@ final class API {
     
     /// 댓글 달기
     static func createComment(data: [String: Any], completion: @escaping () -> Void) {
-        guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
-        
-        networking(
-            urlStr: Address.comments.url,
-            method: .post,
-            data: data,
-            model: Comment.self) { result in
-                switch result {
-                case .success(_):
-                    print("성공")
-                case .failure(let error):
-                    if error.errorDescription! == errorString {
+        if !commentIsCreating {
+            commentIsCreating = true
+            guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
+            
+            networking(
+                urlStr: Address.comments.url,
+                method: .post,
+                data: data,
+                model: Comment.self) { result in
+                    self.commentIsCreating = false
+                    switch result {
+                    case .success(_):
                         print("성공")
-                        completion()
-                    } else {
-                        print(error)
+                    case .failure(let error):
+                        if error.errorDescription! == errorString {
+                            print("성공")
+                            completion()
+                        } else {
+                            print(error)
+                        }
+                        
                     }
-                    
                 }
-            }
+        }
+        
         
     }
     
@@ -561,24 +581,31 @@ final class API {
     
     /// 내 정보 업데이트
     static func patchMeInfo(data: [String: Any]) {
-        guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
         
-        networking(
-            urlStr: Address.me.url,
-            method: .patch,
-            data: data,
-            model: Me.self) { result in
-                switch result {
-                case .success(_):
-                    print("성공")
-                case .failure(let error):
-                    if error.errorDescription! == errorString {
+        if !myInfoIsPatching {
+            myInfoIsPatching = true
+            
+            guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
+            
+            networking(
+                urlStr: Address.me.url,
+                method: .patch,
+                data: data,
+                model: Me.self) { result in
+                    self.myInfoIsPatching = false
+                    switch result {
+                    case .success(_):
                         print("성공")
-                    } else {
-                        print(error)
+                    case .failure(let error):
+                        if error.errorDescription! == errorString {
+                            print("성공")
+                        } else {
+                            print(error)
+                        }
                     }
                 }
-            }
+        }
+        
     }
     
     /// 내 정보 이미지 업로드
