@@ -18,6 +18,15 @@ enum Warning {
     case loginReport
     case reportEvent
     case reportComment
+    case logout
+    case blockUser
+    case cancleBlock
+    case cancleSave
+    case cancleAlarm
+    case deleteComment
+    case deleteEvent
+    case changeEvent
+    case createEvent
     
     var body: String {
         switch self {
@@ -40,9 +49,27 @@ enum Warning {
         case .loginReport:
             return "로그인을 하셔야 신고를 하실 수 있습니다."
         case .reportEvent:
-            return "게시글이 신고되었습니다."
+            return "게시글이 신고되었습니다." //
         case .reportComment:
-            return "댓글이 신고되었습니다."
+            return "댓글이 신고되었습니다." //
+        case .logout:
+            return "로그아웃되었습니다." //
+        case .blockUser:
+            return "해당 사용자가 차단되었습니다." //
+        case .cancleBlock:
+            return "차단이 해제되었습니다." //
+        case .cancleSave:
+            return "저장이 취소되었습니다." //
+        case .cancleAlarm:
+            return "알림이 취소되었습니다." //
+        case .deleteComment:
+            return "댓글이 삭제되었습니다." //
+        case .deleteEvent:
+            return "게시글이 삭제되었습니다." //
+        case .changeEvent:
+            return "게시글이 수정되었습니다." //
+        case .createEvent:
+            return "게시글이 작성되었습니다." //
         }
     }
 }

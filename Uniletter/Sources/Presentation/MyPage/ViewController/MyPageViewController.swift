@@ -12,6 +12,8 @@ import Kingfisher
 final class MyPageViewController: UIViewController {
 
     var myPageManager = MyPageManager.shared
+    
+    var logoutCompletionClosure: (() -> Void)?
 
     let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -261,10 +263,12 @@ extension MyPageViewController: UITableViewDelegate, UITableViewDataSource {
         if indexPath.section == 3 && indexPath.row == 0 {
             LoginManager.shared.logout()
             
-            let homeViewController = UINavigationController(rootViewController: HomeViewController())
-            view.window?.rootViewController = homeViewController
-            view.window?.rootViewController?.dismiss(animated: false)
-
+            self.navigationController?.popToRootViewController(animated: true)
+            
+            if let logoutCompletionClosure = logoutCompletionClosure {
+                logoutCompletionClosure()
+            }
+            
         } else {
 
             let pushView = myPageManager.viewOfSection(indexPath.section, indexPath.row)
