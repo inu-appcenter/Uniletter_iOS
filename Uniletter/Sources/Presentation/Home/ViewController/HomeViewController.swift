@@ -221,8 +221,8 @@ extension HomeViewController: UICollectionViewDelegate,
         
         cell.bookmarkButtonTapHandler = {
             if self.loginManager.isLoggedIn {
-                cell.homeCellView.bookmarkButton.isSelected = !cell.homeCellView.bookmarkButton.isSelected
-                guard let like = event.likedByMe else { return }
+                let like = cell.homeCellView.bookmarkButton.isSelected
+                cell.homeCellView.bookmarkButton.isSelected = !like
                 if like {
                     self.viewModel.deleteLike(event.id)
                 } else {
