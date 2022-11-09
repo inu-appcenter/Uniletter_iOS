@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 
 final class NoticeAlertView: UIView {
-    
+       
     // MARK: - UI
     lazy var backgroundView : UIView = {
         let view = UIView()
@@ -49,8 +49,25 @@ final class NoticeAlertView: UIView {
     lazy var okButton: UIButton = {
         let button = UIButton()
         
-        button.createCompletionButton("확인")        
+        button.createCompletionButton("확인")
+        
         return button
+    }()
+    
+    lazy var noButton: UIButton = {
+        let button = UIButton()
+        
+        button.createCompletionButton("취소")
+        
+        return button
+    }()
+    
+    let separatorLine: UIView = {
+        let view = UIView()
+        
+        view.backgroundColor = .white
+        
+        return view
     }()
     
     let recognizeTapBackground = UITapGestureRecognizer()
@@ -70,7 +87,7 @@ final class NoticeAlertView: UIView {
         [backgroundView, alertView]
             .forEach { addSubview($0) }
         
-        [titleLabel, bodyLabel, okButton]
+        [titleLabel, bodyLabel]
             .forEach { alertView.addSubview($0) }
         
         backgroundView.addGestureRecognizer(recognizeTapBackground)
@@ -88,7 +105,6 @@ final class NoticeAlertView: UIView {
             $0.center.equalToSuperview()
             $0.leading.equalToSuperview().inset(20)
             $0.trailing.equalToSuperview().inset(20)
-            $0.bottom.equalTo(okButton.snp.bottom).inset(-16)
         }
         
         titleLabel.snp.makeConstraints {
@@ -96,12 +112,59 @@ final class NoticeAlertView: UIView {
             $0.centerX.equalToSuperview()
         }
         
-        
-        okButton.snp.makeConstraints {
-            $0.top.equalTo(bodyLabel.snp.bottom).offset(16)
-            $0.centerX.equalToSuperview()
-            $0.leading.equalTo(alertView).offset(16)
-            $0.height.equalTo(44)
+    }
+    
+    func setViewOptionCount(_ bool: Bool) {
+        if bool {
+            
+            [ noButton,
+              okButton,
+              separatorLine
+            ] .forEach { alertView.addSubview($0) }
+            
+            noButton.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
+            okButton.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner]
+            
+            noButton.snp.makeConstraints {
+                $0.top.equalTo(bodyLabel.snp.bottom).offset(16)
+                $0.leading.equalTo(alertView).offset(16)
+                $0.trailing.equalTo(alertView.snp.centerX)
+                $0.height.equalTo(44)
+            }
+            
+            okButton.snp.makeConstraints {
+                $0.top.equalTo(bodyLabel.snp.bottom).offset(16)
+                $0.leading.equalTo(alertView.snp.centerX)
+                $0.trailing.equalTo(alertView).inset(16)
+                $0.height.equalTo(44)
+            }
+            
+            alertView.snp.makeConstraints {
+                $0.bottom.equalTo(noButton.snp.bottom).inset(-16)
+            }
+            
+            separatorLine.snp.makeConstraints {
+                $0.top.equalTo(noButton)
+                $0.centerX.equalToSuperview()
+                $0.height.equalTo(44)
+                $0.width.equalTo(1)
+            }
+            
+        } else {
+            
+            alertView.addSubview(okButton)
+
+            okButton.snp.makeConstraints {
+                $0.top.equalTo(bodyLabel.snp.bottom).offset(16)
+                $0.centerX.equalToSuperview()
+                $0.leading.equalTo(alertView).offset(16)
+                $0.height.equalTo(44)
+            }
+            
+            alertView.snp.makeConstraints {
+                $0.bottom.equalTo(okButton.snp.bottom).inset(-16)
+            }
+            
         }
     }
 }

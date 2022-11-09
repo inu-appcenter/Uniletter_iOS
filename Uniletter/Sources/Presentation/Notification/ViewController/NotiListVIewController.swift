@@ -64,7 +64,7 @@ class NotiListViewController: UIViewController {
     }
     
     @objc func infoButtonClicked(_ sender: UIGestureRecognizer) {
-        presentNoticeAlertView(.notice)
+        presentNoticeAlertView(noticeAlert: .notice, check: false)
     }
 }
 

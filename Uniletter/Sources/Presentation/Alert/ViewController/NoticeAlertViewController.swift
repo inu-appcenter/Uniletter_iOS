@@ -10,6 +10,8 @@ import UIKit
 final class NoticeAlertViewController: UIViewController {
     let noticeAlertView = NoticeAlertView()
     var noticeAlert: NoticeAlert?
+    var check: Bool = false
+    var okButtonCompletionClosure: (() -> Void)?
     
     override func loadView() {
         view = noticeAlertView
@@ -21,6 +23,7 @@ final class NoticeAlertViewController: UIViewController {
     }
     
     func setViewController() {
+        noticeAlertView.setViewOptionCount(check)
         noticeAlertView.titleLabel.text = noticeAlert?.title
         noticeAlertView.bodyLabel.text = noticeAlert?.body
         
@@ -30,11 +33,25 @@ final class NoticeAlertViewController: UIViewController {
         
         noticeAlertView.okButton.addTarget(
             self,
+            action: #selector(okButtonClicked(_:)),
+            for: .touchUpInside)
+        
+        noticeAlertView.noButton.addTarget(
+            self,
             action: #selector(dismissViewController(_:)),
             for: .touchUpInside)
     }
     
     @objc func dismissViewController(_ sender: Any) {
         dismiss(animated: true)
+    }
+    
+    @objc func okButtonClicked(_ sender: UIGestureRecognizer) {
+        
+        dismiss(animated: true)
+        
+        if let okButtonCompletionClosure = okButtonCompletionClosure {
+            okButtonCompletionClosure()
+        }
     }
 }

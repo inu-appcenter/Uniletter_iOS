@@ -250,7 +250,21 @@ final class MyPageViewController: UIViewController {
     }
     
     @objc func deleteAccountButtonClicked(_ sender: UIGestureRecognizer) {
-        myPageManager.deleteAccount()
+        
+        let firstNoticeVC = getNoticeAlertVC(noticeAlert: .deleteAccountFirst, check: true)
+        
+        present(firstNoticeVC, animated: true)
+
+        firstNoticeVC.okButtonCompletionClosure = {
+            let secondNoticeVC = self.getNoticeAlertVC(noticeAlert: .deleteAccountSecond, check: true)
+            
+            secondNoticeVC.okButtonCompletionClosure = {
+                // TODO: 회원탈퇴 처리
+                
+                print("마지막 회원탈퇴 동의하였음")
+            }
+            self.present(secondNoticeVC, animated: true)
+        }
     }
 }
 

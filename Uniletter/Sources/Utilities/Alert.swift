@@ -38,6 +38,8 @@ enum NoticeAlert {
     case deadlineNotice
     case deleteNotice
     case block
+    case deleteAccountFirst
+    case deleteAccountSecond
     
     var title: String {
         switch self {
@@ -47,6 +49,8 @@ enum NoticeAlert {
         case .deadlineNotice: return "마감 전 알림신청"
         case .deleteNotice: return "알림취소"
         case .block: return "정지 알림"
+        case .deleteAccountFirst: return "회원 탈퇴"
+        case .deleteAccountSecond: return "회원 탈퇴"
         }
     }
     
@@ -58,6 +62,8 @@ enum NoticeAlert {
         case .deadlineNotice: return "마감 전 알림 신청이 완료 되었습니다\n마감 하루전에 알림 드릴게요 :)"
         case .deleteNotice: return "알림을 정말 취소하시겠어요?\nㅠ0ㅠ"
         case .block: return "사용자 다수의 신고로\n 글작성과 댓글작성이 정지되었습니다."
+        case .deleteAccountFirst: return "\n회원 탈퇴를 하시겠습니까?\n"
+        case .deleteAccountSecond: return "회원 탈퇴시 작성한 글과 댓글 등의 정보는 \n완전히 삭제되며 복구가 불가능합니다.\n정말로 회원 탈퇴를 하시겠습니까? "
         }
     }
 }
