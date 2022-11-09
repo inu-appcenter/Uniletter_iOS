@@ -7,6 +7,7 @@
 import Foundation
 
 enum Warning {
+    case none
     case comment
     case writing
     case login
@@ -16,6 +17,7 @@ enum Warning {
     case loginBlock
     case loginNoti
     case loginReport
+    case loginRemembered
     case reportEvent
     case reportComment
     case logout
@@ -30,6 +32,8 @@ enum Warning {
     
     var body: String {
         switch self {
+        case .none, .loginRemembered:
+            return ""
         case .comment:
             return "댓글은 300자 이내로 입력가능합니다."
         case .writing:

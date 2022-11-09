@@ -19,6 +19,7 @@ fileprivate func networking<T: Decodable>(
     method: HTTPMethod,
     data: Data?,
     model: T.Type,
+    apiType: Warning,
     completion: @escaping(Result<T, AFError>) -> Void) {
         guard let url = URL(string: baseURL + urlStr) else {
             print("URL을 찾을 수 없습니다.")
@@ -35,12 +36,13 @@ fileprivate func networking<T: Decodable>(
             .responseDecodable(of: model.self) { response in
                 switch response.result {
                 case .success(let result):
+                    networkingAlert(apiType, true)
                     completion(.success(result))
                 case .failure(let error):
                     if error.errorDescription! != errorString {
-                        if urlStr != Address.loginRemembered.url {
-                            failedAlert()
-                        }
+                        networkingAlert(apiType, false)
+                    } else {
+                        networkingAlert(apiType, true)
                     }
                     completion(.failure(error))
                 }
@@ -72,71 +74,75 @@ fileprivate func uploadNetworking<T: Decodable>(
                 completion(.success(result))
             case .failure(let error):
                 completion(.failure(error))
-                failedAlert()
+                networkingAlert(.none, false)
             }
         }
     }
 
-/// 네트워킹 실패 알림
-fileprivate func failedAlert() {
+/// 네트워킹 결과 알림
+fileprivate func networkingAlert(_ type: Warning, _ isSuccessed: Bool) {
     DispatchQueue.main.async {
-        // 최상단에 있는 ViewController
-
-        guard let firstScene = UIApplication.shared.connectedScenes.first
-                as? UIWindowScene else {
-            return
-        }
-
-        guard let firstWindow = firstScene.windows.first else {
-            return
-        }
-
-        guard let vc = firstWindow.rootViewController else {
+        guard let firstScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let firstWindow = firstScene.windows.first,
+              let vc = firstWindow.rootViewController else {
+              // vc = 최상단에 있는 ViewController
             return
         }
         
-        let alertVC = UIAlertController(
-            title: "네트워크 연결 상태가 좋지 않거나 네트워킹에 실패하였습니다.\n다시 시도해주세요.",
-            message: nil,
-            preferredStyle: .alert)
-        let cancleAction = UIAlertAction(title: "확인", style: .default)
-        
-        alertVC.addAction(cancleAction)
-        
-        vc.present(alertVC, animated: true)
+        if type == .blockUser {
+           showSuccessToast(vc, type)
+        } else if isSuccessed && type != .none && type != .loginRemembered {
+            showSuccessToast(vc, type)
+        } else if !isSuccessed && type != .loginRemembered {
+            switch type {
+            case .cancleBlock,
+                 .cancleSave,
+                 .cancleAlarm,
+                 .deleteComment,
+                 .deleteEvent,
+                 .changeEvent,
+                 .createEvent:
+                showSuccessToast(vc, type)
+            default:
+                showFailAlert(vc)
+            }
+        }
     }
 }
 
-/// 네트워킹 성공 알림
-fileprivate func successAlert(_ warningType: Warning) {
-    DispatchQueue.main.async {
-        // 최상단에 있는 ViewController
+/// 성공 메시지
+fileprivate func showSuccessToast(_ vc: UIViewController,_ type: Warning) {
+    let width = UIScreen.main.bounds.width
+    let height = UIScreen.main.bounds.height / 1.3
+    
+    let warningViewWidth = width - 40
+    let toastPointX = width / 2
+    let toastPointY = type == .writing ? height - 52 : height
+    
+    let warningView = WarningView(frame: CGRect(
+        x: 0,
+        y: 0,
+        width: warningViewWidth,
+        height: 52))
+    warningView.warninglabel.text = type.body
 
-        guard let firstScene = UIApplication.shared.connectedScenes.first
-                as? UIWindowScene else {
-            return
-        }
+    vc.view.showToast(
+        warningView,
+        duration: 1.5,
+        point: CGPoint(x: toastPointX, y: toastPointY))
+}
 
-        guard let firstWindow = firstScene.windows.first else {
-            return
-        }
-
-        guard let vc = firstWindow.rootViewController else {
-            return
-        }
-        
-        let width = UIScreen.main.bounds.width
-        let height = UIScreen.main.bounds.height / 1.3
-        
-        let warningViewWidth = width - 40
-        let toastPointX = width / 2
-        let toastPointY = warningType == .writing ? height - 52 : height
-        
-        let warningView = WarningView(frame: CGRect(x: 0, y: 0, width: warningViewWidth, height: 52))
-        warningView.warninglabel.text = warningType.body
-
-        vc.view.showToast(warningView, duration: 1.5, point: CGPoint(x: toastPointX, y: toastPointY))
-    }
+/// 실패 메시지
+fileprivate func showFailAlert(_ vc: UIViewController) {
+    let alertVC = UIAlertController(
+        title: "네트워크 연결 상태가 좋지 않거나 네트워킹에 실패하였습니다.\n다시 시도해주세요.",
+        message: nil,
+        preferredStyle: .alert)
+    let cancleAction = UIAlertAction(title: "확인", style: .default)
+    
+    alertVC.addAction(cancleAction)
+    
+    vc.present(alertVC, animated: true)
 }
 
 final class API {
@@ -150,7 +156,10 @@ final class API {
     // MARK: - Login
     
     /// 애플 로그인
-    static func appleOAuthLogin(_ params: [String: String], completion: @escaping(LoginInfo) -> Void) {
+    static func appleOAuthLogin(
+        _ params: [String: String],
+        completion: @escaping(LoginInfo) -> Void)
+    {
         guard let data = try? JSONSerialization.data(
             withJSONObject: params, options: .prettyPrinted) else {
             return
@@ -160,7 +169,8 @@ final class API {
             urlStr: Address.loginOauthApple.url,
             method: .post,
             data: data,
-            model: LoginInfo.self) { result in
+            model: LoginInfo.self,
+            apiType: .none) { result in
                 switch result {
                 case .success(let info):
                     completion(info)
@@ -182,7 +192,8 @@ final class API {
             urlStr: Address.loginOauthGoogle.url,
             method: .post,
             data: data,
-            model: LoginInfo.self) { result in
+            model: LoginInfo.self,
+            apiType: .none) { result in
                 switch result {
                 case .success(let info):
                     completion(info)
@@ -202,7 +213,8 @@ final class API {
             urlStr: Address.loginRemembered.url,
             method: .post,
             data: data,
-            model: LoginInfo.self) { result in
+            model: LoginInfo.self,
+            apiType: .loginRemembered) { result in
                 switch result {
                 case .success(let info):
                     completion(info)
@@ -223,7 +235,8 @@ final class API {
             urlStr: Address.token.url,
             method: .post,
             data: data,
-            model: String.self) { result in
+            model: String.self,
+            apiType: .none) { result in
                 switch result {
                 case .success(_):
                     completion()
@@ -245,7 +258,8 @@ final class API {
             urlStr: Address.events.url,
             method: .get,
             data: nil,
-            model: [Event].self) { result in
+            model: [Event].self,
+            apiType: .none) { result in
                 switch result {
                 case .success(let events):
                     completion(events)
@@ -261,7 +275,8 @@ final class API {
             urlStr: Address.events.url + "/\(id)",
             method: .get,
             data: nil,
-            model: Event.self) { result in
+            model: Event.self,
+            apiType: .none) { result in
                 switch result {
                 case .success(let events):
                     completion(events)
@@ -282,7 +297,8 @@ final class API {
                 urlStr: Address.events.url,
                 method: .post,
                 data: data,
-                model: Event.self) { result in
+                model: Event.self,
+                apiType: .createEvent) { result in
                     self.eventIsCreating = false
                     switch result {
                     case .success(_):
@@ -291,7 +307,6 @@ final class API {
                         if error.errorDescription! == errorString {
                             print("성공")
                             completion()
-                            successAlert(.createEvent)
                         } else {
                             print(error)
                         }
@@ -308,14 +323,14 @@ final class API {
             urlStr: Address.events.url + "/\(id)",
             method: .delete,
             data: nil,
-            model: Event.self) { result in
+            model: Event.self,
+            apiType: .deleteEvent) { result in
                 switch result {
                 case .success(_):
                     completion()
                 case .failure(let error):
                     if error.errorDescription! == errorString {
                         completion()
-                        successAlert(.deleteEvent)
                     } else {
                         print(error)
                     }
@@ -334,7 +349,8 @@ final class API {
             urlStr: Address.events.url + "/\(id)",
             method: .patch,
             data: data,
-            model: String.self) { result in
+            model: String.self,
+            apiType: .changeEvent) { result in
                 print(result)
                 switch result {
                 case .success(_):
@@ -342,7 +358,6 @@ final class API {
                 case .failure(let error):
                     if error.errorDescription! == errorString {
                         completion()
-                        successAlert(.changeEvent)
                     } else {
                         print(error)
                     }
@@ -358,7 +373,8 @@ final class API {
             urlStr: Address.comments.url + "?eventId=\(id)",
             method: .get,
             data: nil,
-            model: [Comment].self) { result in
+            model: [Comment].self,
+            apiType: .none) { result in
                 switch result {
                 case .success(let comments):
                     completion(comments)
@@ -378,7 +394,8 @@ final class API {
                 urlStr: Address.comments.url,
                 method: .post,
                 data: data,
-                model: Comment.self) { result in
+                model: Comment.self,
+                apiType: .none) { result in
                     self.commentIsCreating = false
                     switch result {
                     case .success(_):
@@ -404,7 +421,8 @@ final class API {
             urlStr: Address.comments.url + "/\(id)",
             method: .delete,
             data: nil,
-            model: String.self) { result in
+            model: String.self,
+            apiType: .deleteComment) { result in
                 switch result {
                 case .success(_):
                     print("성공")
@@ -412,7 +430,6 @@ final class API {
                     if error.errorDescription! == errorString {
                         print("성공")
                         completion()
-                        successAlert(.deleteComment)
                     } else {
                         print(error)
                     }
@@ -432,7 +449,8 @@ final class API {
             urlStr: Address.likes.url,
             method: .post,
             data: data,
-            model: String.self) { result in
+            model: String.self,
+            apiType: .none) { result in
                 switch result {
                 case .success(_):
                     print("성공")
@@ -454,14 +472,14 @@ final class API {
             urlStr: Address.likes.url,
             method: .delete,
             data: data,
-            model: likes.self) { result in
+            model: likes.self,
+            apiType: .cancleSave) { result in
                 switch result {
                 case .success(_):
                     print("성공")
                 case .failure(let error):
                     if error.errorDescription! == errorString {
                         completion()
-                        successAlert(.cancleSave)
                     } else {
                         print(error)
                     }
@@ -475,7 +493,8 @@ final class API {
             urlStr: Address.likes.url,
             method: .get,
             data: nil,
-            model: [Event].self) { result in
+            model: [Event].self,
+            apiType: .none) { result in
                 switch result {
                 case .success(let Events):
                     completion(Events)
@@ -496,7 +515,8 @@ final class API {
             urlStr: Address.nofifications.url,
             method: .post,
             data: data,
-            model: String.self) { result in
+            model: String.self,
+            apiType: .none) { result in
                 switch result {
                 case .success(_):
                     completion()
@@ -517,7 +537,8 @@ final class API {
             urlStr: Address.nofifications.url,
             method: .get,
             data: nil,
-            model: [Noti].self) { result in
+            model: [Noti].self,
+            apiType: .none) { result in
                 switch result {
                 case .success(let Events):
                     completion(Events)
@@ -535,14 +556,14 @@ final class API {
             urlStr: Address.nofifications.url,
             method: .delete,
             data: data,
-            model: Noti.self) { result in
+            model: Noti.self,
+            apiType: .cancleAlarm) { result in
                 switch result {
                 case .success(_):
                     print("성공")
                 case .failure(let error):
                     if error.errorDescription! == errorString {
                         completion()
-                        successAlert(.cancleAlarm)
                     } else {
                         print(error)
                     }
@@ -558,7 +579,8 @@ final class API {
             urlStr: Address.block.url,
             method: .get,
             data: nil,
-            model: [Block].self) { result in
+            model: [Block].self,
+            apiType: .none) { result in
                 switch result {
                 case .success(let blocks):
                     completion(blocks)
@@ -576,7 +598,8 @@ final class API {
             urlStr: Address.block.url,
             method: .delete,
             data: data,
-            model: Block.self) { result in
+            model: Block.self,
+            apiType: .cancleBlock) { result in
                 switch result {
                 case .success(_):
                     print("성공")
@@ -585,7 +608,6 @@ final class API {
                     if error.errorDescription! == errorString {
                         print("성공")
                         completion()
-                        successAlert(.cancleBlock)
                     } else {
                         print(error)
                     }
@@ -601,15 +623,14 @@ final class API {
             urlStr: Address.block.url,
             method: .post,
             data: data,
-            model: Block.self) { result in
+            model: Block.self,
+            apiType: .blockUser) { result in
                 switch result {
                 case .success(_):
                     completion()
-                    successAlert(.blockUser)
                 case .failure(let error):
                     if error.errorDescription! == errorString {
                         completion()
-                        successAlert(.blockUser)
                     } else {
                         print(error)
                     }
@@ -631,7 +652,8 @@ final class API {
                 urlStr: Address.me.url,
                 method: .patch,
                 data: data,
-                model: Me.self) { result in
+                model: Me.self,
+                apiType: .none) { result in
                     self.myInfoIsPatching = false
                     switch result {
                     case .success(_):
@@ -672,7 +694,8 @@ final class API {
             urlStr: Address.me.url,
             method: .get,
             data: nil,
-            model: Me.self) { result in
+            model: Me.self,
+            apiType: .none) { result in
                 switch result {
                 case .success(let Me):
                     completion(Me)
@@ -688,7 +711,8 @@ final class API {
             urlStr: Address.mycomments.url,
             method: .get,
             data: nil,
-            model: [Comment].self) { result in
+            model: [Comment].self,
+            apiType: .none) { result in
                 switch result {
                 case .success(let myComments):
                     completion(myComments)
@@ -704,7 +728,8 @@ final class API {
             urlStr: Address.myevents.url,
             method: .get,
             data: nil,
-            model: [Event].self) { result in
+            model: [Event].self,
+            apiType: .none) { result in
                 switch result {
                 case .success(let myEvents):
                     completion(myEvents)
@@ -722,7 +747,8 @@ final class API {
             urlStr: Address.topics.url,
             method: .get,
             data: nil,
-            model: Topic.self) { result in
+            model: Topic.self,
+            apiType: .none) { result in
                 switch result {
                 case .success(let topics):
                     completion(topics)
@@ -740,7 +766,8 @@ final class API {
             urlStr: Address.topics.url,
             method: .put,
             data: data,
-            model: Int.self) { result in
+            model: Int.self,
+            apiType: .none) { result in
                 switch result {
                 case .success(_):
                     print("성공")
@@ -762,7 +789,8 @@ final class API {
             urlStr: Address.reports.url + "/\(eventId)",
             method: .post,
             data: nil,
-            model: Report.self) { result in
+            model: Report.self,
+            apiType: .none) { result in
                 switch result {
                 case .success(_):
                     completion()
