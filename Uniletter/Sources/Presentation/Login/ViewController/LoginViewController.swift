@@ -124,9 +124,8 @@ final class LoginViewController: UIViewController {
     func goToHomeViewController() {
         let viewController = HomeViewController()
         let navigationController = UINavigationController(rootViewController: viewController)
-        navigationController.modalPresentationStyle = .fullScreen
         
-        present(navigationController, animated: true)
+        view.window?.rootViewController = navigationController
     }
     
     // MARK: - 구글 로그인
