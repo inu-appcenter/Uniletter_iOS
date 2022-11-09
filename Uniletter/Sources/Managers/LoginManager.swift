@@ -20,6 +20,7 @@ final class LoginManager {
     var isLoggedIn = false
     var googleLogin = false
     var appleLogin = false
+    var firstLogin = false
     
     // MARK: - Funcs
     func checkLogin(completion: @escaping() -> Void) {
@@ -42,6 +43,7 @@ final class LoginManager {
                 
                 self.saveGoogleLoginInfo(info)
                 self.isLoggedIn = true
+                self.firstLogin = true
                 completion()
             }
         }
@@ -63,6 +65,7 @@ final class LoginManager {
                 
                 self.saveAppleLoginInfo(info)
                 self.isLoggedIn = true
+                self.firstLogin = true
                 completion()
             }
         }
@@ -96,6 +99,8 @@ final class LoginManager {
         for cookie in cookies {
             HTTPCookieStorage.shared.deleteCookie(cookie)
         }
+        
+        firstLogin = false
         
         // 구글 로그인, 애플 로그인 분기 처리
         if googleLogin {

@@ -16,6 +16,7 @@ final class EventDetailViewController: UIViewController {
     let loginManager = LoginManager.shared
     var id: Int = 0
     var bookmarkButton = UIButton()
+    var userBlockCompletionClosure: (() -> Void)?
     
     // MARK: - Life cycle
     override func loadView() {

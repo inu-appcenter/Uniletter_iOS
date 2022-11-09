@@ -110,14 +110,18 @@ final class HomeViewController: UIViewController {
     
     func checkLogin() {
         setLoadingIndicator(true)
-        loginManager.checkLogin() {
-            print("checkLogin() - 로그인 상태: \(self.loginManager.isLoggedIn)")
-            if self.loginManager.isLoggedIn == true {
-                self.viewModel.postFCM()
-                self.presentWaringView(.login)
+        
+        if !loginManager.firstLogin {
+            loginManager.checkLogin() {
+                print("checkLogin() - 로그인 상태: \(self.loginManager.isLoggedIn)")
+                if self.loginManager.isLoggedIn == true {
+                    self.viewModel.postFCM()
+                    self.presentWaringView(.login)
+                }
             }
-            self.fetchEvents()
         }
+        
+        fetchEvents()
     }
     
     func setLoadingIndicator(_ bool: Bool) {
@@ -154,7 +158,11 @@ final class HomeViewController: UIViewController {
         if loginManager.isLoggedIn {
             let myPageViewController = MyPageViewController()
             self.navigationController?.pushViewController(myPageViewController, animated: true)
-
+            
+            myPageViewController.logoutCompletionClosure = {
+                self.checkLogin()
+                self.presentWaringView(.logout)
+            }
         } else {
             presentAlertView(.login)
         }
@@ -241,7 +249,6 @@ extension HomeViewController: UICollectionViewDelegate,
             
             self.navigationController?.pushViewController(eventDetailViewController, animated: true)
         }
-    
 }
 
 extension HomeViewController: UIGestureRecognizerDelegate {

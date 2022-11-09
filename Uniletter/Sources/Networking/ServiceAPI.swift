@@ -7,6 +7,7 @@
 
 import Alamofire
 import UIKit
+import Toast_Swift
 
 /// String값 반환 처리
 fileprivate let errorString =
@@ -103,6 +104,38 @@ fileprivate func failedAlert() {
         alertVC.addAction(cancleAction)
         
         vc.present(alertVC, animated: true)
+    }
+}
+
+/// 네트워킹 성공 알림
+fileprivate func successAlert(_ warningType: Warning) {
+    DispatchQueue.main.async {
+        // 최상단에 있는 ViewController
+
+        guard let firstScene = UIApplication.shared.connectedScenes.first
+                as? UIWindowScene else {
+            return
+        }
+
+        guard let firstWindow = firstScene.windows.first else {
+            return
+        }
+
+        guard let vc = firstWindow.rootViewController else {
+            return
+        }
+        
+        let width = UIScreen.main.bounds.width
+        let height = UIScreen.main.bounds.height / 1.3
+        
+        let warningViewWidth = width - 40
+        let toastPointX = width / 2
+        let toastPointY = warningType == .writing ? height - 52 : height
+        
+        let warningView = WarningView(frame: CGRect(x: 0, y: 0, width: warningViewWidth, height: 52))
+        warningView.warninglabel.text = warningType.body
+
+        vc.view.showToast(warningView, duration: 1.5, point: CGPoint(x: toastPointX, y: toastPointY))
     }
 }
 
@@ -258,6 +291,7 @@ final class API {
                         if error.errorDescription! == errorString {
                             print("성공")
                             completion()
+                            successAlert(.createEvent)
                         } else {
                             print(error)
                         }
@@ -280,8 +314,8 @@ final class API {
                     completion()
                 case .failure(let error):
                     if error.errorDescription! == errorString {
-                        print("성공")
                         completion()
+                        successAlert(.deleteEvent)
                     } else {
                         print(error)
                     }
@@ -308,6 +342,7 @@ final class API {
                 case .failure(let error):
                     if error.errorDescription! == errorString {
                         completion()
+                        successAlert(.changeEvent)
                     } else {
                         print(error)
                     }
@@ -377,6 +412,7 @@ final class API {
                     if error.errorDescription! == errorString {
                         print("성공")
                         completion()
+                        successAlert(.deleteComment)
                     } else {
                         print(error)
                     }
@@ -425,6 +461,7 @@ final class API {
                 case .failure(let error):
                     if error.errorDescription! == errorString {
                         completion()
+                        successAlert(.cancleSave)
                     } else {
                         print(error)
                     }
@@ -505,6 +542,7 @@ final class API {
                 case .failure(let error):
                     if error.errorDescription! == errorString {
                         completion()
+                        successAlert(.cancleAlarm)
                     } else {
                         print(error)
                     }
@@ -547,6 +585,7 @@ final class API {
                     if error.errorDescription! == errorString {
                         print("성공")
                         completion()
+                        successAlert(.cancleBlock)
                     } else {
                         print(error)
                     }
@@ -565,11 +604,12 @@ final class API {
             model: Block.self) { result in
                 switch result {
                 case .success(_):
-                    print("성공")
                     completion()
+                    successAlert(.blockUser)
                 case .failure(let error):
                     if error.errorDescription! == errorString {
                         completion()
+                        successAlert(.blockUser)
                     } else {
                         print(error)
                     }
