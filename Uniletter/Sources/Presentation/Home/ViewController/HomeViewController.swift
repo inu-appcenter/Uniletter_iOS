@@ -113,15 +113,17 @@ final class HomeViewController: UIViewController {
         
         if !loginManager.firstLogin {
             loginManager.checkLogin() {
+                self.fetchEvents()
                 print("checkLogin() - 로그인 상태: \(self.loginManager.isLoggedIn)")
                 if self.loginManager.isLoggedIn == true {
                     self.viewModel.postFCM()
                     self.presentWaringView(.login)
                 }
             }
+        } else {
+            fetchEvents()
         }
         
-        fetchEvents()
     }
     
     func setLoadingIndicator(_ bool: Bool) {

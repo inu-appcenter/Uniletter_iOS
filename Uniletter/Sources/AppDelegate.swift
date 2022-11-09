@@ -114,6 +114,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
     
+    public func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+//        let firebaseToken = fcmToken ?? ""
+    }
+    
     public func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler([.list, .banner, .badge, .sound])
     }
