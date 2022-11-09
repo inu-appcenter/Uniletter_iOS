@@ -24,7 +24,6 @@ final class ActionSheetViewController: UIViewController {
     var notifyBeforeEndCompletionClosure: (() -> Void)?
     var reportEventCompletionClosure: (() -> Void)?
     var reportCommentCompletionClisure: (() -> Void)?
-    var deleteCommentCompletionClosure: (() -> Void)?
     
     // 기능 별 필요한 Property
     var commentID: Int!
@@ -239,10 +238,6 @@ final class ActionSheetViewController: UIViewController {
     func deleteComment(_ commentID: Int) {
         API.deleteComment(commentID) {
             self.dismiss(animated: true)
-            
-            if let deleteCommentCompletionClosure = self.deleteCommentCompletionClosure {
-                deleteCommentCompletionClosure()
-            }
         }
         
         NotificationCenter.default.post(

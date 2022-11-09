@@ -35,7 +35,6 @@ final class WritingViewController: UIViewController {
     var event: Event?
     var page = 0
     let writingManager = WritingManager.shared
-    var changeEventCompletionClosure: (() -> Void)?
     
     // MARK: - Life cycle
     override func viewDidLoad() {

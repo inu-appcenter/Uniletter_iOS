@@ -110,7 +110,6 @@ final class HomeViewController: UIViewController {
     
     func checkLogin() {
         setLoadingIndicator(true)
-        fetchEvents()
         
         if !loginManager.firstLogin {
             loginManager.checkLogin() {
@@ -119,9 +118,10 @@ final class HomeViewController: UIViewController {
                     self.viewModel.postFCM()
                     self.presentWaringView(.login)
                 }
-                self.fetchEvents()
             }
         }
+        
+        fetchEvents()
     }
     
     func setLoadingIndicator(_ bool: Bool) {
