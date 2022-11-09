@@ -14,7 +14,6 @@ class MyPageSectionView: UITableViewHeaderFooterView {
     
     var label: UILabel = {
         let label = UILabel()
-        label.text = "테스트:"
         label.font = .systemFont(ofSize: 14)
         label.textColor = UIColor.customColor(.darkGray)
         
@@ -28,7 +27,6 @@ class MyPageSectionView: UITableViewHeaderFooterView {
     func setting() {
         addSubview(label)
         
-//        self.backgroundColor = .white
         label.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.leading.equalToSuperview().inset(20)

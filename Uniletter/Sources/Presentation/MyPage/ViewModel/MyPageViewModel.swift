@@ -107,4 +107,8 @@ class MyPageManager {
         
         return nickname
     }
+    
+    func deleteAccount() {
+        print("MyPageViewModel - deleteAccount() called")
+    }
 }

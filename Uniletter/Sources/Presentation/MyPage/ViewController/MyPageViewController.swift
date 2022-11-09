@@ -96,7 +96,24 @@ final class MyPageViewController: UIViewController {
         return button
         
     }()
+    
+    lazy var deleteAccountButton: UIButton = {
         
+        var config = UIButton.Configuration.plain()
+        var attribute = AttributedString.init("탈퇴하기")
+        attribute.font = .systemFont(ofSize: 13)
+        attribute.underlineStyle = NSUnderlineStyle.single
+        config.attributedTitle = attribute
+
+        let button = UIButton()
+        button.tintColor = UIColor.customColor(.lightGray)
+        button.configuration = config
+        
+        button.addTarget(self, action: #selector(deleteAccountButtonClicked(_:)), for: .touchUpInside)
+        return button
+        
+    }()
+            
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -135,7 +152,8 @@ final class MyPageViewController: UIViewController {
             grayBar,
             changeButton,
             saveListButton,
-            alarmListButton
+            alarmListButton,
+            deleteAccountButton
         ]
             .forEach { infoView.addSubview($0) }
         
@@ -151,7 +169,7 @@ final class MyPageViewController: UIViewController {
         
         infoView.snp.makeConstraints {
             $0.edges.equalTo(scrollView.contentLayoutGuide)
-            $0.height.equalTo(850)
+            $0.height.equalTo(880)
             $0.width.equalTo(scrollView)
         }
         
@@ -195,7 +213,17 @@ final class MyPageViewController: UIViewController {
         tableView.snp.makeConstraints {
             $0.top.equalTo(saveListButton.snp.bottom).offset(5)
             $0.leading.trailing.equalTo(scrollView)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide)
+            $0.height.equalTo(490)
+        }
+        
+        deleteAccountButton.snp.makeConstraints {
+            $0.top.equalTo(tableView.snp.bottom)
+            $0.leading.equalToSuperview().offset(20)
+        }
+        
+        deleteAccountButton.titleLabel!.snp.makeConstraints {
+            $0.leading.equalToSuperview()
+            $0.centerY.equalToSuperview()
         }
     }
     
@@ -219,6 +247,10 @@ final class MyPageViewController: UIViewController {
         let view = NotiListViewController()
         
         self.navigationController?.pushViewController(view, animated: true)
+    }
+    
+    @objc func deleteAccountButtonClicked(_ sender: UIGestureRecognizer) {
+        myPageManager.deleteAccount()
     }
 }
 
