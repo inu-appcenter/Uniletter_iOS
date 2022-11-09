@@ -255,6 +255,7 @@ extension MyPageViewController: UITableViewDelegate, UITableViewDataSource {
         
         let text = myPageManager.type[indexPath.section].cell
         cell.updateUI(at: text[indexPath.row])
+        cell.selectionStyle = .none
         return cell
     }
     
