@@ -60,6 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             switch credentialState {
             case .authorized:
                 // 인증 성공 상태
+                UserDefaults.standard.removeObject(forKey: "GoogleLoginInfo")
                 print("애플 로그인 인증 성공")
                 break
             case .revoked:
@@ -113,6 +114,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
+    
+    public func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+//        let firebaseToken = fcmToken ?? ""
+    }
     
     public func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler([.list, .banner, .badge, .sound])

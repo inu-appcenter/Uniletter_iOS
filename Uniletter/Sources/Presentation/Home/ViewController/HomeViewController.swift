@@ -113,15 +113,17 @@ final class HomeViewController: UIViewController {
         
         if !loginManager.firstLogin {
             loginManager.checkLogin() {
+                self.fetchEvents()
                 print("checkLogin() - 로그인 상태: \(self.loginManager.isLoggedIn)")
                 if self.loginManager.isLoggedIn == true {
                     self.viewModel.postFCM()
                     self.presentWaringView(.login)
                 }
             }
+        } else {
+            fetchEvents()
         }
         
-        fetchEvents()
     }
     
     func setLoadingIndicator(_ bool: Bool) {
@@ -221,8 +223,8 @@ extension HomeViewController: UICollectionViewDelegate,
         
         cell.bookmarkButtonTapHandler = {
             if self.loginManager.isLoggedIn {
-                cell.homeCellView.bookmarkButton.isSelected = !cell.homeCellView.bookmarkButton.isSelected
-                guard let like = event.likedByMe else { return }
+                let like = cell.homeCellView.bookmarkButton.isSelected
+                cell.homeCellView.bookmarkButton.isSelected = !like
                 if like {
                     self.viewModel.deleteLike(event.id)
                 } else {
