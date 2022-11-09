@@ -152,6 +152,7 @@ final class API {
     fileprivate static var eventIsCreating: Bool = false
     fileprivate static var commentIsCreating: Bool = false
     fileprivate static var myInfoIsPatching: Bool = false
+    fileprivate static var bookmarkIsPatching: Bool = false
     
     // MARK: - Login
     
@@ -441,50 +442,62 @@ final class API {
     
     /// 행사 좋아요 누르기
     static func likeEvent(_ params: [String: Int], completion: @escaping () -> Void) {
-        guard let data = try? JSONSerialization.data(withJSONObject: params, options: .prettyPrinted) else {
-            return
-        }
-        
-        networking(
-            urlStr: Address.likes.url,
-            method: .post,
-            data: data,
-            model: String.self,
-            apiType: .none) { result in
-                switch result {
-                case .success(_):
-                    print("성공")
-                case .failure(let error):
-                    if error.errorDescription! == errorString {
-                        completion()
-                    } else {
-                        print(error)
+        if !bookmarkIsPatching {
+            bookmarkIsPatching = true
+            
+            guard let data = try? JSONSerialization.data(withJSONObject: params, options: .prettyPrinted) else {
+                return
+            }
+            
+            networking(
+                urlStr: Address.likes.url,
+                method: .post,
+                data: data,
+                model: String.self,
+                apiType: .none) { result in
+                    bookmarkIsPatching = false
+                    switch result {
+                    case .success(_):
+                        print("성공")
+                    case .failure(let error):
+                        if error.errorDescription! == errorString {
+                            completion()
+                        } else {
+                            print(error)
+                        }
                     }
                 }
-            }
+        }
+        
     }
     
     /// 행사 좋아요 삭제하기
     static func deleteLikes(data: [String: Int], completion: @escaping() -> Void) {
-        guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
-        
-        networking(
-            urlStr: Address.likes.url,
-            method: .delete,
-            data: data,
-            model: likes.self,
-            apiType: .cancleSave) { result in
-                switch result {
-                case .success(_):
-                    print("성공")
-                case .failure(let error):
-                    if error.errorDescription! == errorString {
-                        completion()
-                    } else {
-                        print(error)
+        if !bookmarkIsPatching {
+            bookmarkIsPatching = true
+            
+            guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
+            
+            networking(
+                urlStr: Address.likes.url,
+                method: .delete,
+                data: data,
+                model: likes.self,
+                apiType: .cancleSave) { result in
+                    bookmarkIsPatching = false
+                    switch result {
+                    case .success(_):
+                        print("성공")
+                    case .failure(let error):
+                        if error.errorDescription! == errorString {
+                            completion()
+                        } else {
+                            print(error)
+                        }
                     }
                 }
-            }
+        }
+        
     }
     
     /// 행사 좋아요 가져오기 (북마크 버튼 눌려진 행사)
