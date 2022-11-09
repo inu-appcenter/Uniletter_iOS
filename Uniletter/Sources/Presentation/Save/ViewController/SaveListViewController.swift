@@ -26,12 +26,12 @@ class SaveListViewController: UIViewController {
         view.backgroundColor = .white
         configureNavigationBar()
         configureUI()
-        setAPI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         setAPI()
     }
+    
     func setAPI() {
         DispatchQueue.main.async {
             self.saveListViewModel.getLike {

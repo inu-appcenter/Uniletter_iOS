@@ -60,6 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             switch credentialState {
             case .authorized:
                 // 인증 성공 상태
+                UserDefaults.standard.removeObject(forKey: "GoogleLoginInfo")
                 print("애플 로그인 인증 성공")
                 break
             case .revoked:
