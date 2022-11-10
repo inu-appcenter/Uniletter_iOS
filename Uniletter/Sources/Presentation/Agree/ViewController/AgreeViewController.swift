@@ -83,15 +83,17 @@ final class AgreementViewController: UIViewController {
     // MARK: - Action
     
     @objc func didTapFirstMoreButton(_ sender: Any) {
-        guard let url = URL(string: "https://github.com/vhzkclq0705/Uniletter_iOS/blob/main/%EC%9D%B4%EC%9A%A9%EC%95%BD%EA%B4%80.md") else { return }
+        let vc = PersonalViewController()
+        vc.modalPresentationStyle = .fullScreen
         
-        UIApplication.shared.open(url)
+        self.present(vc, animated: true)
     }
     
     @objc func didTapSecondMoreButton(_ sedner: Any) {
-        guard let url = URL(string: "https://github.com/vhzkclq0705/Uniletter_iOS/blob/main/%EA%B0%9C%EC%9D%B8%EC%A0%95%EB%B3%B4%EC%B2%98%EB%A6%AC%EB%B0%A9%EC%B9%A8.md") else { return }
+        let vc = TermsViewController()
+        vc.modalPresentationStyle = .fullScreen
         
-        UIApplication.shared.open(url)
+        self.present(vc, animated: true)
     }
     
     @objc func didTapRadioButton(_ button: UIButton) {
