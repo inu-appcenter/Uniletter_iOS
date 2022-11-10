@@ -66,6 +66,11 @@
 		7623918F288C3CC100790775 /* WritingSubFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7623918E288C3CC100790775 /* WritingSubFile.swift */; };
 		763BB60E291813BF00FFAF8B /* Report.swift in Sources */ = {isa = PBXBuildFile; fileRef = 763BB60D291813BF00FFAF8B /* Report.swift */; };
 		764386642874021600375CE6 /* LoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764386632874021600375CE6 /* LoginManager.swift */; };
+		76597B33291D12D500F1561B /* AgreeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76597B32291D12D500F1561B /* AgreeViewController.swift */; };
+		76597B37291D137500F1561B /* AgreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76597B36291D137500F1561B /* AgreeView.swift */; };
+		76597B39291D2A2600F1561B /* PersonalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76597B38291D2A2600F1561B /* PersonalViewController.swift */; };
+		76597B3B291D2CD200F1561B /* TermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76597B3A291D2CD200F1561B /* TermsViewController.swift */; };
+		76597B3D291D2DE100F1561B /* AgreeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76597B3C291D2DE100F1561B /* AgreeDetailView.swift */; };
 		765BC9FD2868C00C0098BBF2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765BC9FC2868C00C0098BBF2 /* AppDelegate.swift */; };
 		765BC9FF2868C00C0098BBF2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765BC9FE2868C00C0098BBF2 /* SceneDelegate.swift */; };
 		765BCA012868C00C0098BBF2 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765BCA002868C00C0098BBF2 /* LaunchViewController.swift */; };
@@ -179,6 +184,11 @@
 		7623918E288C3CC100790775 /* WritingSubFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritingSubFile.swift; sourceTree = "<group>"; };
 		763BB60D291813BF00FFAF8B /* Report.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Report.swift; sourceTree = "<group>"; };
 		764386632874021600375CE6 /* LoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginManager.swift; sourceTree = "<group>"; };
+		76597B32291D12D500F1561B /* AgreeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreeViewController.swift; sourceTree = "<group>"; };
+		76597B36291D137500F1561B /* AgreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreeView.swift; sourceTree = "<group>"; };
+		76597B38291D2A2600F1561B /* PersonalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalViewController.swift; sourceTree = "<group>"; };
+		76597B3A291D2CD200F1561B /* TermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewController.swift; sourceTree = "<group>"; };
+		76597B3C291D2DE100F1561B /* AgreeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreeDetailView.swift; sourceTree = "<group>"; };
 		765BC9F92868C00C0098BBF2 /* Uniletter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Uniletter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		765BC9FC2868C00C0098BBF2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		765BC9FE2868C00C0098BBF2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -356,6 +366,7 @@
 		763BB5D229180E7500FFAF8B /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				76597B30291D12B800F1561B /* Agree */,
 				763BB5E029180FA000FFAF8B /* Alert */,
 				763BB5D729180EBA00FFAF8B /* Splash */,
 				763BB5D429180E8B00FFAF8B /* Login */,
@@ -433,8 +444,8 @@
 			isa = PBXGroup;
 			children = (
 				7681D56F28698EC60081C644 /* HomeCell.swift */,
-				765DCDB22868DCD300961EA8 /* HomeView.swift */,
 				7681D57F2869F1870081C644 /* HomeCellView.swift */,
+				765DCDB22868DCD300961EA8 /* HomeView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -841,6 +852,34 @@
 			path = Managers;
 			sourceTree = "<group>";
 		};
+		76597B30291D12B800F1561B /* Agree */ = {
+			isa = PBXGroup;
+			children = (
+				76597B35291D136700F1561B /* View */,
+				76597B34291D135F00F1561B /* ViewController */,
+			);
+			path = Agree;
+			sourceTree = "<group>";
+		};
+		76597B34291D135F00F1561B /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				76597B32291D12D500F1561B /* AgreeViewController.swift */,
+				76597B38291D2A2600F1561B /* PersonalViewController.swift */,
+				76597B3A291D2CD200F1561B /* TermsViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		76597B35291D136700F1561B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				76597B36291D137500F1561B /* AgreeView.swift */,
+				76597B3C291D2DE100F1561B /* AgreeDetailView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		765BC9F02868C00C0098BBF2 = {
 			isa = PBXGroup;
 			children = (
@@ -1103,6 +1142,7 @@
 				7610DD712884569100CA03BC /* WritingContentViewController.swift in Sources */,
 				7610DD69288432E200CA03BC /* WritingContentView.swift in Sources */,
 				2C0DBE6A288192E5004A933A /* BlockListViewController.swift in Sources */,
+				76597B3B291D2CD200F1561B /* TermsViewController.swift in Sources */,
 				2CB69D0D287456C60089A922 /* ChangeViewController.swift in Sources */,
 				766F38502872FC3900EC9593 /* NewNoticeViewModel.swift in Sources */,
 				2C0D039C2885ACF60026F3F0 /* ChangeViewModel.swift in Sources */,
@@ -1136,6 +1176,7 @@
 				2CB8AAAE287EAEA700BDA358 /* PrivacyPolicyViewModel.swift in Sources */,
 				7623918F288C3CC100790775 /* WritingSubFile.swift in Sources */,
 				76FCB54E286CA16700AC4F70 /* UILabel++Extensions.swift in Sources */,
+				76597B37291D137500F1561B /* AgreeView.swift in Sources */,
 				76AC78422872E02500D303C4 /* ActionSheetViewController.swift in Sources */,
 				7610DD7528846FCE00CA03BC /* WritingManager.swift in Sources */,
 				769AEB43287C85AC00C697FC /* CommentsViewModel.swift in Sources */,
@@ -1170,6 +1211,7 @@
 				7681D57A2869D2300081C644 /* Address.swift in Sources */,
 				765BCA012868C00C0098BBF2 /* LaunchViewController.swift in Sources */,
 				7616B813286B50A000935257 /* MyPageViewController.swift in Sources */,
+				76597B39291D2A2600F1561B /* PersonalViewController.swift in Sources */,
 				76AC783C28721D0400D303C4 /* Alert.swift in Sources */,
 				2CB8AAA8287EA34400BDA358 /* MyEventViewController.swift in Sources */,
 				2CB8AA302878384300BDA358 /* MyCommentViewController.swift in Sources */,
@@ -1182,12 +1224,14 @@
 				2CB8AAA6287E918500BDA358 /* BaseURL.swift in Sources */,
 				2CB8AAB0287F1EDA00BDA358 /* Topic.swift in Sources */,
 				2C0DBE60288140FD004A933A /* NotiListCell.swift in Sources */,
+				76597B3D291D2DE100F1561B /* AgreeDetailView.swift in Sources */,
 				7681D584286A09DD0081C644 /* EventDetailViewModel.swift in Sources */,
 				76E96489286B6F4700D5299A /* UIImage++Extensions.swift in Sources */,
 				765BC9FD2868C00C0098BBF2 /* AppDelegate.swift in Sources */,
 				7681D5802869F1870081C644 /* HomeCellView.swift in Sources */,
 				765BC9FF2868C00C0098BBF2 /* SceneDelegate.swift in Sources */,
 				2CB8AAAC287EAE5400BDA358 /* PrivacyPolicyViewController.swift in Sources */,
+				76597B33291D12D500F1561B /* AgreeViewController.swift in Sources */,
 				769F6E6828A8F66A00619269 /* PreviewViewController.swift in Sources */,
 				76239189288AFDC000790775 /* CalendarViewController.swift in Sources */,
 				2C01D082288FDF9400AEF20F /* Warning.swift in Sources */,
