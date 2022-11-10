@@ -283,11 +283,13 @@ final class EventDetailViewController: UIViewController {
                 present(vc, animated: true)
                 
                 vc.notifyBeforeStartCompletionClosure = {
-                    self.presentNoticeAlertView(.startNotice)
+//                    self.presentNoticeAlertView(.startNotice)
+                    self.presentNoticeAlertView(noticeAlert: .startNotice, check: false)
                 }
                 
                 vc.notifyBeforeEndCompletionClosure = {
-                    self.presentNoticeAlertView(.deadlineNotice)
+//                    self.presentNoticeAlertView(.deadlineNotice)
+                    self.presentNoticeAlertView(noticeAlert: .deadlineNotice, check: false)
                 }
             }
             

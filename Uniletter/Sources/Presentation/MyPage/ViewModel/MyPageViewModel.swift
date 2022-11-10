@@ -107,4 +107,13 @@ class MyPageManager {
         
         return nickname
     }
+    
+    func deleteAccount(completion: @escaping () -> Void) {
+        print("MyPageViewModel - deleteAccount() called")
+        
+        API.deleteMe {
+            completion()
+            print("회원 탈퇴 완료")
+        }
+    }
 }

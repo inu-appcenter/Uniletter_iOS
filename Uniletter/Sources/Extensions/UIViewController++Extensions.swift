@@ -70,12 +70,22 @@ extension UIViewController {
         return actionSheetViewController
     }
     
-    func presentNoticeAlertView(_ noticeAlert: NoticeAlert) {
+    func presentNoticeAlertView(noticeAlert: NoticeAlert, check: Bool) {
         let noticeAlertViewController = NoticeAlertViewController()
+        noticeAlertViewController.check = check
         noticeAlertViewController.noticeAlert = noticeAlert
         noticeAlertViewController.setModalStyle()
         
         present(noticeAlertViewController, animated: true)
+    }
+    
+    func getNoticeAlertVC(noticeAlert: NoticeAlert, check: Bool) -> NoticeAlertViewController {
+        let noticeAlertViewController = NoticeAlertViewController()
+        noticeAlertViewController.check = check
+        noticeAlertViewController.noticeAlert = noticeAlert
+        noticeAlertViewController.setModalStyle()
+        
+        return noticeAlertViewController
     }
     
     func presentWaringView(_ warningType: Warning) {

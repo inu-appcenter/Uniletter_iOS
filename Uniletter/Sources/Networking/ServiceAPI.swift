@@ -812,4 +812,30 @@ final class API {
                 }
             }
     }
+    
+    // MARK: - 회원탈퇴
+    
+    /// 회원 탈퇴
+    static func deleteMe(completion: @escaping() -> Void) {
+        networking(
+            urlStr: Address.deleteMe.url,
+            method: .delete,
+            data: nil,
+            model: String.self,
+            apiType: .deleteAccount) { result in
+                switch result {
+                case .success(_):
+                    completion()
+                    print("success")
+                case .failure(let error):
+                    if error.errorDescription! == errorString {
+                        print("success")
+                        completion()
+                    } else {
+                        print(error)
+                    }
+//                    print(error)
+                }
+            }
+    }
 }
