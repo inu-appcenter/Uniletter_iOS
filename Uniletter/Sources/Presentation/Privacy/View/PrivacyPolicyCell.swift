@@ -49,6 +49,7 @@ class PrivacyPolicyCell: UICollectionViewCell {
     func configureUI() {
         addSubview(subView)
         
+        bodyLabel.frame.size = bodyLabel.intrinsicContentSize
         [titleLabel, bodyLabel].forEach { addSubview($0) }
         
         subView.snp.makeConstraints {
@@ -65,7 +66,9 @@ class PrivacyPolicyCell: UICollectionViewCell {
             $0.top.equalTo(titleLabel.snp.bottom).inset(-16)
             $0.leading.equalToSuperview().offset(20)
             $0.trailing.equalToSuperview().offset(-20)
-            $0.bottom.equalToSuperview()
         }
+        
+//        titleLabel.backgroundColor = .green
+//        bodyLabel.backgroundColor = .blue
     }
 }
