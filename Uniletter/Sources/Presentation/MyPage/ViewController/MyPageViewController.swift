@@ -213,7 +213,7 @@ final class MyPageViewController: UIViewController {
         tableView.snp.makeConstraints {
             $0.top.equalTo(saveListButton.snp.bottom).offset(5)
             $0.leading.trailing.equalTo(scrollView)
-            $0.height.equalTo(490)
+            $0.height.equalTo(480)
         }
         
         deleteAccountButton.snp.makeConstraints {
@@ -295,6 +295,10 @@ extension MyPageViewController: UITableViewDelegate, UITableViewDataSource {
         return 40
     }
     
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 25
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return myPageManager.numOfCell(at: section)
     }
@@ -325,6 +329,5 @@ extension MyPageViewController: UITableViewDelegate, UITableViewDataSource {
             
             self.navigationController?.pushViewController(pushView, animated: true)
         }
-        
     }
 }
