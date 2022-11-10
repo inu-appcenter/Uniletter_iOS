@@ -224,9 +224,7 @@ class ServiceViewModel {
     }
     
     func sizeOfCell(index: Int, width: CGFloat) -> CGFloat {
-        
-        print(index, width)
-        
+                
         let titleLabel = UILabel()
         titleLabel.frame.size.width = width - 40
         titleLabel.numberOfLines = 0

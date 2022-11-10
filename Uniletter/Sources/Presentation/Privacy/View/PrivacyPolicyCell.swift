@@ -67,8 +67,5 @@ class PrivacyPolicyCell: UICollectionViewCell {
             $0.leading.equalToSuperview().offset(20)
             $0.trailing.equalToSuperview().offset(-20)
         }
-        
-//        titleLabel.backgroundColor = .green
-//        bodyLabel.backgroundColor = .blue
     }
 }

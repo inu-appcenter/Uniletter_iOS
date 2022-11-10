@@ -169,7 +169,7 @@ final class MyPageViewController: UIViewController {
         
         infoView.snp.makeConstraints {
             $0.edges.equalTo(scrollView.contentLayoutGuide)
-            $0.height.equalTo(880)
+            $0.height.equalTo(910)
             $0.width.equalTo(scrollView)
         }
         
@@ -213,7 +213,7 @@ final class MyPageViewController: UIViewController {
         tableView.snp.makeConstraints {
             $0.top.equalTo(saveListButton.snp.bottom).offset(5)
             $0.leading.trailing.equalTo(scrollView)
-            $0.height.equalTo(480)
+            $0.height.equalTo(510)
         }
         
         deleteAccountButton.snp.makeConstraints {
