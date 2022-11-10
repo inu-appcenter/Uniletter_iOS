@@ -32,12 +32,21 @@ final class AgreementViewController: UIViewController {
             self,
             action: #selector(didTapAllAgreeRadioButton(_:)),
             for: .touchUpInside)
-        agreementView.moreButtons.forEach {
-            $0.addTarget(self, action: #selector(didTapMoreButton(_:)), for: .touchUpInside)
-        }
+        
+        agreementView.firstMoreButton.addTarget(
+            self,
+            action: #selector(didTapFirstMoreButton(_:)),
+            for: .touchUpInside)
+        
+        agreementView.secondMoreButton.addTarget(
+            self,
+            action: #selector(didTapSecondMoreButton(_:)),
+            for: .touchUpInside)
+        
         agreementView.radioButtons.forEach {
             $0.addTarget(self, action: #selector(didTapRadioButton(_:)), for: .touchUpInside)
         }
+        
         agreementView.nextButton.addTarget(
             self,
             action: #selector(didTapNextButton(_:)),
@@ -73,8 +82,14 @@ final class AgreementViewController: UIViewController {
     
     // MARK: - Action
     
-    @objc func didTapMoreButton(_ sender: Any) {
-        guard let url = URL(string: "https://www.google.com") else { return }
+    @objc func didTapFirstMoreButton(_ sender: Any) {
+        guard let url = URL(string: "https://github.com/vhzkclq0705/Uniletter_iOS/blob/main/%EC%9D%B4%EC%9A%A9%EC%95%BD%EA%B4%80.md") else { return }
+        
+        UIApplication.shared.open(url)
+    }
+    
+    @objc func didTapSecondMoreButton(_ sedner: Any) {
+        guard let url = URL(string: "https://github.com/vhzkclq0705/Uniletter_iOS/blob/main/%EA%B0%9C%EC%9D%B8%EC%A0%95%EB%B3%B4%EC%B2%98%EB%A6%AC%EB%B0%A9%EC%B9%A8.md") else { return }
         
         UIApplication.shared.open(url)
     }
@@ -96,7 +111,7 @@ final class AgreementViewController: UIViewController {
     }
     
     @objc func didTapNextButton(_ sendar: Any) {
-//        UserDefaults.standard.set(true, forKey: "agree")
+        UserDefaults.standard.set(true, forKey: "agree")
         
         let homeViewController = HomeViewController()
         let navigationController = UINavigationController(rootViewController: homeViewController)

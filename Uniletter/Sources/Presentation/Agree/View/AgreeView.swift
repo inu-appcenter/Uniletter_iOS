@@ -66,7 +66,6 @@ class AgreementView: UIView {
     
     // MARK: - Property
     
-    var moreButtons = [UIButton]()
     var radioButtons = [UIButton]()
     
     // MARK: - Init
@@ -89,12 +88,6 @@ class AgreementView: UIView {
     // MARK: - Setup
     
     func addViews() {
-        [
-            firstMoreButton,
-            secondMoreButton,
-        ]
-            .forEach { moreButtons.append($0) }
-        
         [
             firstRadioButton,
             secondRadioButton,
