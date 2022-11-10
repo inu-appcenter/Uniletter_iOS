@@ -12,7 +12,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
-
+    // MARK: - Life cycle
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
        
         guard let windowScene = (scene as? UIWindowScene) else { return }
@@ -20,13 +21,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.rootViewController = LaunchViewController()
         window?.makeKeyAndVisible()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            let homeViewController = HomeViewController()
-            let navigationController = UINavigationController(rootViewController: homeViewController)
-            navigationController.modalPresentationStyle = .fullScreen
-
-            self.window?.rootViewController = navigationController
-        }
+        presentInitViewController()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -80,6 +75,25 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     }
 
-
 }
 
+extension SceneDelegate {
+    
+    private func presentInitViewController() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            if !(UserDefaults.standard.bool(forKey: "agree")) {
+                let agreeViewController = AgreementViewController()
+                agreeViewController.modalPresentationStyle = .fullScreen
+                
+                self.window?.rootViewController = agreeViewController
+            } else {
+                let homeViewController = HomeViewController()
+                let navigationController = UINavigationController(rootViewController: homeViewController)
+                navigationController.modalPresentationStyle = .fullScreen
+
+                self.window?.rootViewController = navigationController
+            }
+        }
+    }
+    
+}
