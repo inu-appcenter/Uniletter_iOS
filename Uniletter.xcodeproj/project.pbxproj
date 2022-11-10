@@ -33,6 +33,8 @@
 		2C80F388286D997300ECAB60 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C80F387286D997300ECAB60 /* MyPageViewModel.swift */; };
 		2C80F38B286DA01600ECAB60 /* MyPageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C80F38A286DA01500ECAB60 /* MyPageCell.swift */; };
 		2C80F391286DE20000ECAB60 /* MyPageSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C80F390286DE20000ECAB60 /* MyPageSectionView.swift */; };
+		2C969F8E291D3897005D8564 /* ServiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C969F8D291D3897005D8564 /* ServiceViewController.swift */; };
+		2C969F91291D39B0005D8564 /* ServiceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C969F90291D39B0005D8564 /* ServiceViewModel.swift */; };
 		2CB69D0B287443870089A922 /* MeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB69D0A287443870089A922 /* MeInfo.swift */; };
 		2CB69D0D287456C60089A922 /* ChangeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB69D0C287456C60089A922 /* ChangeViewController.swift */; };
 		2CB8AA302878384300BDA358 /* MyCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB8AA2F2878384300BDA358 /* MyCommentViewController.swift */; };
@@ -149,6 +151,8 @@
 		2C80F387286D997300ECAB60 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		2C80F38A286DA01500ECAB60 /* MyPageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageCell.swift; sourceTree = "<group>"; };
 		2C80F390286DE20000ECAB60 /* MyPageSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSectionView.swift; sourceTree = "<group>"; };
+		2C969F8D291D3897005D8564 /* ServiceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceViewController.swift; sourceTree = "<group>"; };
+		2C969F90291D39B0005D8564 /* ServiceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceViewModel.swift; sourceTree = "<group>"; };
 		2CB69D0A287443870089A922 /* MeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeInfo.swift; sourceTree = "<group>"; };
 		2CB69D0C287456C60089A922 /* ChangeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeViewController.swift; sourceTree = "<group>"; };
 		2CB8AA2F2878384300BDA358 /* MyCommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCommentViewController.swift; sourceTree = "<group>"; };
@@ -264,6 +268,31 @@
 			path = MyPage;
 			sourceTree = "<group>";
 		};
+		2C969F8B291D3868005D8564 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				2C969F8F291D399F005D8564 /* ViewModel */,
+				2C969F8C291D388B005D8564 /* ViewController */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		2C969F8C291D388B005D8564 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				2C969F8D291D3897005D8564 /* ServiceViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		2C969F8F291D399F005D8564 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				2C969F90291D39B0005D8564 /* ServiceViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		36F4336931E7A0D725AE126A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -366,6 +395,7 @@
 		763BB5D229180E7500FFAF8B /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				2C969F8B291D3868005D8564 /* Service */,
 				76597B30291D12B800F1561B /* Agree */,
 				763BB5E029180FA000FFAF8B /* Alert */,
 				763BB5D729180EBA00FFAF8B /* Splash */,
@@ -1206,6 +1236,7 @@
 				7610DD6128841F1500CA03BC /* WritingPictureView.swift in Sources */,
 				2C0DBE642881507A004A933A /* Notification.swift in Sources */,
 				76DEA2E028D61562006C3D06 /* String++Extensions.swift in Sources */,
+				2C969F91291D39B0005D8564 /* ServiceViewModel.swift in Sources */,
 				2C80F38B286DA01600ECAB60 /* MyPageCell.swift in Sources */,
 				76AC783A28720B6C00D303C4 /* AlertViewController.swift in Sources */,
 				7681D57A2869D2300081C644 /* Address.swift in Sources */,
@@ -1232,6 +1263,7 @@
 				765BC9FF2868C00C0098BBF2 /* SceneDelegate.swift in Sources */,
 				2CB8AAAC287EAE5400BDA358 /* PrivacyPolicyViewController.swift in Sources */,
 				76597B33291D12D500F1561B /* AgreeViewController.swift in Sources */,
+				2C969F8E291D3897005D8564 /* ServiceViewController.swift in Sources */,
 				769F6E6828A8F66A00619269 /* PreviewViewController.swift in Sources */,
 				76239189288AFDC000790775 /* CalendarViewController.swift in Sources */,
 				2C01D082288FDF9400AEF20F /* Warning.swift in Sources */,
