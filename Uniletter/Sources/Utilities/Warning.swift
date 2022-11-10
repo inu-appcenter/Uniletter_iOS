@@ -29,6 +29,7 @@ enum Warning {
     case deleteEvent
     case changeEvent
     case createEvent
+    case deleteAccount
     
     var body: String {
         switch self {
@@ -74,6 +75,8 @@ enum Warning {
             return "게시글이 수정되었습니다."
         case .createEvent:
             return "게시글이 작성되었습니다."
+        case .deleteAccount:
+            return "회원탈퇴가 완료되었습니다."
         }
     }
 }

@@ -12,7 +12,7 @@ import Kingfisher
 final class MyPageViewController: UIViewController {
 
     var myPageManager = MyPageManager.shared
-    
+    var loginManager = LoginManager.shared
     var logoutCompletionClosure: (() -> Void)?
 
     let scrollView: UIScrollView = {
@@ -261,7 +261,10 @@ final class MyPageViewController: UIViewController {
             secondNoticeVC.okButtonCompletionClosure = {
                 // TODO: 회원탈퇴 처리
                 
-                print("마지막 회원탈퇴 동의하였음")
+                self.myPageManager.deleteAccount {
+                    self.loginManager.logout()
+                    self.goToInitialViewController()
+                }
             }
             self.present(secondNoticeVC, animated: true)
         }
