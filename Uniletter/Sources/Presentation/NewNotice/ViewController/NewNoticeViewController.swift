@@ -11,6 +11,7 @@ import SnapKit
 class NewNoticeViewController: UIViewController {
 
     let viewModel = NewNoticeViewModel()
+    let notiCenter = UNUserNotificationCenter.current()
     
     var collectionView: UICollectionView = {
         
@@ -72,9 +73,25 @@ class NewNoticeViewController: UIViewController {
     }
     
     @objc func doneButtonclicked() {
-        DispatchQueue.main.async {
-            self.viewModel.putTopic()
-            self.navigationController?.popViewController(animated: true)
+        DispatchQueue.global().async {
+            
+            self.notiCenter.getNotificationSettings { settings in
+                DispatchQueue.main.async {
+                    switch settings.alertSetting {
+                    case .enabled:
+                        self.viewModel.putTopic()
+                        self.navigationController?.popViewController(animated: true)
+                    default:
+                        let noticeAlertVC = self.getNoticeAlertVC(noticeAlert: .pushAlarm, check: false)
+                        
+                        self.present(noticeAlertVC, animated: true)
+                        
+                        noticeAlertVC.okButtonCompletionClosure = {
+                            self.navigationController?.popViewController(animated: true)
+                        }
+                    }
+                }
+            }
         }
     }
 }
