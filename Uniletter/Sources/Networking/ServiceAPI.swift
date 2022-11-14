@@ -864,6 +864,9 @@ final class API {
     
     /// 회원 탈퇴
     static func deleteMe(completion: @escaping() -> Void) {
+        
+        LoginManager.shared.logout()
+        
         networking(
             urlStr: Address.deleteMe.url,
             method: .delete,

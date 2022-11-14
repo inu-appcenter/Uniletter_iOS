@@ -260,10 +260,8 @@ final class MyPageViewController: UIViewController {
             let secondNoticeVC = self.getNoticeAlertVC(noticeAlert: .deleteAccountSecond, check: true)
             
             secondNoticeVC.okButtonCompletionClosure = {
-                // TODO: 회원탈퇴 처리
                 
                 self.myPageManager.deleteAccount {
-                    self.loginManager.logout()
                     self.goToInitialViewController()
                 }
             }
