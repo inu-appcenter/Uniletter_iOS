@@ -44,7 +44,8 @@ final class MyPageViewController: UIViewController {
         imageView.layer.borderWidth = 1
         imageView.layer.cornerRadius = 38
         imageView.layer.borderColor = UIColor.customColor(.darkGray).cgColor
-
+        imageView.contentMode = .scaleAspectFill
+        
         return imageView
     }()
     

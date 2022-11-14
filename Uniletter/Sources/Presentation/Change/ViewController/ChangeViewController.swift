@@ -29,6 +29,7 @@ class ChangeViewController: UIViewController {
         imageView.layer.borderWidth = 1
         imageView.layer.cornerRadius = 38
         imageView.layer.borderColor = UIColor.customColor(.darkGray).cgColor
+        imageView.contentMode = .scaleAspectFill
         return imageView
         
     }()
@@ -267,11 +268,7 @@ extension ChangeViewController: PHPickerViewControllerDelegate {
                 DispatchQueue.main.async {
                     guard let selectedImage = image as? UIImage else { return }
                     
-                    let size = selectedImage.size.width
-                    
-                    let resizeImage = selectedImage.resizeImage(width: size, height: size)
-                    
-                    self.viewModel.choiceImage = resizeImage
+                    self.viewModel.choiceImage = selectedImage
                     self.userImage.image = self.viewModel.choiceImage
                 }
             }
