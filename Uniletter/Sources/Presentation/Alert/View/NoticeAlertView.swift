@@ -119,11 +119,13 @@ final class NoticeAlertView: UIView {
             
             [ noButton,
               okButton,
-              separatorLine
             ] .forEach { alertView.addSubview($0) }
             
             noButton.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
             okButton.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner]
+            
+            noButton.backgroundColor = #colorLiteral(red: 0.8405835032, green: 0.9632034898, blue: 0.9564227462, alpha: 1)
+            noButton.setTitleColor(UIColor.customColor(.blueGreen), for: .normal)
             
             noButton.snp.makeConstraints {
                 $0.top.equalTo(bodyLabel.snp.bottom).offset(16)
@@ -141,13 +143,6 @@ final class NoticeAlertView: UIView {
             
             alertView.snp.makeConstraints {
                 $0.bottom.equalTo(noButton.snp.bottom).inset(-16)
-            }
-            
-            separatorLine.snp.makeConstraints {
-                $0.top.equalTo(noButton)
-                $0.centerX.equalToSuperview()
-                $0.height.equalTo(44)
-                $0.width.equalTo(1)
             }
             
         } else {

@@ -40,6 +40,7 @@ enum NoticeAlert {
     case block
     case deleteAccountFirst
     case deleteAccountSecond
+    case pushAlarm
     
     var title: String {
         switch self {
@@ -51,6 +52,7 @@ enum NoticeAlert {
         case .block: return "정지 알림"
         case .deleteAccountFirst: return "회원 탈퇴"
         case .deleteAccountSecond: return "회원 탈퇴"
+        case .pushAlarm: return "새로운 행사 알림"
         }
     }
     
@@ -64,6 +66,7 @@ enum NoticeAlert {
         case .block: return "사용자 다수의 신고로\n 글작성과 댓글작성이 정지되었습니다."
         case .deleteAccountFirst: return "\n회원 탈퇴를 하시겠습니까?\n"
         case .deleteAccountSecond: return "회원 탈퇴시 작성한 글과 댓글 등의 정보는 \n완전히 삭제되며 복구가 불가능합니다.\n정말로 회원 탈퇴를 하시겠습니까? "
+        case .pushAlarm: return "\n알림 허용이 차단되어 있습니다.\n새로운 행사 알림을 받으시려면 알림 허용을 해주세요\n"
         }
     }
 }

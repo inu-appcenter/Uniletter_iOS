@@ -91,6 +91,8 @@ class NewNoticeViewModel {
                 self.putTopics.append(i)
             }
         }
+
+        API.putSubscribing(data: ["subscribing": true])
         API.putTopic(data: ["topics" : self.putTopics])
     }
 }

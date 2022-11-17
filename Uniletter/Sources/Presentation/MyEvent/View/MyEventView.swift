@@ -21,12 +21,12 @@ class MyEventView: UIView {
         
         var imageView = UIImageView()
         
-        imageView.image = UIImage(named: "Study")
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        
         imageView.layer.cornerRadius = 8
         imageView.layer.borderColor = UIColor.customColor(.lightGray).cgColor
         imageView.layer.borderWidth = 1
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
         
         return imageView
     }()

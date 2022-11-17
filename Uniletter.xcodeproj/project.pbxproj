@@ -35,6 +35,7 @@
 		2C80F391286DE20000ECAB60 /* MyPageSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C80F390286DE20000ECAB60 /* MyPageSectionView.swift */; };
 		2C969F8E291D3897005D8564 /* ServiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C969F8D291D3897005D8564 /* ServiceViewController.swift */; };
 		2C969F91291D39B0005D8564 /* ServiceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C969F90291D39B0005D8564 /* ServiceViewModel.swift */; };
+		2C969F932920E1F1005D8564 /* Subscribing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C969F922920E1F1005D8564 /* Subscribing.swift */; };
 		2CB69D0B287443870089A922 /* MeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB69D0A287443870089A922 /* MeInfo.swift */; };
 		2CB69D0D287456C60089A922 /* ChangeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB69D0C287456C60089A922 /* ChangeViewController.swift */; };
 		2CB8AA302878384300BDA358 /* MyCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB8AA2F2878384300BDA358 /* MyCommentViewController.swift */; };
@@ -153,6 +154,7 @@
 		2C80F390286DE20000ECAB60 /* MyPageSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSectionView.swift; sourceTree = "<group>"; };
 		2C969F8D291D3897005D8564 /* ServiceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceViewController.swift; sourceTree = "<group>"; };
 		2C969F90291D39B0005D8564 /* ServiceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceViewModel.swift; sourceTree = "<group>"; };
+		2C969F922920E1F1005D8564 /* Subscribing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subscribing.swift; sourceTree = "<group>"; };
 		2CB69D0A287443870089A922 /* MeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeInfo.swift; sourceTree = "<group>"; };
 		2CB69D0C287456C60089A922 /* ChangeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeViewController.swift; sourceTree = "<group>"; };
 		2CB8AA2F2878384300BDA358 /* MyCommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCommentViewController.swift; sourceTree = "<group>"; };
@@ -1011,6 +1013,7 @@
 				2CB69D0A287443870089A922 /* MeInfo.swift */,
 				2CB8AAAF287F1EDA00BDA358 /* Topic.swift */,
 				763BB60D291813BF00FFAF8B /* Report.swift */,
+				2C969F922920E1F1005D8564 /* Subscribing.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1247,6 +1250,7 @@
 				2CB8AAA8287EA34400BDA358 /* MyEventViewController.swift in Sources */,
 				2CB8AA302878384300BDA358 /* MyCommentViewController.swift in Sources */,
 				2C0DBE5828800A29004A933A /* SaveListCell.swift in Sources */,
+				2C969F932920E1F1005D8564 /* Subscribing.swift in Sources */,
 				2C01D08A2890284700AEF20F /* LicenseInfoViewController.swift in Sources */,
 				7610DD652884299A00CA03BC /* WritingCheckView.swift in Sources */,
 				76AC78382872053100D303C4 /* AlertView.swift in Sources */,

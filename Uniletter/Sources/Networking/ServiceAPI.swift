@@ -794,6 +794,53 @@ final class API {
             }
     }
     
+    /// 새 행사 구독 여부 가져오기
+    static func getSubscribing(completion: @escaping (Subscribing) -> Void) {
+        
+        networking(
+            urlStr: Address.subscribing.url,
+            method: .get,
+            data: nil,
+            model: Subscribing.self,
+            apiType: .none) { result in
+                switch result {
+                case .success(let success):
+                    completion(success)
+                case .failure(let error):
+                    if error.errorDescription! == errorString {
+                        print("성공")
+                    } else {
+                        print(error)
+                    }
+                }
+            }
+    }
+    
+    /// 새 행사 구독 여부 설정하기
+    static func putSubscribing(data: [String: Bool]) {
+        
+        guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
+        
+        networking(
+            urlStr: Address.subscribing.url,
+            method: .put,
+            data: data,
+            model: Subscribing.self,
+            apiType: .none) { result in
+                switch result {
+                case .success(_):
+                    print("성공")
+                case .failure(let error):
+                    if error.errorDescription! == errorString {
+                        print("성공")
+                    } else {
+                        print(error)
+                    }
+                }
+            }
+        
+    }
+    
     // MARK: - Report
     
     /// 게시글 신고하기
@@ -817,6 +864,9 @@ final class API {
     
     /// 회원 탈퇴
     static func deleteMe(completion: @escaping() -> Void) {
+        
+        LoginManager.shared.logout()
+        
         networking(
             urlStr: Address.deleteMe.url,
             method: .delete,

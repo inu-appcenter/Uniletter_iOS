@@ -44,7 +44,8 @@ final class MyPageViewController: UIViewController {
         imageView.layer.borderWidth = 1
         imageView.layer.cornerRadius = 38
         imageView.layer.borderColor = UIColor.customColor(.darkGray).cgColor
-
+        imageView.contentMode = .scaleAspectFill
+        
         return imageView
     }()
     
@@ -259,10 +260,8 @@ final class MyPageViewController: UIViewController {
             let secondNoticeVC = self.getNoticeAlertVC(noticeAlert: .deleteAccountSecond, check: true)
             
             secondNoticeVC.okButtonCompletionClosure = {
-                // TODO: 회원탈퇴 처리
                 
                 self.myPageManager.deleteAccount {
-                    self.loginManager.logout()
                     self.goToInitialViewController()
                 }
             }

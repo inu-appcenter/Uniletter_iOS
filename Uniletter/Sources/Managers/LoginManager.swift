@@ -94,12 +94,14 @@ final class LoginManager {
     
     func logout() {
         
-        guard let cookies = HTTPCookieStorage.shared.cookies else { return }
-        
-        for cookie in cookies {
-            HTTPCookieStorage.shared.deleteCookie(cookie)
+        API.postFcmToken(["token": ""]) {
+            guard let cookies = HTTPCookieStorage.shared.cookies else { return }
+            
+            for cookie in cookies {
+                HTTPCookieStorage.shared.deleteCookie(cookie)
+            }
         }
-        
+
         firstLogin = false
         
         // 구글 로그인, 애플 로그인 분기 처리
