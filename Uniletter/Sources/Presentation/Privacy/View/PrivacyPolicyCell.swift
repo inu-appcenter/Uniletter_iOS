@@ -68,4 +68,10 @@ class PrivacyPolicyCell: UICollectionViewCell {
             $0.trailing.equalToSuperview().offset(-20)
         }
     }
+    
+    func updateUI(_ service: Service) {
+        
+        self.titleLabel.text = service.title
+        self.bodyLabel.text = service.body
+    }
 }
