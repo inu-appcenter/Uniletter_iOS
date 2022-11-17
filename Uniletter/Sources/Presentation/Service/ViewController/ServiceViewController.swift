@@ -50,9 +50,7 @@ extension ServiceViewController: UICollectionViewDelegate, UICollectionViewDataS
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PrivacyPolicyCell.identifier, for: indexPath) as? PrivacyPolicyCell else { return UICollectionViewCell() }
         
-        cell.titleLabel.text = viewModel.titileOfCell(index: indexPath.item)
-        cell.bodyLabel.text = viewModel.bodyOfCell(index: indexPath.item)
-                
+        cell.updateUI(viewModel.service[indexPath.item])
         return cell
     }
     
