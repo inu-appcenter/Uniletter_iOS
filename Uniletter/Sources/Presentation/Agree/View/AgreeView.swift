@@ -179,7 +179,7 @@ class AgreementView: UIView {
         }
         
         nextButton.snp.makeConstraints {
-            $0.bottom.equalTo(safeAreaLayoutGuide)
+            $0.bottom.equalTo(safeAreaLayoutGuide).offset(-10)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(50)
         }
