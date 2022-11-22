@@ -23,15 +23,17 @@ final class WritingPictureView: UIView {
         return label
     }()
     
-    lazy var imageButton: UIButton = {
-        let button = UIButton()
-        button.layer.cornerRadius = 12
-        button.layer.borderWidth = 1
-        button.layer.borderColor = CGColor.customColor(.lightGray)
-        button.setImage(UIImage(named: "uniletter_big"), for: .normal)
-        button.clipsToBounds = true
+    lazy var imageView: UIImageView = {
+        let imgView = UIImageView()
+        imgView.layer.cornerRadius = 12
+        imgView.layer.borderWidth = 1
+        imgView.layer.borderColor = CGColor.customColor(.lightGray)
+        imgView.image = UIImage(named: "uniletter_big")
+        imgView.contentMode = .scaleAspectFill
+        imgView.clipsToBounds = true
+        imgView.isUserInteractionEnabled = true
         
-        return button
+        return imgView
     }()
     
     let defaultLabel: UILabel = {
@@ -46,6 +48,8 @@ final class WritingPictureView: UIView {
     lazy var checkView = WritingCheckView()
     
     let clearView = UIView()
+    
+    let recognizeTapImageView = UITapGestureRecognizer()
     
     // MARK: - Init
     override init(frame: CGRect) {
@@ -64,9 +68,11 @@ final class WritingPictureView: UIView {
     
     // MARK: - Setup
     func addViews() {
+        imageView.addGestureRecognizer(recognizeTapImageView)
+        
         [
             titleLabel,
-            imageButton,
+            imageView,
             defaultLabel,
             checkView,
             clearView,
@@ -94,14 +100,14 @@ final class WritingPictureView: UIView {
             $0.left.right.equalToSuperview().inset(20)
         }
         
-        imageButton.snp.makeConstraints {
+        imageView.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(20)
             $0.left.right.equalTo(titleLabel)
-            $0.height.equalTo(imageButton.snp.width).multipliedBy(sqrt(2))
+            $0.height.equalTo(imageView.snp.width).multipliedBy(sqrt(2))
         }
         
         defaultLabel.snp.makeConstraints {
-            $0.top.equalTo(imageButton.snp.bottom).offset(8)
+            $0.top.equalTo(imageView.snp.bottom).offset(8)
             $0.left.equalTo(titleLabel)
         }
         
