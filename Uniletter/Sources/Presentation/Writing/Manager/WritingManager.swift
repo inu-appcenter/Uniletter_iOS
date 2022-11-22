@@ -30,7 +30,7 @@ enum BasicInfo: Int, CaseIterable {
     
     var image: UIImage {
         switch self {
-        case .none: return UIImage(named: "uniletter_big")!
+        case .none: return UIImage(named: "Etc_p")!
         case .group: return UIImage(named: "Club_p")!
         case .council: return UIImage(named: "StudentCountcil_p")!
         case .snacks: return UIImage(named: "Sharing_p")!

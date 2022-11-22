@@ -27,19 +27,18 @@ final class WritingPictureViewController: UIViewController {
     
     // MARK: - Setup
     func setViewContoller() {
-        writingPictureView.imageButton.addTarget(
+        writingPictureView.recognizeTapImageView.addTarget(
             self,
-            action: #selector(didTapImageButton(_:)),
-            for: .touchUpInside)
+            action: #selector(didTapimageView(_:)))
         writingPictureView.checkView.checkButton.addTarget(
             self,
             action: #selector(didTapCheckButton(_:)),
             for: .touchUpInside)
         
         if writingManager.isUpdating() {
-            self.writingPictureView.imageButton.kf.setImage(
-                with: URL(string: writingManager.imageURL!)!,
-                for: .normal)
+            self.writingPictureView.imageView.kf.setImage(
+                with: URL(string: writingManager.imageURL!)!)
+            
             self.writingPictureView.checkView.checkButton.isSelected = false
             self.writingPictureView.checkView.checkButton.updateUI(false)
         }
@@ -47,9 +46,13 @@ final class WritingPictureViewController: UIViewController {
     
     // MARK: - Func
     
+    func resizeImage(_ image: UIImage) {
+        let width = writingPictureView.imageView.frame.width
+    }
+    
     func updateImage(_ image: UIImage) {
         DispatchQueue.main.async {
-            self.writingPictureView.imageButton.setImage(image, for: .normal)
+            self.writingPictureView.imageView.image = image
             
             self.writingPictureView.checkView.checkButton.isSelected = false
             self.writingPictureView.checkView.checkButton.updateUI(false)
@@ -57,7 +60,7 @@ final class WritingPictureViewController: UIViewController {
     }
 
     // MARK: - Actions
-    @objc func didTapImageButton(_ sender: UIButton) {
+    @objc func didTapimageView(_ sender: UITapGestureRecognizer) {
         var config = PHPickerConfiguration()
         config.selectionLimit = 1
         config.filter = .images
@@ -72,9 +75,7 @@ final class WritingPictureViewController: UIViewController {
         sender.updateUI(sender.isSelected)
         
         if sender.isSelected {
-            writingPictureView.imageButton.setImage(
-                UIImage(named: "uniletter_big"),
-                for: .normal)
+            writingPictureView.imageView.image = UIImage(named: "Etc_p")
             writingManager.imageType = .basic
             writingManager.imageUUID = nil
         }

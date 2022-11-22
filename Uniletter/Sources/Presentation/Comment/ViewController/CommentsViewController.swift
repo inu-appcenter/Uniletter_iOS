@@ -92,7 +92,7 @@ final class CommentsViewController: UIViewController {
     // MARK: - Actions
     @objc func didTapArrowButton(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
-        commentsView.tableView.isHidden = !sender.isSelected
+        commentsView.tableView.isHidden = sender.isSelected
     }
     
     @objc func didTapSubmitButton(_ sender: UIButton) {

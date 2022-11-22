@@ -24,8 +24,6 @@ final class CommentsView: UIView {
             bottom: 0,
             right: 0)
         
-        tableView.isHidden = true
-        
         return tableView
     }()
     
@@ -40,8 +38,8 @@ final class CommentsView: UIView {
     
     lazy var arrowButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "arrowUp"), for: .normal)
-        button.setImage(UIImage(named: "arrowDown"), for: .selected)
+        button.setImage(UIImage(named: "arrowDown"), for: .normal)
+        button.setImage(UIImage(named: "arrowUp"), for: .selected)
         
         return button
     }()

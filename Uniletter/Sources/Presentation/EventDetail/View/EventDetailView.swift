@@ -39,16 +39,20 @@ final class EventDetailView : UIView {
         return button
     }()
     
-    lazy var mainImageView = UIImageView()
-    
-    lazy var titleTextView: UITextView = {
-        let textView = UITextView()
-        textView.isUserInteractionEnabled = false
-        textView.font = .boldSystemFont(ofSize: 20)
-        textView.textContainer.lineFragmentPadding = 0
-        textView.textContainerInset = .zero
+    lazy var mainImageView: UIImageView = {
+        let imgView = UIImageView()
+        imgView.contentMode = .scaleAspectFit
         
-        return textView
+        return imgView
+    }()
+    
+    lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = .boldSystemFont(ofSize: 20)
+        label.lineBreakMode = .byCharWrapping
+        label.numberOfLines = 0
+        
+        return label
     }()
     
     /// 원 모양을 생성 동시에 하기 위해 버튼으로 구현
@@ -140,7 +144,7 @@ final class EventDetailView : UIView {
     
     lazy var bodyTitleLabel: UILabel = {
         let label = UILabel()
-        label.changeDetail("상세내용")
+        label.changeDetail("상세레터")
         
         return label
     }()
@@ -148,7 +152,7 @@ final class EventDetailView : UIView {
     lazy var bodyContentsLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 16)
-        label.numberOfLines = 50
+        label.numberOfLines = 0
         
         return label
     }()
@@ -239,7 +243,7 @@ final class EventDetailView : UIView {
             moreButton,
             mainImageView,
             intervalView1,
-            titleTextView,
+            titleLabel,
             ddayButton,
             categoryLabel,
             categoryContentsLabel,
@@ -307,7 +311,6 @@ final class EventDetailView : UIView {
             $0.top.equalTo(profileImageView.snp.bottom).offset(15)
             $0.left.right.equalToSuperview().inset(20)
             $0.width.equalTo(notificationButton)
-            $0.height.equalTo(mainImageView.snp.width).multipliedBy(sqrt(2))
         }
         
         intervalView1.snp.makeConstraints {
@@ -316,21 +319,22 @@ final class EventDetailView : UIView {
             $0.height.equalTo(8)
         }
         
-        titleTextView.snp.makeConstraints {
+        titleLabel.snp.makeConstraints {
             $0.top.equalTo(intervalView1.snp.bottom).offset(20)
             $0.left.equalToSuperview().offset(20)
             $0.right.equalTo(ddayButton.snp.left).offset(-10)
-            $0.height.equalTo(60)
         }
         
         ddayButton.snp.makeConstraints {
-            $0.top.equalTo(titleTextView)
+            $0.top.equalTo(titleLabel)
             $0.right.equalToSuperview().offset(-20)
             $0.height.equalTo(23)
         }
+        ddayButton.setContentHuggingPriority(.required, for: .horizontal)
+        ddayButton.setContentCompressionResistancePriority(.required, for: .horizontal)
         
         categoryLabel.snp.makeConstraints {
-            $0.top.equalTo(intervalView1.snp.bottom).offset(80)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(20)
             $0.left.equalToSuperview().offset(20)
         }
         

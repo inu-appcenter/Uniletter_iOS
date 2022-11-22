@@ -41,7 +41,7 @@ class HomeCell: UICollectionViewCell {
             : UIColor.customColor(.lightGray)
         }
         
-        homeCellView.titleTextView.text = event.title
+        homeCellView.titleLabel.text = event.title
         updateDDay(event.endAt)
         homeCellView.categoryLabel.text = event.category
         
