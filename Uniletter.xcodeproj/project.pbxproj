@@ -538,7 +538,6 @@
 			children = (
 				76AC783928720B6C00D303C4 /* AlertViewController.swift */,
 				76AC78412872E02500D303C4 /* ActionSheetViewController.swift */,
-				2C0DBE6728815CA6004A933A /* NoticeAlertViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -548,6 +547,7 @@
 			children = (
 				76AC78372872053100D303C4 /* AlertView.swift */,
 				76AC783D2872D7FB00D303C4 /* TwoOptionsActionSheetView.swift */,
+				2C0DBE6728815CA6004A933A /* NoticeAlertViewController.swift */,
 				76AC783F2872DF9300D303C4 /* OneOptionActionSheetView.swift */,
 				2C0DBE652881591B004A933A /* NoticeAlertView.swift */,
 				2C01D07F288FDF7800AEF20F /* WarningView.swift */,
