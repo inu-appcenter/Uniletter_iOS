@@ -47,7 +47,7 @@ final class PreviewViewController: UIViewController {
         
         setImageSize()
         eventDetailView.mainImageView.image = preview.mainImage
-        eventDetailView.titleTextView.text = viewModel.title
+        eventDetailView.titleLabel.text = viewModel.title
         eventDetailView.categoryContentsLabel.text = viewModel.category
         eventDetailView.startContentsLabel.text = viewModel.startAt
         eventDetailView.endContentsLabel.text = viewModel.endAt

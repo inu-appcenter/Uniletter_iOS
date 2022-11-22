@@ -94,7 +94,7 @@ final class EventDetailViewController: UIViewController {
         eventDetailView.moreButton.isHidden = viewModel.wroteByMe
         eventDetailView.nicknameLabel.text = viewModel.nickname
         eventDetailView.dateWroteLabel.text = viewModel.dateWrote
-        eventDetailView.titleTextView.text = viewModel.title
+        eventDetailView.titleLabel.text = viewModel.title
         eventDetailView.categoryContentsLabel.text = viewModel.categoryContent
         eventDetailView.startContentsLabel.text = viewModel.startContent
         eventDetailView.endContentsLabel.text = viewModel.endContent
