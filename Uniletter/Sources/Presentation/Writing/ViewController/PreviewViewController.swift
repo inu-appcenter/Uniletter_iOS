@@ -56,6 +56,7 @@ final class PreviewViewController: UIViewController {
         eventDetailView.linkContentsLabel.text = viewModel.location
         eventDetailView.bodyContentsLabel.text = viewModel.body
         
+//        eventDetailView.mainImageView.updateImageViewRatio()
         updateDDay(viewModel.dday)
     }
     
