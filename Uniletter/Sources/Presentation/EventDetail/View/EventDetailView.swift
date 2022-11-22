@@ -39,7 +39,12 @@ final class EventDetailView : UIView {
         return button
     }()
     
-    lazy var mainImageView = UIImageView()
+    lazy var mainImageView: UIImageView = {
+        let imgView = UIImageView()
+        imgView.contentMode = .scaleAspectFit
+        
+        return imgView
+    }()
     
     lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -306,7 +311,6 @@ final class EventDetailView : UIView {
             $0.top.equalTo(profileImageView.snp.bottom).offset(15)
             $0.left.right.equalToSuperview().inset(20)
             $0.width.equalTo(notificationButton)
-            $0.height.equalTo(mainImageView.snp.width).multipliedBy(sqrt(2))
         }
         
         intervalView1.snp.makeConstraints {

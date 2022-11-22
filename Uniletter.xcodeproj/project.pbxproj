@@ -114,6 +114,7 @@
 		76ACABEE28ACEF0400B961C4 /* Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76ACABED28ACEF0400B961C4 /* Preview.swift */; };
 		76B0B99028E301640083ED06 /* PreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B0B98F28E301640083ED06 /* PreviewViewModel.swift */; };
 		76DEA2E028D61562006C3D06 /* String++Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76DEA2DF28D61562006C3D06 /* String++Extensions.swift */; };
+		76E7DD72292CAE8100CF21DC /* UIImageView++Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E7DD71292CAE8100CF21DC /* UIImageView++Extensions.swift */; };
 		76E96489286B6F4700D5299A /* UIImage++Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E96488286B6F4700D5299A /* UIImage++Extensions.swift */; };
 		76E9648B286B8F6400D5299A /* UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E9648A286B8F6400D5299A /* UI.swift */; };
 		76FCB543286B955F00AC4F70 /* Colors++Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FCB542286B955F00AC4F70 /* Colors++Extensions.swift */; };
@@ -238,6 +239,7 @@
 		76ACABED28ACEF0400B961C4 /* Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preview.swift; sourceTree = "<group>"; };
 		76B0B98F28E301640083ED06 /* PreviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewModel.swift; sourceTree = "<group>"; };
 		76DEA2DF28D61562006C3D06 /* String++Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String++Extensions.swift"; sourceTree = "<group>"; };
+		76E7DD71292CAE8100CF21DC /* UIImageView++Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView++Extensions.swift"; sourceTree = "<group>"; };
 		76E96488286B6F4700D5299A /* UIImage++Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage++Extensions.swift"; sourceTree = "<group>"; };
 		76E9648A286B8F6400D5299A /* UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UI.swift; sourceTree = "<group>"; };
 		76FCB542286B955F00AC4F70 /* Colors++Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Colors++Extensions.swift"; sourceTree = "<group>"; };
@@ -987,6 +989,7 @@
 				7610DD7A288587A200CA03BC /* UITextView++Extensions.swift */,
 				76DEA2DF28D61562006C3D06 /* String++Extensions.swift */,
 				7669C5BB28EC7865008DBFD2 /* Int++Extensions.swift */,
+				76E7DD71292CAE8100CF21DC /* UIImageView++Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1269,6 +1272,7 @@
 				76597B33291D12D500F1561B /* AgreeViewController.swift in Sources */,
 				2C969F8E291D3897005D8564 /* ServiceViewController.swift in Sources */,
 				769F6E6828A8F66A00619269 /* PreviewViewController.swift in Sources */,
+				76E7DD72292CAE8100CF21DC /* UIImageView++Extensions.swift in Sources */,
 				76239189288AFDC000790775 /* CalendarViewController.swift in Sources */,
 				2C01D082288FDF9400AEF20F /* Warning.swift in Sources */,
 				76FCB547286C254B00AC4F70 /* EventDetailView.swift in Sources */,

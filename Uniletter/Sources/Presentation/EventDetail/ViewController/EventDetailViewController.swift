@@ -7,6 +7,7 @@
 
 import UIKit
 import Kingfisher
+import SnapKit
 
 final class EventDetailViewController: UIViewController {
     
@@ -104,15 +105,23 @@ final class EventDetailViewController: UIViewController {
         eventDetailView.viewsLabel.text = viewModel.views
         eventDetailView.likeAndCommentsLabel.text = viewModel.likeAndComments
         
+        updateProfileImage()
+        updateMainImage()
+        updateDDay()
+        convertTextToHyperLink()
+    }
+    
+    func updateProfileImage() {
         if viewModel.profileImage == "" {
             eventDetailView.profileImageView.image = UIImage(named: "BasicProfileImage")
         } else {
             eventDetailView.profileImageView.kf.setImage(with: URL(string: viewModel.profileImage))
         }
+    }
+    
+    func updateMainImage() {
         eventDetailView.mainImageView.kf.setImage(with: URL(string: viewModel.mainImage)!)
-        
-        updateDDay()
-        convertTextToHyperLink()
+        eventDetailView.mainImageView.updateImageViewRatio()
     }
     
     func updateDDay() {
