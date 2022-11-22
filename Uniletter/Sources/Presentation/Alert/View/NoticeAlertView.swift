@@ -97,7 +97,7 @@ final class NoticeAlertView: UIView {
         }
         
         bodyLabel.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(12)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(26)
             $0.centerX.equalToSuperview()
         }
         
@@ -128,19 +128,19 @@ final class NoticeAlertView: UIView {
             noButton.setTitleColor(UIColor.customColor(.blueGreen), for: .normal)
             
             noButton.snp.makeConstraints {
-                $0.top.equalTo(bodyLabel.snp.bottom).offset(16)
+                $0.top.equalTo(bodyLabel.snp.bottom).offset(26)
                 $0.leading.equalTo(alertView).offset(16)
                 $0.trailing.equalTo(alertView.snp.centerX)
                 $0.height.equalTo(44)
             }
             
             okButton.snp.makeConstraints {
-                $0.top.equalTo(bodyLabel.snp.bottom).offset(16)
+                $0.top.equalTo(bodyLabel.snp.bottom).offset(26)
                 $0.leading.equalTo(alertView.snp.centerX)
                 $0.trailing.equalTo(alertView).inset(16)
                 $0.height.equalTo(44)
             }
-            
+
             alertView.snp.makeConstraints {
                 $0.bottom.equalTo(noButton.snp.bottom).inset(-16)
             }
@@ -150,7 +150,7 @@ final class NoticeAlertView: UIView {
             alertView.addSubview(okButton)
 
             okButton.snp.makeConstraints {
-                $0.top.equalTo(bodyLabel.snp.bottom).offset(16)
+                $0.top.equalTo(bodyLabel.snp.bottom).offset(26)
                 $0.centerX.equalToSuperview()
                 $0.leading.equalTo(alertView).offset(16)
                 $0.height.equalTo(44)
@@ -159,7 +159,16 @@ final class NoticeAlertView: UIView {
             alertView.snp.makeConstraints {
                 $0.bottom.equalTo(okButton.snp.bottom).inset(-16)
             }
-            
         }
+    }
+    
+    func setLabelParagraphStyle(_ bodyText: String?) {
+        let attrString = NSMutableAttributedString(string: bodyText!)
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 5
+        paragraphStyle.alignment = .center
+        attrString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attrString.length))
+        
+        bodyLabel.attributedText = attrString
     }
 }
