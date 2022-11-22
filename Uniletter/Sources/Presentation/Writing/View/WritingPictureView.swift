@@ -36,8 +36,9 @@ final class WritingPictureView: UIView {
     
     let defaultLabel: UILabel = {
         let label = UILabel()
-        label.writingTitle("없음 선택 시 기본 이미지가 등록됩니다.")
-        label.textColor = UIColor.customColor(.defaultGray)
+        label.writingTitle("없음 선택 시 유니레터가 제공하는 이미지가\n등록됩니다.")
+        label.numberOfLines = 0
+        label.textColor = UIColor.customColor(.darkGray)
         
         return label
     }()
