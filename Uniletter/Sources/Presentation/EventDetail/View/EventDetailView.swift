@@ -18,6 +18,13 @@ final class EventDetailView : UIView {
     
     lazy var profileImageView = UIImageView()
     
+    lazy var stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        
+        return stackView
+    }()
+    
     lazy var nicknameLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 13)
@@ -71,77 +78,11 @@ final class EventDetailView : UIView {
         return button
     }()
     
-    lazy var categoryLabel: UILabel = {
-        let label = UILabel()
-        label.changeDetail("카테고리")
+    lazy var infoStackView: InfoStackView = {
+        let stackView = InfoStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         
-        return label
-    }()
-    
-    lazy var startLabel: UILabel = {
-        let label = UILabel()
-        label.changeDetail("시작일시")
-        
-        return label
-    }()
-    
-    lazy var endLabel: UILabel = {
-        let label = UILabel()
-        label.changeDetail("마감일시")
-        
-        return label
-    }()
-    
-    lazy var targetLabel: UILabel = {
-        let label = UILabel()
-        label.changeDetail("모집대상")
-        
-        return label
-    }()
-    
-    lazy var contactLabel: UILabel = {
-        let label = UILabel()
-        label.changeDetail("문의사항")
-        
-        return label
-    }()
-    
-    lazy var linkLabel: UILabel = {
-        let label = UILabel()
-        label.changeDetail("신청링크")
-        
-        return label
-    }()
-    
-    lazy var categoryContentsLabel = DetailContesntsLabel()
-    
-    lazy var startContentsLabel = DetailContesntsLabel()
-    
-    lazy var endContentsLabel = DetailContesntsLabel()
-    
-    lazy var targetContentsLabel: MarqueeLabel = {
-        let label = MarqueeLabel()
-        label.font = .systemFont(ofSize: 16)
-        label.speed = .duration(20)
-        
-        return label
-    }()
-    
-    lazy var contactContentsLabel: MarqueeLabel = {
-        let label = MarqueeLabel()
-        label.font = .systemFont(ofSize: 16)
-        label.speed = .duration(20)
-        
-        return label
-    }()
-    
-    lazy var linkContentsLabel: MarqueeLabel = {
-        let label = MarqueeLabel()
-        label.font = .systemFont(ofSize: 16)
-        label.speed = .duration(20)
-        label.isUserInteractionEnabled = true
-        
-        return label
+        return stackView
     }()
     
     lazy var bodyTitleLabel: UILabel = {
@@ -236,7 +177,7 @@ final class EventDetailView : UIView {
     
     // MARK: - Setup
     func addViews() {
-        linkContentsLabel.addGestureRecognizer(recognizeTapLink)
+        infoStackView.linkLabel.addGestureRecognizer(recognizeTapLink)
         
         [
             profileImageView,
@@ -247,18 +188,7 @@ final class EventDetailView : UIView {
             intervalView1,
             titleLabel,
             ddayButton,
-            categoryLabel,
-            categoryContentsLabel,
-            startLabel,
-            startContentsLabel,
-            endLabel,
-            endContentsLabel,
-            targetLabel,
-            targetContentsLabel,
-            contactLabel,
-            contactContentsLabel,
-            linkLabel,
-            linkContentsLabel,
+            infoStackView,
             intervalView2,
             bodyTitleLabel,
             bodyContentsLabel,
@@ -341,71 +271,13 @@ final class EventDetailView : UIView {
         ddayButton.setContentHuggingPriority(.required, for: .horizontal)
         ddayButton.setContentCompressionResistancePriority(.required, for: .horizontal)
         
-        categoryLabel.snp.makeConstraints {
+        infoStackView.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(20)
-            $0.left.equalToSuperview().offset(20)
-        }
-        
-        categoryContentsLabel.snp.makeConstraints {
-            $0.top.equalTo(categoryLabel)
-            $0.left.equalToSuperview().offset(100)
-        }
-        
-        startLabel.snp.makeConstraints {
-            $0.top.equalTo(categoryLabel.snp.bottom).offset(20)
-            $0.left.equalToSuperview().offset(20)
-        }
-        
-        startContentsLabel.snp.makeConstraints {
-            $0.top.equalTo(startLabel)
-            $0.left.equalTo(categoryContentsLabel)
-        }
-        
-        endLabel.snp.makeConstraints {
-            $0.top.equalTo(startLabel.snp.bottom).offset(20)
-            $0.left.equalToSuperview().offset(20)
-        }
-        
-        endContentsLabel.snp.makeConstraints {
-            $0.top.equalTo(endLabel)
-            $0.left.equalTo(categoryContentsLabel)
-        }
-        
-        targetLabel.snp.makeConstraints {
-            $0.top.equalTo(endLabel.snp.bottom).offset(20)
-            $0.left.equalToSuperview().offset(20)
-        }
-        
-        targetContentsLabel.snp.makeConstraints {
-            $0.top.equalTo(targetLabel)
-            $0.left.equalTo(categoryContentsLabel)
-            $0.right.equalToSuperview().offset(-20)
-        }
-        
-        contactLabel.snp.makeConstraints {
-            $0.top.equalTo(targetLabel.snp.bottom).offset(20)
-            $0.left.equalToSuperview().offset(20)
-        }
-        
-        contactContentsLabel.snp.makeConstraints {
-            $0.top.equalTo(contactLabel)
-            $0.left.equalTo(categoryContentsLabel)
-            $0.right.equalToSuperview().offset(-20)
-        }
-        
-        linkLabel.snp.makeConstraints {
-            $0.top.equalTo(contactLabel.snp.bottom).offset(20)
-            $0.left.equalToSuperview().offset(20)
-        }
-        
-        linkContentsLabel.snp.makeConstraints {
-            $0.top.equalTo(linkLabel)
-            $0.left.equalTo(categoryContentsLabel)
-            $0.right.equalToSuperview().offset(-20)
+            $0.left.right.equalToSuperview().inset(20)
         }
         
         intervalView2.snp.makeConstraints {
-            $0.top.equalTo(linkLabel.snp.bottom).offset(20)
+            $0.top.equalTo(infoStackView.snp.bottom).offset(20)
             $0.left.right.equalToSuperview()
             $0.height.equalTo(8)
         }
@@ -442,9 +314,6 @@ final class EventDetailView : UIView {
             $0.top.bottom.right.equalTo(likeAndCommentsLabel)
             $0.left.equalTo(likeAndCommentsLabel.snp.centerX)
         }
-        
-        targetLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
-        contactLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
-        linkLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
+    
 }
