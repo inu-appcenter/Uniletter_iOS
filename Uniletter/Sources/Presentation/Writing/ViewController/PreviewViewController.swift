@@ -25,7 +25,7 @@ final class PreviewViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.viewModel.preview = self.preview
+        viewModel.preview = self.preview
         setViewController()
     }
     
@@ -50,7 +50,10 @@ final class PreviewViewController: UIViewController {
     
     func updateImageView() {
         previewView.mainImageView.image = preview.mainImage
-        previewView.mainImageView.updateImageViewRatio(false)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+            self.previewView.mainImageView.updateImageViewRatio(false)
+        }
     }
     
     func setImageSize() {

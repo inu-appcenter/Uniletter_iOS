@@ -46,14 +46,10 @@ final class WritingPictureViewController: UIViewController {
     
     // MARK: - Func
     
-    func resizeImage(_ image: UIImage) {
-        let width = writingPictureView.imageView.frame.width
-    }
-    
     func updateImage(_ image: UIImage) {
         DispatchQueue.main.async {
             self.writingPictureView.imageView.image = image
-            
+            self.writingPictureView.imageView.contentMode = .scaleAspectFill
             self.writingPictureView.checkView.checkButton.isSelected = false
             self.writingPictureView.checkView.checkButton.updateUI(false)
         }
@@ -76,6 +72,7 @@ final class WritingPictureViewController: UIViewController {
         
         if sender.isSelected {
             writingPictureView.imageView.image = UIImage(named: "Etc_p")
+            writingPictureView.imageView.contentMode = .scaleAspectFit
             writingManager.imageType = .basic
             writingManager.imageUUID = nil
         }

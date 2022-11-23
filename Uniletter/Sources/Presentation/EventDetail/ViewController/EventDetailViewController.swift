@@ -121,7 +121,7 @@ final class EventDetailViewController: UIViewController {
     
     func updateMainImage() {
         eventDetailView.mainImageView.kf.setImage(with: URL(string: viewModel.mainImage)!)
-        eventDetailView.mainImageView.updateImageViewRatio()
+        eventDetailView.mainImageView.updateImageViewRatio(true)
     }
     
     func updateDDay() {
