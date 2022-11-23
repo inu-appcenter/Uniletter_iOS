@@ -4,6 +4,7 @@
 target 'Uniletter' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
+  inhibit_all_warnings!
 
   pod "SnapKit"
   pod "Alamofire"
@@ -16,5 +17,14 @@ target 'Uniletter' do
   pod "Firebase/Messaging"
   pod "Toast-Swift"
   # Pods for Uniletter
+
+  # Delete cocoapods deployment issue
+  post_install do |installer|
+     installer.pods_project.targets.each do |target|
+         target.build_configurations.each do |config|
+             config.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET'
+         end
+     end
+  end
 
 end
