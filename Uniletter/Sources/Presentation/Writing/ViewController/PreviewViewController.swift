@@ -34,19 +34,63 @@ final class PreviewViewController: UIViewController {
     func setViewController() {
         setImageSize()
         previewView.titleLabel.text = viewModel.title
-        previewView.categoryContentsLabel.text = viewModel.category
-        previewView.startContentsLabel.text = viewModel.startAt
-        previewView.endContentsLabel.text = viewModel.endAt
-        previewView.targetContentsLabel.text = viewModel.target
-        previewView.contactContentsLabel.text = viewModel.contact
-        previewView.linkContentsLabel.text = viewModel.location
+        
+        previewView.infoStackView.categoryLabel.text = viewModel.category
+        previewView.infoStackView.startLabel.text = viewModel.startAt
+        previewView.infoStackView.endLabel.text = viewModel.endAt
+        previewView.infoStackView.targetLabel.text = viewModel.target
+        previewView.infoStackView.contactLabel.text = viewModel.contact
         previewView.bodyContentsLabel.text = viewModel.body
         
         updateImageView()
         updateDDay(viewModel.dday)
+        convertTextToHyperLink()
+        hideSubjects()
     }
     
     // MARK: - Funcs
+    
+    func hideSubjects() {
+        if viewModel.category == " | " {
+            previewView.infoStackView.validateInfo(.category, true)
+        } else {
+            previewView.infoStackView.validateInfo(.category, false)
+        }
+        
+        if viewModel.target == "" {
+            previewView.infoStackView.validateInfo(.target, true)
+        } else {
+            previewView.infoStackView.validateInfo(.target, false)
+        }
+        
+        if viewModel.contact == "" {
+            previewView.infoStackView.validateInfo(.contact, true)
+        } else {
+            previewView.infoStackView.validateInfo(.contact, false)
+        }
+        
+        if viewModel.location == "" {
+            previewView.infoStackView.validateInfo(.link, true)
+        } else {
+            previewView.infoStackView.validateInfo(.link, false)
+        }
+    }
+    
+    func convertTextToHyperLink() {
+        let link = viewModel.location
+        
+        if link.contains("http") {
+            let attributedString = NSMutableAttributedString(string: link)
+            attributedString.addAttribute(
+                .link,
+                value: NSUnderlineStyle.single.rawValue,
+                range: NSRange(location: 0, length: link.count))
+            
+            previewView.infoStackView.linkLabel.attributedText = attributedString
+        } else {
+            previewView.infoStackView.linkLabel.text = link
+        }
+    }
     
     func updateImageView() {
         previewView.mainImageView.image = preview.mainImage

@@ -17,9 +17,6 @@ extension UIImageView {
         let ratio = image.size.width / image.size.height
         let height = self.frame.width / ratio
         
-        print(image.size)
-        print(self.frame.size)
-        
         if isDetail {
             self.snp.makeConstraints {
                 $0.height.equalTo(height)

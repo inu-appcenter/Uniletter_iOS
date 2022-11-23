@@ -236,6 +236,7 @@ class WritingContentViewController: UIViewController {
         changeCheckButton(sender)
         if sender.isSelected {
             writingContentView.contactView.textField.text = ""
+            writingManager.contact = ""
         }
     }
     
@@ -243,6 +244,7 @@ class WritingContentViewController: UIViewController {
         changeCheckButton(sender)
         if sender.isSelected {
             writingContentView.locationView.textField.text = ""
+            writingManager.location = ""
         }
     }
     
