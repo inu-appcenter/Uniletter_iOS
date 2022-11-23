@@ -115,9 +115,13 @@ final class HomeViewController: UIViewController {
             loginManager.checkLogin() {
                 self.fetchEvents()
                 print("checkLogin() - 로그인 상태: \(self.loginManager.isLoggedIn)")
-                if self.loginManager.isLoggedIn == true {
+                if self.loginManager.isLoggedIn {
                     self.viewModel.postFCM()
                     self.presentWaringView(.login)
+                } else {
+                    // 로그인 실패 시 남아있는 정보들 삭제(구글, 애플 꼬임 방지)
+                    UserDefaults.standard.removeObject(forKey: "GoogleLoginInfo")
+                    UserDefaults.standard.removeObject(forKey: "AppleLoginInfo")
                 }
             }
         } else {
