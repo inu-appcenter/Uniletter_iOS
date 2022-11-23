@@ -314,14 +314,10 @@ extension MyPageViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
         if indexPath.section == 3 && indexPath.row == 0 {
-            LoginManager.shared.logout()
-            
-            self.navigationController?.popToRootViewController(animated: true)
-            
-            if let logoutCompletionClosure = logoutCompletionClosure {
-                logoutCompletionClosure()
+            LoginManager.shared.logout {
+                self.goToInitialViewController()
+                self.logoutCompletionClosure?()
             }
-            
         } else {
 
             let pushView = myPageManager.viewOfSection(indexPath.section, indexPath.row)

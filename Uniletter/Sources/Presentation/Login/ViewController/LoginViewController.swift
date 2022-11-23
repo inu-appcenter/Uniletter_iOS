@@ -121,13 +121,6 @@ final class LoginViewController: UIViewController {
         }
     }
     
-    func goToHomeViewController() {
-        let viewController = HomeViewController()
-        let navigationController = UINavigationController(rootViewController: viewController)
-        
-        view.window?.rootViewController = navigationController
-    }
-    
     // MARK: - 구글 로그인
     @objc func didTapLoginButton(_ sender: UIButton) {
         GIDSignIn.sharedInstance.signIn(with: config, presenting: self) { user, error in
@@ -150,7 +143,7 @@ final class LoginViewController: UIViewController {
                     print("google login info : \(info)")
                     DispatchQueue.main.async {
                         LoginManager.shared.saveGoogleLoginInfo(info)
-                        self.goToHomeViewController()
+                        self.goToInitialViewController()
                     }
                 }
             }
@@ -187,7 +180,7 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
                     print("appleOAutoLogin 응답: \(info)")
                     LoginManager.shared.saveAppleLoginInfo(info)
                     keyChain.create(userID: user)
-                    self.goToHomeViewController()
+                    self.goToInitialViewController()
                 }
             }
         }
