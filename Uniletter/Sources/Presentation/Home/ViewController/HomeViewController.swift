@@ -98,8 +98,16 @@ final class HomeViewController: UIViewController {
     }
     
     // MARK: - Funcs
+    
+    func paging() {
+        viewModel.isPaging = true
+        print("paging")
+        print("page: \(viewModel.currentPage)")
+        fetchEvents()
+    }
+    
     func fetchEvents() {
-        self.viewModel.loadEvents() {
+        viewModel.loadEvents {
             DispatchQueue.main.async {
                 self.homeView.collectionView.reloadData()
                 self.homeView.collectionView.refreshControl?.endRefreshing()
@@ -113,7 +121,7 @@ final class HomeViewController: UIViewController {
         
         if !loginManager.firstLogin {
             loginManager.checkLogin() {
-                self.fetchEvents()
+                self.paging()
                 print("checkLogin() - 로그인 상태: \(self.loginManager.isLoggedIn)")
                 if self.loginManager.isLoggedIn {
                     self.viewModel.postFCM()
@@ -125,7 +133,7 @@ final class HomeViewController: UIViewController {
                 }
             }
         } else {
-            fetchEvents()
+            self.paging()
         }
         
     }
@@ -157,7 +165,8 @@ final class HomeViewController: UIViewController {
     // MARK: - Action
     
     @objc func didPullCollectionView(_ refreshControl: UIRefreshControl) {
-        fetchEvents()
+        viewModel.isPull = true
+        paging()
     }
     
     @objc func goToInfo(_ sender: UIBarButtonItem) {
@@ -200,7 +209,6 @@ final class HomeViewController: UIViewController {
     }
     
     @objc func reloadCollectionView(_ noti: NSNotification) {
-
         setLoadingIndicator(true)
         fetchEvents()
     }
@@ -255,6 +263,19 @@ extension HomeViewController: UICollectionViewDelegate,
             
             self.navigationController?.pushViewController(eventDetailViewController, animated: true)
         }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath)
+    {
+        let index = indexPath.item
+        
+        if index == viewModel.numOfEvents - 2 && !viewModel.isPaging {
+            paging()
+        }
+    }
+    
 }
 
 extension HomeViewController: UIGestureRecognizerDelegate {

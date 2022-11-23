@@ -253,10 +253,10 @@ final class API {
     
     // MARK: - Event
     
-    /// 이벤트 전체 받아오기
-    static func getEvents(completion: @escaping([Event]) -> Void) {
+    /// 이벤트 페이징
+    static func getEvents(_ page: Int, completion: @escaping ([Event]) -> Void) {
         networking(
-            urlStr: Address.events.url,
+            urlStr: Address.events.url + "?pageNum=\(page)&pageSize=\(10)",
             method: .get,
             data: nil,
             model: [Event].self,
@@ -884,7 +884,6 @@ final class API {
                     } else {
                         print(error)
                     }
-//                    print(error)
                 }
             }
     }
