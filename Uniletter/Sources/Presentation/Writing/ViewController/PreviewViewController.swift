@@ -40,7 +40,7 @@ final class PreviewViewController: UIViewController {
         previewView.infoStackView.endLabel.text = viewModel.endAt
         previewView.infoStackView.targetLabel.text = viewModel.target
         previewView.infoStackView.contactLabel.text = viewModel.contact
-        previewView.bodyContentsLabel.text = viewModel.body
+        previewView.bodyContentsTextView.text = viewModel.body
         
         updateImageView()
         updateDDay(viewModel.dday)

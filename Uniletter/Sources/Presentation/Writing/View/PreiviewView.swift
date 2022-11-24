@@ -60,12 +60,13 @@ final class PreviewView: UIView {
         return label
     }()
     
-    lazy var bodyContentsLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 16)
-        label.numberOfLines = 0
+    lazy var bodyContentsTextView: UITextView = {
+        let textView = UITextView()
+        textView.font = .systemFont(ofSize: 16)
+        textView.isScrollEnabled = false
+        textView.isEditable = false
         
-        return label
+        return textView
     }()
     
     lazy var eyeImageView: UIImageView = {
@@ -135,7 +136,7 @@ final class PreviewView: UIView {
             infoStackView,
             intervalView2,
             bodyTitleLabel,
-            bodyContentsLabel,
+            bodyContentsTextView,
             eyeImageView,
             viewsLabel,
             likeAndCommentsLabel,
@@ -195,13 +196,13 @@ final class PreviewView: UIView {
             $0.left.equalToSuperview().offset(20)
         }
         
-        bodyContentsLabel.snp.makeConstraints {
+        bodyContentsTextView.snp.makeConstraints {
             $0.top.equalTo(bodyTitleLabel.snp.bottom).offset(25)
             $0.left.right.equalToSuperview().inset(20)
         }
         
         eyeImageView.snp.makeConstraints {
-            $0.top.equalTo(bodyContentsLabel.snp.bottom).offset(20)
+            $0.top.equalTo(bodyContentsTextView.snp.bottom).offset(20)
             $0.bottom.equalToSuperview().offset(-40)
             $0.left.equalToSuperview().offset(20)
             $0.width.equalTo(18)

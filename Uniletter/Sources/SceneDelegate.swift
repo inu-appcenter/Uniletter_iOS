@@ -81,7 +81,7 @@ extension SceneDelegate {
     
     private func presentInitViewController() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            if !(UserDefaults.standard.bool(forKey: "agree5")) {
+            if !(UserDefaults.standard.bool(forKey: "agree")) {
                 let agreeViewController = AgreementViewController()
                 let navigationController = UINavigationController(rootViewController: agreeViewController)
                 agreeViewController.modalPresentationStyle = .fullScreen

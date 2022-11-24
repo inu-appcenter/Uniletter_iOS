@@ -103,7 +103,7 @@ final class EventDetailViewController: UIViewController {
         eventDetailView.infoStackView.targetLabel.text = viewModel.target
         eventDetailView.infoStackView.contactLabel.text = viewModel.contact
         
-        eventDetailView.bodyContentsLabel.text = viewModel.body
+        eventDetailView.bodyContentsTextView.text = viewModel.body
         eventDetailView.viewsLabel.text = viewModel.views
         eventDetailView.likeAndCommentsLabel.text = viewModel.likeAndComments
         
