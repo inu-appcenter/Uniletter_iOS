@@ -81,11 +81,12 @@ extension SceneDelegate {
     
     private func presentInitViewController() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            if !(UserDefaults.standard.bool(forKey: "agree")) {
+            if !(UserDefaults.standard.bool(forKey: "agree5")) {
                 let agreeViewController = AgreementViewController()
+                let navigationController = UINavigationController(rootViewController: agreeViewController)
                 agreeViewController.modalPresentationStyle = .fullScreen
                 
-                self.window?.rootViewController = agreeViewController
+                self.window?.rootViewController = navigationController
             } else {
                 let homeViewController = HomeViewController()
                 let navigationController = UINavigationController(rootViewController: homeViewController)

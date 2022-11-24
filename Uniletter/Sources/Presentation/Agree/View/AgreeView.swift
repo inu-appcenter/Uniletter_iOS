@@ -12,61 +12,49 @@ class AgreementView: UIView {
     
     // MARK: - UI
     
-    let titleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "약관 동의"
-        label.font = .systemFont(ofSize: 25, weight: .bold)
-        label.textAlignment = .center
-        
-        return label
-    }()
-    
     let guideLabel: UILabel = {
         let label = UILabel()
-        label.text = "유니레터를 이용하려면 모든 약관에 동의해야합니다."
+        label.text = "*유니레터를 이용하려면 모든 약관에 동의해주셔야합니다."
         label.textColor = .darkGray
         label.font = .systemFont(ofSize: 15, weight: .medium)
         label.textAlignment = .center
-
+        label.numberOfLines = 2
         
         return label
     }()
     
-    lazy var allAgreeLabel = createAgreeLabel("모두 동의")
+    lazy var allAgreeLabel = createAgreeLabel("모두 동의", true)
     
-    lazy var allAgreeRadioButton = createRadioButton()
+    lazy var allAgreeCheckButton = createCheckButton()
     
     lazy var midBorderView = createGrayBorder()
     
-    lazy var firstAgreeLabel = createAgreeLabel("이용 약관(필수)")
+    lazy var firstAgreeLabel = createAgreeLabel("이용 약관(필수)", false)
     
     lazy var firstMoreButton = createMoreButton()
     
-    lazy var firstRadioButton = createRadioButton()
+    lazy var firstCheckButton = createCheckButton()
     
-    lazy var secondAgreeLabel = createAgreeLabel("개인정보 처리방침(필수)")
+    lazy var secondAgreeLabel = createAgreeLabel("개인정보 처리방침(필수)", false)
     
     lazy var secondMoreButton = createMoreButton()
     
-    lazy var secondRadioButton = createRadioButton()
-    
-    lazy var bottomBorderView = createGrayBorder()
+    lazy var secondCheckButton = createCheckButton()
     
     let nextButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = UIColor.customColor(.lightGray)
         button.setTitle("계속", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
         button.layer.cornerRadius = 4
-        button.isUserInteractionEnabled = false
+        button.backgroundColor = .customColor(.blueGreen)
         
         return button
     }()
     
     // MARK: - Property
     
-    var radioButtons = [UIButton]()
+    var checkButtons = [UIButton]()
     
     // MARK: - Init
     
@@ -89,49 +77,37 @@ class AgreementView: UIView {
     
     func addViews() {
         [
-            firstRadioButton,
-            secondRadioButton,
+            firstCheckButton,
+            secondCheckButton,
         ]
-            .forEach { radioButtons.append($0) }
+            .forEach { checkButtons.append($0) }
         
         [
-            titleLabel,
             guideLabel,
             allAgreeLabel,
-            allAgreeRadioButton,
+            allAgreeCheckButton,
             midBorderView,
             firstAgreeLabel,
             firstMoreButton,
-            firstRadioButton,
+            firstCheckButton,
             secondAgreeLabel,
             secondMoreButton,
-            secondRadioButton,
-            bottomBorderView,
+            secondCheckButton,
             nextButton
         ]
             .forEach { self.addSubview($0) }
     }
     
     func configureLayout() {
-        titleLabel.snp.makeConstraints {
-            $0.top.equalTo(safeAreaLayoutGuide).offset(20)
-            $0.centerX.equalToSuperview()
-        }
-        
-        guideLabel.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(10)
-            $0.centerX.equalToSuperview()
-        }
-        
         allAgreeLabel.snp.makeConstraints {
-            $0.top.equalTo(guideLabel.snp.bottom).offset(40)
+            $0.top.equalTo(safeAreaLayoutGuide).offset(40)
             $0.leading.equalToSuperview().offset(20)
         }
         
-        allAgreeRadioButton.snp.makeConstraints {
+        allAgreeCheckButton.snp.makeConstraints {
             $0.centerY.equalTo(allAgreeLabel)
             $0.trailing.equalToSuperview().offset(-20)
-            $0.width.height.equalTo(30)
+            $0.width.height.equalTo(16)
         }
         
         midBorderView.snp.makeConstraints {
@@ -141,41 +117,40 @@ class AgreementView: UIView {
         }
         
         firstAgreeLabel.snp.makeConstraints {
-            $0.top.equalTo(midBorderView.snp.bottom).offset(15)
+            $0.top.equalTo(midBorderView.snp.bottom).offset(20)
             $0.leading.equalTo(allAgreeLabel)
         }
         
         firstMoreButton.snp.makeConstraints {
-            $0.top.equalTo(firstAgreeLabel.snp.bottom)
+            $0.top.equalTo(firstAgreeLabel.snp.bottom).offset(4)
             $0.leading.equalTo(allAgreeLabel)
         }
         
-        firstRadioButton.snp.makeConstraints {
+        firstCheckButton.snp.makeConstraints {
             $0.centerY.equalTo(firstAgreeLabel)
-            $0.trailing.equalTo(allAgreeRadioButton)
-            $0.width.height.equalTo(30)
+            $0.trailing.equalTo(allAgreeCheckButton)
+            $0.width.height.equalTo(16)
         }
         
         secondAgreeLabel.snp.makeConstraints {
-            $0.top.equalTo(firstMoreButton.snp.bottom).offset(25)
+            $0.top.equalTo(firstMoreButton.snp.bottom).offset(28)
             $0.leading.equalTo(allAgreeLabel)
         }
         
         secondMoreButton.snp.makeConstraints {
-            $0.top.equalTo(secondAgreeLabel.snp.bottom)
+            $0.top.equalTo(secondAgreeLabel.snp.bottom).offset(4)
             $0.leading.equalTo(allAgreeLabel)
         }
         
-        secondRadioButton.snp.makeConstraints {
+        secondCheckButton.snp.makeConstraints {
             $0.centerY.equalTo(secondAgreeLabel)
-            $0.trailing.equalTo(allAgreeRadioButton)
-            $0.width.height.equalTo(30)
+            $0.trailing.equalTo(allAgreeCheckButton)
+            $0.width.height.equalTo(16)
         }
         
-        bottomBorderView.snp.makeConstraints {
-            $0.bottom.equalTo(nextButton.snp.top).offset(-20)
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(1)
+        guideLabel.snp.makeConstraints {
+            $0.bottom.equalTo(nextButton.snp.top).offset(-24)
+            $0.leading.trailing.equalToSuperview().inset(20)
         }
         
         nextButton.snp.makeConstraints {
@@ -187,10 +162,12 @@ class AgreementView: UIView {
     
     // MARK: - Func
     
-    private func createAgreeLabel(_ text: String) -> UILabel {
+    private func createAgreeLabel(_ text: String, _ isAll: Bool) -> UILabel {
         let label = UILabel()
         label.text = text
-        label.font = .systemFont(ofSize: 17, weight: .semibold)
+        label.font = isAll
+        ? .systemFont(ofSize: 18, weight: .bold)
+        : .systemFont(ofSize: 16)
         
         return label
     }
@@ -199,34 +176,21 @@ class AgreementView: UIView {
         let button = UIButton()
         button.setTitle("더 알아보기", for: .normal)
         button.setTitleColor(UIColor.customColor(.blueGreen), for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 15, weight: .bold)
+        button.titleLabel?.font = .systemFont(ofSize: 11, weight: .bold)
         
         return button
     }
     
-    private func createRadioButton() -> UIButton {
+    private func createCheckButton() -> UIButton {
         let button = UIButton()
-        button.setBackgroundImage(
-            UIImage(systemName: "circle")?
-                .withTintColor(.lightGray, renderingMode: .alwaysOriginal),
-            for: .normal)
-        button.setBackgroundImage(
-            UIImage(systemName: "circle.fill")?
-                .withTintColor(UIColor.customColor(.blueGreen), renderingMode: .alwaysOriginal),
-            for: .selected)
-        
-        button.setImage(
-            UIImage(systemName: "checkmark")?
-                .withTintColor(.white, renderingMode: .alwaysOriginal),
-            for: .selected)
-        button.imageView?.contentMode = .scaleAspectFit
+        button.createCheckButton()
         
         return button
     }
     
     private func createGrayBorder() -> UIView {
         let view = UIView()
-        view.backgroundColor = .lightGray
+        view.backgroundColor = .customColor(.borderGray)
         
         return view
     }

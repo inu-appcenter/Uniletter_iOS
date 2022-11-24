@@ -28,9 +28,12 @@ final class AgreementViewController: UIViewController {
     // MARK: - Setup
     
     func setViewController() {
-        agreementView.allAgreeRadioButton.addTarget(
+        addNavigationBarBorder()
+        title = "약관 동의"
+        
+        agreementView.allAgreeCheckButton.addTarget(
             self,
-            action: #selector(didTapAllAgreeRadioButton(_:)),
+            action: #selector(didTapAllAgreeCheckButton(_:)),
             for: .touchUpInside)
         
         agreementView.firstMoreButton.addTarget(
@@ -43,8 +46,11 @@ final class AgreementViewController: UIViewController {
             action: #selector(didTapSecondMoreButton(_:)),
             for: .touchUpInside)
         
-        agreementView.radioButtons.forEach {
-            $0.addTarget(self, action: #selector(didTapRadioButton(_:)), for: .touchUpInside)
+        agreementView.checkButtons.forEach {
+            $0.addTarget(
+                self,
+                action: #selector(didTapCheckButton(_:)),
+                for: .touchUpInside)
         }
         
         agreementView.nextButton.addTarget(
@@ -55,9 +61,9 @@ final class AgreementViewController: UIViewController {
     
     // MARK: - Func
     
-    func checkAllRadioButtonsAreSelected() -> Bool {
+    func checkAllCheckButtonsAreSelected() -> Bool {
         var checkCount: Int = 0
-        agreementView.radioButtons.forEach {
+        agreementView.checkButtons.forEach {
             if $0.isSelected {
                 checkCount += 1
             }
@@ -75,38 +81,40 @@ final class AgreementViewController: UIViewController {
     func changeState(_ bool: Bool) {
         agreementView.nextButton.isUserInteractionEnabled = bool
         agreementView.nextButton.backgroundColor = bool
-        ? UIColor.customColor(.blueGreen)
-        : UIColor.customColor(.lightGray)
+        ? .customColor(.blueGreen)
+        : .customColor(.lightGray)
     }
     
     
     // MARK: - Action
     
     @objc func didTapFirstMoreButton(_ sender: Any) {
-        let vc = PersonalViewController()
-        vc.modalPresentationStyle = .fullScreen
+        let vc = ServiceViewController()
         
-        self.present(vc, animated: true)
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func didTapSecondMoreButton(_ sedner: Any) {
-        let vc = TermsViewController()
-        vc.modalPresentationStyle = .fullScreen
+        let vc = PrivacyPolicyViewController()
         
-        self.present(vc, animated: true)
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    @objc func didTapRadioButton(_ button: UIButton) {
+    @objc func didTapCheckButton(_ button: UIButton) {
         button.isSelected = !button.isSelected
+        button.updateUI(button.isSelected)
         
-        agreementView.allAgreeRadioButton.isSelected = checkAllRadioButtonsAreSelected()
+        agreementView.allAgreeCheckButton.isSelected = checkAllCheckButtonsAreSelected()
+        agreementView.allAgreeCheckButton.updateUI(checkAllCheckButtonsAreSelected())
     }
     
-    @objc func didTapAllAgreeRadioButton(_ button: UIButton) {
+    @objc func didTapAllAgreeCheckButton(_ button: UIButton) {
         button.isSelected = !button.isSelected
+        button.updateUI(button.isSelected)
         
-        agreementView.radioButtons.forEach {
+        agreementView.checkButtons.forEach {
             $0.isSelected = button.isSelected
+            $0.updateUI(button.isSelected)
         }
         
         changeState(button.isSelected)
