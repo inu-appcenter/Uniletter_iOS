@@ -66,12 +66,8 @@ final class WritingViewController: UIViewController {
         
         if let event = self.event {
             print("글 수정 시작")
-            self.writingManager.loadEvent(event)
-            
-            let navigationBarLayer = self.navigationController?.navigationBar.layer
-            navigationBarLayer?.shadowColor = #colorLiteral(red: 0.8980392157, green: 0.8980392157, blue: 0.8980392157, alpha: 1).cgColor
-            navigationBarLayer?.shadowOpacity = 0.6
-            navigationBarLayer?.shadowOffset = CGSize(width: 0, height: 5)
+            writingManager.loadEvent(event)
+            setNavigationBar()
         } else {
             print("글 작성 시작")
         }

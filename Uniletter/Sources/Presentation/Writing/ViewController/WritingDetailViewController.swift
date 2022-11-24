@@ -40,6 +40,8 @@ final class WritingDetailViewController: UIViewController {
             
             if !(writingManager.body.isEmpty) {
                 writingDetailView.textField.textColor = .black
+            } else {
+                writingDetailView.textField.text = initText
             }
         }
     }

@@ -32,7 +32,6 @@ final class PreviewViewController: UIViewController {
     // MARK: - Setup
     
     func setViewController() {
-        setImageSize()
         previewView.titleLabel.text = viewModel.title
         
         previewView.infoStackView.categoryLabel.text = viewModel.category
@@ -98,12 +97,6 @@ final class PreviewViewController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
             self.previewView.mainImageView.updateImageViewRatio(false)
         }
-    }
-    
-    func setImageSize() {
-        previewView.mainImageView.contentMode = preview.imageType == .basic
-        ? .scaleAspectFit
-        : .scaleToFill
     }
     
     func updateDDay(_ dateStr: String) {

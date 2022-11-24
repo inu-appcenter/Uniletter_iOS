@@ -157,7 +157,10 @@ class WritingContentViewController: UIViewController {
             if !(writingManager.host.isEmpty) {
                 writingContentView.hostView.textField.textColor = .black
                 changeCheckButton(writingContentView.hostView.checkView.checkButton)
+            } else {
+                writingContentView.hostView.textField.text = placeholer
             }
+            
             if !(writingManager.contact.isEmpty) {
                 writingContentView.contactView.textField.textColor = .black
                 changeCheckButton(writingContentView.contactView.checkView.checkButton)
@@ -333,6 +336,10 @@ extension WritingContentViewController: UITextViewDelegate {
         default:
             break
         }
+        
+        if textView.text.count > 40 {
+            textView.deleteBackward()
+        }
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -375,22 +382,6 @@ extension WritingContentViewController: UITextViewDelegate {
         default:
             break
         }
-    }
-    
-    func textView(
-        _ textView: UITextView,
-        shouldChangeTextIn range: NSRange,
-        replacementText text: String)
-    -> Bool {
-        guard let term = textView.text,
-              let stringRange = Range(range, in: term) else {
-            return false
-        }
-        let updatedText = term.replacingCharacters(
-            in: stringRange,
-            with: text)
-        
-        return updatedText.count <= 40
     }
 
 }
