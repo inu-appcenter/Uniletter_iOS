@@ -28,11 +28,6 @@ final class HomeViewController: UIViewController {
         checkLogin()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        homeView.collectionView.reloadData()
-        addGradientLayer()
-    }
-    
     // MARK: - Setup
     func setNavigationBar() {
         let topLogo: UIButton = {
@@ -148,18 +143,6 @@ final class HomeViewController: UIViewController {
             homeView.collectionView.isHidden = false
             homeView.loadingIndicatorView.stopAnimating()
         }
-    }
-    
-    func addGradientLayer() {
-        homeView.gradientView.layer.sublayers?.removeAll()
-        let gradient: CAGradientLayer = CAGradientLayer()
-        gradient.colors = [
-            UIColor(red: 1, green: 1, blue: 1, alpha: 0).cgColor,
-            UIColor(red: 1, green: 1, blue: 1, alpha: 0.6).cgColor,
-            UIColor.white.cgColor
-        ]
-        gradient.frame = homeView.gradientView.bounds
-        homeView.gradientView.layer.addSublayer(gradient)
     }
     
     // MARK: - Action

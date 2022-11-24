@@ -27,12 +27,6 @@ final class HomeView: UIView {
         return collectionView
     }()
     
-    lazy var gradientView: UIView = {
-        let view = UIView()
-        
-        return view
-    }()
-    
     lazy var writeButton: UIButton = {
         var config = UIButton.Configuration.filled()
         config.baseBackgroundColor = UIColor.customColor(.lightBlue)
@@ -70,22 +64,34 @@ final class HomeView: UIView {
     func addViews() {
         [
             collectionView,
-            gradientView,
-            writeButton,
             loadingIndicatorView,
         ]
             .forEach { addSubview($0) }
+        
+        addGradientLayer()
+        
+        addSubview(writeButton)
+    }
+    
+    func addGradientLayer() {
+        let gradient: CAGradientLayer = CAGradientLayer()
+        gradient.colors = [
+            UIColor(red: 1, green: 1, blue: 1, alpha: 0).cgColor,
+            UIColor(red: 1, green: 1, blue: 1, alpha: 0.3).cgColor,
+            UIColor(red: 1, green: 1, blue: 1, alpha: 0.6).cgColor,
+            UIColor(red: 1, green: 1, blue: 1, alpha: 0.9).cgColor,
+            UIColor(red: 1, green: 1, blue: 1, alpha: 1).cgColor
+        ]
+        let frame = UIScreen.main.bounds
+        
+        gradient.frame = CGRect(x: 0, y: frame.height - 115, width: frame.width, height: 115)
+        layer.addSublayer(gradient)
     }
     
     func setLayout() {
         collectionView.snp.makeConstraints {
             $0.top.left.right.equalTo(safeAreaLayoutGuide)
             $0.bottom.equalToSuperview()
-        }
-        
-        gradientView.snp.makeConstraints {
-            $0.left.right.bottom.equalToSuperview()
-            $0.height.equalTo(150)
         }
         
         writeButton.snp.makeConstraints {
