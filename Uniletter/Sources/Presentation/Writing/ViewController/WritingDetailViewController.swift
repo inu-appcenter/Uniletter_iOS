@@ -49,6 +49,10 @@ final class WritingDetailViewController: UIViewController {
 extension WritingDetailViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         textView.isScrollEnabled = textView.frame.height >= 280 ? true : false
+        
+        if textView.text.count > 8000 {
+            textView.deleteBackward()
+        }
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -72,20 +76,5 @@ extension WritingDetailViewController: UITextViewDelegate {
             writingManager.body = textView.text
         }
     }
-    
-    func textView(
-        _ textView: UITextView,
-        shouldChangeTextIn range: NSRange,
-        replacementText text: String)
-    -> Bool {
-        guard let term = textView.text,
-              let stringRange = Range(range, in: term) else {
-            return false
-        }
-        let updatedText = term.replacingCharacters(
-            in: stringRange,
-            with: text)
-        
-        return updatedText.count <= 800
-    }
+
 }
