@@ -28,11 +28,6 @@ final class HomeViewController: UIViewController {
         checkLogin()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        homeView.collectionView.reloadData()
-        addGradientLayer()
-    }
-    
     // MARK: - Setup
     func setNavigationBar() {
         let topLogo: UIButton = {
@@ -63,10 +58,7 @@ final class HomeViewController: UIViewController {
             myInfo,
         ]
         
-        let navigationBarLayer = self.navigationController?.navigationBar.layer
-        navigationBarLayer?.shadowColor = #colorLiteral(red: 0.8980392157, green: 0.8980392157, blue: 0.8980392157, alpha: 1).cgColor
-        navigationBarLayer?.shadowOpacity = 0.6
-        navigationBarLayer?.shadowOffset = CGSize(width: 0, height: 5)
+        addNavigationBarBorder()
         setNavigationGesutre()
     }
     
@@ -98,8 +90,16 @@ final class HomeViewController: UIViewController {
     }
     
     // MARK: - Funcs
+    
+    func paging() {
+        viewModel.isPaging = true
+        print("paging")
+        print("page: \(viewModel.currentPage)")
+        fetchEvents()
+    }
+    
     func fetchEvents() {
-        self.viewModel.loadEvents() {
+        viewModel.loadEvents {
             DispatchQueue.main.async {
                 self.homeView.collectionView.reloadData()
                 self.homeView.collectionView.refreshControl?.endRefreshing()
@@ -113,15 +113,19 @@ final class HomeViewController: UIViewController {
         
         if !loginManager.firstLogin {
             loginManager.checkLogin() {
-                self.fetchEvents()
+                self.paging()
                 print("checkLogin() - 로그인 상태: \(self.loginManager.isLoggedIn)")
-                if self.loginManager.isLoggedIn == true {
+                if self.loginManager.isLoggedIn {
                     self.viewModel.postFCM()
                     self.presentWaringView(.login)
+                } else {
+                    // 로그인 실패 시 남아있는 정보들 삭제(구글, 애플 꼬임 방지)
+                    UserDefaults.standard.removeObject(forKey: "GoogleLoginInfo")
+                    UserDefaults.standard.removeObject(forKey: "AppleLoginInfo")
                 }
             }
         } else {
-            fetchEvents()
+            self.paging()
         }
         
     }
@@ -138,22 +142,11 @@ final class HomeViewController: UIViewController {
         }
     }
     
-    func addGradientLayer() {
-        homeView.gradientView.layer.sublayers?.removeAll()
-        let gradient: CAGradientLayer = CAGradientLayer()
-        gradient.colors = [
-            UIColor(red: 1, green: 1, blue: 1, alpha: 0).cgColor,
-            UIColor(red: 1, green: 1, blue: 1, alpha: 0.6).cgColor,
-            UIColor.white.cgColor
-        ]
-        gradient.frame = homeView.gradientView.bounds
-        homeView.gradientView.layer.addSublayer(gradient)
-    }
-    
     // MARK: - Action
     
     @objc func didPullCollectionView(_ refreshControl: UIRefreshControl) {
-        fetchEvents()
+        viewModel.isPull = true
+        paging()
     }
     
     @objc func goToInfo(_ sender: UIBarButtonItem) {
@@ -196,7 +189,6 @@ final class HomeViewController: UIViewController {
     }
     
     @objc func reloadCollectionView(_ noti: NSNotification) {
-
         setLoadingIndicator(true)
         fetchEvents()
     }
@@ -251,6 +243,19 @@ extension HomeViewController: UICollectionViewDelegate,
             
             self.navigationController?.pushViewController(eventDetailViewController, animated: true)
         }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath)
+    {
+        let index = indexPath.item
+        
+        if index == viewModel.numOfEvents - 2 && !viewModel.isPaging {
+            paging()
+        }
+    }
+    
 }
 
 extension HomeViewController: UIGestureRecognizerDelegate {

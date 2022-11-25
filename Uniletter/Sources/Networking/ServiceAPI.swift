@@ -253,10 +253,10 @@ final class API {
     
     // MARK: - Event
     
-    /// 이벤트 전체 받아오기
-    static func getEvents(completion: @escaping([Event]) -> Void) {
+    /// 이벤트 페이징
+    static func getEvents(_ page: Int, completion: @escaping ([Event]) -> Void) {
         networking(
-            urlStr: Address.events.url,
+            urlStr: Address.events.url + "?pageNum=\(page)&pageSize=\(10)",
             method: .get,
             data: nil,
             model: [Event].self,
@@ -864,28 +864,27 @@ final class API {
     
     /// 회원 탈퇴
     static func deleteMe(completion: @escaping() -> Void) {
-        
-        LoginManager.shared.logout()
-        
-        networking(
-            urlStr: Address.deleteMe.url,
-            method: .delete,
-            data: nil,
-            model: String.self,
-            apiType: .deleteAccount) { result in
-                switch result {
-                case .success(_):
-                    completion()
-                    print("success")
-                case .failure(let error):
-                    if error.errorDescription! == errorString {
-                        print("success")
+        LoginManager.shared.logout {
+            networking(
+                urlStr: Address.deleteMe.url,
+                method: .delete,
+                data: nil,
+                model: String.self,
+                apiType: .deleteAccount) { result in
+                    switch result {
+                    case .success(_):
                         completion()
-                    } else {
-                        print(error)
+                        print("success")
+                    case .failure(let error):
+                        if error.errorDescription! == errorString {
+                            print("success")
+                            completion()
+                        } else {
+                            print(error)
+                        }
                     }
-//                    print(error)
                 }
-            }
+        }
     }
+    
 }

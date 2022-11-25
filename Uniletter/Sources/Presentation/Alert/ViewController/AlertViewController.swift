@@ -85,9 +85,9 @@ final class AlertViewController: UIViewController {
     }
     
     func alertIsLogOut() {
-        LoginManager.shared.logout()
-        
-        goToInitialViewController()
+        LoginManager.shared.logout {
+            self.goToInitialViewController()
+        }
     }
     
     func alertIsReport() {

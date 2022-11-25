@@ -92,28 +92,29 @@ final class LoginManager {
         print("애플 로그인 정보 저장 완료")
     }
     
-    func logout() {
-        
+    func logout(completion: @escaping () -> Void) {
         API.postFcmToken(["token": ""]) {
             guard let cookies = HTTPCookieStorage.shared.cookies else { return }
             
             for cookie in cookies {
                 HTTPCookieStorage.shared.deleteCookie(cookie)
             }
-        }
-
-        firstLogin = false
-        
-        // 구글 로그인, 애플 로그인 분기 처리
-        if googleLogin {
-            googleLoginInfo = nil
-            UserDefaults.standard.removeObject(forKey: "GoogleLoginInfo")
-            googleLogin = false
-        } else {
-            keyChain.delete()
-            appleLoginInfo = nil
-            UserDefaults.standard.removeObject(forKey: "AppleLoginInfo")
-            appleLogin = false
+            
+            self.firstLogin = false
+            
+            // 구글 로그인, 애플 로그인 분기 처리
+            if self.googleLogin {
+                self.googleLoginInfo = nil
+                UserDefaults.standard.removeObject(forKey: "GoogleLoginInfo")
+                self.googleLogin = false
+            } else {
+                keyChain.delete()
+                self.appleLoginInfo = nil
+                UserDefaults.standard.removeObject(forKey: "AppleLoginInfo")
+                self.appleLogin = false
+            }
+            
+            completion()
         }
     }
     

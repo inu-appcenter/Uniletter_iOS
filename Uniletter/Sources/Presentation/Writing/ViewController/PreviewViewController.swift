@@ -7,18 +7,17 @@
 
 import UIKit
 import SnapKit
-import Kingfisher
 
 final class PreviewViewController: UIViewController {
 
     // MARK: - Property
-    let eventDetailView = EventDetailView()
+    let previewView = PreviewView()
     let viewModel = PreviewViewModel()
     var preview: Preview!
     
     // MARK: - Life cycle
     override func loadView() {
-        view = eventDetailView
+        view = previewView
     }
     
     override func viewDidLoad() {
@@ -26,46 +25,78 @@ final class PreviewViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.viewModel.preview = self.preview
+        viewModel.preview = self.preview
         setViewController()
     }
     
     // MARK: - Setup
     
     func setViewController() {
-        [
-            eventDetailView.profileImageView,
-            eventDetailView.nicknameLabel,
-            eventDetailView.dateWroteLabel,
-            eventDetailView.moreButton,
-            eventDetailView.notificationButton,
-            eventDetailView.viewsLabel,
-            eventDetailView.likeAndCommentsLabel,
-            eventDetailView.eyeImageView,
-        ]
-            .forEach { $0.isHidden = true }
+        previewView.titleLabel.text = viewModel.title
         
-        setImageSize()
-        eventDetailView.mainImageView.image = preview.mainImage
-        eventDetailView.titleLabel.text = viewModel.title
-        eventDetailView.categoryContentsLabel.text = viewModel.category
-        eventDetailView.startContentsLabel.text = viewModel.startAt
-        eventDetailView.endContentsLabel.text = viewModel.endAt
-        eventDetailView.targetContentsLabel.text = viewModel.target
-        eventDetailView.contactContentsLabel.text = viewModel.contact
-        eventDetailView.linkContentsLabel.text = viewModel.location
-        eventDetailView.bodyContentsLabel.text = viewModel.body
+        previewView.infoStackView.categoryLabel.text = viewModel.category
+        previewView.infoStackView.startLabel.text = viewModel.startAt
+        previewView.infoStackView.endLabel.text = viewModel.endAt
+        previewView.infoStackView.targetLabel.text = viewModel.target
+        previewView.infoStackView.contactLabel.text = viewModel.contact
+        previewView.bodyContentsTextView.text = viewModel.body
         
-//        eventDetailView.mainImageView.updateImageViewRatio()
+        updateImageView()
         updateDDay(viewModel.dday)
+        convertTextToHyperLink()
+        hideSubjects()
     }
     
     // MARK: - Funcs
     
-    func setImageSize() {
-        eventDetailView.mainImageView.contentMode = preview.imageType == .basic
-        ? .scaleAspectFit
-        : .scaleToFill
+    func hideSubjects() {
+        if viewModel.category == " | " {
+            previewView.infoStackView.validateInfo(.category, true)
+        } else {
+            previewView.infoStackView.validateInfo(.category, false)
+        }
+        
+        if viewModel.target == "" {
+            previewView.infoStackView.validateInfo(.target, true)
+        } else {
+            previewView.infoStackView.validateInfo(.target, false)
+        }
+        
+        if viewModel.contact == "" {
+            previewView.infoStackView.validateInfo(.contact, true)
+        } else {
+            previewView.infoStackView.validateInfo(.contact, false)
+        }
+        
+        if viewModel.location == "" {
+            previewView.infoStackView.validateInfo(.link, true)
+        } else {
+            previewView.infoStackView.validateInfo(.link, false)
+        }
+    }
+    
+    func convertTextToHyperLink() {
+        let link = viewModel.location
+        
+        if link.contains("http") {
+            let attributedString = NSMutableAttributedString(string: link)
+            attributedString.addAttribute(
+                .link,
+                value: NSUnderlineStyle.single.rawValue,
+                range: NSRange(location: 0, length: link.count))
+            
+            previewView.infoStackView.linkLabel.attributedText = attributedString
+        } else {
+            previewView.infoStackView.linkLabel.text = link
+        }
+    }
+    
+    func updateImageView() {
+        previewView.mainImageView.image = preview.mainImage
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+            self.previewView.mainImageView.updateImageViewRatio(false)
+        }
     }
     
     func updateDDay(_ dateStr: String) {
@@ -74,17 +105,17 @@ final class PreviewViewController: UIViewController {
         let dday: String
         
         if day < 0 || (day == 0 && min < 0) {
-            eventDetailView.ddayButton.configuration?.baseBackgroundColor = UIColor.customColor(.darkGray)
+            previewView.ddayButton.configuration?.baseBackgroundColor = UIColor.customColor(.darkGray)
             dday = "마감"
         } else {
-            eventDetailView.ddayButton.configuration?.baseBackgroundColor = UIColor.customColor(.blueGreen)
+            previewView.ddayButton.configuration?.baseBackgroundColor = UIColor.customColor(.blueGreen)
             dday = day == 0 ? "D-day" : "D-\(day)"
         }
         
         var attributedString = AttributedString(dday)
         attributedString.font = .systemFont(ofSize: 13)
         
-        eventDetailView.ddayButton.configuration?.attributedTitle = attributedString
+        previewView.ddayButton.configuration?.attributedTitle = attributedString
     }
     
 }

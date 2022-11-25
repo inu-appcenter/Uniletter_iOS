@@ -13,6 +13,9 @@ final class HomeViewModel {
     // MARK: - Property
     var events = [Event]()
     var ids = [Int]()
+    var isPaging = false
+    var currentPage = 0
+    var isPull = false
     
     // MARK: - UI
     var numOfEvents: Int {
@@ -50,10 +53,24 @@ final class HomeViewModel {
     }
     
     func loadEvents(completion: @escaping () -> Void) {
-        API.getEvents() { events in
-            self.events = events
-            self.ids = events.map { $0.id }
-            completion()
+        if isPull {
+            currentPage = 0
+        }
+        
+        API.getEvents(currentPage) { events in
+            if self.isPull {
+                self.events.removeAll()
+            }
+            
+            if !(events.isEmpty) && self.isPaging {
+                self.events += events
+                self.ids = self.events.map { $0.id }
+                self.currentPage += 1
+                self.isPaging = false
+                self.isPull = false
+                
+                completion()
+            }
         }
     }
     
