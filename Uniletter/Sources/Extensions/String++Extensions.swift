@@ -5,7 +5,7 @@
 //  Created by 권오준 on 2022/09/17.
 //
 
-import Foundation
+import UIKit
 
 extension String {
     
@@ -34,6 +34,15 @@ extension String {
             .day!
         
         return [diff, time]
+    }
+    
+    func changeAttributed(_ isSelected: Bool) -> NSAttributedString {
+        return NSAttributedString(
+            string: self,
+            attributes: [
+                .font: UIFont.systemFont(ofSize: 11, weight: .medium),
+                .foregroundColor: isSelected ? UIColor.white : UIColor.black
+            ])
     }
     
 }

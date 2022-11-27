@@ -11,6 +11,9 @@ import SnapKit
 final class HomeView: UIView {
     
     // MARK: - UI
+    
+    lazy var categoryList = CategoryList()
+    
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let margin: CGFloat = 20
@@ -49,6 +52,7 @@ final class HomeView: UIView {
         super.init(frame: frame)
         backgroundColor = .white
         addViews()
+        setLayout()
     }
     
     required init?(coder: NSCoder) {
@@ -56,13 +60,10 @@ final class HomeView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
-        setLayout()
-    }
-    
     // MARK: - Setup
     func addViews() {
         [
+            categoryList,
             collectionView,
             loadingIndicatorView,
         ]
@@ -89,9 +90,14 @@ final class HomeView: UIView {
     }
     
     func setLayout() {
-        collectionView.snp.makeConstraints {
+        categoryList.snp.makeConstraints {
             $0.top.left.right.equalTo(safeAreaLayoutGuide)
-            $0.bottom.equalToSuperview()
+            $0.height.equalTo(64)
+        }
+        
+        collectionView.snp.makeConstraints {
+            $0.top.equalTo(categoryList.snp.bottom).offset(4)
+            $0.left.right.bottom.equalToSuperview()
         }
         
         writeButton.snp.makeConstraints {
@@ -101,7 +107,7 @@ final class HomeView: UIView {
         }
         
         loadingIndicatorView.snp.makeConstraints {
-            $0.top.equalTo(safeAreaLayoutGuide).offset(15)
+            $0.top.equalTo(categoryList.snp.bottom).offset(15)
             $0.left.right.equalTo(collectionView)
         }
     }
