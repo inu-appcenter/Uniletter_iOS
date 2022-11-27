@@ -56,6 +56,10 @@ final class CategoryButton: UIButton {
     
     func changeState(_ isSelected: Bool) {
         backgroundColor = isSelected ? .customColor(.lightBlueGreen) : .white
+        
+        layer.borderColor = isSelected
+        ? .customColor(.lightBlueGreen)
+        : .customColor(.deepLightGray)
     }
     
 }

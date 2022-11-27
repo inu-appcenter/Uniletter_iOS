@@ -8,6 +8,34 @@
 import UIKit
 import SnapKit
 
+enum Category: Int {
+    case group = 1
+    case council = 2
+    case snacks = 3
+    case contest = 4
+    case study = 5
+    case offer = 6
+    case etc = 7
+    case lecture = 8
+    case reset = 100
+    case progressing = 101
+    
+    var title: String {
+        switch self {
+        case .group: return "동아리/소모임"
+        case .council: return "학생회"
+        case .snacks: return "간식나눔"
+        case .contest: return "대회/공모전"
+        case .study: return "스터디"
+        case .offer: return "구인"
+        case .etc: return "기타"
+        case .lecture: return "교육/강연"
+        case .reset: return "초기화"
+        case .progressing: return "진행중"
+        }
+    }
+}
+
 final class CategoryList: UIScrollView {
     
     // MARK: - UI
@@ -24,32 +52,28 @@ final class CategoryList: UIScrollView {
     }()
     
     lazy var resetButton: CategoryButton = {
-        let button = createCategoryButtons("초기화")
+        let button = createCategoryButtons(.reset)
         button.configuration?.image = UIImage(named: "reset")
         button.layer.borderColor = .customColor(.lightBlueGreen)
+        button.isHidden = true
         
         return button
     }()
     
     lazy var progressingButton: CategoryButton = {
-        let button = createCategoryButtons("진행중")
+        let button = createCategoryButtons(.progressing)
         button.configuration?.image = UIImage(named: "smallDown")
         
         return button
     }()
     
-    lazy var groupButton = createCategoryButtons("동아리/소모임")
-    lazy var councilButton = createCategoryButtons("학생회")
-    lazy var snacksButton = createCategoryButtons("간식나눔")
-    lazy var studyButton = createCategoryButtons("스터디")
-    lazy var contestButton = createCategoryButtons("대회/공모전")
-    lazy var offerButton = createCategoryButtons("구인")
-    lazy var etcButton = createCategoryButtons("기타")
-    
-    // MARK: - Property
-    
-    var cnt = 0
-    var buttons: [CategoryButton] = []
+    lazy var groupButton = createCategoryButtons(.group)
+    lazy var councilButton = createCategoryButtons(.council)
+    lazy var snacksButton = createCategoryButtons(.snacks)
+    lazy var studyButton = createCategoryButtons(.study)
+    lazy var contestButton = createCategoryButtons(.contest)
+    lazy var offerButton = createCategoryButtons(.offer)
+    lazy var etcButton = createCategoryButtons(.etc)
     
     // MARK: - Init
     
@@ -119,11 +143,10 @@ final class CategoryList: UIScrollView {
     
     // MARK: - Func
     
-    private func createCategoryButtons(_ title: String) -> CategoryButton {
+    private func createCategoryButtons(_ category: Category) -> CategoryButton {
         let button = CategoryButton()
-        button.configureButton(title)
-        button.tag = tag
-        tag += 1
+        button.configureButton(category.title)
+        button.tag = category.rawValue
         
         return button
     }
