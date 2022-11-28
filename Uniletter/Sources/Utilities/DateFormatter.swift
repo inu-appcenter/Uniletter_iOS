@@ -11,6 +11,18 @@ import Foundation
 /// 날짜, 시간 관련 기능을 담은 custom class
 final class CustomFormatter {
     
+    static func convertISO8601DateToString(_ dateStr: String, _ format: String) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        
+        let date = formatter.date(from: dateStr)!
+        let result = Calendar.current.date(byAdding: .hour, value: 9, to: date)!
+        
+        formatter.dateFormat = format
+        
+        return formatter.string(from: result)
+    }
+    
     static func dateToString(_ date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
@@ -33,15 +45,6 @@ final class CustomFormatter {
         let min = Int(time.subStringByIndex(sOffset: 3, eOffset: 5))!
         
         return [hour, min]
-    }
-
-    /// 받아온 날짜 년.월.일 시간:분 구하기(댓글용)
-    static func formatDateForComments(_ dateStr: String) -> String {
-        let date = dateStr.subStringByIndex(sOffset: 2, eOffset: 10)
-            .replacingOccurrences(of: "-", with: ".")
-        let time = subTimeString(dateStr)
-        
-        return "\(date) \(time)"
     }
 
     /// 시간 AM, PM으로 변환

@@ -15,7 +15,21 @@ final class HomeViewModel {
     var ids = [Int]()
     var isPaging = false
     var currentPage = 0
-    var isPull = false
+    var isPull = false {
+        willSet {
+            if newValue {
+                events.removeAll()
+                currentPage = 0
+            }
+        }
+    }
+    var categoty = 0 {
+        willSet {
+            events.removeAll()
+            currentPage = 0
+        }
+    }
+    var eventStatus = true
     
     // MARK: - UI
     var numOfEvents: Int {
@@ -53,24 +67,16 @@ final class HomeViewModel {
     }
     
     func loadEvents(completion: @escaping () -> Void) {
-        if isPull {
-            currentPage = 0
-        }
-        
-        API.getEvents(currentPage) { events in
-            if self.isPull {
-                self.events.removeAll()
-            }
-            
-            if !(events.isEmpty) && self.isPaging {
+        API.getEvents(categoty, false, currentPage) { events in
+            if !events.isEmpty {
                 self.events += events
                 self.ids = self.events.map { $0.id }
                 self.currentPage += 1
                 self.isPaging = false
                 self.isPull = false
-                
-                completion()
             }
+            
+            completion()
         }
     }
     

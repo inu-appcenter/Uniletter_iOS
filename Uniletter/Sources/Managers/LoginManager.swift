@@ -146,4 +146,9 @@ final class LoginManager {
             print("자동 로그인 정보 없음")
         }
     }
+    
+    func removeLoginInfo() {
+        UserDefaults.standard.removeObject(forKey: "GoogleLoginInfo")
+        UserDefaults.standard.removeObject(forKey: "AppleLoginInfo")
+    }
 }

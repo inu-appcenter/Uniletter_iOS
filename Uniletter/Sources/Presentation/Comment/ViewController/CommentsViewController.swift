@@ -169,6 +169,10 @@ extension CommentsViewController: UITableViewDataSource,
                 vc = self.presentActionSheetView(.commentForWriter)
                 vc.commentID = comment.id
                 
+                vc.deleteCommentCompletionClosure = {
+                    self.fetchComments()
+                }
+                
             } else {
                 vc = self.presentActionSheetView(.commentForUser)
                 vc.targetUserID = comment.userID

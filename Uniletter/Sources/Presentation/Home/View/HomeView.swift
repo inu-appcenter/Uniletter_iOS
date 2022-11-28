@@ -11,6 +11,9 @@ import SnapKit
 final class HomeView: UIView {
     
     // MARK: - UI
+    
+    lazy var categoryList = CategoryList()
+    
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let margin: CGFloat = 20
@@ -22,9 +25,17 @@ final class HomeView: UIView {
         layout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 0, right: 20)
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.refreshControl = refreshControl
         collectionView.register(HomeCell.self, forCellWithReuseIdentifier: HomeCell.identifier)
         
         return collectionView
+    }()
+    
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshcontrol = UIRefreshControl()
+        refreshcontrol.tintColor = .clear
+        
+        return refreshcontrol
     }()
     
     lazy var writeButton: UIButton = {
@@ -42,13 +53,19 @@ final class HomeView: UIView {
         return button
     }()
     
-    let loadingIndicatorView = UIActivityIndicatorView(style: .medium)
+    let loadingIndicatorView: UIActivityIndicatorView = {
+        let indicatorView = UIActivityIndicatorView(style: .large)
+        indicatorView.hidesWhenStopped = true
+        
+        return indicatorView
+    }()
     
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
         addViews()
+        setLayout()
     }
     
     required init?(coder: NSCoder) {
@@ -56,13 +73,11 @@ final class HomeView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
-        setLayout()
-    }
-    
     // MARK: - Setup
     func addViews() {
         [
+//            TODO: 향후 추가 예정
+//            categoryList,
             collectionView,
             loadingIndicatorView,
         ]
@@ -89,9 +104,17 @@ final class HomeView: UIView {
     }
     
     func setLayout() {
+//            TODO: 향후 추가 예정
+//        categoryList.snp.makeConstraints {
+//            $0.top.left.right.equalTo(safeAreaLayoutGuide)
+//            $0.height.equalTo(64)
+//        }
+        
         collectionView.snp.makeConstraints {
-            $0.top.left.right.equalTo(safeAreaLayoutGuide)
-            $0.bottom.equalToSuperview()
+//            TODO: 향후 추가 예정
+//            $0.top.equalTo(categoryList.snp.bottom).offset(4)
+            $0.top.equalTo(safeAreaLayoutGuide)
+            $0.left.right.bottom.equalToSuperview()
         }
         
         writeButton.snp.makeConstraints {
@@ -101,8 +124,7 @@ final class HomeView: UIView {
         }
         
         loadingIndicatorView.snp.makeConstraints {
-            $0.top.equalTo(safeAreaLayoutGuide).offset(15)
-            $0.left.right.equalTo(collectionView)
+            $0.center.equalToSuperview()
         }
     }
 }
