@@ -76,7 +76,8 @@ final class HomeView: UIView {
     // MARK: - Setup
     func addViews() {
         [
-            categoryList,
+//            TODO: 향후 추가 예정
+//            categoryList,
             collectionView,
             loadingIndicatorView,
         ]
@@ -103,13 +104,16 @@ final class HomeView: UIView {
     }
     
     func setLayout() {
-        categoryList.snp.makeConstraints {
-            $0.top.left.right.equalTo(safeAreaLayoutGuide)
-            $0.height.equalTo(64)
-        }
+//            TODO: 향후 추가 예정
+//        categoryList.snp.makeConstraints {
+//            $0.top.left.right.equalTo(safeAreaLayoutGuide)
+//            $0.height.equalTo(64)
+//        }
         
         collectionView.snp.makeConstraints {
-            $0.top.equalTo(categoryList.snp.bottom).offset(4)
+//            TODO: 향후 추가 예정
+//            $0.top.equalTo(categoryList.snp.bottom).offset(4)
+            $0.top.equalTo(safeAreaLayoutGuide)
             $0.left.right.bottom.equalToSuperview()
         }
         
