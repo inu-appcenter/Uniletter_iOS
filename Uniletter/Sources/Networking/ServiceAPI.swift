@@ -299,7 +299,7 @@ final class API {
             guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
             
             networking(
-                urlStr: Address.events.url,
+                urlStr: Address.eventOne.url,
                 method: .post,
                 data: data,
                 model: Event.self,
@@ -325,7 +325,7 @@ final class API {
     /// 이벤트 삭제하기
     static func deleteEvent(_ id: Int, completion: @escaping() -> Void) {
         networking(
-            urlStr: Address.events.url + "/\(id)",
+            urlStr: Address.eventOne.url + "/\(id)",
             method: .delete,
             data: nil,
             model: Event.self,
@@ -351,7 +351,7 @@ final class API {
         }
         
         networking(
-            urlStr: Address.events.url + "/\(id)",
+            urlStr: Address.eventOne.url + "/\(id)",
             method: .patch,
             data: data,
             model: String.self,
