@@ -38,7 +38,8 @@ final class EventDetailViewModel {
     
     var dateWrote: String {
         let dateStr = event?.createdAt ?? defaultDate
-        return CustomFormatter.subDateString(dateStr)
+        
+        return CustomFormatter.convertISO8601DateToString(dateStr, "yyyy.MM.dd")
     }
     
     var mainImage: String {
