@@ -71,7 +71,7 @@ final class WritingPictureViewController: UIViewController {
         sender.updateUI(sender.isSelected)
         
         if sender.isSelected {
-            writingPictureView.imageView.image = UIImage(named: "Default_Etc")
+            writingPictureView.imageView.image = UIImage(named: "defaultImage")
             writingManager.imageType = .basic
             writingManager.imageUUID = nil
         }

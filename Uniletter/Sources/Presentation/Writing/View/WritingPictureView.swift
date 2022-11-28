@@ -28,7 +28,7 @@ final class WritingPictureView: UIView {
         imgView.layer.cornerRadius = 12
         imgView.layer.borderWidth = 1
         imgView.layer.borderColor = CGColor.customColor(.lightGray)
-        imgView.image = UIImage(named: "Default_Etc")
+        imgView.image = UIImage(named: "defaultImage")
         imgView.contentMode = .scaleAspectFill
         imgView.clipsToBounds = true
         imgView.isUserInteractionEnabled = true
