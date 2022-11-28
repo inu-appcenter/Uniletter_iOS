@@ -18,6 +18,7 @@ final class EventDetailViewController: UIViewController {
     var id: Int = 0
     var bookmarkButton = UIButton()
     var userBlockCompletionClosure: (() -> Void)?
+    var userLikeCompletionClosure: (() -> Void)?
     
     // MARK: - Life cycle
     override func loadView() {
@@ -223,6 +224,11 @@ final class EventDetailViewController: UIViewController {
                 name: NSNotification.Name("like"),
                 object: nil,
                 userInfo: ["id": id, "like": sender.isSelected])
+            
+            if let userLikeCompletionClosure = userLikeCompletionClosure {
+                userLikeCompletionClosure()
+            }
+            
         } else {
             let AlertView = self.AlertVC(.login)
             self.present(AlertView, animated: true)

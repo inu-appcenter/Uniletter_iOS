@@ -505,9 +505,10 @@ final class API {
     }
     
     /// 행사 좋아요 가져오기 (북마크 버튼 눌려진 행사)
-    static func getLikes(completion: @escaping([Event]) -> Void) {
+    static func getLikes(pageNum: Int, completion: @escaping([Event]) -> Void) {
+        
         networking(
-            urlStr: Address.likes.url,
+            urlStr: Address.likes.url + "?pageNum=\(pageNum)&pageSize=\(6)",
             method: .get,
             data: nil,
             model: [Event].self,

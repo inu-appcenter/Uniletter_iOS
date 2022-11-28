@@ -47,7 +47,8 @@ class NotiListViewController: UIViewController {
         
         collectionView.delegate = self
         collectionView.dataSource = self
-        
+        collectionView.alwaysBounceVertical = true
+
         collectionView.register(NotiListCell.self, forCellWithReuseIdentifier: NotiListCell.identifier)
         collectionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
