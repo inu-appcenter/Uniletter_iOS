@@ -24,7 +24,7 @@ final class HomeCellView: UIView {
 
     lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 18)
+        label.font = .systemFont(ofSize: 16)
         label.lineBreakMode = .byCharWrapping
         label.numberOfLines = 2
         
