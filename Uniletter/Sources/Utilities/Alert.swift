@@ -59,14 +59,14 @@ enum NoticeAlert {
     var body: String {
         switch self {
         case .login: return "로그인이 필요한 서비스입니다 :)"
-        case .notice: return "유니레터의 두가지 알림 기준입니다\n\n시작 전 알림 : 행사 시작 5분전에 알림\n마감 전 알림: 행사 마감 하루전에 알림"
+        case .notice: return "유니레터의 두가지 알림 기준입니다\n\n시작 전 알림: 행사 시작 5분전에 알림\n마감 전 알림: 행사 마감 하루전에 알림"
         case .startNotice: return "시작 전 알림 신청이 완료 되었습니다\n행사 5분전에 알림 드릴게요 :)"
         case .deadlineNotice: return "마감 전 알림 신청이 완료 되었습니다\n마감 하루전에 알림 드릴게요 :)"
         case .deleteNotice: return "알림을 정말 취소하시겠어요?\nㅠ0ㅠ"
         case .block: return "사용자 다수의 신고로\n 글작성과 댓글작성이 정지되었습니다."
-        case .deleteAccountFirst: return "\n회원 탈퇴를 하시겠습니까?\n"
-        case .deleteAccountSecond: return "회원 탈퇴시 작성한 글과 댓글 등의 정보는 \n완전히 삭제되며 복구가 불가능합니다.\n정말로 회원 탈퇴를 하시겠습니까? "
-        case .pushAlarm: return "\n알림 허용이 차단되어 있습니다.\n새로운 행사 알림을 받으시려면 알림 허용을 해주세요\n"
+        case .deleteAccountFirst: return "회원 탈퇴를 하시겠습니까?"
+        case .deleteAccountSecond: return "회원 탈퇴시 작성한 글과 댓글 등의 정보는\n완전히 삭제되며 복구가 불가능합니다.\n정말로 회원 탈퇴를 하시겠습니까? "
+        case .pushAlarm: return "알림 허용이 차단되어 있습니다.\n새로운 행사 알림을 받으시려면 알림 허용을 해주세요"
         }
     }
 }

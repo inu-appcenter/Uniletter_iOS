@@ -11,6 +11,7 @@ enum Address {
     case mycomments         // 내 댓글
     case push               // [테스트] 푸시알림
     case events             // 행사
+    case eventOne           // 행사 하나
     case eventscommented    // 내가 댓글 단 행사
     case myevents           // 내가 쓴 행사
     case token              // FCM 토큰
@@ -33,7 +34,8 @@ enum Address {
         case .comments: return "comments"   // + commentId
         case .mycomments: return "mycomments"
         case .push: return "push"
-        case .events: return "events"   // + eventId
+        case .events: return "events-by-category?categoryId="
+        case .eventOne: return "events"     // + eventId
         case .eventscommented: return "events-ive-commented"
         case .myevents: return "myevents"
         case .token: return "fcm/token"

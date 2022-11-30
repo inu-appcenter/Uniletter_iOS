@@ -20,13 +20,7 @@ final class WritingCheckView: UIView {
     
     lazy var checkButton: UIButton = {
         let button = UIButton()
-        button.layer.cornerRadius = 2
-        button.layer.borderWidth = 1
-        button.layer.borderColor = CGColor.customColor(.blueGreen)
-        button.backgroundColor = UIColor.customColor(.blueGreen)
-        button.setImage(UIImage(), for: .normal)
-        button.setImage(UIImage(named: "check"), for: .selected)
-        button.isSelected = true
+        button.createCheckButton()
         
         return button
     }()

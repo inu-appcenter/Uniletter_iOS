@@ -15,6 +15,9 @@ class SaveListViewController: UIViewController {
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         
+        layout.itemSize = CGSize(width: view.frame.size.width, height: 160)
+        layout.minimumLineSpacing = 0
+        
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         
         return collectionView
@@ -26,19 +29,17 @@ class SaveListViewController: UIViewController {
         view.backgroundColor = .white
         configureNavigationBar()
         configureUI()
+        fetchLike()
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        setAPI()
-    }
-    
-    func setAPI() {
-        DispatchQueue.main.async {
-            self.saveListViewModel.getLike {
+
+    func fetchLike() {
+        saveListViewModel.getLike {
+            DispatchQueue.main.async {
                 self.collectionView.reloadData()
             }
         }
     }
+    
     func configureNavigationBar() {
         setNavigationTitleAndBackButton("저장 목록")
     }
@@ -48,6 +49,7 @@ class SaveListViewController: UIViewController {
         
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.alwaysBounceVertical = true
         
         collectionView.register(SaveListCell.self, forCellWithReuseIdentifier: SaveListCell.identifier)
         
@@ -64,36 +66,33 @@ extension SaveListViewController: UICollectionViewDelegate, UICollectionViewData
         return saveListViewModel.numOfCell
     }
     
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        let index = indexPath.item
+        
+        if index == saveListViewModel.numOfCell - 1 && !saveListViewModel.isLast {
+            fetchLike()
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SaveListCell.identifier, for: indexPath) as? SaveListCell else { return UICollectionViewCell() }
-        
+
         cell.setUI(event: saveListViewModel.eventAtIndex(index: indexPath.item))
-        
+
         cell.bookMarkClosure = {
-    
-            let alertViewController = AlertViewController()
-            alertViewController.alert = .save
-            alertViewController.modalPresentationStyle = .overFullScreen
-            alertViewController.modalTransitionStyle = .crossDissolve
+
+            let alertViewController = self.AlertVC(.save)
             self.present(alertViewController, animated: true)
-            
+
             alertViewController.alertIsSaveClosure = {
                 
                 self.saveListViewModel.deleteLike(index: indexPath.item) {
-                    self.setAPI()
-                    
-                    NotificationCenter.default.post(
-                        name: NSNotification.Name("like"),
-                        object: nil,
-                        userInfo: [
-                            "id": self.saveListViewModel.eventAtIndex(index: indexPath.item).id,
-                            "like": false
-                        ])
-                    
+
+                    self.collectionView.reloadData()
                     self.dismiss(animated: true)
                 }
             }
-            
+
         }
         return cell
     }
@@ -102,17 +101,10 @@ extension SaveListViewController: UICollectionViewDelegate, UICollectionViewData
         let EventDetailVC = EventDetailViewController()
         EventDetailVC.id = saveListViewModel.eventAtIndex(index: indexPath.item).id
         navigationController?.pushViewController(EventDetailVC, animated: true)
-    }
-}
-
-extension SaveListViewController: UICollectionViewDelegateFlowLayout {
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        return CGSize(width: view.frame.size.width, height: 160)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-      return 0
+        EventDetailVC.userLikeCompletionClosure = {
+            self.saveListViewModel.deleteLikeEvent(EventDetailVC.id)
+            self.collectionView.reloadData()
+        }
     }
 }

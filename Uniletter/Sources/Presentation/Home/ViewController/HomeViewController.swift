@@ -15,6 +15,7 @@ final class HomeViewController: UIViewController {
     let homeView = HomeView()
     let viewModel = HomeViewModel()
     let loginManager = LoginManager.shared
+    var categoryButtons: [CategoryButton] = []
     
     // MARK: - Life cycle
     override func loadView() {
@@ -26,11 +27,6 @@ final class HomeViewController: UIViewController {
         setNavigationBar()
         setViewController()
         checkLogin()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        homeView.collectionView.reloadData()
-        addGradientLayer()
     }
     
     // MARK: - Setup
@@ -63,27 +59,60 @@ final class HomeViewController: UIViewController {
             myInfo,
         ]
         
-        let navigationBarLayer = self.navigationController?.navigationBar.layer
-        navigationBarLayer?.shadowColor = #colorLiteral(red: 0.8980392157, green: 0.8980392157, blue: 0.8980392157, alpha: 1).cgColor
-        navigationBarLayer?.shadowOpacity = 0.6
-        navigationBarLayer?.shadowOffset = CGSize(width: 0, height: 5)
+        addNavigationBarBorder()
         setNavigationGesutre()
     }
     
     func setViewController() {
+        configureCollectionView()
+        configureButtons()
+        configureNotificationCenters()
+    }
+    
+    private func configureCollectionView() {
         homeView.collectionView.dataSource = self
         homeView.collectionView.delegate = self
-        homeView.collectionView.refreshControl = UIRefreshControl()
         homeView.collectionView.refreshControl?.addTarget(
                     self,
                     action: #selector(didPullCollectionView(_:)),
                     for: .valueChanged)
+    }
+    
+    private func configureButtons() {
+        homeView.categoryList.resetButton.addTarget(
+            self,
+            action: #selector(didTapResetButton(_:)),
+            for: .touchUpInside)
+        
+        homeView.categoryList.progressingButton.addTarget(
+            self,
+            action: #selector(didTapProgressingButton(_:)),
+            for: .touchUpInside)
+        
+        [
+            homeView.categoryList.groupButton,
+            homeView.categoryList.councilButton,
+            homeView.categoryList.snacksButton,
+            homeView.categoryList.studyButton,
+            homeView.categoryList.contestButton,
+            homeView.categoryList.offerButton,
+            homeView.categoryList.etcButton
+        ]
+            .forEach {
+                categoryButtons.append($0)
+                $0.addTarget(
+                    self,
+                    action: #selector(didTapCategoryButtons(_:)),
+                    for: .touchUpInside)
+            }
         
         homeView.writeButton.addTarget(
             self,
             action: #selector(goToWrite(_:)),
             for: .touchUpInside)
-        
+    }
+    
+    private func configureNotificationCenters() {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(updateBookmark(_:)),
@@ -98,26 +127,43 @@ final class HomeViewController: UIViewController {
     }
     
     // MARK: - Funcs
+    
+    func paging() {
+        viewModel.isPaging = true
+        print("paging")
+        print("page: \(viewModel.currentPage)")
+        fetchEvents()
+    }
+    
     func fetchEvents() {
-        self.viewModel.loadEvents() {
+        if !viewModel.isPaging {
+            setLoadingIndicator(true)
+        }
+        
+        viewModel.loadEvents {
             DispatchQueue.main.async {
                 self.homeView.collectionView.reloadData()
-                self.homeView.collectionView.refreshControl?.endRefreshing()
                 self.setLoadingIndicator(false)
             }
         }
     }
     
     func checkLogin() {
-        setLoadingIndicator(true)
-        
         if !loginManager.firstLogin {
-            loginManager.checkLogin() {
-                self.fetchEvents()
-                print("checkLogin() - 로그인 상태: \(self.loginManager.isLoggedIn)")
-                if self.loginManager.isLoggedIn == true {
-                    self.viewModel.postFCM()
-                    self.presentWaringView(.login)
+            loginManager.checkLogin() { [weak self] in
+                self?.fetchEvents()
+                guard let isLoggedIn = self?.loginManager.isLoggedIn else {
+                    print("checkLogin() - 로그인 상태: false")
+                    return
+                }
+                
+                print("checkLogin() - 로그인 상태: \(isLoggedIn)")
+                if isLoggedIn {
+                    self?.viewModel.postFCM()
+                    self?.presentWaringView(.login)
+                } else {
+                    // 로그인 실패 시 남아있는 정보들 삭제(구글, 애플 꼬임 방지)
+                    self?.loginManager.removeLoginInfo()
                 }
             }
         } else {
@@ -128,31 +174,26 @@ final class HomeViewController: UIViewController {
     
     func setLoadingIndicator(_ bool: Bool) {
         if bool {
-            homeView.loadingIndicatorView.isHidden = false
-            homeView.collectionView.isHidden = true
             homeView.loadingIndicatorView.startAnimating()
         } else {
-            homeView.loadingIndicatorView.isHidden = true
-            homeView.collectionView.isHidden = false
             homeView.loadingIndicatorView.stopAnimating()
         }
+        
+        homeView.collectionView.isHidden = bool
     }
     
-    func addGradientLayer() {
-        homeView.gradientView.layer.sublayers?.removeAll()
-        let gradient: CAGradientLayer = CAGradientLayer()
-        gradient.colors = [
-            UIColor(red: 1, green: 1, blue: 1, alpha: 0).cgColor,
-            UIColor(red: 1, green: 1, blue: 1, alpha: 0.6).cgColor,
-            UIColor.white.cgColor
-        ]
-        gradient.frame = homeView.gradientView.bounds
-        homeView.gradientView.layer.addSublayer(gradient)
+    private func scrollToTop() {
+        homeView.collectionView.scrollToItem(
+            at: IndexPath(item: 0, section: 0),
+            at: .top,
+            animated: true)
     }
     
     // MARK: - Action
     
     @objc func didPullCollectionView(_ refreshControl: UIRefreshControl) {
+        homeView.collectionView.refreshControl?.endRefreshing()
+        viewModel.isPull = true
         fetchEvents()
     }
     
@@ -196,9 +237,48 @@ final class HomeViewController: UIViewController {
     }
     
     @objc func reloadCollectionView(_ noti: NSNotification) {
-
-        setLoadingIndicator(true)
         fetchEvents()
+    }
+    
+    @objc private func didTapResetButton(_ sender: CategoryButton) {
+        sender.isHidden = true
+        viewModel.categoty = 0
+        viewModel.eventStatus = true
+        
+        categoryButtons
+            .forEach {
+                $0.isSelected = false
+                $0.changeState(false)
+            }
+        
+        fetchEvents()
+        scrollToTop()
+    }
+    
+    @objc private func didTapProgressingButton(_ sender: CategoryButton) {
+        
+    }
+    
+    @objc private func didTapCategoryButtons(_ sender: CategoryButton) {
+        categoryButtons
+            .filter {
+                $0.tag != sender.tag
+            }
+            .forEach {
+                $0.isSelected = false
+                $0.changeState(false)
+            }
+        
+        sender.isSelected = !sender.isSelected
+        sender.changeState(sender.isSelected)
+        homeView.categoryList.resetButton.isHidden = !sender.isSelected
+        
+        if sender.isSelected {
+            viewModel.categoty = sender.tag
+            fetchEvents()
+        }
+        
+        scrollToTop()
     }
 }
 
@@ -218,23 +298,25 @@ extension HomeViewController: UICollectionViewDelegate,
     -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeCell.identifier, for: indexPath) as? HomeCell else { return UICollectionViewCell() }
         
-        let event = viewModel.infoOfEvent(indexPath.item)
-        cell.setUI(event)
-        
-        cell.bookmarkButtonTapHandler = {
-            if self.loginManager.isLoggedIn {
-                let like = cell.homeCellView.bookmarkButton.isSelected
-                cell.homeCellView.bookmarkButton.isSelected = !like
-                if like {
-                    self.viewModel.deleteLike(event.id)
+        if viewModel.numOfEvents > 0 {
+            let event = viewModel.infoOfEvent(indexPath.item)
+            cell.setUI(event)
+            
+            cell.bookmarkButtonTapHandler = {
+                if self.loginManager.isLoggedIn {
+                    let like = cell.homeCellView.bookmarkButton.isSelected
+                    cell.homeCellView.bookmarkButton.isSelected = !like
+                    if like {
+                        self.viewModel.deleteLike(event.id)
+                    } else {
+                        self.viewModel.likeEvent(event.id)
+                    }
                 } else {
-                    self.viewModel.likeEvent(event.id)
-                }
-            } else {
-                let alertView = self.AlertVC(.login)
-                self.present(alertView, animated: true)
-                alertView.cancleButtonClosure = {
-                    self.presentWaringView(.loginLike)
+                    let alertView = self.AlertVC(.login)
+                    self.present(alertView, animated: true)
+                    alertView.cancleButtonClosure = {
+                        self.presentWaringView(.loginLike)
+                    }
                 }
             }
         }
@@ -246,11 +328,24 @@ extension HomeViewController: UICollectionViewDelegate,
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath) {
             let eventDetailViewController = EventDetailViewController()
-            let event = viewModel.events[indexPath.item]
+            let event = viewModel.infoOfEvent(indexPath.item)
             eventDetailViewController.id = event.id
             
             self.navigationController?.pushViewController(eventDetailViewController, animated: true)
         }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath)
+    {
+        let index = indexPath.item
+        
+        if index == viewModel.numOfEvents - 2 && !viewModel.isPaging {
+            paging()
+        }
+    }
+    
 }
 
 extension HomeViewController: UIGestureRecognizerDelegate {

@@ -25,8 +25,7 @@ final class NoticeAlertViewController: UIViewController {
     func setViewController() {
         noticeAlertView.setViewOptionCount(check)
         noticeAlertView.titleLabel.text = noticeAlert?.title
-        noticeAlertView.bodyLabel.text = noticeAlert?.body
-        
+        noticeAlertView.setLabelParagraphStyle(noticeAlert?.body)
         noticeAlertView.recognizeTapBackground.addTarget(
             self,
             action: #selector(dismissViewController(_:)))

@@ -22,13 +22,13 @@ final class HomeCellView: UIView {
         return imageView
     }()
 
-    lazy var titleTextView: UITextView = {
-        let textView = UITextView()
-        textView.isUserInteractionEnabled = false
-        textView.font = .systemFont(ofSize: 18)
-        textView.textContainer.lineFragmentPadding = 0
+    lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 16)
+        label.lineBreakMode = .byCharWrapping
+        label.numberOfLines = 2
         
-        return textView
+        return label
     }()
     
     /// 원 모양을 생성 동시에 하기 위해 버튼으로 구현
@@ -79,7 +79,7 @@ final class HomeCellView: UIView {
     
     // MARK: - Setup
     func addViews() {
-        [posterImageView, titleTextView, ddayButton, categoryLabel, bookmarkButton].forEach { addSubview($0) }
+        [posterImageView, titleLabel, ddayButton, categoryLabel, bookmarkButton].forEach { addSubview($0) }
     }
     
     func setLayout() {
@@ -88,15 +88,14 @@ final class HomeCellView: UIView {
             $0.height.equalTo(posterImageView.snp.width).multipliedBy(sqrt(2))
         }
         
-        titleTextView.snp.makeConstraints {
-            $0.top.equalTo(posterImageView.snp.bottom)
+        titleLabel.snp.makeConstraints {
+            $0.top.equalTo(posterImageView.snp.bottom).offset(8)
             $0.left.right.equalToSuperview()
-            $0.height.equalTo(50)
         }
         
         ddayButton.snp.makeConstraints {
-            $0.top.equalTo(titleTextView.snp.bottom).offset(8)
-            $0.left.equalTo(titleTextView)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(8)
+            $0.left.equalTo(titleLabel)
             $0.height.equalTo(23)
         }
         

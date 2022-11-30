@@ -69,7 +69,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 // 만약 애플 로그인이 로그인 상태였으면 로그아웃 상태로 해야 함
                 
                 if keyChain.read() != "" {
-                    LoginManager.shared.logout()
+                    LoginManager.shared.logout { }
                 }
         
                 break

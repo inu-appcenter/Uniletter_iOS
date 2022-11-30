@@ -253,10 +253,14 @@ final class API {
     
     // MARK: - Event
     
-    /// 이벤트 전체 받아오기
-    static func getEvents(completion: @escaping([Event]) -> Void) {
+    /// 이벤트 페이징
+    static func getEvents(
+        _ category: Int,
+        _ eventStatus: Bool,
+        _ page: Int,
+        completion: @escaping ([Event]) -> Void) {
         networking(
-            urlStr: Address.events.url,
+            urlStr: Address.events.url + "\(category)&eventStatus=\(eventStatus)&pageNum=\(page)&pageSize=\(10)",
             method: .get,
             data: nil,
             model: [Event].self,
@@ -273,7 +277,7 @@ final class API {
     /// 이벤트 하나 받아오기
     static func getEventOne(_ id: Int, completion: @escaping(Event) ->Void) {
         networking(
-            urlStr: Address.events.url + "/\(id)",
+            urlStr: Address.eventOne.url + "/\(id)",
             method: .get,
             data: nil,
             model: Event.self,
@@ -295,7 +299,7 @@ final class API {
             guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
             
             networking(
-                urlStr: Address.events.url,
+                urlStr: Address.eventOne.url,
                 method: .post,
                 data: data,
                 model: Event.self,
@@ -321,7 +325,7 @@ final class API {
     /// 이벤트 삭제하기
     static func deleteEvent(_ id: Int, completion: @escaping() -> Void) {
         networking(
-            urlStr: Address.events.url + "/\(id)",
+            urlStr: Address.eventOne.url + "/\(id)",
             method: .delete,
             data: nil,
             model: Event.self,
@@ -347,7 +351,7 @@ final class API {
         }
         
         networking(
-            urlStr: Address.events.url + "/\(id)",
+            urlStr: Address.eventOne.url + "/\(id)",
             method: .patch,
             data: data,
             model: String.self,
@@ -501,9 +505,10 @@ final class API {
     }
     
     /// 행사 좋아요 가져오기 (북마크 버튼 눌려진 행사)
-    static func getLikes(completion: @escaping([Event]) -> Void) {
+    static func getLikes(pageNum: Int, completion: @escaping([Event]) -> Void) {
+        
         networking(
-            urlStr: Address.likes.url,
+            urlStr: Address.likes.url + "?pageNum=\(pageNum)&pageSize=\(6)",
             method: .get,
             data: nil,
             model: [Event].self,
@@ -864,28 +869,27 @@ final class API {
     
     /// 회원 탈퇴
     static func deleteMe(completion: @escaping() -> Void) {
-        
-        LoginManager.shared.logout()
-        
-        networking(
-            urlStr: Address.deleteMe.url,
-            method: .delete,
-            data: nil,
-            model: String.self,
-            apiType: .deleteAccount) { result in
-                switch result {
-                case .success(_):
-                    completion()
-                    print("success")
-                case .failure(let error):
-                    if error.errorDescription! == errorString {
-                        print("success")
+        LoginManager.shared.logout {
+            networking(
+                urlStr: Address.deleteMe.url,
+                method: .delete,
+                data: nil,
+                model: String.self,
+                apiType: .deleteAccount) { result in
+                    switch result {
+                    case .success(_):
                         completion()
-                    } else {
-                        print(error)
+                        print("success")
+                    case .failure(let error):
+                        if error.errorDescription! == errorString {
+                            print("success")
+                            completion()
+                        } else {
+                            print(error)
+                        }
                     }
-//                    print(error)
                 }
-            }
+        }
     }
+    
 }

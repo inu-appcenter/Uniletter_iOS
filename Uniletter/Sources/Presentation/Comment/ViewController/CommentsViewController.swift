@@ -92,7 +92,7 @@ final class CommentsViewController: UIViewController {
     // MARK: - Actions
     @objc func didTapArrowButton(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
-        commentsView.tableView.isHidden = !sender.isSelected
+        commentsView.tableView.isHidden = sender.isSelected
     }
     
     @objc func didTapSubmitButton(_ sender: UIButton) {
@@ -168,6 +168,10 @@ extension CommentsViewController: UITableViewDataSource,
             if wrote {
                 vc = self.presentActionSheetView(.commentForWriter)
                 vc.commentID = comment.id
+                
+                vc.deleteCommentCompletionClosure = {
+                    self.fetchComments()
+                }
                 
             } else {
                 vc = self.presentActionSheetView(.commentForUser)

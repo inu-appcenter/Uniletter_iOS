@@ -42,14 +42,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 // 만약 애플 로그인이 로그인 상태였으면 로그아웃 상태로 해야 함
                 
                 if keyChain.read() != "" {
-                    LoginManager.shared.logout()
-                    
-                    DispatchQueue.main.async {
-                        let homeViewController = UINavigationController(rootViewController: HomeViewController())
-                        
-                        self.window?.rootViewController = homeViewController
-                        self.window?.rootViewController?.dismiss(animated: false)
-                    }
+                    LoginManager.shared.logout {
+                        DispatchQueue.main.async {
+                            let homeViewController = UINavigationController(rootViewController: HomeViewController())
+                            
+                            self.window?.rootViewController = homeViewController
+                            self.window?.rootViewController?.dismiss(animated: false)
+                        }
+                    } 
                 }
                 
                 break
@@ -83,9 +83,10 @@ extension SceneDelegate {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             if !(UserDefaults.standard.bool(forKey: "agree")) {
                 let agreeViewController = AgreementViewController()
+                let navigationController = UINavigationController(rootViewController: agreeViewController)
                 agreeViewController.modalPresentationStyle = .fullScreen
                 
-                self.window?.rootViewController = agreeViewController
+                self.window?.rootViewController = navigationController
             } else {
                 let homeViewController = HomeViewController()
                 let navigationController = UINavigationController(rootViewController: homeViewController)

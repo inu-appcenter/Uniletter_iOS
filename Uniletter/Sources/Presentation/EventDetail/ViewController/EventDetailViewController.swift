@@ -7,6 +7,7 @@
 
 import UIKit
 import Kingfisher
+import SnapKit
 
 final class EventDetailViewController: UIViewController {
     
@@ -17,6 +18,7 @@ final class EventDetailViewController: UIViewController {
     var id: Int = 0
     var bookmarkButton = UIButton()
     var userBlockCompletionClosure: (() -> Void)?
+    var userLikeCompletionClosure: (() -> Void)?
     
     // MARK: - Life cycle
     override func loadView() {
@@ -94,25 +96,52 @@ final class EventDetailViewController: UIViewController {
         eventDetailView.moreButton.isHidden = viewModel.wroteByMe
         eventDetailView.nicknameLabel.text = viewModel.nickname
         eventDetailView.dateWroteLabel.text = viewModel.dateWrote
-        eventDetailView.titleTextView.text = viewModel.title
-        eventDetailView.categoryContentsLabel.text = viewModel.categoryContent
-        eventDetailView.startContentsLabel.text = viewModel.startContent
-        eventDetailView.endContentsLabel.text = viewModel.endContent
-        eventDetailView.targetContentsLabel.text = viewModel.target
-        eventDetailView.contactContentsLabel.text = viewModel.contact
-        eventDetailView.bodyContentsLabel.text = viewModel.body
+        eventDetailView.titleLabel.text = viewModel.title
+        
+        eventDetailView.infoStackView.categoryLabel.text = viewModel.categoryContent
+        eventDetailView.infoStackView.startLabel.text = viewModel.startContent
+        eventDetailView.infoStackView.endLabel.text = viewModel.endContent
+        eventDetailView.infoStackView.targetLabel.text = viewModel.target
+        eventDetailView.infoStackView.contactLabel.text = viewModel.contact
+        
+        eventDetailView.bodyContentsTextView.text = viewModel.body
         eventDetailView.viewsLabel.text = viewModel.views
         eventDetailView.likeAndCommentsLabel.text = viewModel.likeAndComments
         
+        updateProfileImage()
+        updateMainImage()
+        updateDDay()
+        convertTextToHyperLink()
+        hideSubjects()
+    }
+    
+    func hideSubjects() {
+        if viewModel.categoryContent == " | " {
+            eventDetailView.infoStackView.validateInfo(.category, true)
+        }
+        if viewModel.target == "" {
+            eventDetailView.infoStackView.validateInfo(.target, true)
+        }
+        if viewModel.contact == "" {
+            eventDetailView.infoStackView.validateInfo(.contact, true)
+        }
+        if viewModel.link == "" {
+            eventDetailView.infoStackView.validateInfo(.link, true)
+        }
+    }
+    
+    func updateProfileImage() {
         if viewModel.profileImage == "" {
             eventDetailView.profileImageView.image = UIImage(named: "BasicProfileImage")
         } else {
             eventDetailView.profileImageView.kf.setImage(with: URL(string: viewModel.profileImage))
         }
-        eventDetailView.mainImageView.kf.setImage(with: URL(string: viewModel.mainImage)!)
-        
-        updateDDay()
-        convertTextToHyperLink()
+    }
+    
+    func updateMainImage() {
+        eventDetailView.mainImageView.kf.setImage(with: URL(string: viewModel.mainImage)!) { _ in
+            self.eventDetailView.mainImageView.updateImageViewRatio(true)
+        }
     }
     
     func updateDDay() {
@@ -150,16 +179,18 @@ final class EventDetailViewController: UIViewController {
     }
     
     func convertTextToHyperLink() {
-        if viewModel.link.contains("http") {
-            let attributedString = NSMutableAttributedString(string: viewModel.link)
+        let link = viewModel.link
+        
+        if link.contains("http") {
+            let attributedString = NSMutableAttributedString(string: link)
             attributedString.addAttribute(
                 .link,
                 value: NSUnderlineStyle.single.rawValue,
-                range: NSRange(location: 0, length: viewModel.link.count))
+                range: NSRange(location: 0, length: link.count))
             
-            eventDetailView.linkContentsLabel.attributedText = attributedString
+            eventDetailView.infoStackView.linkLabel.attributedText = attributedString
         } else {
-            eventDetailView.linkContentsLabel.text = viewModel.link
+            eventDetailView.infoStackView.linkLabel.text = link
         }
     }
     
@@ -194,6 +225,11 @@ final class EventDetailViewController: UIViewController {
                 name: NSNotification.Name("like"),
                 object: nil,
                 userInfo: ["id": id, "like": sender.isSelected])
+            
+            if let userLikeCompletionClosure = userLikeCompletionClosure {
+                userLikeCompletionClosure()
+            }
+            
         } else {
             let AlertView = self.AlertVC(.login)
             self.present(AlertView, animated: true)
