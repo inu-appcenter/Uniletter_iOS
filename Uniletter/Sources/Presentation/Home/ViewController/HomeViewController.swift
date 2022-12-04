@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import DropDown
 import GoogleSignIn
 import Firebase
 
@@ -15,7 +16,8 @@ final class HomeViewController: UIViewController {
     let homeView = HomeView()
     let viewModel = HomeViewModel()
     let loginManager = LoginManager.shared
-    var categoryButtons: [CategoryButton] = []
+    let progressingDropDown = DropDown()
+    let categoryDropDown = DropDown()
     
     // MARK: - Life cycle
     override func loadView() {
@@ -79,12 +81,22 @@ final class HomeViewController: UIViewController {
     }
     
     private func configureButtons() {
-        
-        
+        homeView.eventStatusButton.addTarget(
+            self,
+            action: #selector(didTapEventStatusButton(_:)),
+            for: .touchUpInside)
+        homeView.categoryButton.addTarget(
+            self,
+            action: #selector(didTapCategoryButtons(_:)),
+            for: .touchUpInside)
         homeView.writeButton.addTarget(
             self,
             action: #selector(goToWrite(_:)),
             for: .touchUpInside)
+    }
+    
+    private func configureDropDowns() {
+        
     }
     
     private func configureNotificationCenters() {
@@ -215,22 +227,7 @@ final class HomeViewController: UIViewController {
         fetchEvents()
     }
     
-    @objc private func didTapResetButton(_ sender: CategoryButton) {
-        sender.isHidden = true
-        viewModel.categoty = 0
-        viewModel.eventStatus = true
-        
-        categoryButtons
-            .forEach {
-                $0.isSelected = false
-                $0.changeState(false)
-            }
-        
-        fetchEvents()
-        scrollToTop()
-    }
-    
-    @objc private func didTapProgressingButton(_ sender: CategoryButton) {
+    @objc private func didTapEventStatusButton(_ sender: CategoryButton) {
         
     }
     

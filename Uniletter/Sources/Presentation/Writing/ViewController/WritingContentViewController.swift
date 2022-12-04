@@ -38,7 +38,6 @@ class WritingContentViewController: UIViewController {
         setViewController()
         initDateTime()
         setDropDown()
-        initDropDown()
         initUpdating()
     }
     
@@ -120,6 +119,9 @@ class WritingContentViewController: UIViewController {
     }
 
     func setDropDown() {
+        dropDown.configureDropDownAppearance()
+        dropDown.textColor = .black
+        dropDown.setupCornerRadius(4)
         dropDown.dataSource = categories
         dropDown.anchorView = writingContentView.categoryButton
         dropDown.dismissMode = .automatic
@@ -133,16 +135,6 @@ class WritingContentViewController: UIViewController {
         dropDown.cancelAction = {
             self.writingContentView.categoryButton.isSelected = false
         }
-    }
-    
-    func initDropDown() {
-        let dropDownAppearance = DropDown.appearance()
-        dropDownAppearance.textColor = .black
-        dropDownAppearance.selectedTextColor = .black
-        dropDownAppearance.backgroundColor = .white
-        dropDownAppearance.selectionBackgroundColor = UIColor.customColor(.blueGreen).withAlphaComponent(0.15)
-        dropDownAppearance.setupCornerRadius(4)
-        dropDown.selectRow(at: 0)
     }
     
     func initUpdating() {
