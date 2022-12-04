@@ -109,14 +109,12 @@ final class HomeView: UIView {
         categoryButton.snp.makeConstraints {
             $0.top.equalTo(safeAreaLayoutGuide).offset(16)
             $0.right.equalToSuperview().offset(-20)
-            $0.width.greaterThanOrEqualTo(89)
             $0.height.equalTo(32)
         }
         
         eventStatusButton.snp.makeConstraints {
             $0.top.height.equalTo(categoryButton)
             $0.right.equalTo(categoryButton.snp.left).offset(-4)
-            $0.width.greaterThanOrEqualTo(69)
         }
         
         collectionView.snp.makeConstraints {

@@ -36,12 +36,12 @@ extension String {
         return [diff, time]
     }
     
-    func changeAttributed(_ isSelected: Bool) -> NSAttributedString {
+    func changeCategoryAttributed() -> NSAttributedString {
         return NSAttributedString(
             string: self,
             attributes: [
                 .font: UIFont.systemFont(ofSize: 11, weight: .medium),
-                .foregroundColor: isSelected ? UIColor.white : UIColor.black
+                .foregroundColor: UIColor.black
             ])
     }
     

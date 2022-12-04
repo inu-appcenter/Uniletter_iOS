@@ -30,6 +30,17 @@ final class HomeViewModel {
         }
     }
     var eventStatus = true
+    let eventStatusList = ["전체", "진행중"]
+    let categoryList = [
+        "전체",
+        "동아리/소모임",
+        "학생회",
+        "간식나눔",
+        "대회/공모전",
+        "스터디",
+        "구인",
+        "기타"
+    ]
     
     // MARK: - UI
     var numOfEvents: Int {
@@ -67,7 +78,7 @@ final class HomeViewModel {
     }
     
     func loadEvents(completion: @escaping () -> Void) {
-        API.getEvents(categoty, false, currentPage) { events in
+        API.getEvents(categoty, eventStatus, currentPage) { events in
             if !events.isEmpty {
                 self.events += events
                 self.ids = self.events.map { $0.id }
