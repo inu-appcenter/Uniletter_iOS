@@ -79,32 +79,7 @@ final class HomeViewController: UIViewController {
     }
     
     private func configureButtons() {
-        homeView.categoryList.resetButton.addTarget(
-            self,
-            action: #selector(didTapResetButton(_:)),
-            for: .touchUpInside)
         
-        homeView.categoryList.progressingButton.addTarget(
-            self,
-            action: #selector(didTapProgressingButton(_:)),
-            for: .touchUpInside)
-        
-        [
-            homeView.categoryList.groupButton,
-            homeView.categoryList.councilButton,
-            homeView.categoryList.snacksButton,
-            homeView.categoryList.studyButton,
-            homeView.categoryList.contestButton,
-            homeView.categoryList.offerButton,
-            homeView.categoryList.etcButton
-        ]
-            .forEach {
-                categoryButtons.append($0)
-                $0.addTarget(
-                    self,
-                    action: #selector(didTapCategoryButtons(_:)),
-                    for: .touchUpInside)
-            }
         
         homeView.writeButton.addTarget(
             self,
@@ -260,21 +235,8 @@ final class HomeViewController: UIViewController {
     }
     
     @objc private func didTapCategoryButtons(_ sender: CategoryButton) {
-        categoryButtons
-            .filter {
-                $0.tag != sender.tag
-            }
-            .forEach {
-                $0.isSelected = false
-                $0.changeState(false)
-            }
-        
-        sender.isSelected = !sender.isSelected
-        sender.changeState(sender.isSelected)
-        homeView.categoryList.resetButton.isHidden = !sender.isSelected
         
         if sender.isSelected {
-            viewModel.categoty = sender.tag
             fetchEvents()
         }
         

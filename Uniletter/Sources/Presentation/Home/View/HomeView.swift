@@ -12,7 +12,9 @@ final class HomeView: UIView {
     
     // MARK: - UI
     
-    lazy var categoryList = CategoryList()
+    lazy var eventStatusButton = createButton("전체")
+    
+    lazy var categoryButton = createButton("카테고리")
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -22,7 +24,7 @@ final class HomeView: UIView {
         let width = (UIScreen.main.bounds.width - margin * 2 - itemSpacing) / 2
         let height = width * 2
         layout.itemSize = CGSize(width: width, height: height)
-        layout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 0, right: 20)
+        layout.sectionInset = UIEdgeInsets(top: 4, left: 20, bottom: 0, right: 20)
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.refreshControl = refreshControl
@@ -76,8 +78,8 @@ final class HomeView: UIView {
     // MARK: - Setup
     func addViews() {
         [
-//            TODO: 향후 추가 예정
-//            categoryList,
+            eventStatusButton,
+            categoryButton,
             collectionView,
             loadingIndicatorView,
         ]
@@ -104,16 +106,21 @@ final class HomeView: UIView {
     }
     
     func setLayout() {
-//            TODO: 향후 추가 예정
-//        categoryList.snp.makeConstraints {
-//            $0.top.left.right.equalTo(safeAreaLayoutGuide)
-//            $0.height.equalTo(64)
-//        }
+        categoryButton.snp.makeConstraints {
+            $0.top.equalTo(safeAreaLayoutGuide).offset(16)
+            $0.right.equalToSuperview().offset(-20)
+            $0.width.greaterThanOrEqualTo(89)
+            $0.height.equalTo(32)
+        }
+        
+        eventStatusButton.snp.makeConstraints {
+            $0.top.height.equalTo(categoryButton)
+            $0.right.equalTo(categoryButton.snp.left).offset(-4)
+            $0.width.greaterThanOrEqualTo(69)
+        }
         
         collectionView.snp.makeConstraints {
-//            TODO: 향후 추가 예정
-//            $0.top.equalTo(categoryList.snp.bottom).offset(4)
-            $0.top.equalTo(safeAreaLayoutGuide)
+            $0.top.equalTo(categoryButton.snp.bottom).offset(16)
             $0.left.right.bottom.equalToSuperview()
         }
         
@@ -126,5 +133,15 @@ final class HomeView: UIView {
         loadingIndicatorView.snp.makeConstraints {
             $0.center.equalToSuperview()
         }
+    }
+    
+    // MARK: - Func
+    
+    private func createButton(_ title: String) -> CategoryButton {
+        let button = CategoryButton()
+        button.configureButton(title)
+        button.configuration?.image = UIImage(named: "smallDown")
+        
+        return button
     }
 }
