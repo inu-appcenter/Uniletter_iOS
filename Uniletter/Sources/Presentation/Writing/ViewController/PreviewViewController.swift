@@ -41,9 +41,9 @@ final class PreviewViewController: UIViewController {
         previewView.infoStackView.contactLabel.text = viewModel.contact
         previewView.infoStackView.linkLabel.attributedText = viewModel.location.convertToHyperLink()
         previewView.bodyContentsTextView.text = viewModel.body
+        previewView.ddayButton.updateDDay(viewModel.dday)
         
         updateImageView()
-        updateDDay(viewModel.dday)
         hideSubjects()
     }
     
@@ -80,25 +80,6 @@ final class PreviewViewController: UIViewController {
             self.previewView.mainImageView.image = self.preview.mainImage
             self.previewView.mainImageView.updateImageViewRatio(false)
         }
-    }
-    
-    func updateDDay(_ dateStr: String) {
-        let day = dateStr.caculateDateDiff()[0]
-        let min = dateStr.caculateDateDiff()[1]
-        let dday: String
-        
-        if day < 0 || (day == 0 && min < 0) {
-            previewView.ddayButton.configuration?.baseBackgroundColor = UIColor.customColor(.darkGray)
-            dday = "마감"
-        } else {
-            previewView.ddayButton.configuration?.baseBackgroundColor = UIColor.customColor(.blueGreen)
-            dday = day == 0 ? "D-day" : "D-\(day)"
-        }
-        
-        var attributedString = AttributedString(dday)
-        attributedString.font = .systemFont(ofSize: 13)
-        
-        previewView.ddayButton.configuration?.attributedTitle = attributedString
     }
     
 }

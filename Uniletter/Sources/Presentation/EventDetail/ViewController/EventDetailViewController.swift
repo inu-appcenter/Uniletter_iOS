@@ -145,31 +145,20 @@ final class EventDetailViewController: UIViewController {
     }
     
     func updateDDay() {
-        let dateStr = viewModel.endAt
-        let day = dateStr.caculateDateDiff()[0]
-        let min = dateStr.caculateDateDiff()[1]
-        let dday: String
-        let buttonText: String
-        
-        if day < 0 || (day == 0 && min < 0) {
-            eventDetailView.ddayButton.configuration?.baseBackgroundColor = UIColor.customColor(.darkGray)
+        eventDetailView.ddayButton.updateDDay(viewModel.endAt)
+        if eventDetailView.ddayButton.titleLabel?.text == "마감" {
             eventDetailView.notificationButton.backgroundColor = UIColor.customColor(.lightGray)
-            
-            dday = "마감"
-            buttonText = "행사 마감"
+            eventDetailView.notificationButton.setTitle("행사 마감", for: .normal)
         } else {
-            eventDetailView.ddayButton.configuration?.baseBackgroundColor = UIColor.customColor(.blueGreen)
             eventDetailView.notificationButton.backgroundColor = UIColor.customColor(.blueGreen)
             
-            dday = day == 0 ? "D-day" : "D-\(day)"
-            buttonText = "알림 신청"
+            if let notiByMe = viewModel.event?.notificationSetByMe,
+               notiByMe {
+                eventDetailView.notificationButton.setTitle("행사 취소", for: .normal)
+            } else {
+                eventDetailView.notificationButton.setTitle("알림 신청", for: .normal)
+            }
         }
-        
-        var ddayAttributed = AttributedString(dday)
-        ddayAttributed.font = .systemFont(ofSize: 13)
-        
-        eventDetailView.ddayButton.configuration?.attributedTitle = ddayAttributed
-        eventDetailView.notificationButton.setTitle(buttonText, for: .normal)
     }
     
     func convertProfileImageToCircle() {
