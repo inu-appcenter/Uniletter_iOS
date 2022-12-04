@@ -12,6 +12,7 @@ final class EventDetailViewModel {
     // MARK: - Property
     
     var event: Event?
+    var notiState: NotiState = .request
     let defaultDate = "2022-02-02T00:00"
     
     // MARK: - UI

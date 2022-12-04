@@ -146,19 +146,18 @@ final class EventDetailViewController: UIViewController {
     
     func updateDDay() {
         eventDetailView.ddayButton.updateDDay(viewModel.endAt)
+        
         if eventDetailView.ddayButton.titleLabel?.text == "마감" {
-            eventDetailView.notificationButton.backgroundColor = UIColor.customColor(.lightGray)
-            eventDetailView.notificationButton.setTitle("행사 마감", for: .normal)
+            viewModel.notiState = .done
         } else {
-            eventDetailView.notificationButton.backgroundColor = UIColor.customColor(.blueGreen)
-            
-            if let notiByMe = viewModel.event?.notificationSetByMe,
-               notiByMe {
-                eventDetailView.notificationButton.setTitle("행사 취소", for: .normal)
+            if let notiByMe = viewModel.event?.notificationSetByMe {
+                viewModel.notiState = notiByMe ? .cancel : .request
             } else {
-                eventDetailView.notificationButton.setTitle("알림 신청", for: .normal)
+                viewModel.notiState = .request
             }
         }
+        
+        eventDetailView.notificationButton.updateButton(viewModel.notiState)
     }
     
     func convertProfileImageToCircle() {

@@ -115,15 +115,7 @@ final class EventDetailView : UIView {
         return label
     }()
     
-    lazy var notificationButton: UIButton = {
-        let button = UIButton()
-        button.backgroundColor = UIColor.customColor(.blueGreen)
-        button.tintColor = .white
-        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
-        button.layer.cornerRadius = 6
-        
-        return button
-    }()
+    lazy var notificationButton = NotificationButton()
     
     lazy var intervalView1: UIView = {
         let view = UIView()
