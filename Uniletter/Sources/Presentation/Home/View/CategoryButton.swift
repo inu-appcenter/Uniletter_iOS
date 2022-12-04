@@ -46,7 +46,7 @@ final class CategoryButton: UIButton {
     
     func changeCornerRadius() {
         layer.cornerRadius = frame.height / 2
-        layer.cornerCurve = .circular
+        layer.cornerCurve = .continuous
     }
     
 }

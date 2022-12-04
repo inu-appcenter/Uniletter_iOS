@@ -34,14 +34,12 @@ final class HomeViewController: UIViewController {
     
     // MARK: - Setup
     func setNavigationBar() {
-        let topLogo: UIButton = {
-            let button = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 20))
-            button.setBackgroundImage(
-                UIImage(named: "UniletterLabel"),
-                for: .normal)
-            button.isUserInteractionEnabled = false
+        let topLogo: UIImageView = {
+            let imgView = UIImageView()
+            imgView.image = UIImage(named: "UniletterLabel")
+            imgView.contentMode = .scaleAspectFit
             
-            return button
+            return imgView
         }()
         
         let config = UIImage.SymbolConfiguration(weight: .bold)
@@ -101,13 +99,6 @@ final class HomeViewController: UIViewController {
     }
     
     private func configureDropDowns() {
-        [eventStatusDropDown, categoryDropDown]
-            .forEach {
-                $0.configureDropDownAppearance()
-                $0.bottomOffset = CGPoint(x: 0, y: 40)
-            }
-        
-        eventStatusDropDown.setupCornerRadius(12)
         eventStatusDropDown.dataSource = viewModel.eventStatusList
         eventStatusDropDown.anchorView = homeView.eventStatusButton
         eventStatusDropDown.selectionAction = { index, item in
@@ -117,7 +108,6 @@ final class HomeViewController: UIViewController {
             self.fetchEvents()
         }
         
-        categoryDropDown.setupCornerRadius(12)
         categoryDropDown.dataSource = viewModel.categoryList
         categoryDropDown.anchorView = homeView.categoryButton
         categoryDropDown.selectionAction = { index, item in
@@ -126,6 +116,14 @@ final class HomeViewController: UIViewController {
             self.scrollToTop()
             self.fetchEvents()
         }
+        
+        [eventStatusDropDown, categoryDropDown]
+            .forEach {
+                $0.configureDropDownAppearance()
+                $0.cornerRadius = ($0.anchorView?.plainView.frame.height)! / 2
+                $0.bottomOffset = CGPoint(x: 0, y: 40)
+                $0.selectRow(at: 0)
+            }
     }
     
     private func configureNotificationCenters() {
@@ -146,8 +144,6 @@ final class HomeViewController: UIViewController {
     
     func paging() {
         viewModel.isPaging = true
-        print("paging")
-        print("page: \(viewModel.currentPage)")
         fetchEvents()
     }
     
@@ -156,10 +152,10 @@ final class HomeViewController: UIViewController {
             setLoadingIndicator(true)
         }
         
-        viewModel.loadEvents {
+        viewModel.loadEvents { [weak self] in
             DispatchQueue.main.async {
-                self.homeView.collectionView.reloadData()
-                self.setLoadingIndicator(false)
+                self?.homeView.collectionView.reloadData()
+                self?.setLoadingIndicator(false)
             }
         }
     }
@@ -199,12 +195,10 @@ final class HomeViewController: UIViewController {
     }
     
     private func scrollToTop() {
-        if viewModel.numOfEvents > 0 {
-            homeView.collectionView.scrollToItem(
-                at: IndexPath(item: 0, section: 0),
-                at: .top,
-                animated: true)
-        }
+        homeView.collectionView.scrollToItem(
+            at: IndexPath(item: -1, section: 0),
+            at: .init(rawValue: 0),
+            animated: true)
     }
     
     // MARK: - Action

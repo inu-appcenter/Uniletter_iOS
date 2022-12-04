@@ -18,18 +18,20 @@ final class HomeViewModel {
     var isPull = false {
         willSet {
             if newValue {
-                events.removeAll()
-                currentPage = 0
+                removeEvents()
             }
         }
     }
     var categoty = 0 {
         willSet {
-            events.removeAll()
-            currentPage = 0
+            removeEvents()
         }
     }
-    var eventStatus = true
+    var eventStatus = false {
+        willSet {
+            removeEvents()
+        }
+    }
     let eventStatusList = ["전체", "진행중"]
     let categoryList = [
         "전체",
@@ -51,7 +53,13 @@ final class HomeViewModel {
         return events[index]
     }
     
-    // MARK: - Funcs
+    // MARK: - Func
+    
+    private func removeEvents() {
+        events.removeAll()
+        currentPage = 0
+    }
+    
     func likeEvent(_ id: Int) {
         API.likeEvent(["eventId": id]) {
             guard let index: Int = self.ids.firstIndex(of: id) else {

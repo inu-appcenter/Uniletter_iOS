@@ -13,11 +13,11 @@ extension DropDown {
     func configureDropDownAppearance() {
         let dropDownAppearance = DropDown.appearance()
         dropDownAppearance.textColor = .customColor(.lightGray)
+        dropDownAppearance.textFont = .systemFont(ofSize: 11, weight: .medium)
         dropDownAppearance.selectedTextColor = .black
         dropDownAppearance.backgroundColor = .white
         dropDownAppearance.selectionBackgroundColor = .customColor(.blueGreen)
             .withAlphaComponent(0.15)
-        
     }
     
 }
