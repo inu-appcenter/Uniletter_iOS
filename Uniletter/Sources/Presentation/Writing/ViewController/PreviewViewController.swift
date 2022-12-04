@@ -39,11 +39,11 @@ final class PreviewViewController: UIViewController {
         previewView.infoStackView.endLabel.text = viewModel.endAt
         previewView.infoStackView.targetLabel.text = viewModel.target
         previewView.infoStackView.contactLabel.text = viewModel.contact
+        previewView.infoStackView.linkLabel.attributedText = viewModel.location.convertToHyperLink()
         previewView.bodyContentsTextView.text = viewModel.body
         
         updateImageView()
         updateDDay(viewModel.dday)
-        convertTextToHyperLink()
         hideSubjects()
     }
     
@@ -72,22 +72,6 @@ final class PreviewViewController: UIViewController {
             previewView.infoStackView.validateInfo(.link, true)
         } else {
             previewView.infoStackView.validateInfo(.link, false)
-        }
-    }
-    
-    func convertTextToHyperLink() {
-        let link = viewModel.location
-        
-        if link.contains("http") {
-            let attributedString = NSMutableAttributedString(string: link)
-            attributedString.addAttribute(
-                .link,
-                value: NSUnderlineStyle.single.rawValue,
-                range: NSRange(location: 0, length: link.count))
-            
-            previewView.infoStackView.linkLabel.attributedText = attributedString
-        } else {
-            previewView.infoStackView.linkLabel.text = link
         }
     }
     

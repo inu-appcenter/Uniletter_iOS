@@ -36,6 +36,19 @@ extension String {
         return [diff, time]
     }
     
+    func convertToHyperLink() -> NSMutableAttributedString {
+        let attributedString = NSMutableAttributedString(string: self)
+        
+        if self.contains("http") || self.contains("bit") {
+            attributedString.addAttribute(
+                .link,
+                value: NSUnderlineStyle.single.rawValue,
+                range: NSRange(location: 0, length: self.count))
+        }
+        
+        return attributedString
+    }
+    
     func changeCategoryAttributed() -> NSAttributedString {
         return NSAttributedString(
             string: self,

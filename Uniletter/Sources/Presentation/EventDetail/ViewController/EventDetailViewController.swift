@@ -103,6 +103,7 @@ final class EventDetailViewController: UIViewController {
         eventDetailView.infoStackView.endLabel.text = viewModel.endContent
         eventDetailView.infoStackView.targetLabel.text = viewModel.target
         eventDetailView.infoStackView.contactLabel.text = viewModel.contact
+        eventDetailView.infoStackView.linkLabel.attributedText = viewModel.link.convertToHyperLink()
         
         eventDetailView.bodyContentsTextView.text = viewModel.body
         eventDetailView.viewsLabel.text = viewModel.views
@@ -111,7 +112,6 @@ final class EventDetailViewController: UIViewController {
         updateProfileImage()
         updateMainImage()
         updateDDay()
-        convertTextToHyperLink()
         hideSubjects()
     }
     
@@ -176,22 +176,6 @@ final class EventDetailViewController: UIViewController {
         let imageView = eventDetailView.profileImageView
         imageView.layer.cornerRadius = imageView.frame.height / 2
         imageView.clipsToBounds = true
-    }
-    
-    func convertTextToHyperLink() {
-        let link = viewModel.link
-        
-        if link.contains("http") {
-            let attributedString = NSMutableAttributedString(string: link)
-            attributedString.addAttribute(
-                .link,
-                value: NSUnderlineStyle.single.rawValue,
-                range: NSRange(location: 0, length: link.count))
-            
-            eventDetailView.infoStackView.linkLabel.attributedText = attributedString
-        } else {
-            eventDetailView.infoStackView.linkLabel.text = link
-        }
     }
     
     func fetchEvents() {
