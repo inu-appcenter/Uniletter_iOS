@@ -51,6 +51,7 @@ final class NotificationButton: UIButton {
             backgroundColor = .customColor(.lightGray)
             setTitle("마감", for: .normal)
             setTitleColor(.white, for: .normal)
+            isUserInteractionEnabled = false
         }
     }
     

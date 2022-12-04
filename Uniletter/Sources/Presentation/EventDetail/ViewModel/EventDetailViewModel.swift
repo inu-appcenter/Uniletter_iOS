@@ -130,4 +130,14 @@ final class EventDetailViewModel {
         }
     }
     
+    func deleteNotification(completion: @escaping () -> Void) {
+        guard let id = event?.id,
+              let setFor = event?.notificationSetFor else {
+            return
+        }
+        API.deleteAlarm(data: ["eventId": id, "setFor": setFor], isDetail: true) {
+            completion()
+        }
+    }
+    
 }

@@ -174,6 +174,35 @@ final class EventDetailViewController: UIViewController {
         }
     }
     
+    private func deleteNotification() {
+        viewModel.deleteNotification { [weak self] in
+            self?.updateNotificationButton(.deleteNotice, .request)
+        }
+    }
+    
+    private func presentRequestAlert() {
+        let vc = presentActionSheetView(.notification)
+        vc.eventID = id
+        
+        vc.notifyBeforeStartCompletionClosure = {
+            self.updateNotificationButton(.startNotice, .cancel)
+        }
+        
+        vc.notifyBeforeEndCompletionClosure = {
+            self.updateNotificationButton(.deadlineNotice, .cancel)
+        }
+        
+        present(vc, animated: true)
+    }
+    
+    private func updateNotificationButton(_ alert: NoticeAlert?, _ noti: NotiState) {
+        if let alert = alert {
+            presentNoticeAlertView(noticeAlert: alert, check: false)
+        }
+        viewModel.notiState = noti
+        eventDetailView.notificationButton.updateButton(noti)
+    }
+    
     func postBlockNotification() {
         NotificationCenter.default.post(
             name: Notification.Name("HomeReload"),
@@ -283,24 +312,14 @@ final class EventDetailViewController: UIViewController {
     
     @objc func didTapNotificationButton(_ sender: UIButton) {
         if loginManager.isLoggedIn {
-            if viewModel.endAt.caculateDateDiff()[0] > 0 {
-                
-                let vc = presentActionSheetView(.notification)
-                vc.eventID = id
-                
-                present(vc, animated: true)
-                
-                vc.notifyBeforeStartCompletionClosure = {
-//                    self.presentNoticeAlertView(.startNotice)
-                    self.presentNoticeAlertView(noticeAlert: .startNotice, check: false)
-                }
-                
-                vc.notifyBeforeEndCompletionClosure = {
-//                    self.presentNoticeAlertView(.deadlineNotice)
-                    self.presentNoticeAlertView(noticeAlert: .deadlineNotice, check: false)
-                }
+            switch viewModel.notiState {
+            case .request:
+                presentRequestAlert()
+            case .cancel:
+                deleteNotification()
+            case .done:
+                break
             }
-            
         } else {
             let AlertView = self.AlertVC(.login)
             self.present(AlertView, animated: true)
