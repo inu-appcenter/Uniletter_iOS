@@ -244,11 +244,10 @@ final class HomeViewController: BaseViewController {
     @objc private func updateBookmark(_ noti: NSNotification) {
         guard let like = noti.userInfo?["like"],
               let id = noti.userInfo?["id"] else {
-            print("실패")
-            
-            return }
+            return
+        }
         
-        viewModel.updateBookmarkButton(id: id as! Int, isChecked: like as! Bool)
+        viewModel.updateLikes(id as! Int, like as! Bool)
         homeView.collectionView.reloadData()
     }
     
