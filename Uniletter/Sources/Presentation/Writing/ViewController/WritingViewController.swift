@@ -88,7 +88,7 @@ final class WritingViewController: UIViewController {
         
         containerView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide)
-            $0.bottom.equalTo(bottomView.snp.top)
+            $0.bottom.equalTo(view.keyboardLayoutGuide.snp.top)
             $0.left.right.equalToSuperview()
         }
         

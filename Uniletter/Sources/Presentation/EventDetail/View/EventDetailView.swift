@@ -191,13 +191,14 @@ final class EventDetailView : UIView {
     
     func setLayout() {
         scrollView.snp.makeConstraints {
-            $0.top.left.right.equalTo(safeAreaLayoutGuide)
-            $0.bottom.equalTo(notificationButton.snp.top)
+            $0.top.equalTo(safeAreaLayoutGuide)
+            $0.bottom.left.right.equalToSuperview()
         }
         
         contentView.snp.makeConstraints {
             $0.width.equalTo(scrollView.frameLayoutGuide)
-            $0.edges.equalTo(scrollView.contentLayoutGuide)
+            $0.top.left.right.equalTo(scrollView.contentLayoutGuide)
+            $0.bottom.equalTo(scrollView.contentLayoutGuide).offset(-52)
         }
         
         notificationButton.snp.makeConstraints {

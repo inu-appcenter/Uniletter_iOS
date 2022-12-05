@@ -143,7 +143,8 @@ final class PreviewView: UIView {
         
         contentView.snp.makeConstraints {
             $0.width.equalTo(scrollView.frameLayoutGuide)
-            $0.edges.equalTo(scrollView.contentLayoutGuide)
+            $0.top.left.right.equalTo(scrollView.contentLayoutGuide)
+            $0.bottom.equalTo(scrollView.contentLayoutGuide).offset(-52)
         }
         
         mainImageView.updateImageViewRatio(false)
