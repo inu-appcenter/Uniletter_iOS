@@ -41,14 +41,15 @@ final class HomeCellView: UIView {
         return label
     }()
     
-    lazy var bookmarkButton: UIButton = {
-        let button = UIButton()
-        button.setBackgroundImage(UIImage(named: "bookmark"), for: .normal)
-        button.setBackgroundImage(UIImage(named: "bookmarkFill"), for: .selected)
-        button.imageView?.contentMode = .scaleAspectFit
-        
-        return button
-    }()
+    lazy var bookmarkButton = BookmarkButton()
+//    lazy var bookmarkButton: UIButton = {
+//        let button = UIButton()
+//        button.setBackgroundImage(UIImage(named: "bookmark"), for: .normal)
+//        button.setBackgroundImage(UIImage(named: "bookmarkFill"), for: .selected)
+//        button.imageView?.contentMode = .scaleAspectFit
+//
+//        return button
+//    }()
     
     // MARK: - Init
     override init(frame: CGRect) {

@@ -94,6 +94,7 @@
 		7681D5822869F46A0081C644 /* ServiceAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7681D5812869F46A0081C644 /* ServiceAPI.swift */; };
 		7681D584286A09DD0081C644 /* EventDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7681D583286A09DD0081C644 /* EventDetailViewModel.swift */; };
 		7681D58A286A29970081C644 /* DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7681D589286A29970081C644 /* DateFormatter.swift */; };
+		76993A28293DC40700AD3461 /* BookmarkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76993A27293DC40700AD3461 /* BookmarkButton.swift */; };
 		769AEB39287C25CE00C697FC /* CommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769AEB38287C25CE00C697FC /* CommentsViewController.swift */; };
 		769AEB3B287C267300C697FC /* CommentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769AEB3A287C267300C697FC /* CommentsView.swift */; };
 		769AEB3D287C271E00C697FC /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769AEB3C287C271E00C697FC /* Comment.swift */; };
@@ -222,6 +223,7 @@
 		7681D583286A09DD0081C644 /* EventDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailViewModel.swift; sourceTree = "<group>"; };
 		7681D589286A29970081C644 /* DateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatter.swift; sourceTree = "<group>"; };
 		768DA43D291AAF820075CD9F /* Uniletter.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Uniletter.entitlements; sourceTree = "<group>"; };
+		76993A27293DC40700AD3461 /* BookmarkButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkButton.swift; sourceTree = "<group>"; };
 		769AEB38287C25CE00C697FC /* CommentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewController.swift; sourceTree = "<group>"; };
 		769AEB3A287C267300C697FC /* CommentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsView.swift; sourceTree = "<group>"; };
 		769AEB3C287C271E00C697FC /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
@@ -1040,6 +1042,7 @@
 				2C01D081288FDF9400AEF20F /* Warning.swift */,
 				2CF9EA4728CB884200F0FA63 /* keyChain.swift */,
 				76FBBD63293CC7D600F9909F /* DDayButton.swift */,
+				76993A27293DC40700AD3461 /* BookmarkButton.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -1185,6 +1188,7 @@
 				76FBBD64293CC7D600F9909F /* DDayButton.swift in Sources */,
 				769AEB3D287C271E00C697FC /* Comment.swift in Sources */,
 				766F384E2872FC3900EC9593 /* NewNoticeViewController.swift in Sources */,
+				76993A28293DC40700AD3461 /* BookmarkButton.swift in Sources */,
 				766F384F2872FC3900EC9593 /* NewNoticeCell.swift in Sources */,
 				7610DD712884569100CA03BC /* WritingContentViewController.swift in Sources */,
 				7610DD69288432E200CA03BC /* WritingContentView.swift in Sources */,

@@ -11,12 +11,29 @@ import SnapKit
 
 final class EventDetailViewController: UIViewController {
     
+    // MARK: - UI
+    
+    lazy var bookmarkButton: UIBarButtonItem = {
+        let button = BookmarkButton(frame: CGRect(x: 0, y: 0, width: 15, height: 23))
+        button.addTarget(
+            self,
+            action: #selector(didTapBookmarkButton(_:)),
+            for: .touchUpInside)
+        
+        return UIBarButtonItem(customView: button)
+    }()
+    
+    lazy var topMoreButton = UIBarButtonItem(
+        image: UIImage(named: "ellipsis")?.withRenderingMode(.alwaysOriginal),
+        style: .done,
+        target: self,
+        action: #selector(didTapTopMoreButton(_:)))
+    
     // MARK: - Property
     let eventDetailView = EventDetailView()
     let viewModel = EventDetailViewModel()
     let loginManager = LoginManager.shared
     var id: Int = 0
-    var bookmarkButton = UIButton()
     var userBlockCompletionClosure: (() -> Void)?
     var userLikeCompletionClosure: (() -> Void)?
     
@@ -43,32 +60,9 @@ final class EventDetailViewController: UIViewController {
     func setNavigationBar() {
         setNavigationTitleAndBackButton("읽어보기")
         
-        let bookmarkButton: UIButton = {
-            let button = UIButton(frame: CGRect(x: 0, y: 0, width: 15, height: 23))
-            button.setBackgroundImage(
-                UIImage(named: "bookmark"),
-                for: .normal)
-            button.setBackgroundImage(
-                UIImage(named: "bookmarkFill"),
-                for: .selected)
-            button.addTarget(
-                self,
-                action: #selector(didTapBookmarkButton(_:)),
-                for: .touchUpInside)
-            
-            return button
-        }()
-        self.bookmarkButton = bookmarkButton
-        
-        let topMoreButton = UIBarButtonItem(
-            image: UIImage(named: "ellipsis")?.withRenderingMode(.alwaysOriginal),
-            style: .done,
-            target: self,
-            action: #selector(didTapTopMoreButton(_:)))
-        
         self.navigationItem.rightBarButtonItems = [
             topMoreButton,
-            UIBarButtonItem(customView: bookmarkButton)
+            bookmarkButton
         ]
     }
     
