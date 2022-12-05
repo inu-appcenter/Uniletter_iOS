@@ -30,6 +30,7 @@ final class EventDetailViewController: UIViewController {
         action: #selector(didTapTopMoreButton(_:)))
     
     // MARK: - Property
+    
     let eventDetailView = EventDetailView()
     let viewModel = EventDetailViewModel()
     let loginManager = LoginManager.shared
@@ -38,6 +39,7 @@ final class EventDetailViewController: UIViewController {
     var userLikeCompletionClosure: (() -> Void)?
     
     // MARK: - Life cycle
+    
     override func loadView() {
         view = eventDetailView
     }
@@ -52,11 +54,8 @@ final class EventDetailViewController: UIViewController {
         fetchEvents()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        convertProfileImageToCircle()
-    }
-    
     // MARK: - Setup
+    
     func setNavigationBar() {
         setNavigationTitleAndBackButton("읽어보기")
         
@@ -152,12 +151,6 @@ final class EventDetailViewController: UIViewController {
         }
         
         eventDetailView.notificationButton.updateButton(viewModel.notiState)
-    }
-    
-    func convertProfileImageToCircle() {
-        let imageView = eventDetailView.profileImageView
-        imageView.layer.cornerRadius = imageView.frame.height / 2
-        imageView.clipsToBounds = true
     }
     
     func fetchEvents() {

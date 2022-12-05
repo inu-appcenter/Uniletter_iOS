@@ -95,6 +95,7 @@
 		7681D584286A09DD0081C644 /* EventDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7681D583286A09DD0081C644 /* EventDetailViewModel.swift */; };
 		7681D58A286A29970081C644 /* DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7681D589286A29970081C644 /* DateFormatter.swift */; };
 		76993A28293DC40700AD3461 /* BookmarkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76993A27293DC40700AD3461 /* BookmarkButton.swift */; };
+		76993A2B293DCA7C00AD3461 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76993A2A293DCA7C00AD3461 /* BaseView.swift */; };
 		769AEB39287C25CE00C697FC /* CommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769AEB38287C25CE00C697FC /* CommentsViewController.swift */; };
 		769AEB3B287C267300C697FC /* CommentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769AEB3A287C267300C697FC /* CommentsView.swift */; };
 		769AEB3D287C271E00C697FC /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769AEB3C287C271E00C697FC /* Comment.swift */; };
@@ -224,6 +225,7 @@
 		7681D589286A29970081C644 /* DateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatter.swift; sourceTree = "<group>"; };
 		768DA43D291AAF820075CD9F /* Uniletter.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Uniletter.entitlements; sourceTree = "<group>"; };
 		76993A27293DC40700AD3461 /* BookmarkButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkButton.swift; sourceTree = "<group>"; };
+		76993A2A293DCA7C00AD3461 /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
 		769AEB38287C25CE00C697FC /* CommentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewController.swift; sourceTree = "<group>"; };
 		769AEB3A287C267300C697FC /* CommentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsView.swift; sourceTree = "<group>"; };
 		769AEB3C287C271E00C697FC /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
@@ -1034,6 +1036,7 @@
 		7681D588286A297F0081C644 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				76993A29293DCA7200AD3461 /* Base */,
 				76FCB54B286C35DE00AC4F70 /* DetailLabel.swift */,
 				76AC783B28721D0400D303C4 /* Alert.swift */,
 				76AC78432872E14A00D303C4 /* ActionSheet.swift */,
@@ -1045,6 +1048,14 @@
 				76993A27293DC40700AD3461 /* BookmarkButton.swift */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		76993A29293DCA7200AD3461 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				76993A2A293DCA7C00AD3461 /* BaseView.swift */,
+			);
+			path = Base;
 			sourceTree = "<group>";
 		};
 		769AEB37287C256B00C697FC /* Comment */ = {
@@ -1269,6 +1280,7 @@
 				2CB8AA302878384300BDA358 /* MyCommentViewController.swift in Sources */,
 				2C0DBE5828800A29004A933A /* SaveListCell.swift in Sources */,
 				76E7DD74292E54E700CF21DC /* PreiviewView.swift in Sources */,
+				76993A2B293DCA7C00AD3461 /* BaseView.swift in Sources */,
 				2C969F932920E1F1005D8564 /* Subscribing.swift in Sources */,
 				76E7DD76292E78C100CF21DC /* InfoStackView.swift in Sources */,
 				2C01D08A2890284700AEF20F /* LicenseInfoViewController.swift in Sources */,

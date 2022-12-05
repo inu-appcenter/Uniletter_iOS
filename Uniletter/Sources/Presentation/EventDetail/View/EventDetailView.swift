@@ -16,7 +16,13 @@ final class EventDetailView : UIView {
     
     lazy var contentView = UIView()
     
-    lazy var profileImageView = UIImageView()
+    lazy var profileImageView: UIImageView = {
+        let imgView = UIImageView()
+        imgView.layer.cornerRadius = 16
+        imgView.clipsToBounds = true
+        
+        return imgView
+    }()
     
     lazy var stackView: UIStackView = {
         let stackView = UIStackView()
@@ -141,6 +147,7 @@ final class EventDetailView : UIView {
     let recognizeTapLink = UITapGestureRecognizer()
     
     // MARK: - Init
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
@@ -157,7 +164,8 @@ final class EventDetailView : UIView {
     }
     
     // MARK: - Setup
-    func addViews() {
+    
+    private func addViews() {
         infoStackView.linkLabel.addGestureRecognizer(recognizeTapLink)
         
         [
@@ -189,7 +197,7 @@ final class EventDetailView : UIView {
             .forEach { addSubview($0) }
     }
     
-    func setLayout() {
+    private func setLayout() {
         scrollView.snp.makeConstraints {
             $0.top.equalTo(safeAreaLayoutGuide)
             $0.bottom.left.right.equalToSuperview()
