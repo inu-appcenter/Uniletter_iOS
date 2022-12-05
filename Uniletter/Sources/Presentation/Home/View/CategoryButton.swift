@@ -19,10 +19,11 @@ final class CategoryButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - Setup
+    // MARK: - Configure
     
     func configureButton(_ title: String) {
         var config = UIButton.Configuration.plain()
+        config.image = UIImage(named: "smallDown")
         config.imagePlacement = .trailing
         config.imagePadding = 5
         
