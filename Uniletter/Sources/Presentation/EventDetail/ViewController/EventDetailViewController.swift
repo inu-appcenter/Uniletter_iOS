@@ -8,22 +8,24 @@
 import UIKit
 import Kingfisher
 import SnapKit
+import Then
 
 final class EventDetailViewController: UIViewController {
     
     // MARK: - UI
     
-    lazy var bookmarkButton: UIBarButtonItem = {
-        let button = BookmarkButton(frame: CGRect(x: 0, y: 0, width: 15, height: 23))
-        button.addTarget(
-            self,
-            action: #selector(didTapBookmarkButton(_:)),
-            for: .touchUpInside)
+    private lazy var bookmarkButton = UIBarButtonItem().then {
+        let button = BookmarkButton(frame: CGRect(x: 0, y: 0, width: 15, height: 23)).then {
+            $0.addTarget(
+                self,
+                action: #selector(didTapBookmarkButton(_:)),
+                for: .touchUpInside)
+        }
         
-        return UIBarButtonItem(customView: button)
-    }()
+        $0.customView = button
+    }
     
-    lazy var topMoreButton = UIBarButtonItem(
+    private lazy var topMoreButton = UIBarButtonItem(
         image: UIImage(named: "ellipsis")?.withRenderingMode(.alwaysOriginal),
         style: .done,
         target: self,
@@ -31,9 +33,9 @@ final class EventDetailViewController: UIViewController {
     
     // MARK: - Property
     
-    let eventDetailView = EventDetailView()
-    let viewModel = EventDetailViewModel()
-    let loginManager = LoginManager.shared
+    private let eventDetailView = EventDetailView()
+    private let viewModel = EventDetailViewModel()
+    private let loginManager = LoginManager.shared
     var id: Int = 0
     var userBlockCompletionClosure: (() -> Void)?
     var userLikeCompletionClosure: (() -> Void)?
@@ -219,11 +221,7 @@ final class EventDetailViewController: UIViewController {
             }
             
         } else {
-            let AlertView = self.AlertVC(.login)
-            self.present(AlertView, animated: true)
-            AlertView.cancleButtonClosure = {
-                self.presentWaringView(.loginLike)
-            }
+            presentLoginAlert(.loginLike)
         }
     }
     
@@ -249,23 +247,16 @@ final class EventDetailViewController: UIViewController {
                 }
             }
         } else {
-            let presentActionVC = presentActionSheetView(.topForUser)
             self.present(presentActionVC, animated: true)
 
             presentActionVC.reportEventCompletionClosure = {
-                let alertView = self.AlertVC(.login)
-                self.present(alertView, animated: true)
-
-                alertView.cancleButtonClosure = {
-                    self.presentWaringView(.loginReport)
-                }
+                self.presentLoginAlert(.loginReport)
             }
         }
     }
     
     @objc func didTapProfileMoreButton(_ sender: UIButton) {
         if loginManager.isLoggedIn {
-            
             let presentActionVC = presentActionSheetView(.profile)
             self.present(presentActionVC, animated: true)
             
@@ -278,13 +269,9 @@ final class EventDetailViewController: UIViewController {
         } else {
             let presentActionVC = presentActionSheetView(.profile)
             self.present(presentActionVC, animated: true)
+            
             presentActionVC.blockUserCompletionClousre = {
-                let alertView = self.AlertVC(.login)
-                self.present(alertView, animated: true)
-                
-                alertView.cancleButtonClosure = {
-                    self.presentWaringView(.loginBlock)
-                }
+                self.presentLoginAlert(.loginBlock)
             }
         }
     }
@@ -308,11 +295,7 @@ final class EventDetailViewController: UIViewController {
                 break
             }
         } else {
-            let AlertView = self.AlertVC(.login)
-            self.present(AlertView, animated: true)
-            AlertView.cancleButtonClosure = {
-                self.presentWaringView(.loginNoti)
-            }
+            presentLoginAlert(.loginNoti)
         }
     }
     
