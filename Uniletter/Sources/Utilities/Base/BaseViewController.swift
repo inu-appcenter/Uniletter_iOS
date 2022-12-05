@@ -7,13 +7,15 @@
 
 import UIKit
 
-class BaseViewController: UIViewController {
+class BaseViewController: UIViewController,
+                          UIGestureRecognizerDelegate {
     
     // MARK: - Life cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewController()
+        configureNavigationGesutre()
         configureNavigationBar()
         configureUI()
         configureLayout()
@@ -23,6 +25,10 @@ class BaseViewController: UIViewController {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
+    }
+    
+    private func configureNavigationGesutre() {
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
     func configureViewController() {
