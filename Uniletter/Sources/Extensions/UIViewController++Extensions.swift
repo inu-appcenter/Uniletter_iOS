@@ -123,4 +123,29 @@ extension UIViewController {
 
         self.view.showToast(warningView, duration: 1.5, point: CGPoint(x: toastPointX, y: toastPointY))
     }
+    
+    // MARK: - Notification
+    
+    func postHomeReloadNotification() {
+        NotificationCenter.default.post(
+            name: Notification.Name("HomeReload"),
+            object: nil)
+    }
+    
+    func postLikeNotification(_ id: Int, _ like: Bool) {
+        NotificationCenter.default.post(
+            name: NSNotification.Name("like"),
+            object: nil,
+            userInfo: ["id": id, "like": like])
+    }
+    
+    // MARK: - HyperLink
+    
+    func openURL(_ url: String) {
+        guard let url = URL(string: url) else {
+            return
+        }
+        UIApplication.shared.open(url)
+    }
+    
 }
