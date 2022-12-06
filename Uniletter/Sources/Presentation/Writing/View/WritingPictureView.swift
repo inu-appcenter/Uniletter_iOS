@@ -13,28 +13,26 @@ final class WritingPictureView: BaseView {
     
     // MARK: - UI
     
-    private let scrollView = UIScrollView()
+    private lazy var scrollView = UIScrollView()
     
-    private let contentView = UIView()
+    private lazy var contentView = UIView()
     
-    private let titleLabel = UILabel().then {
+    private lazy var titleLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 18, weight: .bold)
         $0.text = "사진등록"
     }
     
-    private let defaultLabel = UILabel().then {
+    private lazy var defaultLabel = UILabel().then {
         $0.text = "없음 선택 시 유니레터가 제공하는 이미지가\n등록됩니다."
         $0.font = .systemFont(ofSize: 14)
         $0.numberOfLines = 0
-        $0.textColor = UIColor.customColor(.darkGray)
+        $0.textColor = .customColor(.darkGray)
     }
-    
-    private let clearView = UIView()
     
     lazy var imageView = UIImageView().then {
         $0.layer.cornerRadius = 12
         $0.layer.borderWidth = 1
-        $0.layer.borderColor = CGColor.customColor(.lightGray)
+        $0.layer.borderColor = .customColor(.lightGray)
         $0.image = UIImage(named: "defaultImage")
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
@@ -66,8 +64,7 @@ final class WritingPictureView: BaseView {
             titleLabel,
             imageView,
             defaultLabel,
-            checkView,
-            clearView,
+            checkView
         ]
             .forEach { contentView.addSubview($0) }
         
@@ -77,39 +74,36 @@ final class WritingPictureView: BaseView {
     
     override func configureLayout() {
         scrollView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.edges.equalToSuperview().priority(.high)
         }
         
         contentView.snp.makeConstraints {
-            $0.top.left.right.equalToSuperview()
-            $0.bottom.equalToSuperview().offset(-20)
-            $0.width.equalToSuperview()
+            $0.width.equalTo(scrollView.frameLayoutGuide)
+            $0.top.left.right.equalTo(scrollView.contentLayoutGuide)
+            $0.bottom.equalTo(scrollView.contentLayoutGuide).offset(-52)
         }
         
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(24)
-            $0.left.right.equalToSuperview().inset(20)
+            $0.left.equalToSuperview().offset(20)
         }
         
         imageView.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(20)
-            $0.left.right.equalTo(titleLabel)
+            $0.left.right.equalToSuperview().inset(20)
             $0.height.equalTo(imageView.snp.width).multipliedBy(sqrt(2))
         }
         
         defaultLabel.snp.makeConstraints {
             $0.top.equalTo(imageView.snp.bottom).offset(8)
-            $0.left.equalTo(titleLabel)
+            $0.bottom.equalToSuperview()
+            $0.left.equalToSuperview().offset(20)
         }
         
         checkView.snp.makeConstraints {
             $0.top.equalTo(defaultLabel)
-            $0.right.equalTo(titleLabel)
-        }
-        
-        clearView.snp.makeConstraints {
-            $0.top.equalTo(defaultLabel.snp.bottom)
-            $0.bottom.left.right.equalToSuperview()
+            $0.right.equalToSuperview().offset(-20)
         }
     }
+    
 }

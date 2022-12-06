@@ -65,7 +65,7 @@ final class WritingManager {
     var title: String?
     var host = "" {
         didSet {
-            if host == placeholer {
+            if host == hostPlaceholder {
                 host = ""
             }
         }
@@ -81,17 +81,9 @@ final class WritingManager {
     var endDate = CustomFormatter.convertTodayToString(true)
     var endTime = CustomFormatter.convertNowTime(false)
     
-    let categories = [
-        "선택없음",
-        "동아리/소모임",
-        "학생회",
-        "간식나눔",
-        "대회/공모전",
-        "스터디",
-        "구인",
-        "기타"
-    ]
-    let placeholer = "ex)총학생회, 디자인학부"
+    let categories = ["선택없음" , "동아리/소모임", "학생회", "간식나눔", "대회/공모전", "스터디", "구인", "기타"]
+    let hostPlaceholder = "ex)총학생회, 디자인학부"
+    let detailPlaceholder = "하위 게시물이나 부적절한 언어 사용 시\n유니레터 이용이 어려울 수 있습니다."
     
     // MARK: - Funcs
     

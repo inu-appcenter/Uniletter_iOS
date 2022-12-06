@@ -141,7 +141,7 @@ final class WritingContentViewController: BaseViewController {
             if !(writingManager.host.isEmpty) {
                 updateView(writingContentView.hostView)
             } else {
-                writingContentView.hostView.textField.text = writingManager.placeholer
+                writingContentView.hostView.textField.text = writingManager.hostPlaceholder
             }
             
             if !(writingManager.contact.isEmpty) {
@@ -187,6 +187,34 @@ final class WritingContentViewController: BaseViewController {
         present(vc, animated: true)
     }
     
+    private func updateHostView() {
+        writingContentView.hostView.textField.text = writingManager.hostPlaceholder
+        writingContentView.hostView.textField.textColor = .customColor(.lightGray)
+        
+        writingManager.host = ""
+    }
+    
+    private func updateDateTime() {
+        writingContentView.eventEndView.dateButton.setAttributedTitle(
+            showUnderline((writingContentView.eventStartView.dateButton.titleLabel?.text)!),
+            for: .normal)
+        writingContentView.eventEndView.timeButton.setAttributedTitle(
+            showUnderline((writingContentView.eventStartView.timeButton.titleLabel?.text)!),
+            for: .normal)
+        
+        writingManager.equalDateTime()
+    }
+    
+    private func updateContactView() {
+        writingContentView.contactView.textField.text = ""
+        writingManager.contact = ""
+    }
+    
+    private func updateLocationView() {
+        writingContentView.locationView.textField.text = ""
+        writingManager.location = ""
+    }
+    
     // MARK: - Action
     
     @objc private func hideKeyboard() {
@@ -195,45 +223,29 @@ final class WritingContentViewController: BaseViewController {
     
     @objc private func didTapHostCheckButton(_ sender: CheckButton) {
         sender.updateState()
-        
         if sender.isSelected {
-            writingContentView.hostView.textField.text = writingManager.placeholer
-            writingContentView.hostView.textField.textColor = UIColor.customColor(.lightGray)
-            
-            writingManager.host = ""
+            updateHostView()
         }
     }
     
     @objc private func didTapEqaulCheckButton(_ sender: CheckButton) {
         sender.updateState()
-        
         if sender.isSelected {
-            writingContentView.eventEndView.dateButton.setAttributedTitle(
-                showUnderline((writingContentView.eventStartView.dateButton.titleLabel?.text)!),
-                for: .normal)
-            writingContentView.eventEndView.timeButton.setAttributedTitle(
-                showUnderline((writingContentView.eventStartView.timeButton.titleLabel?.text)!),
-                for: .normal)
-            
-            writingManager.equalDateTime()
+            updateDateTime()
         }
     }
     
     @objc private func didTapContactCheckButton(_ sender: CheckButton) {
         sender.updateState()
-        
         if sender.isSelected {
-            writingContentView.contactView.textField.text = ""
-            writingManager.contact = ""
+            updateContactView()
         }
     }
     
     @objc private func didTapLocationCheckButton(_ sender: CheckButton) {
         sender.updateState()
-        
         if sender.isSelected {
-            writingContentView.locationView.textField.text = ""
-            writingManager.location = ""
+            updateLocationView()
         }
     }
     
@@ -334,7 +346,7 @@ extension WritingContentViewController: UITextViewDelegate {
         textView.layer.borderColor = .customColor(.blueGreen)
         textView.textColor = .black
         
-        if textView.text == writingManager.placeholer {
+        if textView.text == writingManager.hostPlaceholder {
             textView.text = ""
         }
     }
@@ -349,7 +361,7 @@ extension WritingContentViewController: UITextViewDelegate {
         switch textView {
         case writingContentView.hostView.textField:
             if textView.text.isEmpty {
-                textView.text = writingManager.placeholer
+                textView.text = writingManager.hostPlaceholder
                 textView.textColor = .customColor(.lightGray)
                 writingContentView.hostView.checkView.checkButton.updateCheckedState()
             }
