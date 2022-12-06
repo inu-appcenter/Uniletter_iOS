@@ -22,9 +22,9 @@ final class InfoStackView: UIStackView {
     
     // MARK: - UI
     
-    let categoryLabel = DetailContesntsLabel()
-    let startLabel = DetailContesntsLabel()
-    let endLabel = DetailContesntsLabel()
+    lazy var categoryLabel = createContentsLabel()
+    lazy var startLabel = createContentsLabel()
+    lazy var endLabel = createContentsLabel()
     
     lazy var targetLabel = createMarqueeLabel(false)
     lazy var contactLabel = createMarqueeLabel(false)
@@ -66,13 +66,18 @@ final class InfoStackView: UIStackView {
     
     // MARK: - Func
     
+    private func createContentsLabel() -> UILabel {
+        return UILabel().then {
+            $0.font = .systemFont(ofSize: 16)
+        }
+    }
+    
     private func createMarqueeLabel(_ isLink: Bool) -> MarqueeLabel {
-        let label = MarqueeLabel()
-        label.font = .systemFont(ofSize: 16)
-        label.speed = .duration(20)
-        label.isUserInteractionEnabled = isLink
-        
-        return label
+        return MarqueeLabel().then {
+            $0.font = .systemFont(ofSize: 16)
+            $0.speed = .duration(20)
+            $0.isUserInteractionEnabled = isLink
+        }
     }
     
     private func createStackView(_ subject: Subjects, _ contentsLabel: UILabel) -> UIStackView {

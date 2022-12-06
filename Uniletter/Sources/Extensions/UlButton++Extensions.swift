@@ -9,16 +9,6 @@ import UIKit
 
 extension UIButton {
     
-    func createCheckButton() {
-        self.layer.cornerRadius = 2
-        self.layer.borderWidth = 1
-        self.layer.borderColor = .customColor(.blueGreen)
-        self.backgroundColor = .customColor(.blueGreen)
-        self.setImage(UIImage(), for: .normal)
-        self.setImage(UIImage(named: "check"), for: .selected)
-        self.isSelected = true
-    }
-    
     func createCompletionButton(_ title: String) {
         self.backgroundColor = UIColor.customColor(.blueGreen)
         self.tintColor = .white

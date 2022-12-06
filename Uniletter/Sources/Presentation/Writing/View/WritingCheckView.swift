@@ -17,9 +17,7 @@ final class WritingCheckView: BaseView {
         $0.writingDefault("없음")
     }
     
-    lazy var checkButton = UIButton().then {
-        $0.createCheckButton()
-    }
+    lazy var checkButton = CheckButton()
     
     // MARK: - Init
     
