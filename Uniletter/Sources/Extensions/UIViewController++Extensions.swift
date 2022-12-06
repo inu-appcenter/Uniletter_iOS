@@ -11,7 +11,9 @@ import SwiftMessages
 import Toast_Swift
 
 extension UIViewController {
-    /// parameter에 넣은 제목대로 네비게이션 바 왼쪽 커스텀
+    
+    // MARK: - Navigation
+    
     func setNavigationTitleAndBackButton(_ title: String) {
         self.navigationItem.title = title
         self.navigationItem.hidesBackButton = true
@@ -28,7 +30,7 @@ extension UIViewController {
         self.navigationItem.leftBarButtonItems = [spacingItem(3), backButton]
     }
     
-    @objc func popViewController() {
+    @objc private func popViewController() {
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -38,6 +40,8 @@ extension UIViewController {
         navigationBarLayer?.shadowOpacity = 0.6
         navigationBarLayer?.shadowOffset = CGSize(width: 0, height: 5)
     }
+    
+    // MARK: - Change Screen
     
     func goToInitialViewController() {
         let homeViewController = UINavigationController(
@@ -50,6 +54,17 @@ extension UIViewController {
     func setModalStyle() {
         self.modalTransitionStyle = .crossDissolve
         self.modalPresentationStyle = .overFullScreen
+    }
+    
+    // MARK: - Alert
+    
+    func presentLoginAlert(_ warning: Warning) {
+        let vc = AlertVC(.login)
+        vc.cancleButtonClosure = {
+            self.presentWaringView(warning)
+        }
+        
+        present(vc, animated: true)
     }
     
     func presentAlertView(_ alert: Alert) {

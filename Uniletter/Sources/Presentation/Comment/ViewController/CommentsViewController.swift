@@ -103,11 +103,7 @@ final class CommentsViewController: UIViewController {
                 self.fetchComments()
             }
         } else {
-            let alertView = AlertVC(.login)
-            present(alertView, animated: true)
-            alertView.cancleButtonClosure = {
-                self.presentWaringView(.loginComment)
-            }
+            presentLoginAlert(.loginComment)
         }
     }
     

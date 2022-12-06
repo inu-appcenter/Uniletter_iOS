@@ -34,11 +34,11 @@ final class HomeViewController: BaseViewController {
     
     // MARK: - Property
     
-    let homeView = HomeView()
-    let viewModel = HomeViewModel()
-    let loginManager = LoginManager.shared
-    let eventStatusDropDown = DropDown()
-    let categoryDropDown = DropDown()
+    private let homeView = HomeView()
+    private let viewModel = HomeViewModel()
+    private let loginManager = LoginManager.shared
+    private let eventStatusDropDown = DropDown()
+    private let categoryDropDown = DropDown()
     
     // MARK: - Life cycle
     
@@ -232,12 +232,7 @@ final class HomeViewController: BaseViewController {
             let vc = WritingViewController()
             self.navigationController?.pushViewController(vc, animated: true)
         } else {
-            let AlertView = AlertVC(.login)
-            present(AlertView, animated: true)
-
-            AlertView.cancleButtonClosure = {
-                self.presentWaringView(.loginWriting)
-            }
+            presentLoginAlert(.loginWriting)
         }
     }
     
@@ -286,17 +281,9 @@ extension HomeViewController: UICollectionViewDelegate,
                 if self.loginManager.isLoggedIn {
                     let like = cell.bookmarkButton.isSelected
                     cell.bookmarkButton.isSelected = !like
-                    if like {
-                        self.viewModel.deleteLike(event.id)
-                    } else {
-                        self.viewModel.likeEvent(event.id)
-                    }
+                    like ? self.viewModel.deleteLike(event.id) : self.viewModel.likeEvent(event.id)
                 } else {
-                    let alertView = self.AlertVC(.login)
-                    self.present(alertView, animated: true)
-                    alertView.cancleButtonClosure = {
-                        self.presentWaringView(.loginLike)
-                    }
+                    self.presentLoginAlert(.loginLike)
                 }
             }
         }
