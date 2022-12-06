@@ -74,7 +74,7 @@ final class WritingPictureView: BaseView {
     
     override func configureLayout() {
         scrollView.snp.makeConstraints {
-            $0.edges.equalToSuperview().priority(.high)
+            $0.edges.equalToSuperview()
         }
         
         contentView.snp.makeConstraints {
@@ -96,8 +96,7 @@ final class WritingPictureView: BaseView {
         
         defaultLabel.snp.makeConstraints {
             $0.top.equalTo(imageView.snp.bottom).offset(8)
-            $0.bottom.equalToSuperview()
-            $0.left.equalToSuperview().offset(20)
+            $0.bottom.left.equalToSuperview().inset(20)
         }
         
         checkView.snp.makeConstraints {

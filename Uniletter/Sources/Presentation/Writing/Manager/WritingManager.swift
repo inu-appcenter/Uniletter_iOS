@@ -18,7 +18,7 @@ final class WritingManager {
     // MARK: - Property
     
     private var basicImage = BasicInfo.none.uuid
-    private var mainImage = BasicInfo.none.image
+    var mainImage = BasicInfo.none.image
     var id: Int?
     var imageIndex = 0
     var imageType: ImageType = .basic
@@ -27,7 +27,7 @@ final class WritingManager {
     var host = "" {
         didSet { host = host == hostPlaceholder ? "" : host }
     }
-    var category = ""
+    var category = "기타"
     var target: String?
     var contact = ""
     var location = ""
@@ -70,7 +70,7 @@ final class WritingManager {
         mainImage = BasicInfo.none.image
         title = nil
         host = ""
-        category = ""
+        category = "기타"
         target = nil
         contact = ""
         location = ""

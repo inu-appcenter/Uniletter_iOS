@@ -14,6 +14,7 @@ enum Alert {
     case blockOn
     case blockOff
     case delete
+    case write
     case save
     case notification
     
@@ -25,6 +26,7 @@ enum Alert {
         case .blockOn: return "정말 차단 하시겠습니까?"
         case .blockOff: return "차단을 해제 하시겠습니까?"
         case .delete: return "정말 삭제 하시겠습니까?"
+        case .write: return "정말 작성 하시겠습니까?"
         case .save: return "저장을 취소 하시겠습니까?"
         case .notification: return "알림을 취소 하시겠습니까?"
         }
