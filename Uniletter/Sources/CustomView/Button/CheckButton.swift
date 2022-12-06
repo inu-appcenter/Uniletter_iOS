@@ -31,4 +31,23 @@ final class CheckButton: UIButton {
         setImage(UIImage(named: "check"), for: .selected)
         isSelected = true
     }
+    
+    // MARK: - Func
+    
+    func updateDefaultState() {
+        isSelected = false
+        backgroundColor = .white
+        layer.borderColor = #colorLiteral(red: 0.8980392157, green: 0.8980392157, blue: 0.8980392157, alpha: 1).cgColor
+    }
+    
+    func updateState() {
+        isSelected = !isSelected
+        
+        if isSelected {
+            backgroundColor = .customColor(.blueGreen)
+            layer.borderColor = .customColor(.blueGreen)
+        } else {
+            updateDefaultState()
+        }
+    }
 }

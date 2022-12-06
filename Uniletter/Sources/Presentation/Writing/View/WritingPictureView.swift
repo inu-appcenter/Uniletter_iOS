@@ -7,69 +7,60 @@
 
 import UIKit
 import SnapKit
+import Then
 
-final class WritingPictureView: UIView {
+final class WritingPictureView: BaseView {
     
     // MARK: - UI
-    let scrollView = UIScrollView()
     
-    let contentView = UIView()
+    private let scrollView = UIScrollView()
     
-    let titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 18, weight: .bold)
-        label.text = "사진등록"
-        
-        return label
-    }()
+    private let contentView = UIView()
     
-    lazy var imageView: UIImageView = {
-        let imgView = UIImageView()
-        imgView.layer.cornerRadius = 12
-        imgView.layer.borderWidth = 1
-        imgView.layer.borderColor = CGColor.customColor(.lightGray)
-        imgView.image = UIImage(named: "defaultImage")
-        imgView.contentMode = .scaleAspectFill
-        imgView.clipsToBounds = true
-        imgView.isUserInteractionEnabled = true
-        
-        return imgView
-    }()
+    private let titleLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 18, weight: .bold)
+        $0.text = "사진등록"
+    }
     
-    let defaultLabel: UILabel = {
-        let label = UILabel()
-        label.writingTitle("없음 선택 시 유니레터가 제공하는 이미지가\n등록됩니다.")
-        label.numberOfLines = 0
-        label.textColor = UIColor.customColor(.darkGray)
-        
-        return label
-    }()
+    private let defaultLabel = UILabel().then {
+        $0.writingTitle("없음 선택 시 유니레터가 제공하는 이미지가\n등록됩니다.")
+        $0.numberOfLines = 0
+        $0.textColor = UIColor.customColor(.darkGray)
+    }
+    
+    private let clearView = UIView()
+    
+    lazy var imageView = UIImageView().then {
+        $0.layer.cornerRadius = 12
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = CGColor.customColor(.lightGray)
+        $0.image = UIImage(named: "defaultImage")
+        $0.contentMode = .scaleAspectFill
+        $0.clipsToBounds = true
+        $0.isUserInteractionEnabled = true
+    }
     
     lazy var checkView = WritingCheckView()
     
-    let clearView = UIView()
-    
-    let recognizeTapImageView = UITapGestureRecognizer()
+    lazy var recognizeTapImageView = UITapGestureRecognizer()
     
     // MARK: - Init
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .white
-        addViews()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
-        setLayout()
+    // MARK: - Configure
+
+    override func configureView() {
+        imageView.addGestureRecognizer(recognizeTapImageView)
     }
     
-    // MARK: - Setup
-    func addViews() {
-        imageView.addGestureRecognizer(recognizeTapImageView)
-        
+    override func configureUI() {
         [
             titleLabel,
             imageView,
@@ -80,11 +71,10 @@ final class WritingPictureView: UIView {
             .forEach { contentView.addSubview($0) }
         
         scrollView.addSubview(contentView)
-        
         addSubview(scrollView)
     }
     
-    func setLayout() {
+    override func configureLayout() {
         scrollView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }

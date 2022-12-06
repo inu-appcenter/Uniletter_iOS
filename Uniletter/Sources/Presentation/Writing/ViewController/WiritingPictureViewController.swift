@@ -9,54 +9,65 @@ import UIKit
 import PhotosUI
 import Kingfisher
 
-final class WritingPictureViewController: UIViewController {
+final class WritingPictureViewController: BaseViewController {
 
     // MARK: - Property
-    let writingPictureView = WritingPictureView()
-    let writingManager = WritingManager.shared
+    
+    private let writingPictureView = WritingPictureView()
+    private let writingManager = WritingManager.shared
     
     // MARK: - Life cycle
+    
     override func loadView() {
         view = writingPictureView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setViewContoller()
     }
     
-    // MARK: - Setup
-    func setViewContoller() {
+    // MARK: - Configure
+    
+    override func configureViewController() {
         writingPictureView.recognizeTapImageView.addTarget(
             self,
-            action: #selector(didTapimageView(_:)))
+            action: #selector(didTapimageView))
         writingPictureView.checkView.checkButton.addTarget(
             self,
             action: #selector(didTapCheckButton(_:)),
             for: .touchUpInside)
         
         if writingManager.isUpdating() {
-            self.writingPictureView.imageView.kf.setImage(
+            writingPictureView.imageView.kf.setImage(
                 with: URL(string: writingManager.imageURL!)!)
             
-            self.writingPictureView.checkView.checkButton.isSelected = false
-            self.writingPictureView.checkView.checkButton.updateUI(false)
+            updateCheckButton()
         }
     }
     
     // MARK: - Func
     
-    func updateImage(_ image: UIImage) {
+    private func updateImage(_ image: UIImage) {
         DispatchQueue.main.async {
             self.writingPictureView.imageView.image = image
             self.writingPictureView.imageView.contentMode = .scaleAspectFill
-            self.writingPictureView.checkView.checkButton.isSelected = false
-            self.writingPictureView.checkView.checkButton.updateUI(false)
+            self.updateCheckButton()
         }
     }
+    
+    private func updateDefaultImage() {
+        writingPictureView.imageView.image = UIImage(named: "defaultImage")
+        writingManager.imageType = .basic
+        writingManager.imageUUID = nil
+    }
+    
+    private func updateCheckButton() {
+        writingPictureView.checkView.checkButton.updateDefaultState()
+    }
 
-    // MARK: - Actions
-    @objc func didTapimageView(_ sender: UITapGestureRecognizer) {
+    // MARK: - Action
+    
+    @objc private func didTapimageView() {
         var config = PHPickerConfiguration()
         config.selectionLimit = 1
         config.filter = .images
@@ -66,20 +77,19 @@ final class WritingPictureViewController: UIViewController {
         self.present(picker, animated: true)
     }
     
-    @objc func didTapCheckButton(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
-        sender.updateUI(sender.isSelected)
+    @objc private func didTapCheckButton(_ sender: CheckButton) {
+        sender.updateState()
         
         if sender.isSelected {
-            writingPictureView.imageView.image = UIImage(named: "defaultImage")
-            writingManager.imageType = .basic
-            writingManager.imageUUID = nil
+            updateDefaultImage()
         }
     }
 }
 
 // MARK: - PHPickerViewController
+
 extension WritingPictureViewController: PHPickerViewControllerDelegate {
+    
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         picker.dismiss(animated: true)
         
@@ -91,10 +101,11 @@ extension WritingPictureViewController: PHPickerViewControllerDelegate {
                     print("이미지를 찾을 수 없습니다.")
                     return
                 }
-
+                
                 self.writingManager.setImage(image)
                 self.updateImage(image)
             }
         }
     }
+    
 }
