@@ -9,15 +9,6 @@ import UIKit
 import MarqueeLabel
 import SnapKit
 
-enum Subjects: String {
-    case category = "카테고리"
-    case start = "시작일시"
-    case end = "마감일시"
-    case target = "모집대상"
-    case contact = "문의사항"
-    case link = "신청링크"
-}
-
 final class InfoStackView: UIStackView {
     
     // MARK: - UI
@@ -82,7 +73,7 @@ final class InfoStackView: UIStackView {
     
     private func createStackView(_ subject: Subjects, _ contentsLabel: UILabel) -> UIStackView {
         let subjectLabel = UILabel()
-        subjectLabel.changeDetail(subject.rawValue)
+        subjectLabel.changeDetail(subject.title)
         
         let stackView = UIStackView()
         stackView.spacing = 20
