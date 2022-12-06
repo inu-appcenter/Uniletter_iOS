@@ -265,6 +265,7 @@ final class HomeViewController: BaseViewController {
 }
 
 // MARK: - CollectionView
+
 extension HomeViewController: UICollectionViewDelegate,
                               UICollectionViewDataSource {
     

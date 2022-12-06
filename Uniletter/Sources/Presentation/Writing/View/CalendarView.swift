@@ -8,122 +8,95 @@
 import UIKit
 import FSCalendar
 import SnapKit
+import Then
 
-final class CalendarView: UIView {
+final class CalendarView: BaseView {
 
     // MARK: - UI
-    lazy var calendar: FSCalendar = {
-        let calendar = FSCalendar()
-        
+    
+    lazy var calendar = FSCalendar().then {
         // 기본 설정
-        calendar.locale = Locale(identifier: "en_US")
-        calendar.placeholderType = .none
+        $0.locale = Locale(identifier: "en_US")
+        $0.placeholderType = .none
         
         // 헤더 뷰 관련
-        calendar.headerHeight = 0
-        calendar.appearance.headerMinimumDissolvedAlpha = 0
+        $0.headerHeight = 0
+        $0.appearance.headerMinimumDissolvedAlpha = 0
         
         // 날짜 관련
-        calendar.appearance.weekdayTextColor = UIColor.customColor(.darkGray)
-        calendar.appearance.weekdayFont = .systemFont(ofSize: 13)
-        calendar.appearance.titleFont = .systemFont(ofSize: 14, weight: .medium)
-        calendar.appearance.selectionColor = UIColor.customColor(.blueGreen)
+        $0.appearance.weekdayTextColor = .customColor(.darkGray)
+        $0.appearance.weekdayFont = .systemFont(ofSize: 13)
+        $0.appearance.titleFont = .systemFont(ofSize: 14, weight: .medium)
+        $0.appearance.selectionColor = .customColor(.blueGreen)
         
         // Today 관련
-        calendar.appearance.todayColor = .clear
-        calendar.appearance.titleTodayColor = .black
+        $0.appearance.todayColor = .clear
+        $0.appearance.titleTodayColor = .black
         
         // 요일 색상 관련
-        calendar.calendarWeekdayView.weekdayLabels[0].textColor = #colorLiteral(red: 0.9921568627, green: 0.231372549, blue: 0.1921568627, alpha: 1)
-        calendar.calendarWeekdayView.weekdayLabels[6].textColor = #colorLiteral(red: 0.2666666667, green: 0.4274509804, blue: 1, alpha: 1)
-        
-        return calendar
-    }()
+        $0.calendarWeekdayView.weekdayLabels[0].textColor = #colorLiteral(red: 0.9921568627, green: 0.231372549, blue: 0.1921568627, alpha: 1)
+        $0.calendarWeekdayView.weekdayLabels[6].textColor = #colorLiteral(red: 0.2666666667, green: 0.4274509804, blue: 1, alpha: 1)
+    }
     
-    let subView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        view.layer.cornerRadius = 12
-        view.clipsToBounds = true
-        
-        return view
-    }()
+    private lazy var subView = UIView().then {
+        $0.backgroundColor = .white
+        $0.layer.cornerRadius = 12
+        $0.clipsToBounds = true
+    }
     
-    let topView: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor.customColor(.blueGreen)
-        
-        return view
-    }()
+    private lazy var topView = UIView().then {
+        $0.backgroundColor = .customColor(.blueGreen)
+    }
     
-    let titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 14, weight: .semibold)
-        label.textAlignment = .center
-        label.textColor = .white
-        
-        return label
-    }()
+    lazy var titleLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 14, weight: .semibold)
+        $0.textAlignment = .center
+        $0.textColor = .white
+    }
     
-    let yearMonthLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 18, weight: .bold)
-        label.textAlignment = .center
-        label.textColor = .white
-        
-        return label
-    }()
+    lazy var yearMonthLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 18, weight: .bold)
+        $0.textAlignment = .center
+        $0.textColor = .white
+    }
     
-    lazy var leftButton: UIButton = {
-        let button = UIButton()
-        button.setImage(UIImage(named: "chevronLeft"), for: .normal)
-        
-        return button
-    }()
+    lazy var leftButton = UIButton().then {
+        $0.setImage(UIImage(named: "chevronLeft"), for: .normal)
+    }
     
-    lazy var rightButton: UIButton = {
-        let button = UIButton()
-        button.setImage(UIImage(named: "chevronRight"), for: .normal)
-        
-        return button
-    }()
+    lazy var rightButton = UIButton().then {
+        $0.setImage(UIImage(named: "chevronRight"), for: .normal)
+    }
     
-    lazy var cancleButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("취소", for: .normal)
-        button.setTitleColor(UIColor.customColor(.lightGray), for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
-        
-        return button
-    }()
+    lazy var cancelButton = UIButton().then {
+        $0.setTitle("취소", for: .normal)
+        $0.setTitleColor(.customColor(.lightGray), for: .normal)
+        $0.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
+    }
     
-    lazy var okButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("확인", for: .normal)
-        button.setTitleColor(UIColor.customColor(.blueGreen), for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
-        
-        return button
-    }()
+    lazy var okButton = UIButton().then {
+        $0.setTitle("확인", for: .normal)
+        $0.setTitleColor(.customColor(.blueGreen), for: .normal)
+        $0.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
+    }
     
     // MARK: - Init
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        backgroundColor = .black.withAlphaComponent(0.3)
-        addViews()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
-        setLayout()
+    // MARK: - Configure
+    
+    override func configureView() {
+        backgroundColor = .black.withAlphaComponent(0.3)
     }
     
-    // MARK: - Setup
-    func addViews() {
+    override func configureUI() {
         [
             titleLabel,
             yearMonthLabel,
@@ -135,7 +108,7 @@ final class CalendarView: UIView {
         [
             topView,
             calendar,
-            cancleButton,
+            cancelButton,
             okButton,
         ]
             .forEach { subView.addSubview($0) }
@@ -143,7 +116,7 @@ final class CalendarView: UIView {
         addSubview(subView)
     }
     
-    func setLayout() {
+    override func configureLayout() {
         subView.snp.makeConstraints {
             $0.center.equalToSuperview()
             $0.left.right.equalToSuperview().inset(20)
@@ -177,18 +150,19 @@ final class CalendarView: UIView {
         
         calendar.snp.makeConstraints {
             $0.top.equalTo(topView.snp.bottom).offset(20)
-            $0.bottom.equalTo(cancleButton.snp.top)
+            $0.bottom.equalTo(cancelButton.snp.top)
             $0.left.right.equalToSuperview().inset(14)
         }
         
-        cancleButton.snp.makeConstraints {
+        cancelButton.snp.makeConstraints {
             $0.bottom.equalToSuperview().offset(-16)
             $0.right.equalTo(okButton.snp.left).offset(-20)
         }
         
         okButton.snp.makeConstraints {
-            $0.centerY.equalTo(cancleButton)
+            $0.centerY.equalTo(cancelButton)
             $0.right.equalToSuperview().offset(-20)
         }
     }
+    
 }
