@@ -57,7 +57,7 @@ final class WritingBottomButtonsView: BaseView {
             $0.layer.cornerRadius = 6
             $0.backgroundColor = isOK ? .customColor(.blueGreen) : #colorLiteral(red: 0.8405835032, green: 0.9632034898, blue: 0.9564227462, alpha: 1)
             $0.setTitle(isOK ? "확인" : "취소", for: .normal)
-            $0.setTitleColor(.customColor(.blueGreen), for: .normal)
+            $0.setTitleColor(isOK ? .white : .customColor(.blueGreen), for: .normal)
             $0.titleLabel?.font = .systemFont(ofSize: 14)
         }
     }

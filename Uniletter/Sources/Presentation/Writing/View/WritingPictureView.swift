@@ -23,7 +23,8 @@ final class WritingPictureView: BaseView {
     }
     
     private let defaultLabel = UILabel().then {
-        $0.writingTitle("없음 선택 시 유니레터가 제공하는 이미지가\n등록됩니다.")
+        $0.text = "없음 선택 시 유니레터가 제공하는 이미지가\n등록됩니다."
+        $0.font = .systemFont(ofSize: 14)
         $0.numberOfLines = 0
         $0.textColor = UIColor.customColor(.darkGray)
     }

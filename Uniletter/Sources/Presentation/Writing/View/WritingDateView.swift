@@ -13,7 +13,9 @@ final class WritingDateView: BaseView {
     
     // MARK: - UI
     
-    let titleLabel = UILabel()
+    lazy var titleLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 14)
+    }
     
     lazy var dateButton = createButton()
     

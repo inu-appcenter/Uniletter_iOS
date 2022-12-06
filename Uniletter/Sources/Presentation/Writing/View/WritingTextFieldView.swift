@@ -13,7 +13,9 @@ final class WritingTextFieldView: BaseView {
 
     // MARK: - UI
     
-    lazy var titleLabel = UILabel()
+    lazy var titleLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 14)
+    }
     
     lazy var textField = UITextView().then {
         $0.writingTextView()

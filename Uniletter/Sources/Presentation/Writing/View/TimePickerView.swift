@@ -21,7 +21,8 @@ final class TimePickerView: UIView {
     
     let titleLabel: UILabel = {
         let label = UILabel()
-        label.writingTitle("시작시간 선택")
+        label.text = "시작시간 선택"
+        label.font = .systemFont(ofSize: 14)
         
         return label
     }()

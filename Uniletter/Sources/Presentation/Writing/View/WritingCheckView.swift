@@ -13,8 +13,10 @@ final class WritingCheckView: BaseView {
     
     // MARK: - UI
     
-    private let label = UILabel().then {
-        $0.writingDefault("없음")
+    lazy var label = UILabel().then {
+        $0.text = "없음"
+        $0.font = .systemFont(ofSize: 13)
+        $0.textColor = .customColor(.defaultGray)
     }
     
     lazy var checkButton = CheckButton()

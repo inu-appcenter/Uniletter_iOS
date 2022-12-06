@@ -21,7 +21,8 @@ final class WritingDetailView: UIView {
 
     let subTitleLabel: UILabel = {
         let label = UILabel()
-        label.writingTitle("상세 내용을 입력해 주세요.")
+        label.text = "상세 내용을 입력해 주세요."
+        label.font = .systemFont(ofSize: 14)
         
         return label
     }()
@@ -43,7 +44,8 @@ final class WritingDetailView: UIView {
     
     let guideLabel: UILabel = {
         let label = UILabel()
-        label.writingTitle("8000자 이내로 입력 가능합니다.")
+        label.text = "8000자 이내로 입력 가능합니다."
+        label.font = .systemFont(ofSize: 14)
         label.textColor = UIColor.customColor(.defaultGray)
         
         return label

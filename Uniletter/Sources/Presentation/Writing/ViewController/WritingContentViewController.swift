@@ -165,9 +165,8 @@ class WritingContentViewController: UIViewController {
     }
     
     // MARK: - Funcs
-    func changeCheckButton(_ button: UIButton) {
-        button.isSelected = !button.isSelected
-        button.updateUI(button.isSelected)
+    func changeCheckButton(_ sender: CheckButton) {
+        sender.updateState()
     }
     
     func presentCalendar(_ style: Style) {
@@ -204,7 +203,7 @@ class WritingContentViewController: UIViewController {
     }
     
     @objc func didTapHostCheckButton(_ sender: UIButton) {
-        changeCheckButton(sender)
+//        changeCheckButton(sender)
         if sender.isSelected {
             writingContentView.hostView.textField.text = placeholer
             writingContentView.hostView.textField.textColor = UIColor.customColor(.lightGray)
@@ -214,7 +213,7 @@ class WritingContentViewController: UIViewController {
     }
     
     @objc func didTapEqaulCheckButton(_ sender: UIButton) {
-        changeCheckButton(sender)
+//        changeCheckButton(sender)
         if sender.isSelected {
             writingContentView.eventEndView.dateButton.setAttributedTitle(
                 showUnderline((writingContentView.eventStartView.dateButton.titleLabel?.text)!),
@@ -228,7 +227,7 @@ class WritingContentViewController: UIViewController {
     }
     
     @objc func didTapContactCheckButton(_ sender: UIButton) {
-        changeCheckButton(sender)
+//        changeCheckButton(sender)
         if sender.isSelected {
             writingContentView.contactView.textField.text = ""
             writingManager.contact = ""
@@ -236,7 +235,7 @@ class WritingContentViewController: UIViewController {
     }
     
     @objc func didTapLocationCheckButton(_ sender: UIButton) {
-        changeCheckButton(sender)
+//        changeCheckButton(sender)
         if sender.isSelected {
             writingContentView.locationView.textField.text = ""
             writingManager.location = ""
@@ -315,15 +314,15 @@ extension WritingContentViewController: UITextViewDelegate {
             
         case writingContentView.hostView.textField:
             writingManager.host = textView.text
-            writingContentView.hostView.checkView.checkButton.updateUI(false)
+//            writingContentView.hostView.checkView.checkButton.updateUI(false)
             
         case writingContentView.contactView.textField:
             writingManager.contact = textView.text
-            writingContentView.contactView.checkView.checkButton.updateUI(false)
+//            writingContentView.contactView.checkView.checkButton.updateUI(false)
             
         case writingContentView.locationView.textField:
             writingManager.location = textView.text
-            writingContentView.locationView.checkView.checkButton.updateUI(false)
+//            writingContentView.locationView.checkView.checkButton.updateUI(false)
             
         default:
             break
@@ -355,19 +354,19 @@ extension WritingContentViewController: UITextViewDelegate {
             if textView.text == "" {
                 textView.text = placeholer
                 textView.textColor = UIColor.customColor(.lightGray)
-                writingContentView.hostView.checkView.checkButton.updateUI(true)
+//                writingContentView.hostView.checkView.checkButton.updateUI(true)
             }
             writingManager.host = textView.text
             
         case writingContentView.contactView.textField:
             if textView.text == "" {
-                writingContentView.contactView.checkView.checkButton.updateUI(true)
+//                writingContentView.contactView.checkView.checkButton.updateUI(true)
             }
             writingManager.contact = textView.text
             
         case writingContentView.locationView.textField:
             if textView.text == "" {
-                writingContentView.locationView.checkView.checkButton.updateUI(true)
+//                writingContentView.locationView.checkView.checkButton.updateUI(true)
             }
             writingManager.location = textView.text
             

@@ -33,7 +33,7 @@ final class WritingContentView: UIView {
     
     lazy var titleView: WritingTextFieldView = {
         let view = WritingTextFieldView()
-        view.titleLabel.writingTitle("제목을 입력해주세요.")
+        view.titleLabel.text = "제목을 입력해주세요."
         view.checkView.isHidden = true
         
         return view
@@ -41,7 +41,7 @@ final class WritingContentView: UIView {
     
     lazy var hostView: WritingTextFieldView = {
         let view = WritingTextFieldView()
-        view.titleLabel.writingTitle("소속된 단체를 입력해주세요.")
+        view.titleLabel.text = "소속된 단체를 입력해주세요."
         view.textField.text = "ex)총학생회, 디자인학부"
         view.textField.textColor = UIColor.customColor(.lightGray)
         
@@ -50,7 +50,7 @@ final class WritingContentView: UIView {
     
     lazy var categoryView: WritingTextFieldView = {
         let view = WritingTextFieldView()
-        view.titleLabel.writingTitle("카테고리를 선택해주세요.")
+        view.titleLabel.text = "카테고리를 선택해주세요."
         view.textField.text = "카테고리 선택"
         view.textField.isUserInteractionEnabled = false
         view.checkView.isHidden = true
@@ -71,7 +71,7 @@ final class WritingContentView: UIView {
     
     lazy var targetView: WritingTextFieldView = {
         let view = WritingTextFieldView()
-        view.titleLabel.writingTitle("모집대상을 입력해주세요.")
+        view.titleLabel.text = "모집대상을 입력해주세요."
         view.checkView.isHidden = true
         
         return view
@@ -79,21 +79,21 @@ final class WritingContentView: UIView {
     
     lazy var eventStartView: WritingDateView = {
         let view = WritingDateView()
-        view.titleLabel.writingTitle("행사시작을 입력해주세요.")
+        view.titleLabel.text = "행사시작을 입력해주세요."
         
         return view
     }()
     
     lazy var eventEndView: WritingDateView = {
         let view = WritingDateView()
-        view.titleLabel.writingTitle("행사마감을 입력해주세요.")
+        view.titleLabel.text = "행사마감을 입력해주세요."
         
         return view
     }()
     
     lazy var equalView: WritingCheckView = {
         let view = WritingCheckView()
-        view.label.writingDefault("위와 동일")
+        view.label.text = "위와 동일"
         view.checkButton.isSelected = false
         view.checkButton.layer.borderColor = #colorLiteral(red: 0.8980392157, green: 0.8980392157, blue: 0.8980392157, alpha: 1).cgColor
         view.checkButton.backgroundColor = .white
@@ -103,14 +103,14 @@ final class WritingContentView: UIView {
     
     lazy var contactView: WritingTextFieldView = {
         let view = WritingTextFieldView()
-        view.titleLabel.writingTitle("문의사항시 연락방법을 입력해주세요.")
+        view.titleLabel.text = "문의사항시 연락방법을 입력해주세요."
         
         return view
     }()
     
     lazy var locationView: WritingTextFieldView = {
         let view = WritingTextFieldView()
-        view.titleLabel.writingTitle("첨부할 URL이 있다면 입력해주세요.")
+        view.titleLabel.text = "첨부할 URL이 있다면 입력해주세요."
         
         return view
     }()
