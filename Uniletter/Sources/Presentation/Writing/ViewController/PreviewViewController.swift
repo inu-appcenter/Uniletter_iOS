@@ -50,29 +50,7 @@ final class PreviewViewController: UIViewController {
     // MARK: - Funcs
     
     func hideSubjects() {
-        if viewModel.category == " | " {
-            previewView.infoStackView.validateInfo(.category, true)
-        } else {
-            previewView.infoStackView.validateInfo(.category, false)
-        }
-        
-        if viewModel.target == "" {
-            previewView.infoStackView.validateInfo(.target, true)
-        } else {
-            previewView.infoStackView.validateInfo(.target, false)
-        }
-        
-        if viewModel.contact == "" {
-            previewView.infoStackView.validateInfo(.contact, true)
-        } else {
-            previewView.infoStackView.validateInfo(.contact, false)
-        }
-        
-        if viewModel.location == "" {
-            previewView.infoStackView.validateInfo(.link, true)
-        } else {
-            previewView.infoStackView.validateInfo(.link, false)
-        }
+        previewView.infoStackView.validateInfo()
     }
     
     func updateImageView() {

@@ -11,14 +11,28 @@ final class EventDetailViewModel {
     
     // MARK: - Property
     
-    var event: Event?
+    private var id: Int
+    private var event: Event!
     var notiState: NotiState = .request
-    let defaultDate = "2022-02-02T00:00"
     
-    // MARK: - UI
+    // MARK: - Init
+    
+    init(id: Int) {
+        self.id = id
+    }
+    
+    // MARK: - Output
+    
+    var eventInfo: Event {
+        return event
+    }
+    
+    var userID: Int {
+        return event.userID
+    }
     
     var wroteByMe: Bool {
-        guard let wroteByMe = event?.wroteByMe else {
+        guard let wroteByMe = event.wroteByMe else {
             return false
         }
         
@@ -26,86 +40,88 @@ final class EventDetailViewModel {
     }
     
     var like: Bool {
-        return event?.likedByMe ?? false
+        return event.likedByMe ?? false
     }
     
     var profileImage: String {
-        return event?.profileImage ?? ""
+        return event.profileImage ?? ""
     }
     
     var nickname: String {
-        return event?.nickname ?? ""
+        return event.nickname
     }
     
     var dateWrote: String {
-        let dateStr = event?.createdAt ?? defaultDate
-        
-        return CustomFormatter.convertISO8601DateToString(dateStr, "yyyy.MM.dd")
+        return CustomFormatter.convertISO8601DateToString(event.createdAt, "yyyy.MM.dd")
     }
     
     var mainImage: String {
-        return event?.imageURL ?? ""
+        return event.imageURL
     }
     
     var title: String {
-        return event?.title ?? ""
+        return event.title
     }
     
     var endAt: String {
-        return event?.endAt ?? defaultDate
+        return event.endAt
     }
     
     var categoryContent: String {
-        return "\(event?.category ?? "") | \(event?.host ?? "")"
+        return "\(event.category) | \(event.host ?? "")"
     }
     
     var startContent: String {
-        let date = CustomFormatter.subDateString(event?.startAt ?? defaultDate)
-        let time = " - " + CustomFormatter.convertTime(event?.startAt ?? defaultDate)
+        let date = CustomFormatter.subDateString(event.startAt)
+        let time = " - " + CustomFormatter.convertTime(event.startAt)
         
         return date + time
     }
     
     var endContent: String {
-        let date = CustomFormatter.subDateString(event?.endAt ?? defaultDate)
-        let time = " - " + CustomFormatter.convertTime(event?.endAt ?? defaultDate)
+        let date = CustomFormatter.subDateString(event.endAt)
+        let time = " - " + CustomFormatter.convertTime(event.endAt)
         
         return date + time
     }
     
     var target: String {
-        return event?.target ?? ""
+        return event.target
     }
     
     var contact: String {
-        return event?.contact ?? ""
+        return event.contact ?? ""
     }
     
     var link: String {
-        return event?.location ?? ""
+        return event.location ?? ""
     }
     
     var body: String {
-        return event?.body ?? ""
+        return event.body
     }
     
     var views: String {
-        return "\(event?.views ?? 0)회"
+        return "\(event.views)회"
     }
     
     var likeAndComments: String {
-        return "저장\(event?.likes ?? 0) ∙ 댓글 \(event?.comments ?? 0)개"
+        return "저장\(event.likes) ∙ 댓글 \(event.comments)개"
+    }
+    
+    var notiSetByMe: Bool? {
+        return event.notificationSetByMe
     }
     
     func changeLikes(_ num: Int) -> String {
-        return "저장\((event?.likes ?? 0) + num) ∙ 댓글 \(event?.comments ?? 0)개"
+        return "저장\((event.likes) + num) ∙ 댓글 \(event.comments)개"
     }
     
     // MARK: - Funcs
     
-    func loadEvent(_ id: Int, completion: @escaping () -> Void) {
-        API.getEventOne(id) { event in
-            self.event = event
+    func loadEvent(completion: @escaping () -> Void) {
+        API.getEventOne(id) { [weak self] event in
+            self?.event = event
             completion()
         }
     }
@@ -117,22 +133,19 @@ final class EventDetailViewModel {
     }
 
     func likeEvent(completion: @escaping (String) -> Void) {
-        guard let id = event?.id else { return }
         API.likeEvent(["eventId": id]) {
             completion(self.changeLikes(1))
         }
     }
     
     func deleteLike(completion: @escaping (String) -> Void) {
-        guard let id = event?.id else { return }
         API.deleteLikes(data: ["eventId": id]) {
             completion(self.changeLikes(0))
         }
     }
     
     func deleteNotification(completion: @escaping () -> Void) {
-        guard let id = event?.id,
-              let setFor = event?.notificationSetFor else {
+        guard let setFor = event.notificationSetFor else {
             return
         }
         API.deleteAlarm(data: ["eventId": id, "setFor": setFor], isDetail: true) {

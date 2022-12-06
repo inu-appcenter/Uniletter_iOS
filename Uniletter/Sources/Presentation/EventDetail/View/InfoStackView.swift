@@ -91,15 +91,10 @@ final class InfoStackView: UIStackView {
         return stackView
     }
     
-    func validateInfo(_ subject: Subjects, _ isHidden: Bool) {
-        switch subject {
-        case .category: categoryStackView.isHidden = isHidden
-        case .start: startStackView.isHidden = isHidden
-        case .end: endStackView.isHidden = isHidden
-        case .target: targetStackView.isHidden = isHidden
-        case .contact: contactStackView.isHidden = isHidden
-        case .link: linkStackView.isHidden = isHidden
-        }
+    func validateInfo() {
+        categoryStackView.isHidden = (categoryLabel.text?.isEmpty)!
+        contactStackView.isHidden = (contactLabel.text?.isEmpty)!
+        linkStackView.isHidden = (linkLabel.text?.isEmpty)!
     }
     
 }

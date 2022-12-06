@@ -32,8 +32,8 @@ final class EventDetailViewController: BaseViewController {
     // MARK: - Property
     
     private let eventDetailView = EventDetailView()
-    private let viewModel = EventDetailViewModel()
     private let loginManager = LoginManager.shared
+    private lazy var viewModel = EventDetailViewModel(id: id)
     var id: Int = 0
     var userBlockCompletionClosure: (() -> Void)?
     var userLikeCompletionClosure: (() -> Void)?
@@ -84,7 +84,7 @@ final class EventDetailViewController: BaseViewController {
     // MARK: - Func
     
     private func fetchEvents() {
-        viewModel.loadEvent(id) { [weak self] in
+        viewModel.loadEvent { [weak self] in
             DispatchQueue.main.async {
                 self?.updateUI()
             }
@@ -116,18 +116,7 @@ final class EventDetailViewController: BaseViewController {
     }
     
     private func hideSubjects() {
-        if viewModel.categoryContent == " | " {
-            eventDetailView.infoStackView.validateInfo(.category, true)
-        }
-        if viewModel.target == "" {
-            eventDetailView.infoStackView.validateInfo(.target, true)
-        }
-        if viewModel.contact == "" {
-            eventDetailView.infoStackView.validateInfo(.contact, true)
-        }
-        if viewModel.link == "" {
-            eventDetailView.infoStackView.validateInfo(.link, true)
-        }
+        eventDetailView.infoStackView.validateInfo()
     }
     
     private func updateProfileImage() {
@@ -150,7 +139,7 @@ final class EventDetailViewController: BaseViewController {
         if eventDetailView.ddayButton.titleLabel?.text == "마감" {
             viewModel.notiState = .done
         } else {
-            if let notiByMe = viewModel.event?.notificationSetByMe {
+            if let notiByMe = viewModel.notiSetByMe {
                 viewModel.notiState = notiByMe ? .cancel : .request
             } else {
                 viewModel.notiState = .request
@@ -174,9 +163,9 @@ final class EventDetailViewController: BaseViewController {
     }
     
     private func blockUser() {
-        self.viewModel.postBlock(userId: self.viewModel.event!.userID) {
-            self.postHomeReloadNotification()
-            self.navigationController?.popViewController(animated: true)
+        viewModel.postBlock(userId: viewModel.userID) { [weak self] in
+            self?.postHomeReloadNotification()
+            self?.navigationController?.popViewController(animated: true)
         }
     }
     
@@ -190,7 +179,7 @@ final class EventDetailViewController: BaseViewController {
         if viewModel.wroteByMe {
             let vc = presentActionSheetView(.topForWriter)
             vc.eventID = id
-            vc.event = viewModel.event
+            vc.event = viewModel.eventInfo
             
             self.present(vc, animated: true)
         } else {
@@ -258,7 +247,7 @@ final class EventDetailViewController: BaseViewController {
     @objc private func didTapCommentesLabel() {
         let vc = CommentsViewController()
         vc.eventID = id
-        vc.userID = viewModel.event?.userID
+        vc.userID = viewModel.userID
         
         self.navigationController?.pushViewController(vc, animated: true)
     }
