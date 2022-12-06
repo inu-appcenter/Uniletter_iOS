@@ -138,11 +138,6 @@ final class HomeViewController: BaseViewController {
     
     // MARK: - Funcs
     
-    private func paging() {
-        viewModel.isPaging = true
-        fetchEvents()
-    }
-    
     private func fetchEvents() {
         if !viewModel.isPaging {
             setLoadingIndicator(true)
@@ -154,6 +149,11 @@ final class HomeViewController: BaseViewController {
                 self?.setLoadingIndicator(false)
             }
         }
+    }
+    
+    private func paging() {
+        viewModel.isPaging = true
+        fetchEvents()
     }
     
     private func checkLogin() {
@@ -178,6 +178,17 @@ final class HomeViewController: BaseViewController {
             fetchEvents()
         }
         
+    }
+    
+    private func updateCellBookmark(_ cell: HomeCell, _ id: Int) {
+        if loginManager.isLoggedIn {
+            let like = cell.bookmarkButton.isSelected
+            
+            cell.bookmarkButton.isSelected = !like
+            like ? viewModel.deleteLike(id) : viewModel.likeEvent(id)
+        } else {
+            presentLoginAlert(.loginLike)
+        }
     }
     
     private func setLoadingIndicator(_ bool: Bool) {
@@ -247,6 +258,8 @@ final class HomeViewController: BaseViewController {
     }
     
     @objc private func reloadCollectionView(_ noti: NSNotification) {
+        viewModel.isPull = true
+        scrollToTop()
         fetchEvents()
     }
 }
@@ -254,6 +267,7 @@ final class HomeViewController: BaseViewController {
 // MARK: - CollectionView
 extension HomeViewController: UICollectionViewDelegate,
                               UICollectionViewDataSource {
+    
     func collectionView(
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int)
@@ -278,13 +292,7 @@ extension HomeViewController: UICollectionViewDelegate,
             cell.updateCell(event)
             
             cell.bookmarkButtonTapHandler = {
-                if self.loginManager.isLoggedIn {
-                    let like = cell.bookmarkButton.isSelected
-                    cell.bookmarkButton.isSelected = !like
-                    like ? self.viewModel.deleteLike(event.id) : self.viewModel.likeEvent(event.id)
-                } else {
-                    self.presentLoginAlert(.loginLike)
-                }
+                self.updateCellBookmark(cell, event.id)
             }
         }
         
@@ -307,9 +315,7 @@ extension HomeViewController: UICollectionViewDelegate,
         willDisplay cell: UICollectionViewCell,
         forItemAt indexPath: IndexPath)
     {
-        let index = indexPath.item
-        
-        if index == viewModel.numOfEvents - 2 && !viewModel.isPaging {
+        if indexPath.item == viewModel.numOfEvents - 2 && !viewModel.isPaging {
             paging()
         }
     }
