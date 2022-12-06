@@ -7,41 +7,36 @@
 
 import UIKit
 import SnapKit
+import Then
 
-final class LaunchViewController: UIViewController {
+final class LaunchViewController: BaseViewController {
 
     // MARK: - UI
-    lazy var launchLogo: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "Logo")
-        imageView.contentMode = .scaleAspectFill
-        
-        return imageView
-    }()
     
-    lazy var launchTitle: UILabel = {
-        let label = UILabel()
-        label.text = "딩동~ 유니레터가 도착했습니다~!"
-        label.textColor = .lightGray
-        label.font = .systemFont(ofSize: 16)
-        
-        return label
-    }()
-    
-    // MARK: - Life cycle
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .white
-        addViews()
-        setLayout()
+    lazy var launchLogo = UIImageView().then {
+        $0.image = UIImage(named: "Logo")
+        $0.contentMode = .scaleAspectFill
     }
     
-    // MARK: - Setup
-    func addViews() {
+    lazy var launchTitle = UILabel().then {
+        $0.text = "딩동~ 유니레터가 도착했습니다~!"
+        $0.textColor = .lightGray
+        $0.font = .systemFont(ofSize: 16)
+    }
+    
+    // MARK: - Life cycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    
+    // MARK: - Configure
+    
+    override func configureUI() {
         [launchLogo, launchTitle].forEach { view.addSubview($0) }
     }
 
-    func setLayout() {
+    override func configureLayout() {
         launchLogo.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.centerY.equalToSuperview().offset(-40)
