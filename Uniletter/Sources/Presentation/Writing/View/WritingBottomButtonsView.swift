@@ -7,52 +7,36 @@
 
 import UIKit
 import SnapKit
+import Then
 
-final class WritingBottomButtonsView: UIView {
+final class WritingBottomButtonsView: BaseView {
     
     // MARK: - UI
-    lazy var cancleButton: UIButton = {
-        let button = UIButton()
-        button.layer.cornerRadius = 6
-        button.backgroundColor = #colorLiteral(red: 0.8405835032, green: 0.9632034898, blue: 0.9564227462, alpha: 1)
-        button.setTitle("취소", for: .normal)
-        button.setTitleColor(UIColor.customColor(.blueGreen), for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 14)
-        
-        return button
-    }()
     
-    lazy var okButton: UIButton = {
-        let button = UIButton()
-        button.layer.cornerRadius = 6
-        button.backgroundColor = UIColor.customColor(.blueGreen)
-        button.setTitle("확인", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 14)
-        
-        return button
-    }()
+    lazy var okButton = createButton(true)
+    
+    lazy var cancleButton = createButton(false)
     
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .clear
-        addViews()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
-        setLayout()
+    // MARK: - Configure
+    
+    override func configureView() {
+        backgroundColor = .clear
     }
     
-    // MARK: - Setup
-    func addViews() {
+    override func configureUI() {
         [cancleButton, okButton].forEach { addSubview($0) }
     }
     
-    func setLayout() {
+    override func configureLayout() {
         cancleButton.snp.makeConstraints {
             $0.top.bottom.equalToSuperview()
             $0.left.equalToSuperview()
@@ -65,5 +49,18 @@ final class WritingBottomButtonsView: UIView {
             $0.width.equalTo(cancleButton)
         }
     }
+    
+    // MARK: - Func
+    
+    private func createButton(_ isOK: Bool) -> UIButton {
+        return UIButton().then {
+            $0.layer.cornerRadius = 6
+            $0.backgroundColor = isOK ? .customColor(.blueGreen) : #colorLiteral(red: 0.8405835032, green: 0.9632034898, blue: 0.9564227462, alpha: 1)
+            $0.setTitle(isOK ? "확인" : "취소", for: .normal)
+            $0.setTitleColor(.customColor(.blueGreen), for: .normal)
+            $0.titleLabel?.font = .systemFont(ofSize: 14)
+        }
+    }
+    
 }
 
