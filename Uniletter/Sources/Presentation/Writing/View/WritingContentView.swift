@@ -53,7 +53,7 @@ final class WritingContentView: BaseView {
     
     lazy var equalView = WritingCheckView().then {
         $0.label.text = "위와 동일"
-        $0.checkButton.updateDefaultState()
+        $0.checkButton.updateNotCheckedState()
     }
     
     lazy var recognizeTapView = UITapGestureRecognizer().then {

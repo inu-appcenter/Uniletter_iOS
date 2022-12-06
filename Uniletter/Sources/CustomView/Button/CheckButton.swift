@@ -34,20 +34,25 @@ final class CheckButton: UIButton {
     
     // MARK: - Func
     
-    func updateDefaultState() {
+    func updateNotCheckedState() {
         isSelected = false
         backgroundColor = .white
         layer.borderColor = #colorLiteral(red: 0.8980392157, green: 0.8980392157, blue: 0.8980392157, alpha: 1).cgColor
+    }
+    
+    func updateCheckedState() {
+        isSelected = true
+        backgroundColor = .customColor(.blueGreen)
+        layer.borderColor = .customColor(.blueGreen)
     }
     
     func updateState() {
         isSelected = !isSelected
         
         if isSelected {
-            backgroundColor = .customColor(.blueGreen)
-            layer.borderColor = .customColor(.blueGreen)
+            updateCheckedState()
         } else {
-            updateDefaultState()
+            updateNotCheckedState()
         }
     }
 }

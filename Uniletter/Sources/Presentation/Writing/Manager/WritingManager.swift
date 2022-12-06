@@ -63,7 +63,13 @@ final class WritingManager {
     var imageType: ImageType = .basic
     var imageURL: String?
     var title: String?
-    var host = ""
+    var host = "" {
+        didSet {
+            if host == placeholer {
+                host = ""
+            }
+        }
+    }
     var category = ""
     var target: String?
     var contact = ""
@@ -74,6 +80,18 @@ final class WritingManager {
     var startTime = CustomFormatter.convertNowTime(false)
     var endDate = CustomFormatter.convertTodayToString(true)
     var endTime = CustomFormatter.convertNowTime(false)
+    
+    let categories = [
+        "선택없음",
+        "동아리/소모임",
+        "학생회",
+        "간식나눔",
+        "대회/공모전",
+        "스터디",
+        "구인",
+        "기타"
+    ]
+    let placeholer = "ex)총학생회, 디자인학부"
     
     // MARK: - Funcs
     

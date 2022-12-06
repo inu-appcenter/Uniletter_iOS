@@ -62,7 +62,7 @@ final class WritingPictureViewController: BaseViewController {
     }
     
     private func updateCheckButton() {
-        writingPictureView.checkView.checkButton.updateDefaultState()
+        writingPictureView.checkView.checkButton.updateNotCheckedState()
     }
 
     // MARK: - Action

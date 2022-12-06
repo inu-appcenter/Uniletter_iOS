@@ -25,7 +25,7 @@ class AgreementView: UIView {
     
     lazy var allAgreeLabel = createAgreeLabel("모두 동의", true)
     
-    lazy var allAgreeCheckButton = createCheckButton()
+    lazy var allAgreeCheckButton = CheckButton()
     
     lazy var midBorderView = createGrayBorder()
     
@@ -33,13 +33,13 @@ class AgreementView: UIView {
     
     lazy var firstMoreButton = createMoreButton()
     
-    lazy var firstCheckButton = createCheckButton()
+    lazy var firstCheckButton = CheckButton()
     
     lazy var secondAgreeLabel = createAgreeLabel("개인정보 처리방침(필수)", false)
     
     lazy var secondMoreButton = createMoreButton()
     
-    lazy var secondCheckButton = createCheckButton()
+    lazy var secondCheckButton = CheckButton()
     
     let nextButton: UIButton = {
         let button = UIButton()
@@ -177,13 +177,6 @@ class AgreementView: UIView {
         button.setTitle("더 알아보기", for: .normal)
         button.setTitleColor(UIColor.customColor(.blueGreen), for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 11, weight: .bold)
-        
-        return button
-    }
-    
-    private func createCheckButton() -> UIButton {
-        let button = UIButton()
-        button.createCheckButton()
         
         return button
     }

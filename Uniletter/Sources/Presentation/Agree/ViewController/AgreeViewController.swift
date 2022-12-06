@@ -100,24 +100,21 @@ final class AgreementViewController: UIViewController {
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    @objc func didTapCheckButton(_ button: UIButton) {
-        button.isSelected = !button.isSelected
-        button.updateUI(button.isSelected)
+    @objc func didTapCheckButton(_ sender: CheckButton) {
+        sender.updateState()
         
         agreementView.allAgreeCheckButton.isSelected = checkAllCheckButtonsAreSelected()
-        agreementView.allAgreeCheckButton.updateUI(checkAllCheckButtonsAreSelected())
+//        agreementView.allAgreeCheckButton.updateUI(checkAllCheckButtonsAreSelected())
     }
     
-    @objc func didTapAllAgreeCheckButton(_ button: UIButton) {
-        button.isSelected = !button.isSelected
-        button.updateUI(button.isSelected)
+    @objc func didTapAllAgreeCheckButton(_ sender: CheckButton) {
+        sender.updateState()
         
-        agreementView.checkButtons.forEach {
-            $0.isSelected = button.isSelected
-            $0.updateUI(button.isSelected)
-        }
-        
-        changeState(button.isSelected)
+//        agreementView.checkButtons.forEach {
+//
+//        }
+//
+//        changeState(button.isSelected)
     }
     
     @objc func didTapNextButton(_ sendar: Any) {
