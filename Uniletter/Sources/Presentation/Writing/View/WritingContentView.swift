@@ -7,134 +7,78 @@
 
 import UIKit
 import SnapKit
+import Then
 
-final class WritingContentView: UIView {
+final class WritingContentView: BaseView {
 
     // MARK: - UI
+    
     lazy var scrollView = UIScrollView()
     
-    let contentView = UIView()
+    private lazy var contentView = UIView()
     
-    let titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 18, weight: .bold)
-        label.text = "레터입력"
-        
-        return label
-    }()
+    private lazy var titleLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 18, weight: .bold)
+        $0.text = "레터입력"
+    }
     
-    let stackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.spacing = 24
-        
-        return stackView
-    }()
+    private lazy var stackView = UIStackView().then {
+        $0.axis = .vertical
+        $0.spacing = 24
+    }
     
-    lazy var titleView: WritingTextFieldView = {
-        let view = WritingTextFieldView()
-        view.titleLabel.text = "제목을 입력해주세요."
-        view.checkView.isHidden = true
-        
-        return view
-    }()
+    lazy var titleView = createTextFieldView(.title)
     
-    lazy var hostView: WritingTextFieldView = {
-        let view = WritingTextFieldView()
-        view.titleLabel.text = "소속된 단체를 입력해주세요."
-        view.textField.text = "ex)총학생회, 디자인학부"
-        view.textField.textColor = UIColor.customColor(.lightGray)
-        
-        return view
-    }()
+    lazy var hostView = createTextFieldView(.host)
     
-    lazy var categoryView: WritingTextFieldView = {
-        let view = WritingTextFieldView()
-        view.titleLabel.text = "카테고리를 선택해주세요."
-        view.textField.text = "카테고리 선택"
-        view.textField.isUserInteractionEnabled = false
-        view.checkView.isHidden = true
-        
-        return view
-    }()
+    lazy var categoryView = createTextFieldView(.category)
     
-    lazy var categoryButton: UIButton = {
-        let button = UIButton()
-        button.backgroundColor = .clear
-        button.tintColor = .black
-        button.contentHorizontalAlignment = .right
-        button.setImage(UIImage(systemName: "chevron.down"), for: .normal)
-        button.setImage(UIImage(systemName: "chevron.up"), for: .selected)
-        
-        return button
-    }()
+    lazy var targetView = createTextFieldView(.target)
     
-    lazy var targetView: WritingTextFieldView = {
-        let view = WritingTextFieldView()
-        view.titleLabel.text = "모집대상을 입력해주세요."
-        view.checkView.isHidden = true
-        
-        return view
-    }()
+    lazy var contactView = createTextFieldView(.contact)
     
-    lazy var eventStartView: WritingDateView = {
-        let view = WritingDateView()
-        view.titleLabel.text = "행사시작을 입력해주세요."
-        
-        return view
-    }()
+    lazy var locationView = createTextFieldView(.link)
     
-    lazy var eventEndView: WritingDateView = {
-        let view = WritingDateView()
-        view.titleLabel.text = "행사마감을 입력해주세요."
-        
-        return view
-    }()
+    lazy var eventStartView = createDateView(.start)
     
-    lazy var equalView: WritingCheckView = {
-        let view = WritingCheckView()
-        view.label.text = "위와 동일"
-        view.checkButton.isSelected = false
-        view.checkButton.layer.borderColor = #colorLiteral(red: 0.8980392157, green: 0.8980392157, blue: 0.8980392157, alpha: 1).cgColor
-        view.checkButton.backgroundColor = .white
-        
-        return view
-    }()
+    lazy var eventEndView = createDateView(.end)
     
-    lazy var contactView: WritingTextFieldView = {
-        let view = WritingTextFieldView()
-        view.titleLabel.text = "문의사항시 연락방법을 입력해주세요."
-        
-        return view
-    }()
+    lazy var categoryButton = UIButton().then {
+        $0.backgroundColor = .clear
+        $0.tintColor = .black
+        $0.contentHorizontalAlignment = .right
+        $0.setImage(UIImage(systemName: "chevron.down"), for: .normal)
+        $0.setImage(UIImage(systemName: "chevron.up"), for: .selected)
+    }
     
-    lazy var locationView: WritingTextFieldView = {
-        let view = WritingTextFieldView()
-        view.titleLabel.text = "첨부할 URL이 있다면 입력해주세요."
-        
-        return view
-    }()
+    lazy var equalView = WritingCheckView().then {
+        $0.label.text = "위와 동일"
+        $0.checkButton.updateDefaultState()
+    }
     
+    lazy var recognizeTapView = UITapGestureRecognizer().then {
+        $0.numberOfTapsRequired = 1
+        $0.numberOfTouchesRequired = 1
+    }
     
     // MARK: - Init
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .white
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        
-        addViews()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    override func layoutSubviews() {
-        setLayout()
-    }
 
-    // MARK: - Setup
-    func addViews() {
+    // MARK: - Configure
+    
+    override func configureView() {
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addGestureRecognizer(recognizeTapView)
+    }
+    
+    override func configureUI() {
         eventEndView.addSubview(equalView)
         
         [
@@ -157,11 +101,10 @@ final class WritingContentView: UIView {
             .forEach { contentView.addSubview($0) }
         
         scrollView.addSubview(contentView)
-        
         addSubview(scrollView)
     }
     
-    func setLayout() {
+    override func configureLayout() {
         scrollView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
@@ -194,6 +137,34 @@ final class WritingContentView: UIView {
             $0.centerY.equalTo(eventEndView.titleLabel)
             $0.right.equalToSuperview()
         }
-        
     }
+    
+    // MARK: - Func
+    
+    private func createTextFieldView(_ subject: Subjects) -> WritingTextFieldView {
+        return WritingTextFieldView().then {
+            $0.titleLabel.text = subject.guideTitle
+            
+            switch subject {
+            case .title, .target:
+                $0.checkView.isHidden = true
+            case .host:
+                $0.textField.text = "ex)총학생회, 디자인학부"
+                $0.textField.textColor = .customColor(.lightGray)
+            case .category:
+                $0.textField.text = "카테고리 선택"
+                $0.textField.isUserInteractionEnabled = false
+                $0.checkView.isHidden = true
+            default:
+                break
+            }
+        }
+    }
+    
+    private func createDateView(_ subject: Subjects) -> WritingDateView {
+        return WritingDateView().then {
+            $0.titleLabel.text = subject == .start ? "행사시작을 입력해주세요." : "행사마감을 입력해주세요."
+        }
+    }
+    
 }
