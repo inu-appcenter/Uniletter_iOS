@@ -8,164 +8,107 @@
 import UIKit
 import MarqueeLabel
 import SnapKit
+import Then
 
-final class EventDetailView : UIView {
+final class EventDetailView: BaseView {
     
     // MARK: - UI
+    
     lazy var scrollView = UIScrollView()
     
     lazy var contentView = UIView()
     
-    lazy var profileImageView: UIImageView = {
-        let imgView = UIImageView()
-        imgView.layer.cornerRadius = 16
-        imgView.clipsToBounds = true
-        
-        return imgView
-    }()
+    lazy var profileImageView = UIImageView().then {
+        $0.layer.cornerRadius = 16
+        $0.clipsToBounds = true
+    }
     
-    lazy var stackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        
-        return stackView
-    }()
+    lazy var nicknameLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 13)
+    }
     
-    lazy var nicknameLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 13)
-        
-        return label
-    }()
+    lazy var dateWroteLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 13)
+        $0.textColor = .customColor(.lightGray)
+    }
     
-    lazy var dateWroteLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 13)
-        label.textColor = UIColor.customColor(.lightGray)
-        
-        return label
-    }()
+    lazy var moreButton = UIButton().then {
+        $0.setImage(UIImage(named: "ellipsisSmall"), for: .normal)
+        $0.tintColor = .black
+    }
     
-    lazy var moreButton: UIButton = {
-        let button = UIButton()
-        button.setImage(UIImage(named: "ellipsisSmall"), for: .normal)
-        button.tintColor = .black
-        
-        return button
-    }()
+    lazy var mainImageView = UIImageView().then {
+        $0.contentMode = .scaleAspectFit
+    }
     
-    lazy var mainImageView: UIImageView = {
-        let imgView = UIImageView()
-        imgView.contentMode = .scaleAspectFit
-        
-        return imgView
-    }()
-    
-    lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = .boldSystemFont(ofSize: 20)
-        label.lineBreakMode = .byCharWrapping
-        label.numberOfLines = 0
-        
-        return label
-    }()
+    lazy var titleLabel = UILabel().then {
+        $0.font = .boldSystemFont(ofSize: 20)
+        $0.lineBreakMode = .byCharWrapping
+        $0.numberOfLines = 0
+    }
     
     lazy var ddayButton = DDayButton()
     
-    lazy var infoStackView: InfoStackView = {
-        let stackView = InfoStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        
-        return stackView
-    }()
+    lazy var infoStackView = InfoStackView().then {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+    }
     
-    lazy var bodyTitleLabel: UILabel = {
-        let label = UILabel()
-        label.changeDetail("상세레터")
-        
-        return label
-    }()
+    lazy var bodyTitleLabel = UILabel().then {
+        $0.changeDetail("상세레터")
+    }
     
-    lazy var bodyContentsTextView: UITextView = {
-        let textView = UITextView()
-        textView.font = .systemFont(ofSize: 16)
-        textView.isScrollEnabled = false
-        textView.isEditable = false
-        
-        return textView
-    }()
+    lazy var bodyContentsTextView = UITextView().then {
+        $0.font = .systemFont(ofSize: 16)
+        $0.isScrollEnabled = false
+        $0.isEditable = false
+    }
     
-    lazy var eyeImageView: UIImageView = {
-        let imageview = UIImageView()
-        imageview.tintColor = UIColor.customColor(.darkGray)
-        imageview.image = UIImage(systemName: "eye")
-        
-        return imageview
-    }()
+    lazy var eyeImageView = UIImageView().then {
+        $0.tintColor = .customColor(.darkGray)
+        $0.image = UIImage(systemName: "eye")
+    }
     
-    lazy var viewsLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 14)
-        label.textColor = UIColor.customColor(.darkGray)
-        label.text = "0회"
-        
-        return label
-    }()
+    lazy var viewsLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 14)
+        $0.textColor = .customColor(.darkGray)
+        $0.text = "0회"
+    }
     
-    lazy var likeAndCommentsLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 14)
-        label.textColor = UIColor.customColor(.darkGray)
-        label.text = "저장 0 ∙ 댓글 0개"
-        
-        return label
-    }()
+    lazy var likeAndCommentsLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 14)
+        $0.textColor = .customColor(.darkGray)
+        $0.text = "저장 0 ∙ 댓글 0개"
+    }
     
     lazy var notificationButton = NotificationButton()
     
-    lazy var intervalView1: UIView = {
-        let view = UIView()
-        view.backgroundColor = #colorLiteral(red: 0.9593991637, green: 0.9593990445, blue: 0.9593990445, alpha: 1)
-        
-        return view
-    }()
+    lazy var commentsButton = UIButton().then {
+        $0.backgroundColor = .clear
+    }
     
-    lazy var intervalView2: UIView = {
-        let view = UIView()
-        view.backgroundColor = #colorLiteral(red: 0.9593991637, green: 0.9593990445, blue: 0.9593990445, alpha: 1)
-        
-        return view
-    }()
+    private lazy var intervalView1 = UIView().then {
+        $0.backgroundColor = #colorLiteral(red: 0.9593991637, green: 0.9593990445, blue: 0.9593990445, alpha: 1)
+    }
     
-    lazy var commentsButton: UIButton = {
-        let button = UIButton()
-        button.backgroundColor = .clear
-        
-        return button
-    }()
+    private lazy var intervalView2 = UIView().then {
+        $0.backgroundColor = #colorLiteral(red: 0.9593991637, green: 0.9593990445, blue: 0.9593990445, alpha: 1)
+    }
     
-    let recognizeTapLink = UITapGestureRecognizer()
+    lazy var recognizeTapLink = UITapGestureRecognizer()
     
     // MARK: - Init
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .white
-        
-        addViews()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
-        setLayout()
-    }
+    // MARK: - Configure
     
-    // MARK: - Setup
-    
-    private func addViews() {
+    override func configureUI() {
         infoStackView.linkLabel.addGestureRecognizer(recognizeTapLink)
         
         [
@@ -197,10 +140,10 @@ final class EventDetailView : UIView {
             .forEach { addSubview($0) }
     }
     
-    private func setLayout() {
+    override func configureLayout() {
         scrollView.snp.makeConstraints {
-            $0.top.equalTo(safeAreaLayoutGuide)
-            $0.bottom.left.right.equalToSuperview()
+            $0.top.bottom.equalTo(safeAreaLayoutGuide)
+            $0.left.right.equalToSuperview()
         }
         
         contentView.snp.makeConstraints {
