@@ -7,81 +7,59 @@
 
 import UIKit
 import SnapKit
+import Then
 
-class AgreementView: UIView {
+final class AgreementView: BaseView {
     
     // MARK: - UI
     
-    let guideLabel: UILabel = {
-        let label = UILabel()
-        label.text = "*유니레터를 이용하려면 모든 약관에 동의해주셔야합니다."
-        label.textColor = .darkGray
-        label.font = .systemFont(ofSize: 15, weight: .medium)
-        label.textAlignment = .center
-        label.numberOfLines = 2
-        
-        return label
-    }()
+    private lazy var guideLabel = UILabel().then {
+        $0.text = "*유니레터를 이용하려면 모든 약관에 동의해주셔야합니다."
+        $0.textColor = .darkGray
+        $0.font = .systemFont(ofSize: 15, weight: .medium)
+        $0.textAlignment = .center
+        $0.numberOfLines = 2
+    }
     
-    lazy var allAgreeLabel = createAgreeLabel("모두 동의", true)
+    private lazy var allAgreeLabel = createAgreeLabel("모두 동의", true)
     
     lazy var allAgreeCheckButton = CheckButton()
     
-    lazy var midBorderView = createGrayBorder()
+    private lazy var midBorderView = createGrayBorder()
     
-    lazy var firstAgreeLabel = createAgreeLabel("이용 약관(필수)", false)
+    private lazy var firstAgreeLabel = createAgreeLabel("이용 약관(필수)", false)
     
     lazy var firstMoreButton = createMoreButton()
     
     lazy var firstCheckButton = CheckButton()
     
-    lazy var secondAgreeLabel = createAgreeLabel("개인정보 처리방침(필수)", false)
+    private lazy var secondAgreeLabel = createAgreeLabel("개인정보 처리방침(필수)", false)
     
     lazy var secondMoreButton = createMoreButton()
     
     lazy var secondCheckButton = CheckButton()
     
-    let nextButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("계속", for: .normal)
-        button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
-        button.layer.cornerRadius = 4
-        button.backgroundColor = .customColor(.blueGreen)
-        
-        return button
-    }()
-    
-    // MARK: - Property
-    
-    var checkButtons = [UIButton]()
+    lazy var nextButton = UIButton().then {
+        $0.setTitle("계속", for: .normal)
+        $0.setTitleColor(UIColor.white, for: .normal)
+        $0.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
+        $0.layer.cornerRadius = 4
+        $0.backgroundColor = .customColor(.blueGreen)
+    }
     
     // MARK: - Init
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = .white
-        
-        addViews()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
-        configureLayout()
-    }
+    // MARK: - Configure
     
-    // MARK: - Setup
-    
-    func addViews() {
-        [
-            firstCheckButton,
-            secondCheckButton,
-        ]
-            .forEach { checkButtons.append($0) }
-        
+    override func configureUI() {
         [
             guideLabel,
             allAgreeLabel,
@@ -98,7 +76,7 @@ class AgreementView: UIView {
             .forEach { self.addSubview($0) }
     }
     
-    func configureLayout() {
+    override func configureLayout() {
         allAgreeLabel.snp.makeConstraints {
             $0.top.equalTo(safeAreaLayoutGuide).offset(40)
             $0.leading.equalToSuperview().offset(20)
@@ -163,28 +141,24 @@ class AgreementView: UIView {
     // MARK: - Func
     
     private func createAgreeLabel(_ text: String, _ isAll: Bool) -> UILabel {
-        let label = UILabel()
-        label.text = text
-        label.font = isAll
-        ? .systemFont(ofSize: 18, weight: .bold)
-        : .systemFont(ofSize: 16)
-        
-        return label
+        return UILabel().then {
+            $0.text = text
+            $0.font = isAll ? .systemFont(ofSize: 18, weight: .bold) : .systemFont(ofSize: 16)
+        }
     }
     
     private func createMoreButton() -> UIButton {
-        let button = UIButton()
-        button.setTitle("더 알아보기", for: .normal)
-        button.setTitleColor(UIColor.customColor(.blueGreen), for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 11, weight: .bold)
-        
-        return button
+        return UIButton().then {
+            $0.setTitle("더 알아보기", for: .normal)
+            $0.setTitleColor(.customColor(.blueGreen), for: .normal)
+            $0.titleLabel?.font = .systemFont(ofSize: 11, weight: .bold)
+        }
     }
     
     private func createGrayBorder() -> UIView {
-        let view = UIView()
-        view.backgroundColor = .customColor(.borderGray)
-        
-        return view
+        return UIView().then {
+            $0.backgroundColor = .customColor(.borderGray)
+        }
     }
+    
 }
