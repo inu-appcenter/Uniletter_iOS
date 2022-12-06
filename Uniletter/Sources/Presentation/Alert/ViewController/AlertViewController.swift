@@ -16,6 +16,7 @@ final class AlertViewController: UIViewController {
     var alertIsNotificationClosure: (() -> Void)?
     var alertIsBlockOffClosure: (() -> Void)?
     var alertIsBlockOnClosure: (() -> Void)?
+    var alertIsWriteClosure: (() -> Void)?
     var cancleButtonClosure: (() -> Void)?
     var warning: Warning?
     
@@ -66,6 +67,7 @@ final class AlertViewController: UIViewController {
         case .blockOn: alertIsBlockOn()
         case .blockOff: alertIsBlockOff()
         case .delete: alertIsDelete()
+        case .write: alertIsWrite()
         case .save: alertIsSave()
         case .notification: alertIsNotification()
         }
@@ -108,6 +110,10 @@ final class AlertViewController: UIViewController {
     
     func alertIsDelete() {
         // TODO: 삭제
+    }
+    
+    func alertIsWrite() {
+        alertIsWriteClosure?()
     }
     
     // 저장 취소

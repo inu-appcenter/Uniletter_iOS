@@ -223,13 +223,10 @@ final class ActionSheetViewController: UIViewController {
     
     func deleteComment(_ commentID: Int) {
         API.deleteComment(commentID) { [weak self] in
+            self?.postHomeReloadNotification()
             self?.deleteCommentCompletionClosure?()
             self?.dismiss(animated: true)
         }
-        
-        NotificationCenter.default.post(
-            name: NSNotification.Name("reload"),
-            object: nil)
     }
     
     func selectPhoto() {
