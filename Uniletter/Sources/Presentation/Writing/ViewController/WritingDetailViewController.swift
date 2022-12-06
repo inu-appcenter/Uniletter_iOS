@@ -7,31 +7,27 @@
 
 import UIKit
 
-final class WritingDetailViewController: UIViewController {
+final class WritingDetailViewController: BaseViewController {
 
     // MARK: - Property
-    let writingDetailView = WritingDetailView()
-    let writingManager = WritingManager.shared
-    let initText = "하위 게시물이나 부적절한 언어 사용 시\n유니레터 이용이 어려울 수 있습니다."
-    var checkText = ""
+    
+    private let writingDetailView = WritingDetailView()
+    private let writingManager = WritingManager.shared
+    private var checkText = ""
     
     // MARK: - Life cycle
+    
     override func loadView() {
         view = writingDetailView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setViewController()
     }
     
-    // MARK: - Keyboard
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        writingDetailView.endEditing(true)
-    }
+    // MARK: - Configure
     
-    // MARK: - Setup
-    func setViewController() {
+    override func configureViewController() {
         writingDetailView.textField.delegate = self
         
         if writingManager.isUpdating() {
@@ -41,14 +37,16 @@ final class WritingDetailViewController: UIViewController {
             if !(writingManager.body.isEmpty) {
                 writingDetailView.textField.textColor = .black
             } else {
-                writingDetailView.textField.text = initText
+                writingDetailView.textField.text = writingManager.detailPlaceholder
             }
         }
     }
 }
 
 // MARK: - TextView
+
 extension WritingDetailViewController: UITextViewDelegate {
+    
     func textViewDidChange(_ textView: UITextView) {
         textView.isScrollEnabled = textView.frame.height >= 280 ? true : false
         
@@ -59,7 +57,7 @@ extension WritingDetailViewController: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         textView.layer.borderColor = CGColor.customColor(.blueGreen)
-        textView.text = textView.text == initText ? "" : checkText
+        textView.text = textView.text == writingManager.detailPlaceholder ? "" : checkText
         textView.textColor = .black
     }
     
@@ -70,8 +68,8 @@ extension WritingDetailViewController: UITextViewDelegate {
         
         textView.layer.borderColor = CGColor.customColor(.defaultGray)
         if textView.text == "" {
-            textView.text = initText
-            textView.textColor = UIColor.customColor(.lightGray)
+            textView.text = writingManager.detailPlaceholder
+            textView.textColor = .customColor(.lightGray)
             writingManager.body = ""
         } else {
             checkText = textView.text
