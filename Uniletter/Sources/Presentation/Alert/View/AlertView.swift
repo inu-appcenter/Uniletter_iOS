@@ -7,79 +7,65 @@
 
 import UIKit
 import SnapKit
+import Then
 
-final class AlertView: UIView {
+final class AlertView: BaseView {
     
     // MARK: - UI
-    lazy var backgroundView : UIView = {
-        let view = UIView()
-        view.backgroundColor = .black
-        view.layer.opacity = 0.4
-        view.isUserInteractionEnabled = true
-        
-        return view
-    }()
     
-    lazy var alertView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        view.layer.cornerRadius = 10
-        
-        return view
-    }()
+    lazy var backgroundView = UIView().then {
+        $0.backgroundColor = .black
+        $0.layer.opacity = 0.4
+        $0.isUserInteractionEnabled = true
+    }
     
-    lazy var alertLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 16)
-        
-        return label
-    }()
+    private lazy var alertView = UIView().then {
+        $0.backgroundColor = .white
+        $0.layer.cornerRadius = 10
+    }
     
-    lazy var okButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("확인", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 14, weight: .semibold)
-        button.setTitleColor(UIColor.customColor(.blueGreen), for: .normal)
-        
-        return button
-    }()
+    lazy var alertLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 16)
+    }
     
-    lazy var cancleButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("취소", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 14, weight: .semibold)
-        button.setTitleColor(UIColor.customColor(.lightGray), for: .normal)
-        
-        return button
-    }()
+    lazy var okButton = UIButton().then {
+        $0.setTitle("확인", for: .normal)
+        $0.titleLabel?.font = .systemFont(ofSize: 14, weight: .semibold)
+        $0.setTitleColor(.customColor(.blueGreen), for: .normal)
+    }
     
-    let recognizeTapBackground = UITapGestureRecognizer()
+    lazy var cancleButton = UIButton().then {
+        $0.setTitle("취소", for: .normal)
+        $0.titleLabel?.font = .systemFont(ofSize: 14, weight: .semibold)
+        $0.setTitleColor(.customColor(.lightGray), for: .normal)
+    }
+    
+    lazy var recognizeTapBackground = UITapGestureRecognizer()
     
     // MARK: - Init
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        addViews()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    // MARK: - Configure
     
-    override func layoutSubviews() {
-        setLayout()
-    }
-    
-    // MARK: - Setup
-    func addViews() {
-        [alertLabel, okButton, cancleButton].forEach { alertView.addSubview($0) }
-        
-        [backgroundView, alertView].forEach { addSubview($0) }
-        
+    override func configureView() {
         backgroundView.addGestureRecognizer(recognizeTapBackground)
     }
     
-    func setLayout() {
+    override func configureUI() {
+        [alertLabel, okButton, cancleButton]
+            .forEach { alertView.addSubview($0) }
+        
+        [backgroundView, alertView].forEach { addSubview($0) }
+    }
+    
+    override func configureLayout() {
         backgroundView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
@@ -105,5 +91,6 @@ final class AlertView: UIView {
             $0.right.equalTo(okButton.snp.left).offset(-20)
         }
     }
+    
 }
 
