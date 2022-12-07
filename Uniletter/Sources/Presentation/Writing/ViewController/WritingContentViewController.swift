@@ -116,7 +116,12 @@ final class WritingContentViewController: BaseViewController {
         dropDown.dataSource = writingManager.categories
         dropDown.anchorView = writingContentView.categoryButton
         dropDown.bottomOffset = CGPoint(x: 0, y: 44)
-        dropDown.selectRow(writingManager.categories.count - 1)
+        
+        if writingManager.isUpdating() {
+            dropDown.selectRow(writingManager.index)
+        } else {
+            dropDown.selectRow(writingManager.categories.count - 1)
+        }
         
         dropDown.selectionAction = { index, item in
             self.writingManager.category = item
@@ -272,6 +277,7 @@ final class WritingContentViewController: BaseViewController {
     }
     
     @objc private func checkValidation() {
+        writingContentView.endEditing(true)
         let validation = writingManager.checkEventInfo()
         
         if validation != .success {

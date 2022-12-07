@@ -85,7 +85,7 @@ final class WritingPictureViewController: BaseViewController {
     }
     
     private func updateDefaultImage() {
-        writingPictureView.imageView.image = UIImage(named: "Etc_p")
+        writingPictureView.imageView.image = BasicInfo.etc.image
         updateImageViewRatio()
         writingManager.imageType = .basic
         writingManager.imageUUID = nil

@@ -127,7 +127,11 @@ final class WritingViewController: BaseViewController {
     }
     
     private func changePreviewTitle(_ bool: Bool) {
-        self.title = bool ? "미리보기" : "레터등록"
+        if event == nil {
+            self.title = bool ? "미리보기" : "레터등록"
+        } else {
+            self.title = bool ? "미리보기" : "레터수정"
+        }
     }
     
     private func postValidationNotification() {
@@ -205,12 +209,10 @@ final class WritingViewController: BaseViewController {
                 postValidationNotification()
             }
         case 2:
-            if writingManager.checkEventInfo() == .success {
-                detailViewController.view.removeFromSuperview()
-                previewController.preview = writingManager.showPreview()
-                changeViewController(previewController)
-                changePage(false)
-            }
+            detailViewController.view.removeFromSuperview()
+            previewController.preview = writingManager.showPreview()
+            changeViewController(previewController)
+            changePage(false)
         case 3:
             checkWrite()
         default: break

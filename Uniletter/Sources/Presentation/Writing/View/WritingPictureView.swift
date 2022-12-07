@@ -33,7 +33,7 @@ final class WritingPictureView: BaseView {
         $0.layer.cornerRadius = 12
         $0.layer.borderWidth = 1
         $0.layer.borderColor = .customColor(.lightGray)
-        $0.image = UIImage(named: "Etc_p")
+        $0.image = BasicInfo.etc.image
         $0.clipsToBounds = true
         $0.isUserInteractionEnabled = true
     }
