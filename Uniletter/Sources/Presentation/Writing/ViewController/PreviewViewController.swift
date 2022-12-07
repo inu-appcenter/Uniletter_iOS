@@ -56,7 +56,7 @@ final class PreviewViewController: UIViewController {
     func updateImageView() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             self.previewView.mainImageView.image = self.preview.mainImage
-            self.previewView.mainImageView.updateImageViewRatio(false)
+            self.previewView.mainImageView.updateImageViewRatio(.preview)
         }
     }
     

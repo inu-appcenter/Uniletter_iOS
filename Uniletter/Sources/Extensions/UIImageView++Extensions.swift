@@ -9,21 +9,34 @@ import UIKit
 import SnapKit
 import Kingfisher
 
+enum ImageViewState {
+    case detail
+    case writing
+    case preview
+}
+
 extension UIImageView {
     
     /// Dynamic imageView size
-    func updateImageViewRatio(_ isDetail: Bool) {
+    func updateImageViewRatio(_ imgView: ImageViewState, _ constraint: CGFloat? = nil) {
         guard let image = self.image else {
             return
         }
         let ratio = image.size.width / image.size.height
         let height = self.frame.width / ratio
         
-        if isDetail {
+        switch imgView {
+        case .detail:
             self.snp.makeConstraints {
                 $0.height.equalTo(height)
             }
-        } else {
+        case .writing:
+            self.snp.remakeConstraints {
+                $0.top.equalToSuperview().offset(constraint!)
+                $0.left.right.equalToSuperview().inset(20)
+                $0.height.equalTo(height)
+            }
+        case .preview:
             self.snp.remakeConstraints {
                 $0.top.equalToSuperview().offset(15)
                 $0.left.right.equalToSuperview().inset(20)

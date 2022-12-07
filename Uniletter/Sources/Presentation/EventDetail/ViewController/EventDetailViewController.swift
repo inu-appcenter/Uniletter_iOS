@@ -131,7 +131,7 @@ final class EventDetailViewController: BaseViewController {
     
     private func updateMainImage() {
         eventDetailView.mainImageView.kf.setImage(with: URL(string: viewModel.mainImage)!) { _ in
-            self.eventDetailView.mainImageView.updateImageViewRatio(true)
+            self.eventDetailView.mainImageView.updateImageViewRatio(.detail)
         }
     }
     
