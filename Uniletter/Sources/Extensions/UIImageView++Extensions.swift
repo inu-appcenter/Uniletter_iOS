@@ -7,9 +7,11 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
 
 extension UIImageView {
     
+    /// Dynamic imageView size
     func updateImageViewRatio(_ isDetail: Bool) {
         guard let image = self.image else {
             return
@@ -28,7 +30,20 @@ extension UIImageView {
                 $0.height.equalTo(height)
             }
         }
+    }
+    
+    func fetchImage(_ imgURL: String, _ width: CGFloat, _ height: CGFloat) {
+        guard let url = URL(string: imgURL) else {
+            return
+        }
+        let processor = DownsamplingImageProcessor(size: CGSize(width: width, height: height))
         
+        kf.setImage(
+            with: url,
+            options: [
+                .processor(processor),
+                .cacheMemoryOnly
+            ])
     }
     
 }

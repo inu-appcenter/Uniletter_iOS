@@ -111,8 +111,9 @@ final class HomeCell: UICollectionViewCell {
         categoryLabel.text = event.category
         ddayButton.updateDDay(event.endAt)
         
-        guard let url = URL(string: event.imageURL) else { return }
-        posterImageView.kf.setImage(with: url, options: [.cacheMemoryOnly])
+        let width = contentView.frame.width
+        let height = width * sqrt(2)
+        posterImageView.fetchImage(event.imageURL, width, height)
     }
     
     // MARK: - Action
