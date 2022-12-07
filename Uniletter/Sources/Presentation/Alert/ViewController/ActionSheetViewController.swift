@@ -6,17 +6,25 @@
 //
 
 import UIKit
-import PhotosUI
+import Then
 
-final class ActionSheetViewController: UIViewController {
+final class ActionSheetViewController: BaseViewController {
     
     // MARK: - Property
-    let oneOptionActionSheetView = OneOptionActionSheetView()
-    let twoOptionsActionSheetView = TwoOptionsActionSheetView()
-    var actionSheet: ActionSheet?
-    var option: Int?
-    var loginManager = LoginManager.shared
-    var myPageViewModel = MyPageManager.shared
+    
+    private let oneOptionActionSheetView = OneOptionActionSheetView()
+    private let twoOptionsActionSheetView = TwoOptionsActionSheetView()
+    private var loginManager = LoginManager.shared
+    private var myPageViewModel = MyPageManager.shared
+    
+    var actionSheet: ActionSheet!
+    var option: Int!
+    var commentID: Int!
+    var eventID: Int?
+    var event: Event!
+    var setFor: String!
+    var targetUserID: Int?
+    
     var selectPhotoCompletionClosure: (() -> Void)?
     var basicPhotoCompletionClosure: (() -> Void)?
     var blockUserCompletionClousre: (() -> Void)?
@@ -26,19 +34,19 @@ final class ActionSheetViewController: UIViewController {
     var reportCommentCompletionClisure: (() -> Void)?
     var deleteCommentCompletionClosure: (() -> Void)?
     
-    // 기능 별 필요한 Property
-    var commentID: Int!
-    var eventID: Int?
-    var event: Event!
-    var setFor: String!
-    var targetUserID: Int?
-    
     // MARK: - Life cycle
+    
     override func loadView() {
-        guard let actionSheet = actionSheet else {
-            return
-        }
-        
+        configureView()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    
+    // MARK: - Configure
+    
+    private func configureView() {
         switch actionSheet {
         case .topForUser, .profile, .commentForWriter:
             view = oneOptionActionSheetView
@@ -49,102 +57,52 @@ final class ActionSheetViewController: UIViewController {
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        setViewcontroller()
+    override func configureViewController() {
+        option == 1 ? configureOneOption() : configureTwoOptions()
     }
     
-    // MARK: - Setup
-    func setViewcontroller() {
-        guard let option = option else {
-            return
-        }
-        option == 1 ? setOneOptionActionSheetView() : setTwoOptionsActionSheetView()
-    }
-    
-    // MARK: - Actions
-    func setOneOptionActionSheetView() {
-        oneOptionActionSheetView.titleLabel.text = actionSheet?.title
-        oneOptionActionSheetView.firstButton.setTitle(actionSheet?.buttonText[0], for: .normal)
+    private func configureOneOption() {
+        oneOptionActionSheetView.titleLabel.text = actionSheet.title
+        oneOptionActionSheetView.firstButton.setTitle(actionSheet.buttonText[0], for: .normal)
         
         oneOptionActionSheetView.cancleButton.addTarget(
             self,
-            action: #selector(dismissViewController(_:)),
+            action: #selector(dismissViewController),
             for: .touchUpInside)
         oneOptionActionSheetView.firstButton.addTarget(
             self,
-            action: #selector(didTapFirstButton(_:)),
+            action: #selector(didTapFirstButton),
             for: .touchUpInside)
         oneOptionActionSheetView.recognizeTapBackground.addTarget(
             self,
-            action: #selector(dismissViewController(_:)))
+            action: #selector(dismissViewController))
     }
     
-    func setTwoOptionsActionSheetView() {
-        twoOptionsActionSheetView.titleLabel.text = actionSheet?.title
-        twoOptionsActionSheetView.firstButton.setTitle(actionSheet?.buttonText[0], for: .normal)
-        twoOptionsActionSheetView.secondButton.setTitle(actionSheet?.buttonText[1], for: .normal)
+    private func configureTwoOptions() {
+        twoOptionsActionSheetView.titleLabel.text = actionSheet.title
+        twoOptionsActionSheetView.firstButton.setTitle(actionSheet.buttonText[0], for: .normal)
+        twoOptionsActionSheetView.secondButton.setTitle(actionSheet.buttonText[1], for: .normal)
         
         twoOptionsActionSheetView.cancleButton.addTarget(
             self,
-            action: #selector(dismissViewController(_:)),
+            action: #selector(dismissViewController),
             for: .touchUpInside)
         twoOptionsActionSheetView.firstButton.addTarget(
             self,
-            action: #selector(didTapFirstButton(_:)),
+            action: #selector(didTapFirstButton),
             for: .touchUpInside)
         twoOptionsActionSheetView.secondButton.addTarget(
             self,
-            action: #selector(didTapSecondButton(_:)),
+            action: #selector(didTapSecondButton),
             for: .touchUpInside)
         twoOptionsActionSheetView.recognizeTapBackground.addTarget(
             self,
-            action: #selector(dismissViewController(_:)))
+            action: #selector(dismissViewController))
     }
     
-    @objc func dismissViewController(_ sender: Any) {
-        dismiss(animated: true)
-    }
+    // MARK: - Func
     
-    @objc func didTapFirstButton(_ sender: UIButton) {
-        guard let actionSheet = actionSheet else {
-            return
-        }
-        
-        switch actionSheet {
-        case .topForUser:
-            if let id = eventID {
-                reportEvent(id)
-            } else {
-                reportEventCompletionClosure?()
-            }
-        case .topForWriter: modifyWriting()
-        case .profile: blockUserForEvent()
-        case .notification: notifyBeforeStart(eventID!)
-        case .commentForUser: reportUser()
-        case .commentForWriter: deleteComment(commentID)
-        case .modifyInfo: selectPhoto()
-        }
-    }
-    
-    @objc func didTapSecondButton(_ sender: UIButton) {
-        guard let actionSheet = actionSheet else {
-            return
-        }
-        
-        switch actionSheet {
-        case .topForUser: break
-        case .topForWriter: deleteWriting()
-        case .profile: break
-        case .notification: notifyBeforeEnd(eventID!)
-        case .commentForUser: blockUserForComment(targetUserID)
-        case .commentForWriter: break
-        case .modifyInfo: basicPhoto()
-        }
-    }
-    
-    func reportEvent(_ eventId: Int) {
+    private func reportEvent(_ eventId: Int) {
         self.dismiss(animated: true)
         if loginManager.isLoggedIn {
             API.reportEvent(eventId: eventId) { [weak self] in
@@ -155,7 +113,7 @@ final class ActionSheetViewController: UIViewController {
         }
     }
     
-    func reportUser() {
+    private func reportUser() {
         self.dismiss(animated: true)
         if loginManager.isLoggedIn {
             // FIXME: 댓글 신고 API 업데이트되면 변경 예정
@@ -166,31 +124,27 @@ final class ActionSheetViewController: UIViewController {
         }
     }
     
-    func modifyWriting() {
-        let vc: UINavigationController = {
-            let writingVC = WritingViewController()
-            writingVC.event = self.event
-            
-            return UINavigationController(rootViewController: writingVC)
-        }()
+    private func modifyWriting() {
+        let vc = WritingViewController()
+        vc.event = event
+        let naviVC = UINavigationController(rootViewController: vc)
+        naviVC.modalPresentationStyle = .fullScreen
         
-        vc.modalPresentationStyle = .fullScreen
-        
-        self.present(vc, animated: true)
+        self.present(naviVC, animated: true)
     }
     
-    func deleteWriting() {
+    private func deleteWriting() {
         API.deleteEvent(eventID!) { [weak self] in
             self?.goToInitialViewController()
         }
     }
     
-    func blockUserForEvent() {
+    private func blockUserForEvent() {
         self.dismiss(animated: true)
         blockUserCompletionClousre?()
     }
     
-    func blockUserForComment(_ targetUserID: Int?) {
+    private func blockUserForComment(_ targetUserID: Int?) {
         if loginManager.isLoggedIn {
             API.postBlock(data: ["targetUserId": targetUserID!]) { [weak self] in
                 NotificationCenter.default.post(
@@ -204,21 +158,21 @@ final class ActionSheetViewController: UIViewController {
         }
     }
     
-    func notifyBeforeStart(_ eventId: Int) {
+    private func notifyBeforeStart(_ eventId: Int) {
         API.postAlarm(["eventId": eventId, "setFor": "start"]) { [weak self] in
             self?.dismiss(animated: true)
             self?.notifyBeforeStartCompletionClosure?()
         }
     }
     
-    func notifyBeforeEnd(_ eventId: Int) {
+    private func notifyBeforeEnd(_ eventId: Int) {
         API.postAlarm(["eventId": eventId, "setFor": "end"]) { [weak self] in
             self?.dismiss(animated: true)
             self?.notifyBeforeEndCompletionClosure?()
         }
     }
     
-    func deleteComment(_ commentID: Int) {
+    private func deleteComment(_ commentID: Int) {
         API.deleteComment(commentID) { [weak self] in
             self?.dismiss(animated: true)
 //            self?.postHomeReloadNotification()
@@ -226,15 +180,62 @@ final class ActionSheetViewController: UIViewController {
         }
     }
     
-    func selectPhoto() {
+    private func selectPhoto() {
         self.dismiss(animated: true)
         selectPhotoCompletionClosure?()
     }
     
-    func basicPhoto() {
+    private func basicPhoto() {
         self.dismiss(animated: true)
         basicPhotoCompletionClosure?()
     }
+    
+    // MARK: - Action
+    
+    @objc private func dismissViewController() {
+        dismiss(animated: true)
+    }
+    
+    @objc private func didTapFirstButton() {
+        switch actionSheet {
+        case .topForUser:
+            if let id = eventID {
+                reportEvent(id)
+            } else {
+                reportEventCompletionClosure?()
+            }
+        case .topForWriter:
+            modifyWriting()
+        case .profile:
+            blockUserForEvent()
+        case .notification:
+            notifyBeforeStart(eventID!)
+        case .commentForUser:
+            reportUser()
+        case .commentForWriter:
+            deleteComment(commentID)
+        case .modifyInfo:
+            selectPhoto()
+        case .none:
+            break
+        }
+    }
+    
+    @objc private func didTapSecondButton() {
+        switch actionSheet {
+        case .topForUser, .profile, .commentForWriter, .none:
+            break
+        case .topForWriter:
+            deleteWriting()
+        case .notification:
+            notifyBeforeEnd(eventID!)
+        case .commentForUser:
+            blockUserForComment(targetUserID)
+        case .modifyInfo:
+            basicPhoto()
+        }
+    }
+    
 }
 
 
