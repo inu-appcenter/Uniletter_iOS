@@ -199,44 +199,41 @@ final class ActionSheetViewController: UIViewController {
                 self?.dismiss(animated: true)
             }
         } else {
-            blockUserCompletionClousre?()
             self.dismiss(animated: true)
+            blockUserCompletionClousre?()
         }
     }
     
     func notifyBeforeStart(_ eventId: Int) {
-        // TODO: 시작 전 알림
-        
         API.postAlarm(["eventId": eventId, "setFor": "start"]) { [weak self] in
-            self?.notifyBeforeStartCompletionClosure?()
             self?.dismiss(animated: true)
+            self?.notifyBeforeStartCompletionClosure?()
         }
     }
     
     func notifyBeforeEnd(_ eventId: Int) {
-        // TODO: 마감 전 알림
         API.postAlarm(["eventId": eventId, "setFor": "end"]) { [weak self] in
-            self?.notifyBeforeEndCompletionClosure?()
             self?.dismiss(animated: true)
+            self?.notifyBeforeEndCompletionClosure?()
         }
     }
     
     func deleteComment(_ commentID: Int) {
         API.deleteComment(commentID) { [weak self] in
-            self?.postHomeReloadNotification()
-            self?.deleteCommentCompletionClosure?()
             self?.dismiss(animated: true)
+//            self?.postHomeReloadNotification()
+            self?.deleteCommentCompletionClosure?()
         }
     }
     
     func selectPhoto() {
-        selectPhotoCompletionClosure?()
         self.dismiss(animated: true)
+        selectPhotoCompletionClosure?()
     }
     
     func basicPhoto() {
-        basicPhotoCompletionClosure?()
         self.dismiss(animated: true)
+        basicPhotoCompletionClosure?()
     }
 }
 

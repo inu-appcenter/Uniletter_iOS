@@ -109,6 +109,8 @@ final class EventDetailViewController: BaseViewController {
         eventDetailView.viewsLabel.text = viewModel.views
         eventDetailView.likeAndCommentsLabel.text = viewModel.likeAndComments
         
+        eventDetailView.notificationButton.updateButton(viewModel.notiState)
+        
         updateProfileImage()
         updateMainImage()
         updateDDay()
@@ -137,25 +139,17 @@ final class EventDetailViewController: BaseViewController {
         eventDetailView.ddayButton.updateDDay(viewModel.endAt)
         
         if eventDetailView.ddayButton.titleLabel?.text == "마감" {
-            viewModel.notiState = .done
-        } else {
-            if let notiByMe = viewModel.notiSetByMe {
-                viewModel.notiState = notiByMe ? .cancel : .request
-            } else {
-                viewModel.notiState = .request
-            }
+            eventDetailView.notificationButton.updateButton(.done)
         }
-        
-        eventDetailView.notificationButton.updateButton(viewModel.notiState)
     }
     
     private func updateLike(_ like: Bool) {
         like
-        ? viewModel.likeEvent() { text in
-            self.eventDetailView.likeAndCommentsLabel.text = text
+        ? viewModel.likeEvent() { [weak self] text in
+            self?.eventDetailView.likeAndCommentsLabel.text = text
         }
-        : viewModel.deleteLike() { text in
-            self.eventDetailView.likeAndCommentsLabel.text = text
+        : viewModel.deleteLike() { [weak self] text in
+            self?.eventDetailView.likeAndCommentsLabel.text = text
         }
         
         postLikeNotification(id, like)
@@ -171,7 +165,7 @@ final class EventDetailViewController: BaseViewController {
     
     private func deleteNotification() {
         viewModel.deleteNotification { [weak self] in
-            self?.updateNotificationButton(.deleteNotice, .request)
+            self?.updateNotificationButton(.deleteNotice)
         }
     }
     
@@ -198,22 +192,19 @@ final class EventDetailViewController: BaseViewController {
         vc.eventID = id
         
         vc.notifyBeforeStartCompletionClosure = {
-            self.updateNotificationButton(.startNotice, .cancel)
+            self.updateNotificationButton(.startNotice)
         }
         
         vc.notifyBeforeEndCompletionClosure = {
-            self.updateNotificationButton(.deadlineNotice, .cancel)
+            self.updateNotificationButton(.deadlineNotice)
         }
         
         present(vc, animated: true)
     }
     
-    private func updateNotificationButton(_ alert: NoticeAlert?, _ noti: NotiState) {
-        if let alert = alert {
-            presentNoticeAlertView(noticeAlert: alert, check: false)
-        }
-        viewModel.notiState = noti
-        eventDetailView.notificationButton.updateButton(noti)
+    private func updateNotificationButton(_ alert: NoticeAlert) {
+        fetchEvents()
+        presentNoticeAlertView(noticeAlert: alert, check: false)
     }
     
     // MARK: - Action

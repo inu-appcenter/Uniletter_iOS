@@ -122,6 +122,9 @@ final class EventDetailViewModel {
     func loadEvent(completion: @escaping () -> Void) {
         API.getEventOne(id) { [weak self] event in
             self?.event = event
+            if let notiByMe = event.notificationSetByMe {
+                self?.notiState = notiByMe ? .cancel : .request
+            }
             completion()
         }
     }
@@ -148,6 +151,7 @@ final class EventDetailViewModel {
         guard let setFor = event.notificationSetFor else {
             return
         }
+        
         API.deleteAlarm(data: ["eventId": id, "setFor": setFor], isDetail: true) {
             completion()
         }
