@@ -90,9 +90,9 @@ fileprivate func networkingAlert(_ type: Warning, _ isSuccessed: Bool) {
         }
         
         if type == .blockUser {
-           showSuccessToast(vc, type)
+            vc.presentWaringView(type)
         } else if isSuccessed && type != .none && type != .loginRemembered {
-            showSuccessToast(vc, type)
+            vc.presentWaringView(type)
         } else if !isSuccessed && type != .loginRemembered {
             switch type {
             case .cancleBlock,
@@ -102,34 +102,12 @@ fileprivate func networkingAlert(_ type: Warning, _ isSuccessed: Bool) {
                  .deleteEvent,
                  .changeEvent,
                  .createEvent:
-                showSuccessToast(vc, type)
+                vc.presentWaringView(type)
             default:
                 showFailAlert(vc)
             }
         }
     }
-}
-
-/// 성공 메시지
-fileprivate func showSuccessToast(_ vc: UIViewController,_ type: Warning) {
-    let width = UIScreen.main.bounds.width
-    let height = UIScreen.main.bounds.height / 1.3
-    
-    let warningViewWidth = width - 40
-    let toastPointX = width / 2
-    let toastPointY = type == .writing ? height - 52 : height
-    
-    let warningView = WarningView(frame: CGRect(
-        x: 0,
-        y: 0,
-        width: warningViewWidth,
-        height: 52))
-    warningView.warninglabel.text = type.body
-
-    vc.view.showToast(
-        warningView,
-        duration: 1.5,
-        point: CGPoint(x: toastPointX, y: toastPointY))
 }
 
 /// 실패 메시지

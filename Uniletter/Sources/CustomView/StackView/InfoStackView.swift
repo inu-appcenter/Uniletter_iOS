@@ -88,7 +88,6 @@ final class InfoStackView: UIStackView {
     }
     
     func validateInfo() {
-        categoryStackView.isHidden = (categoryLabel.text?.isEmpty)!
         contactStackView.isHidden = (contactLabel.text?.isEmpty)!
         linkStackView.isHidden = (linkLabel.text?.isEmpty)!
     }

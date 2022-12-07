@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import SwiftMessages
 import Toast_Swift
+import Then
 
 extension UIViewController {
     
@@ -110,18 +111,13 @@ extension UIViewController {
         return noticeAlertViewController
     }
     
-    func presentWaringView(_ warningType: Warning) {
-        let width = UIScreen.main.bounds.width
-        let height = UIScreen.main.bounds.height / 1.3
+    func presentWaringView(_ type: Warning) {
+        let toastVC = ToastViewController(type).then {
+            $0.modalTransitionStyle = .crossDissolve
+            $0.modalPresentationStyle = .overFullScreen
+        }
         
-        let warningViewWidth = width - 40
-        let toastPointX = width / 2
-        let toastPointY = warningType == .writing ? height - 52 : height
-        
-        let warningView = WarningView(frame: CGRect(x: 0, y: 0, width: warningViewWidth, height: 52))
-        warningView.warninglabel.text = warningType.body
-
-        self.view.showToast(warningView, duration: 1.5, point: CGPoint(x: toastPointX, y: toastPointY))
+        self.present(toastVC, animated: false)
     }
     
     // MARK: - Notification
