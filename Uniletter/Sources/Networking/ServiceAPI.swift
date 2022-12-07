@@ -53,7 +53,7 @@ fileprivate func networking<T: Decodable>(
 fileprivate func uploadNetworking<T: Decodable>(
     urlStr: String,
     method: HTTPMethod,
-    data: Data?,
+    data: Data,
     model: T.Type,
     completion: @escaping(Result<T, AFError>) -> Void) {
         guard let url = URL(string: baseURL + urlStr) else {
@@ -61,13 +61,14 @@ fileprivate func uploadNetworking<T: Decodable>(
             return
         }
         
-        AF.upload(multipartFormData: { multipartFormData in
+        AF.upload(
+            multipartFormData: { multipartFormData in
             multipartFormData.append(
-                data!,
+                data,
                 withName: "file",
-                fileName: "test.jpg",
-                mimeType: "image/jpg")},
-                  to: url)
+                fileName: "image.jpg",
+                mimeType: "image/jpg") },
+            to: url)
         .responseDecodable(of: model.self) { response in
             switch response.result {
             case .success(let result):
@@ -112,15 +113,7 @@ fileprivate func networkingAlert(_ type: Warning, _ isSuccessed: Bool) {
 
 /// 실패 메시지
 fileprivate func showFailAlert(_ vc: UIViewController) {
-    let alertVC = UIAlertController(
-        title: "네트워크 연결 상태가 좋지 않거나 네트워킹에 실패하였습니다.\n다시 시도해주세요.",
-        message: nil,
-        preferredStyle: .alert)
-    let cancleAction = UIAlertAction(title: "확인", style: .default)
-    
-    alertVC.addAction(cancleAction)
-    
-    vc.present(alertVC, animated: true)
+    vc.presentNoticeAlertView(noticeAlert: .networkingFail, check: false)
 }
 
 final class API {

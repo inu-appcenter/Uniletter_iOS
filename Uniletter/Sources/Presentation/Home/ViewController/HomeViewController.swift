@@ -181,14 +181,7 @@ final class HomeViewController: BaseViewController {
     }
     
     private func updateCellBookmark(_ cell: HomeCell, _ id: Int) {
-        if loginManager.isLoggedIn {
-            let like = cell.bookmarkButton.isSelected
-            
-            cell.bookmarkButton.isSelected = !like
-            like ? viewModel.deleteLike(id) : viewModel.likeEvent(id)
-        } else {
-            presentLoginAlert(.loginLike)
-        }
+        
     }
     
     private func setLoadingIndicator(_ bool: Bool) {
@@ -293,7 +286,16 @@ extension HomeViewController: UICollectionViewDelegate,
             cell.updateCell(event)
             
             cell.bookmarkButtonTapHandler = {
-                self.updateCellBookmark(cell, event.id)
+                if self.loginManager.isLoggedIn {
+                    let like = cell.bookmarkButton.isSelected
+                    
+                    cell.bookmarkButton.isSelected = !like
+                    like
+                    ? self.viewModel.deleteLike(event.id)
+                    : self.viewModel.likeEvent(event.id)
+                } else {
+                    self.presentLoginAlert(.loginLike)
+                }
             }
         }
         

@@ -91,7 +91,6 @@ final class WritingManager {
     }
     
     func isUpdating() -> Bool {
-        print(id == nil)
         return id == nil ? false : true
     }
     

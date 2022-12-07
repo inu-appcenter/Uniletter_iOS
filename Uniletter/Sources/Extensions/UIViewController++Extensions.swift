@@ -112,12 +112,16 @@ extension UIViewController {
     }
     
     func presentWaringView(_ type: Warning) {
-        let toastVC = ToastViewController(type).then {
-            $0.modalTransitionStyle = .crossDissolve
-            $0.modalPresentationStyle = .overFullScreen
-        }
+        let width = UIScreen.main.bounds.width
+        let y = UIScreen.main.bounds.height / 1.25
         
-        self.present(toastVC, animated: false)
+        let warningView = WarningView(frame: CGRect(x: 0, y: 0, width: width - 40, height: 52))
+        warningView.warninglabel.text = type.body
+        
+        view.showToast(
+            warningView,
+            duration: 1.5,
+            point: CGPoint(x: width / 2, y: type == .writing ? y - 92 : y))
     }
     
     // MARK: - Notification
