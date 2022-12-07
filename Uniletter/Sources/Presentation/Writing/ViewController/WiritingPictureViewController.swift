@@ -15,6 +15,7 @@ final class WritingPictureViewController: BaseViewController {
     
     private let writingPictureView = WritingPictureView()
     private let writingManager = WritingManager.shared
+    private lazy var constraint = writingPictureView.titleLabel.frame.height + 44
     
     // MARK: - Life cycle
     
@@ -24,6 +25,7 @@ final class WritingPictureViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureImageVIew()
     }
     
     // MARK: - Configure
@@ -36,27 +38,54 @@ final class WritingPictureViewController: BaseViewController {
             self,
             action: #selector(didTapCheckButton(_:)),
             for: .touchUpInside)
-        
+    }
+    
+    private func configureImageVIew() {
         if writingManager.isUpdating() {
-            writingPictureView.imageView.kf.setImage(
-                with: URL(string: writingManager.imageURL!)!)
+            guard let url = URL(string: writingManager.imageURL!) else {
+                return
+            }
+            
+            writingPictureView.imageView.kf.setImage(with: url) { _ in
+                self.updateImageViewRatio()
+            }
             
             updateCheckButton()
+        } else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                self.updateImageViewRatio()
+            }
         }
     }
     
     // MARK: - Func
     
+    private func updateImageViewRatio() {
+        writingPictureView.imageView.updateImageViewRatio(.writing, constraint)
+    }
+    
+    private func validateImageSize(_ image: UIImage) {
+        let data = image.jpegData(compressionQuality: 1)!.count
+        
+        if data > 10000000 {
+            presentNoticeAlertView(noticeAlert: .uploadImage, check: false)
+        } else {
+            writingManager.setImage(image)
+            updateImage(image)
+        }
+    }
+    
     private func updateImage(_ image: UIImage) {
         DispatchQueue.main.async {
             self.writingPictureView.imageView.image = image
-            self.writingPictureView.imageView.contentMode = .scaleAspectFill
+            self.updateImageViewRatio()
             self.updateCheckButton()
         }
     }
     
     private func updateDefaultImage() {
-        writingPictureView.imageView.image = UIImage(named: "defaultImage")
+        writingPictureView.imageView.image = UIImage(named: "Etc_p")
+        updateImageViewRatio()
         writingManager.imageType = .basic
         writingManager.imageUUID = nil
     }
@@ -102,8 +131,10 @@ extension WritingPictureViewController: PHPickerViewControllerDelegate {
                     return
                 }
                 
-                self.writingManager.setImage(image)
-                self.updateImage(image)
+                DispatchQueue.main.async {
+                    self.validateImageSize(image)
+                }
+                
             }
         }
     }

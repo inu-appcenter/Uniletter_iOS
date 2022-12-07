@@ -17,11 +17,6 @@ final class WritingPictureView: BaseView {
     
     private lazy var contentView = UIView()
     
-    private lazy var titleLabel = UILabel().then {
-        $0.font = .systemFont(ofSize: 18, weight: .bold)
-        $0.text = "사진등록"
-    }
-    
     private lazy var defaultLabel = UILabel().then {
         $0.text = "없음 선택 시 유니레터가 제공하는 이미지가\n등록됩니다."
         $0.font = .systemFont(ofSize: 14)
@@ -29,12 +24,16 @@ final class WritingPictureView: BaseView {
         $0.textColor = .customColor(.darkGray)
     }
     
+    lazy var titleLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 18, weight: .bold)
+        $0.text = "사진등록"
+    }
+    
     lazy var imageView = UIImageView().then {
         $0.layer.cornerRadius = 12
         $0.layer.borderWidth = 1
         $0.layer.borderColor = .customColor(.lightGray)
-        $0.image = UIImage(named: "defaultImage")
-        $0.contentMode = .scaleAspectFill
+        $0.image = UIImage(named: "Etc_p")
         $0.clipsToBounds = true
         $0.isUserInteractionEnabled = true
     }
@@ -88,11 +87,7 @@ final class WritingPictureView: BaseView {
             $0.left.equalToSuperview().offset(20)
         }
         
-        imageView.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(20)
-            $0.left.right.equalToSuperview().inset(20)
-            $0.height.equalTo(imageView.snp.width).multipliedBy(sqrt(2))
-        }
+        imageView.updateImageViewRatio(.writing, titleLabel.bounds.height)
         
         defaultLabel.snp.makeConstraints {
             $0.top.equalTo(imageView.snp.bottom).offset(8)
