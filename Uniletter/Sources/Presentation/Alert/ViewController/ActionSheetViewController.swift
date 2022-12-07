@@ -121,6 +121,8 @@ final class ActionSheetViewController: BaseViewController {
             API.reportEvent(eventId: 0) { [weak self] in
                 self?.reportCommentCompletionClisure?()
             }
+        } else {
+            reportCommentCompletionClisure?()
         }
     }
     
@@ -147,10 +149,8 @@ final class ActionSheetViewController: BaseViewController {
     private func blockUserForComment(_ targetUserID: Int?) {
         if loginManager.isLoggedIn {
             API.postBlock(data: ["targetUserId": targetUserID!]) { [weak self] in
-                NotificationCenter.default.post(
-                    name: Notification.Name("reload"),
-                    object: nil)
                 self?.dismiss(animated: true)
+                self?.blockUserCompletionClousre?()
             }
         } else {
             self.dismiss(animated: true)
@@ -175,7 +175,6 @@ final class ActionSheetViewController: BaseViewController {
     private func deleteComment(_ commentID: Int) {
         API.deleteComment(commentID) { [weak self] in
             self?.dismiss(animated: true)
-//            self?.postHomeReloadNotification()
             self?.deleteCommentCompletionClosure?()
         }
     }

@@ -55,6 +55,7 @@ final class AlertView: BaseView {
     // MARK: - Configure
     
     override func configureView() {
+        backgroundColor = .clear
         backgroundView.addGestureRecognizer(recognizeTapBackground)
     }
     

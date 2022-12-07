@@ -62,6 +62,7 @@ final class OneOptionActionSheetView: BaseView {
     // MARK: - Configure
     
     override func configureView() {
+        backgroundColor = .clear
         backgroundView.addGestureRecognizer(recognizeTapBackground)
     }
     
