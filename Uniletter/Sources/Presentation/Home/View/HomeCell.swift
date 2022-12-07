@@ -67,7 +67,7 @@ final class HomeCell: UICollectionViewCell {
             categoryLabel,
             bookmarkButton
         ]
-            .forEach { addSubview($0) }
+            .forEach { contentView.addSubview($0) }
     }
     
     private func configureLayout() {
