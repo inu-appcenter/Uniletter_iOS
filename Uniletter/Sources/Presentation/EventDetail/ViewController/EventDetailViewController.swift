@@ -103,6 +103,7 @@ final class EventDetailViewController: UIViewController {
         eventDetailView.infoStackView.endLabel.text = viewModel.endContent
         eventDetailView.infoStackView.targetLabel.text = viewModel.target
         eventDetailView.infoStackView.contactLabel.text = viewModel.contact
+        eventDetailView.infoStackView.linkLabel.attributedText = viewModel.link.convertToHyperLink()
         
         eventDetailView.bodyContentsTextView.text = viewModel.body
         eventDetailView.viewsLabel.text = viewModel.views
@@ -111,7 +112,6 @@ final class EventDetailViewController: UIViewController {
         updateProfileImage()
         updateMainImage()
         updateDDay()
-        convertTextToHyperLink()
         hideSubjects()
     }
     
@@ -145,31 +145,19 @@ final class EventDetailViewController: UIViewController {
     }
     
     func updateDDay() {
-        let dateStr = viewModel.endAt
-        let day = dateStr.caculateDateDiff()[0]
-        let min = dateStr.caculateDateDiff()[1]
-        let dday: String
-        let buttonText: String
+        eventDetailView.ddayButton.updateDDay(viewModel.endAt)
         
-        if day < 0 || (day == 0 && min < 0) {
-            eventDetailView.ddayButton.configuration?.baseBackgroundColor = UIColor.customColor(.darkGray)
-            eventDetailView.notificationButton.backgroundColor = UIColor.customColor(.lightGray)
-            
-            dday = "마감"
-            buttonText = "행사 마감"
+        if eventDetailView.ddayButton.titleLabel?.text == "마감" {
+            viewModel.notiState = .done
         } else {
-            eventDetailView.ddayButton.configuration?.baseBackgroundColor = UIColor.customColor(.blueGreen)
-            eventDetailView.notificationButton.backgroundColor = UIColor.customColor(.blueGreen)
-            
-            dday = day == 0 ? "D-day" : "D-\(day)"
-            buttonText = "알림 신청"
+            if let notiByMe = viewModel.event?.notificationSetByMe {
+                viewModel.notiState = notiByMe ? .cancel : .request
+            } else {
+                viewModel.notiState = .request
+            }
         }
         
-        var ddayAttributed = AttributedString(dday)
-        ddayAttributed.font = .systemFont(ofSize: 13)
-        
-        eventDetailView.ddayButton.configuration?.attributedTitle = ddayAttributed
-        eventDetailView.notificationButton.setTitle(buttonText, for: .normal)
+        eventDetailView.notificationButton.updateButton(viewModel.notiState)
     }
     
     func convertProfileImageToCircle() {
@@ -178,28 +166,41 @@ final class EventDetailViewController: UIViewController {
         imageView.clipsToBounds = true
     }
     
-    func convertTextToHyperLink() {
-        let link = viewModel.link
-        
-        if link.contains("http") {
-            let attributedString = NSMutableAttributedString(string: link)
-            attributedString.addAttribute(
-                .link,
-                value: NSUnderlineStyle.single.rawValue,
-                range: NSRange(location: 0, length: link.count))
-            
-            eventDetailView.infoStackView.linkLabel.attributedText = attributedString
-        } else {
-            eventDetailView.infoStackView.linkLabel.text = link
-        }
-    }
-    
     func fetchEvents() {
         self.viewModel.loadEvent(self.id) {
             DispatchQueue.main.async {
                 self.updateUI()
             }
         }
+    }
+    
+    private func deleteNotification() {
+        viewModel.deleteNotification { [weak self] in
+            self?.updateNotificationButton(.deleteNotice, .request)
+        }
+    }
+    
+    private func presentRequestAlert() {
+        let vc = presentActionSheetView(.notification)
+        vc.eventID = id
+        
+        vc.notifyBeforeStartCompletionClosure = {
+            self.updateNotificationButton(.startNotice, .cancel)
+        }
+        
+        vc.notifyBeforeEndCompletionClosure = {
+            self.updateNotificationButton(.deadlineNotice, .cancel)
+        }
+        
+        present(vc, animated: true)
+    }
+    
+    private func updateNotificationButton(_ alert: NoticeAlert?, _ noti: NotiState) {
+        if let alert = alert {
+            presentNoticeAlertView(noticeAlert: alert, check: false)
+        }
+        viewModel.notiState = noti
+        eventDetailView.notificationButton.updateButton(noti)
     }
     
     func postBlockNotification() {
@@ -311,24 +312,14 @@ final class EventDetailViewController: UIViewController {
     
     @objc func didTapNotificationButton(_ sender: UIButton) {
         if loginManager.isLoggedIn {
-            if viewModel.endAt.caculateDateDiff()[0] > 0 {
-                
-                let vc = presentActionSheetView(.notification)
-                vc.eventID = id
-                
-                present(vc, animated: true)
-                
-                vc.notifyBeforeStartCompletionClosure = {
-//                    self.presentNoticeAlertView(.startNotice)
-                    self.presentNoticeAlertView(noticeAlert: .startNotice, check: false)
-                }
-                
-                vc.notifyBeforeEndCompletionClosure = {
-//                    self.presentNoticeAlertView(.deadlineNotice)
-                    self.presentNoticeAlertView(noticeAlert: .deadlineNotice, check: false)
-                }
+            switch viewModel.notiState {
+            case .request:
+                presentRequestAlert()
+            case .cancel:
+                deleteNotification()
+            case .done:
+                break
             }
-            
         } else {
             let AlertView = self.AlertVC(.login)
             self.present(AlertView, animated: true)

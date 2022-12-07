@@ -567,7 +567,7 @@ final class API {
     }
     
     /// 행사 알림 삭제하기
-    static func deleteAlarm(data: [String: Any], completion: @escaping() -> Void) {
+    static func deleteAlarm(data: [String: Any], isDetail: Bool, completion: @escaping() -> Void) {
         guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
         
         networking(
@@ -575,7 +575,7 @@ final class API {
             method: .delete,
             data: data,
             model: Noti.self,
-            apiType: .cancleAlarm) { result in
+            apiType: isDetail ? .none : .cancleAlarm) { result in
                 switch result {
                 case .success(_):
                     print("성공")

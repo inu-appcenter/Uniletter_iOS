@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import DropDown
 import GoogleSignIn
 import Firebase
 
@@ -15,7 +16,8 @@ final class HomeViewController: UIViewController {
     let homeView = HomeView()
     let viewModel = HomeViewModel()
     let loginManager = LoginManager.shared
-    var categoryButtons: [CategoryButton] = []
+    let eventStatusDropDown = DropDown()
+    let categoryDropDown = DropDown()
     
     // MARK: - Life cycle
     override func loadView() {
@@ -26,19 +28,18 @@ final class HomeViewController: UIViewController {
         super.viewDidLoad()
         setNavigationBar()
         setViewController()
+        configureDropDowns()
         checkLogin()
     }
     
     // MARK: - Setup
     func setNavigationBar() {
-        let topLogo: UIButton = {
-            let button = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 20))
-            button.setBackgroundImage(
-                UIImage(named: "UniletterLabel"),
-                for: .normal)
-            button.isUserInteractionEnabled = false
+        let topLogo: UIImageView = {
+            let imgView = UIImageView()
+            imgView.image = UIImage(named: "UniletterLabel")
+            imgView.contentMode = .scaleAspectFit
             
-            return button
+            return imgView
         }()
         
         let config = UIImage.SymbolConfiguration(weight: .bold)
@@ -66,6 +67,7 @@ final class HomeViewController: UIViewController {
     func setViewController() {
         configureCollectionView()
         configureButtons()
+        configureDropDowns()
         configureNotificationCenters()
     }
     
@@ -79,37 +81,49 @@ final class HomeViewController: UIViewController {
     }
     
     private func configureButtons() {
-        homeView.categoryList.resetButton.addTarget(
+        [homeView.eventStatusButton, homeView.categoryButton]
+            .forEach { $0.changeCornerRadius() }
+        
+        homeView.eventStatusButton.addTarget(
             self,
-            action: #selector(didTapResetButton(_:)),
+            action: #selector(didTapEventStatusButton(_:)),
             for: .touchUpInside)
-        
-        homeView.categoryList.progressingButton.addTarget(
+        homeView.categoryButton.addTarget(
             self,
-            action: #selector(didTapProgressingButton(_:)),
+            action: #selector(didTapCategoryButtons(_:)),
             for: .touchUpInside)
-        
-        [
-            homeView.categoryList.groupButton,
-            homeView.categoryList.councilButton,
-            homeView.categoryList.snacksButton,
-            homeView.categoryList.studyButton,
-            homeView.categoryList.contestButton,
-            homeView.categoryList.offerButton,
-            homeView.categoryList.etcButton
-        ]
-            .forEach {
-                categoryButtons.append($0)
-                $0.addTarget(
-                    self,
-                    action: #selector(didTapCategoryButtons(_:)),
-                    for: .touchUpInside)
-            }
-        
         homeView.writeButton.addTarget(
             self,
             action: #selector(goToWrite(_:)),
             for: .touchUpInside)
+    }
+    
+    private func configureDropDowns() {
+        eventStatusDropDown.dataSource = viewModel.eventStatusList
+        eventStatusDropDown.anchorView = homeView.eventStatusButton
+        eventStatusDropDown.selectionAction = { index, item in
+            self.homeView.eventStatusButton.changeState(item)
+            self.viewModel.eventStatus = index == 1
+            self.scrollToTop()
+            self.fetchEvents()
+        }
+        
+        categoryDropDown.dataSource = viewModel.categoryList
+        categoryDropDown.anchorView = homeView.categoryButton
+        categoryDropDown.selectionAction = { index, item in
+            self.homeView.categoryButton.changeState(item)
+            self.viewModel.categoty = index
+            self.scrollToTop()
+            self.fetchEvents()
+        }
+        
+        [eventStatusDropDown, categoryDropDown]
+            .forEach {
+                $0.configureDropDownAppearance()
+                $0.cornerRadius = ($0.anchorView?.plainView.frame.height)! / 2
+                $0.bottomOffset = CGPoint(x: 0, y: 40)
+                $0.selectRow(at: 0)
+            }
     }
     
     private func configureNotificationCenters() {
@@ -130,8 +144,6 @@ final class HomeViewController: UIViewController {
     
     func paging() {
         viewModel.isPaging = true
-        print("paging")
-        print("page: \(viewModel.currentPage)")
         fetchEvents()
     }
     
@@ -140,10 +152,10 @@ final class HomeViewController: UIViewController {
             setLoadingIndicator(true)
         }
         
-        viewModel.loadEvents {
+        viewModel.loadEvents { [weak self] in
             DispatchQueue.main.async {
-                self.homeView.collectionView.reloadData()
-                self.setLoadingIndicator(false)
+                self?.homeView.collectionView.reloadData()
+                self?.setLoadingIndicator(false)
             }
         }
     }
@@ -184,8 +196,8 @@ final class HomeViewController: UIViewController {
     
     private func scrollToTop() {
         homeView.collectionView.scrollToItem(
-            at: IndexPath(item: 0, section: 0),
-            at: .top,
+            at: IndexPath(item: -1, section: 0),
+            at: .init(rawValue: 0),
             animated: true)
     }
     
@@ -240,45 +252,12 @@ final class HomeViewController: UIViewController {
         fetchEvents()
     }
     
-    @objc private func didTapResetButton(_ sender: CategoryButton) {
-        sender.isHidden = true
-        viewModel.categoty = 0
-        viewModel.eventStatus = true
-        
-        categoryButtons
-            .forEach {
-                $0.isSelected = false
-                $0.changeState(false)
-            }
-        
-        fetchEvents()
-        scrollToTop()
-    }
-    
-    @objc private func didTapProgressingButton(_ sender: CategoryButton) {
-        
+    @objc private func didTapEventStatusButton(_ sender: CategoryButton) {
+        eventStatusDropDown.show()
     }
     
     @objc private func didTapCategoryButtons(_ sender: CategoryButton) {
-        categoryButtons
-            .filter {
-                $0.tag != sender.tag
-            }
-            .forEach {
-                $0.isSelected = false
-                $0.changeState(false)
-            }
-        
-        sender.isSelected = !sender.isSelected
-        sender.changeState(sender.isSelected)
-        homeView.categoryList.resetButton.isHidden = !sender.isSelected
-        
-        if sender.isSelected {
-            viewModel.categoty = sender.tag
-            fetchEvents()
-        }
-        
-        scrollToTop()
+        categoryDropDown.show()
     }
 }
 

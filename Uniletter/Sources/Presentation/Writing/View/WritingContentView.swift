@@ -167,8 +167,9 @@ final class WritingContentView: UIView {
         }
         
         contentView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-            $0.width.equalToSuperview()
+            $0.width.equalTo(scrollView.frameLayoutGuide)
+            $0.top.left.right.equalTo(scrollView.contentLayoutGuide)
+            $0.bottom.equalTo(scrollView.contentLayoutGuide).offset(-52)
         }
         
         titleLabel.snp.makeConstraints {

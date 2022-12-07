@@ -31,19 +31,7 @@ final class HomeCellView: UIView {
         return label
     }()
     
-    /// 원 모양을 생성 동시에 하기 위해 버튼으로 구현
-    lazy var ddayButton: UIButton = {
-        var config = UIButton.Configuration.filled()
-        config.baseForegroundColor = .white
-        config.baseBackgroundColor = UIColor.customColor(.blueGreen)
-        config.cornerStyle = .capsule
-        
-        let button = UIButton()
-        button.configuration = config
-        button.isUserInteractionEnabled = false
-        
-        return button
-    }()
+    lazy var ddayButton = DDayButton()
     
     lazy var categoryLabel: UILabel = {
         let label = UILabel()

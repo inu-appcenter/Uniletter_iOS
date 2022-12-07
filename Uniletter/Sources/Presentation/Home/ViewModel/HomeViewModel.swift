@@ -18,18 +18,31 @@ final class HomeViewModel {
     var isPull = false {
         willSet {
             if newValue {
-                events.removeAll()
-                currentPage = 0
+                removeEvents()
             }
         }
     }
     var categoty = 0 {
         willSet {
-            events.removeAll()
-            currentPage = 0
+            removeEvents()
         }
     }
-    var eventStatus = true
+    var eventStatus = false {
+        willSet {
+            removeEvents()
+        }
+    }
+    let eventStatusList = ["전체", "진행중"]
+    let categoryList = [
+        "전체",
+        "동아리/소모임",
+        "학생회",
+        "간식나눔",
+        "대회/공모전",
+        "스터디",
+        "구인",
+        "기타"
+    ]
     
     // MARK: - UI
     var numOfEvents: Int {
@@ -40,7 +53,13 @@ final class HomeViewModel {
         return events[index]
     }
     
-    // MARK: - Funcs
+    // MARK: - Func
+    
+    private func removeEvents() {
+        events.removeAll()
+        currentPage = 0
+    }
+    
     func likeEvent(_ id: Int) {
         API.likeEvent(["eventId": id]) {
             guard let index: Int = self.ids.firstIndex(of: id) else {
@@ -67,7 +86,7 @@ final class HomeViewModel {
     }
     
     func loadEvents(completion: @escaping () -> Void) {
-        API.getEvents(categoty, false, currentPage) { events in
+        API.getEvents(categoty, eventStatus, currentPage) { events in
             if !events.isEmpty {
                 self.events += events
                 self.ids = self.events.map { $0.id }

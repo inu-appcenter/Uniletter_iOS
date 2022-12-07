@@ -36,12 +36,25 @@ extension String {
         return [diff, time]
     }
     
-    func changeAttributed(_ isSelected: Bool) -> NSAttributedString {
+    func convertToHyperLink() -> NSMutableAttributedString {
+        let attributedString = NSMutableAttributedString(string: self)
+        
+        if self.contains("http") || self.contains("bit") {
+            attributedString.addAttribute(
+                .link,
+                value: NSUnderlineStyle.single.rawValue,
+                range: NSRange(location: 0, length: self.count))
+        }
+        
+        return attributedString
+    }
+    
+    func changeCategoryAttributed() -> NSAttributedString {
         return NSAttributedString(
             string: self,
             attributes: [
                 .font: UIFont.systemFont(ofSize: 11, weight: .medium),
-                .foregroundColor: isSelected ? UIColor.white : UIColor.black
+                .foregroundColor: UIColor.black
             ])
     }
     

@@ -12,6 +12,7 @@ final class EventDetailViewModel {
     // MARK: - Property
     
     var event: Event?
+    var notiState: NotiState = .request
     let defaultDate = "2022-02-02T00:00"
     
     // MARK: - UI
@@ -126,6 +127,16 @@ final class EventDetailViewModel {
         guard let id = event?.id else { return }
         API.deleteLikes(data: ["eventId": id]) {
             completion(self.changeLikes(0))
+        }
+    }
+    
+    func deleteNotification(completion: @escaping () -> Void) {
+        guard let id = event?.id,
+              let setFor = event?.notificationSetFor else {
+            return
+        }
+        API.deleteAlarm(data: ["eventId": id, "setFor": setFor], isDetail: true) {
+            completion()
         }
     }
     
