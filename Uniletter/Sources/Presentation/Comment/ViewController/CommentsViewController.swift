@@ -6,212 +6,98 @@
 //
 
 import UIKit
-import SnapKit
 
-final class CommentsViewController: UIViewController {
+final class CommentsViewController: BaseViewController {
     
     // MARK: - Property
-    let commentsView = CommentsView()
-    let viewModel = CommentsViewModel()
-    var eventID: Int?
+    
+    private let commentsView = CommentsView()
+    private lazy var viewModel = CommentsViewModel(eventID)
+    private var checkText = ""
+    var eventID: Int!
     var userID: Int!
-    var checkText = ""
     
     // MARK: - Life cycle
+    
     override func loadView() {
         view = commentsView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setNavigationBar()
-        setViewController()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
         fetchComments()
     }
     
-    // MARK: - Keyboard
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        commentsView.endEditing(true)
-    }
-    
-    // MARK: - Setup
-    func setNavigationBar() {
+    // MARK: - Configure
+
+    override func configureNavigationBar() {
         setNavigationTitleAndBackButton("댓글")
     }
     
-    func setViewController() {
-        viewModel.eventID = eventID
-        commentsView.tableView.dataSource = self
-        commentsView.tableView.delegate = self
-        commentsView.textField.delegate = self
+    override func configureViewController() {
+        configureTableView()
+        configureTextField()
         
-        commentsView.arrowButton.addTarget(
-            self,
-            action: #selector(didTapArrowButton(_:)),
-            for: .touchUpInside)
+        commentsView.recognizeTapView.addTarget(self, action: #selector(hideKeyboard))
         commentsView.submitButton.addTarget(
             self,
-            action: #selector(didTapSubmitButton(_:)),
+            action: #selector(didTapSubmitButton),
             for: .touchUpInside)
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(reload),
-            name: NSNotification.Name("reload"),
-            object: nil)
-        
-        // 입력 뷰 키보드 따라가기
-        view.keyboardLayoutGuide.topAnchor.constraint(equalTo: commentsView.writeView.bottomAnchor).isActive = true
     }
     
-    func initTextField() {
+    private func configureTableView() {
+        commentsView.tableView.dataSource = self
+        commentsView.tableView.delegate = self
+    }
+    
+    private func configureTextField() {
+        commentsView.textField.delegate = self
+        initUI()
+    }
+    
+    // MARK: - Func
+    
+    private func fetchComments() {
+        viewModel.loadComments { [weak self] in
+            DispatchQueue.main.async {
+                self?.updateUI()
+                self?.commentsView.tableView.reloadData()
+            }
+        }
+    }
+    
+    private func writeComments() {
+        guard let text = commentsView.textField.text else {
+            return
+        }
+        
+        viewModel.writeComments(text) { [weak self] in
+            self?.initUI()
+            self?.view.endEditing(true)
+            self?.fetchComments()
+        }
+    }
+    
+    private func initUI() {
         commentsView.textField.text = "댓글을 입력해주세요."
-        commentsView.textField.textColor = UIColor.customColor(.lightGray)
+        commentsView.textField.textColor = .customColor(.lightGray)
+        
         commentsView.submitButton.isUserInteractionEnabled = false
-        commentsView.submitButton.configuration?.baseBackgroundColor = UIColor.customColor(.lightGray)
+        commentsView.submitButton.configuration?.baseBackgroundColor = .customColor(.lightGray)
     }
     
-    func updateUI() {
+    private func updateUI() {
         commentsView.commentLabel.text = "댓글 \(viewModel.numofComments)"
     }
     
-    func fetchComments() {
-        guard let id = eventID else { return }
-        
-        self.viewModel.loadComments(id) {
-            DispatchQueue.main.async {
-                self.updateUI()
-                self.commentsView.tableView.reloadData()
-            }
-        }
+    private func updateSubmitButton(_ bool: Bool) {
+        commentsView.submitButton.isUserInteractionEnabled = bool
+        commentsView.submitButton.configuration?.baseBackgroundColor = bool
+        ? .customColor(.blueGreen)
+        : .customColor(.lightGray)
     }
     
-    // MARK: - Actions
-    @objc func didTapArrowButton(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
-        commentsView.tableView.isHidden = sender.isSelected
-    }
-    
-    @objc func didTapSubmitButton(_ sender: UIButton) {
-        if LoginManager.shared.isLoggedIn {
-            viewModel.writeComments(commentsView.textField.text) {
-                self.initTextField()
-                self.view.endEditing(true)
-                self.fetchComments()
-            }
-        } else {
-            presentLoginAlert(.loginComment)
-        }
-    }
-    
-    @objc func reload() {
-        fetchComments()
-    }
-}
-
-// MARK: - TableView
-extension CommentsViewController: UITableViewDataSource,
-                                  UITableViewDelegate {
-    func tableView(
-        _ tableView: UITableView,
-        numberOfRowsInSection section: Int)
-    -> Int {
-        return viewModel.numofComments
-    }
-    
-    func tableView(
-        _ tableView: UITableView,
-        cellForRowAt indexPath: IndexPath)
-    -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: CommentsCell.identifier,
-            for: indexPath) as? CommentsCell else {
-            return UITableViewCell()
-        }
-        
-        let comment = viewModel.infoOfComment(indexPath.row)
-        cell.selectionStyle = .none
-        cell.updateUI(comment: comment, id: userID)
-        
-        cell.moreButtonTapHandler = {
-            var vc = ActionSheetViewController()
-
-            guard let wrote = comment.wroteByMe else {
-                vc = self.presentActionSheetView(.commentForUser)
-                self.present(vc, animated: true)
-
-                let AlertView = self.AlertVC(.login)
-
-                vc.blockUserCompletionClousre = {
-                    self.present(AlertView, animated: true)
-                    AlertView.cancleButtonClosure = {
-                        self.presentWaringView(.loginBlock)
-                    }
-                }
-
-                vc.reportCommentCompletionClisure = {
-                    self.present(AlertView, animated: true)
-                    AlertView.cancleButtonClosure = {
-                        self.presentWaringView(.loginReport)
-                    }
-                }
-                
-                return }
-            
-            if wrote {
-                vc = self.presentActionSheetView(.commentForWriter)
-                vc.commentID = comment.id
-                
-                vc.deleteCommentCompletionClosure = {
-                    self.fetchComments()
-                }
-                
-            } else {
-                vc = self.presentActionSheetView(.commentForUser)
-                vc.targetUserID = comment.userID
-                
-                // FIXME: 댓글 신고 API 업데이트되면 변경 예정
-                
-                vc.reportCommentCompletionClisure = {
-                    self.presentWaringView(.reportComment)
-                }
-            }
-            
-            self.present(vc, animated: true)
-        }
-        
-        return cell
-    }
-    
-    func tableView(
-        _ tableView: UITableView,
-        didSelectRowAt indexPath: IndexPath) {
-            self.view.endEditing(true)
-        }
-    
-    func tableView(
-        _ tableView: UITableView,
-        heightForRowAt indexPath: IndexPath)
-    -> CGFloat {
-        return UITableView.automaticDimension
-    }
-}
-
-// MARK: - TextView
-extension CommentsViewController: UITextViewDelegate {
-    func textViewDidChange(_ textView: UITextView) {
-        if textView.text != ""
-            && textView.text.trimmingCharacters(in: .whitespaces) != "" {
-            commentsView.submitButton.isUserInteractionEnabled = true
-            commentsView.submitButton.configuration?.baseBackgroundColor = UIColor.customColor(.blueGreen)
-        } else {
-            commentsView.submitButton.isUserInteractionEnabled = false
-            commentsView.submitButton.configuration?.baseBackgroundColor = UIColor.customColor(.lightGray)
-        }
-        
+    private func updateTextViewHeight(_ textView: UITextView) {
         if textView.frame.height >= 80 {
             textView.isScrollEnabled = true
             if textView.contentSize.height <= 80 {
@@ -222,32 +108,147 @@ extension CommentsViewController: UITextViewDelegate {
         }
     }
     
+    private func presentLoginwarnings() {
+        let vc = presentActionSheetView(.commentForUser)
+        vc.blockUserCompletionClousre = {
+            self.presentLoginAlert(.loginBlock)
+        }
+        vc.reportCommentCompletionClisure = {
+            self.presentLoginAlert(.loginReport)
+        }
+        
+        self.present(vc, animated: true)
+    }
+    
+    private func presentWroteByMeActionSheet(_ commentID: Int) {
+        let vc = presentActionSheetView(.commentForWriter)
+        vc.commentID = commentID
+        
+        vc.deleteCommentCompletionClosure = {
+            self.fetchComments()
+        }
+        
+        vc.blockUserCompletionClousre = {
+            self.fetchComments()
+        }
+        
+        self.present(vc, animated: true)
+    }
+    
+    private func presentNotWroteByMeActionSheet(_ userID: Int) {
+        let vc = presentActionSheetView(.commentForUser)
+        vc.targetUserID = userID
+        
+        // FIXME: 댓글 신고 API 업데이트되면 변경 예정
+        
+        vc.reportCommentCompletionClisure = {
+            self.presentWaringView(.reportComment)
+        }
+        
+        vc.blockUserCompletionClousre = {
+            self.presentWaringView(.blockUser)
+            self.fetchComments()
+        }
+        
+        self.present(vc, animated: true)
+    }
+    
+    private func presentActionSheet(_ comment: Comment) {
+        guard let wrote = comment.wroteByMe else {
+            presentLoginwarnings()
+            return
+        }
+        wrote
+        ? presentWroteByMeActionSheet(comment.id)
+        : presentNotWroteByMeActionSheet(comment.userID)
+    }
+    
+    // MARK: - Action
+    
+    @objc private func hideKeyboard() {
+        commentsView.endEditing(true)
+    }
+    
+    @objc private func didTapSubmitButton() {
+        if LoginManager.shared.isLoggedIn {
+            writeComments()
+        } else {
+            presentLoginAlert(.loginComment)
+        }
+    }
+    
+}
+
+// MARK: - TableView
+
+extension CommentsViewController: UITableViewDataSource,
+                                  UITableViewDelegate {
+    
+    func tableView(
+        _ tableView: UITableView,
+        numberOfRowsInSection section: Int)
+    -> Int
+    {
+        return viewModel.numofComments
+    }
+    
+    func tableView(
+        _ tableView: UITableView,
+        cellForRowAt indexPath: IndexPath)
+    -> UITableViewCell
+    {
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: CommentsCell.identifier,
+            for: indexPath) as? CommentsCell else {
+            return UITableViewCell()
+        }
+        
+        let comment = viewModel.infoOfComment(indexPath.row)
+        cell.updateUI(comment: comment, id: userID)
+        
+        cell.moreButtonTapHandler = {
+            self.presentActionSheet(comment)
+        }
+        
+        return cell
+    }
+    
+    func tableView(
+        _ tableView: UITableView,
+        heightForRowAt indexPath: IndexPath)
+    -> CGFloat
+    {
+        return UITableView.automaticDimension
+    }
+}
+
+// MARK: - TextView
+
+extension CommentsViewController: UITextViewDelegate {
+    
+    func textViewDidChange(_ textView: UITextView) {
+        guard let text = textView.text else {
+            return
+        }
+        updateSubmitButton(!(text.trimmingCharacters(in: .whitespaces).isEmpty))
+        updateTextViewHeight(textView)
+        
+        if textView.text.count > 300 {
+            textView.deleteBackward()
+        }
+    }
+    
     func textViewDidBeginEditing(_ textView: UITextView) {
         textView.text = textView.text == "댓글을 입력해주세요." ? "" : checkText
         textView.textColor = .black
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
-        if textView.text == "" {
-            initTextField()
+        if textView.text.isEmpty {
+            initUI()
         } else {
             checkText = textView.text
         }
     }
     
-    func textView(
-        _ textView: UITextView,
-        shouldChangeTextIn range: NSRange,
-        replacementText text: String)
-    -> Bool {
-        guard let term = commentsView.textField.text,
-              let stringRange = Range(range, in: term) else {
-            return false
-        }
-        let updatedText = term.replacingCharacters(
-            in: stringRange,
-            with: text)
-        
-        return updatedText.count <= 300
-    }
 }

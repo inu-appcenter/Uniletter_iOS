@@ -13,6 +13,7 @@ class BaseView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        backgroundColor = .white
         configureView()
         configureUI()
         configureLayout()
@@ -25,8 +26,6 @@ class BaseView: UIView {
     // MARK: - Configure
     
     func configureView() {
-        backgroundColor = .white
-        
         // override 후, 원하는 작업 추가
     }
     
