@@ -25,7 +25,10 @@ final class WritingPictureViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureImageVIew()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.configureImageView()
+        }
     }
     
     // MARK: - Configure
@@ -40,7 +43,7 @@ final class WritingPictureViewController: BaseViewController {
             for: .touchUpInside)
     }
     
-    private func configureImageVIew() {
+    private func configureImageView() {
         if writingManager.isUpdating() {
             guard let url = URL(string: writingManager.imageURL!) else {
                 return
@@ -52,9 +55,7 @@ final class WritingPictureViewController: BaseViewController {
             
             updateCheckButton()
         } else {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                self.updateImageViewRatio()
-            }
+            updateImageViewRatio()
         }
     }
     

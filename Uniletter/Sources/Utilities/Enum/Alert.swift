@@ -43,6 +43,7 @@ enum NoticeAlert {
     case deleteAccountFirst
     case deleteAccountSecond
     case pushAlarm
+    case uploadImage
     
     var title: String {
         switch self {
@@ -55,6 +56,7 @@ enum NoticeAlert {
         case .deleteAccountFirst: return "회원 탈퇴"
         case .deleteAccountSecond: return "회원 탈퇴"
         case .pushAlarm: return "새로운 행사 알림"
+        case .uploadImage: return "용량 초과 오류"
         }
     }
     
@@ -69,6 +71,7 @@ enum NoticeAlert {
         case .deleteAccountFirst: return "회원 탈퇴를 하시겠습니까?"
         case .deleteAccountSecond: return "회원 탈퇴시 작성한 글과 댓글 등의 정보는\n완전히 삭제되며 복구가 불가능합니다.\n정말로 회원 탈퇴를 하시겠습니까? "
         case .pushAlarm: return "알림 허용이 차단되어 있습니다.\n새로운 행사 알림을 받으시려면 알림 허용을 해주세요"
+        case .uploadImage: return "8MB 이하의 사진만 첨부할 수 있습니다."
         }
     }
 }
