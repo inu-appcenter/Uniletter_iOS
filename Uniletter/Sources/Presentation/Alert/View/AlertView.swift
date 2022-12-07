@@ -13,7 +13,7 @@ final class AlertView: BaseView {
     
     // MARK: - UI
     
-    lazy var backgroundView = UIView().then {
+    private lazy var backgroundView = UIView().then {
         $0.backgroundColor = .black
         $0.layer.opacity = 0.4
         $0.isUserInteractionEnabled = true
