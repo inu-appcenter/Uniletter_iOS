@@ -7,45 +7,38 @@
 
 import UIKit
 import SnapKit
+import Then
 
-final class WritingTextFieldView: UIView {
+final class WritingTextFieldView: BaseView {
 
     // MARK: - UI
-    let titleLabel = UILabel()
     
-    lazy var textField: UITextView = {
-        let textView = UITextView()
-        textView.writingTextView()
-        textView.textContainer.maximumNumberOfLines = 1
-        textView.textContainer.lineBreakMode = .byTruncatingHead
-        textView.textContainerInset = UIEdgeInsets(
-            top: 12,
-            left: 16,
-            bottom: 10,
-            right: 16)
-        
-        return textView
-    }()
+    lazy var titleLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 14)
+    }
     
-    let checkView = WritingCheckView()
+    lazy var textField = UITextView().then {
+        $0.writingTextView()
+        $0.textContainer.maximumNumberOfLines = 1
+        $0.textContainer.lineBreakMode = .byTruncatingHead
+        $0.textContainerInset = UIEdgeInsets(top: 12, left: 16, bottom: 10, right: 16)
+    }
+    
+    lazy var checkView = WritingCheckView()
     
     // MARK: - Init
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        addViews()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
-        setLayout()
-    }
+    // MARK: - Configure
     
-    // MARK: - Setup
-    func addViews() {
+    override func configureUI() {
         [
             titleLabel,
             textField,
@@ -54,7 +47,7 @@ final class WritingTextFieldView: UIView {
             .forEach { addSubview($0) }
     }
     
-    func setLayout() {
+    override func configureLayout() {
         titleLabel.snp.makeConstraints {
             $0.top.left.equalToSuperview()
             $0.height.equalTo(23)

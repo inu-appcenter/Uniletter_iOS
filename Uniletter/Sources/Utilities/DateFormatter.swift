@@ -11,14 +11,25 @@ import Foundation
 /// 날짜, 시간 관련 기능을 담은 custom class
 final class CustomFormatter {
     
-    static func convertISO8601DateToString(_ dateStr: String, _ format: String) -> String {
+    static func convertISO8601DateToString(
+        _ dateStr: String,
+        _ format: String,
+        _ isMyEvent: Bool)
+    -> String
+    {
         let formatter = DateFormatter()
+        let calendar = Calendar.current
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
         
         let date = formatter.date(from: dateStr)!
-        let result = Calendar.current.date(byAdding: .hour, value: 9, to: date)!
+        let result = calendar.date(byAdding: .hour, value: 9, to: date)!
         
         formatter.dateFormat = format
+        
+        let diffYear = calendar.dateComponents([.year], from: result, to: Date()).year!
+        if diffYear > 0 && isMyEvent {
+            return "\(diffYear)년전"
+        }
         
         return formatter.string(from: result)
     }

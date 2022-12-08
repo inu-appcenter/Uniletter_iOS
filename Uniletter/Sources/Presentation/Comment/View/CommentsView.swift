@@ -7,125 +7,102 @@
 
 import UIKit
 import SnapKit
+import Then
 
-final class CommentsView: UIView {
+final class CommentsView: BaseView {
     
     // MARK: - UI
-    lazy var tableView: UITableView = {
-        let tableView = UITableView()
-        tableView.register(
+    
+    private lazy var arrowImageView = UIImageView().then {
+        $0.image = UIImage(named: "arrowDown")
+    }
+    
+    private lazy var border = UIView().then {
+        $0.backgroundColor = #colorLiteral(red: 0.8980392157, green: 0.8980392157, blue: 0.8980392157, alpha: 1)
+    }
+    
+    lazy var writeView = UIView().then {
+        $0.backgroundColor = .white
+    }
+    
+    lazy var tableView = UITableView().then {
+        $0.register(
             CommentsCell.self,
             forCellReuseIdentifier: CommentsCell.identifier)
-        tableView.estimatedRowHeight = 93
-        tableView.separatorColor = #colorLiteral(red: 0.8980392157, green: 0.8980392157, blue: 0.8980392157, alpha: 1)
-        tableView.separatorInset = UIEdgeInsets(
-            top: 0,
-            left: 0,
-            bottom: 0,
-            right: 0)
-        
-        return tableView
-    }()
+        $0.estimatedRowHeight = 93
+        $0.separatorColor = #colorLiteral(red: 0.8980392157, green: 0.8980392157, blue: 0.8980392157, alpha: 1)
+        $0.separatorInset = .zero
+    }
     
-    let commentLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 16)
-        label.textColor = UIColor.customColor(.darkGray)
-        label.text = "댓글 0"
-        
-        return label
-    }()
+    lazy var commentLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 16)
+        $0.textColor = .customColor(.darkGray)
+        $0.text = "댓글 0"
+    }
     
-    lazy var arrowButton: UIButton = {
-        let button = UIButton()
-        button.setImage(UIImage(named: "arrowDown"), for: .normal)
-        button.setImage(UIImage(named: "arrowUp"), for: .selected)
-        
-        return button
-    }()
+    lazy var textField = UITextView().then {
+        $0.font = .systemFont(ofSize: 16)
+        $0.textColor = .customColor(.lightGray)
+        $0.sizeToFit()
+        $0.text = "댓글을 입력해주세요."
+        $0.isScrollEnabled = false
+        $0.textContainerInset = .zero
+    }
     
-    let border: UIView = {
-        let view = UIView()
-        view.backgroundColor = #colorLiteral(red: 0.8980392157, green: 0.8980392157, blue: 0.8980392157, alpha: 1)
-        
-        return view
-    }()
-    
-    let writeView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        
-        return view
-    }()
-    
-    lazy var textField: UITextView = {
-        let textView = UITextView()
-        textView.font = .systemFont(ofSize: 16)
-        textView.textColor = UIColor.customColor(.lightGray)
-        textView.sizeToFit()
-        textView.text = "댓글을 입력해주세요."
-        textView.isScrollEnabled = false
-        textView.textContainerInset = UIEdgeInsets(
-            top: 0,
-            left: 0,
-            bottom: 0,
-            right: 0)
-        
-        return textView
-    }()
-    
-    lazy var submitButton: UIButton = {
+    lazy var submitButton = UIButton().then {
         var config = UIButton.Configuration.filled()
-        config.baseBackgroundColor = UIColor.customColor(.lightGray)
+        config.baseBackgroundColor = .customColor(.lightGray)
         config.baseForegroundColor = .white
         
         var attributed = AttributedString("등록")
         attributed.font = .systemFont(ofSize: 16, weight: .semibold)
         config.attributedTitle = attributed
         
-        let button = UIButton()
-        button.configuration = config
-        button.isUserInteractionEnabled = false
-        
-        return button
-    }()
-    
-    // MARK: - Init
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        backgroundColor = .white
-        
-        addviews()
+        $0.configuration = config
+        $0.isUserInteractionEnabled = false
     }
     
-    override func layoutSubviews() {
-        setLayout()
+    lazy var recognizeTapView = UITapGestureRecognizer().then {
+        $0.numberOfTapsRequired = 1
+        $0.numberOfTouchesRequired = 1
+    }
+    
+    // MARK: - Init
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+//        backgroundColor = .white
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Setup
-    func addviews() {
+    // MARK: - Configure
+    
+    override func configureView() {
+        tableView.addGestureRecognizer(recognizeTapView)
+    }
+    
+    override func configureUI() {
         [border, textField, submitButton]
             .forEach { writeView.addSubview($0) }
         
         [
             commentLabel,
-            arrowButton,
+            arrowImageView,
             tableView,
             writeView,
         ]
             .forEach { addSubview($0) }
     }
     
-    func setLayout() {
+    override func configureLayout() {
         commentLabel.snp.makeConstraints {
             $0.top.left.equalTo(safeAreaLayoutGuide).inset(20)
         }
         
-        arrowButton.snp.makeConstraints {
+        arrowImageView.snp.makeConstraints {
             $0.centerY.equalTo(commentLabel)
             $0.left.equalTo(commentLabel.snp.right).offset(10)
         }
@@ -161,4 +138,5 @@ final class CommentsView: UIView {
             $0.height.equalTo(35)
         }
     }
+    
 }

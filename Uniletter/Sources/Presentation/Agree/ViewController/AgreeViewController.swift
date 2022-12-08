@@ -7,30 +7,35 @@
 
 import UIKit
 
-final class AgreementViewController: UIViewController {
+final class AgreementViewController: BaseViewController {
 
     // MARK: - Property
     
-    let agreementView = AgreementView()
+    private let agreementView = AgreementView()
+    private lazy var checkButtons = [
+        agreementView.firstCheckButton,
+        agreementView.secondCheckButton
+    ]
     
     // MARK: - Life cycle
     
     override func loadView() {
-        self.view = agreementView
+        view = agreementView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        setViewController()
+        configureCheckButtons()
     }
     
-    // MARK: - Setup
+    // MARK: - Configure
     
-    func setViewController() {
-        addNavigationBarBorder()
+    override func configureNavigationBar() {
         title = "약관 동의"
-        
+        addNavigationBarBorder()
+    }
+    
+    override func configureViewController() {
         agreementView.allAgreeCheckButton.addTarget(
             self,
             action: #selector(didTapAllAgreeCheckButton(_:)),
@@ -38,32 +43,32 @@ final class AgreementViewController: UIViewController {
         
         agreementView.firstMoreButton.addTarget(
             self,
-            action: #selector(didTapFirstMoreButton(_:)),
+            action: #selector(didTapFirstMoreButton),
             for: .touchUpInside)
-        
         agreementView.secondMoreButton.addTarget(
             self,
-            action: #selector(didTapSecondMoreButton(_:)),
+            action: #selector(didTapSecondMoreButton),
             for: .touchUpInside)
-        
-        agreementView.checkButtons.forEach {
+        agreementView.nextButton.addTarget(
+            self,
+            action: #selector(didTapNextButton),
+            for: .touchUpInside)
+    }
+    
+    private func configureCheckButtons() {
+        checkButtons.forEach {
             $0.addTarget(
                 self,
                 action: #selector(didTapCheckButton(_:)),
                 for: .touchUpInside)
         }
-        
-        agreementView.nextButton.addTarget(
-            self,
-            action: #selector(didTapNextButton(_:)),
-            for: .touchUpInside)
     }
     
     // MARK: - Func
     
-    func checkAllCheckButtonsAreSelected() -> Bool {
+    private func checkAllCheckButtonsAreSelected() -> Bool {
         var checkCount: Int = 0
-        agreementView.checkButtons.forEach {
+        checkButtons.forEach {
             if $0.isSelected {
                 checkCount += 1
             }
@@ -71,63 +76,51 @@ final class AgreementViewController: UIViewController {
         
         if checkCount == 2 {
             changeState(true)
+            agreementView.allAgreeCheckButton.updateCheckedState()
             return true
         } else {
             changeState(false)
+            agreementView.allAgreeCheckButton.updateNotCheckedState()
             return false
         }
     }
     
-    func changeState(_ bool: Bool) {
+    private func changeState(_ bool: Bool) {
         agreementView.nextButton.isUserInteractionEnabled = bool
         agreementView.nextButton.backgroundColor = bool
         ? .customColor(.blueGreen)
         : .customColor(.lightGray)
     }
     
-    
     // MARK: - Action
     
-    @objc func didTapFirstMoreButton(_ sender: Any) {
+    @objc private func didTapFirstMoreButton() {
         let vc = ServiceViewController()
-        
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    @objc func didTapSecondMoreButton(_ sedner: Any) {
+    @objc private func didTapSecondMoreButton() {
         let vc = PrivacyPolicyViewController()
-        
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    @objc func didTapCheckButton(_ button: UIButton) {
-        button.isSelected = !button.isSelected
-        button.updateUI(button.isSelected)
-        
-        agreementView.allAgreeCheckButton.isSelected = checkAllCheckButtonsAreSelected()
-        agreementView.allAgreeCheckButton.updateUI(checkAllCheckButtonsAreSelected())
+    @objc private func didTapCheckButton(_ sender: CheckButton) {
+        sender.updateState()
+        _ = checkAllCheckButtonsAreSelected()
     }
     
-    @objc func didTapAllAgreeCheckButton(_ button: UIButton) {
-        button.isSelected = !button.isSelected
-        button.updateUI(button.isSelected)
-        
-        agreementView.checkButtons.forEach {
-            $0.isSelected = button.isSelected
-            $0.updateUI(button.isSelected)
+    @objc private func didTapAllAgreeCheckButton(_ sender: CheckButton) {
+        sender.updateState()
+        changeState(sender.isSelected)
+        checkButtons.forEach {
+            sender.isSelected ? $0.updateCheckedState() : $0.updateNotCheckedState()
         }
-        
-        changeState(button.isSelected)
     }
     
-    @objc func didTapNextButton(_ sendar: Any) {
+    @objc private func didTapNextButton() {
         UserDefaults.standard.set(true, forKey: "agree")
         
-        let homeViewController = HomeViewController()
-        let navigationController = UINavigationController(rootViewController: homeViewController)
-        navigationController.modalPresentationStyle = .fullScreen
-
-        view.window?.rootViewController = navigationController
+        goToInitialViewController()
     }
     
 }

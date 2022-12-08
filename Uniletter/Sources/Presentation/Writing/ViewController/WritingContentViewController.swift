@@ -9,55 +9,33 @@ import UIKit
 import DropDown
 import Kingfisher
 
-class WritingContentViewController: UIViewController {
+final class WritingContentViewController: BaseViewController {
 
     // MARK: - Property
-    let writingContentView = WritingContentView()
-    let writingManager = WritingManager.shared
-    let dropDown = DropDown()
-    let categories = [
-        "선택없음",
-        "동아리/소모임",
-        "학생회",
-        "간식나눔",
-        "대회/공모전",
-        "스터디",
-        "구인",
-        "기타",
-    ]
-    let placeholer = "ex)총학생회, 디자인학부"
-    var event: Event?
+    
+    private let writingContentView = WritingContentView()
+    private let writingManager = WritingManager.shared
+    private let dropDown = DropDown()
     
     // MARK: - Life cycle
+    
     override func loadView() {
         view = writingContentView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setViewController()
-        initDateTime()
-        setDropDown()
+        configureTextFields()
+        configureNotificationCenter()
+        configureDateTime()
+        configureDropDown()
         initUpdating()
     }
     
-    // MARK: - Setup
-    func setViewController() {
-        let recognizer = UITapGestureRecognizer(
-            target: self,
-            action: #selector(downKeyboard(_:)))
-        recognizer.numberOfTapsRequired = 1
-        recognizer.numberOfTouchesRequired = 1
-        writingContentView.scrollView.addGestureRecognizer(recognizer)
-        
-        [
-            writingContentView.titleView,
-            writingContentView.hostView,
-            writingContentView.targetView,
-            writingContentView.contactView,
-            writingContentView.locationView,
-        ]
-            .forEach { $0.textField.delegate = self }
+    // MARK: - Configure
+    
+    override func configureViewController() {
+        writingContentView.recognizeTapView.addTarget(self, action: #selector(hideKeyboard))
         
         writingContentView.hostView.checkView.checkButton.addTarget(
             self,
@@ -69,19 +47,19 @@ class WritingContentViewController: UIViewController {
             for: .touchUpInside)
         writingContentView.eventStartView.dateButton.addTarget(
             self,
-            action: #selector(didTapStartDate(_:)),
+            action: #selector(didTapStartDate),
             for: .touchUpInside)
         writingContentView.eventStartView.timeButton.addTarget(
             self,
-            action: #selector(didTapStartTime(_:)),
+            action: #selector(didTapStartTime),
             for: .touchUpInside)
         writingContentView.eventEndView.dateButton.addTarget(
             self,
-            action: #selector(didTapEndDate(_:)),
+            action: #selector(didTapEndDate),
             for: .touchUpInside)
         writingContentView.eventEndView.timeButton.addTarget(
             self,
-            action: #selector(didTapEndTime(_:)),
+            action: #selector(didTapEndTime),
             for: .touchUpInside)
         writingContentView.equalView.checkButton.addTarget(
             self,
@@ -95,15 +73,28 @@ class WritingContentViewController: UIViewController {
             self,
             action: #selector(didTapLocationCheckButton(_:)),
             for: .touchUpInside)
-        
+    }
+    
+    private func configureTextFields() {
+        [
+            writingContentView.titleView,
+            writingContentView.hostView,
+            writingContentView.targetView,
+            writingContentView.contactView,
+            writingContentView.locationView,
+        ]
+            .forEach { $0.textField.delegate = self }
+    }
+    
+    private func configureNotificationCenter() {
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(checkValidation(_:)),
+            selector: #selector(checkValidation),
             name: Notification.Name("validation"),
             object: nil)
     }
     
-    func initDateTime() {
+    private func configureDateTime() {
         writingContentView.eventStartView.dateButton.setAttributedTitle(
             showUnderline(writingManager.startDate),
             for: .normal)
@@ -118,26 +109,33 @@ class WritingContentViewController: UIViewController {
             for: .normal)
     }
 
-    func setDropDown() {
+    private func configureDropDown() {
         dropDown.configureDropDownAppearance()
         dropDown.textColor = .black
         dropDown.setupCornerRadius(4)
-        dropDown.dataSource = categories
+        dropDown.dataSource = writingManager.categories
         dropDown.anchorView = writingContentView.categoryButton
-        dropDown.dismissMode = .automatic
         dropDown.bottomOffset = CGPoint(x: 0, y: 44)
+        
+        if writingManager.isUpdating() {
+            dropDown.selectRow(writingManager.index)
+        } else {
+            dropDown.selectRow(writingManager.categories.count - 1)
+        }
+        
         dropDown.selectionAction = { index, item in
             self.writingManager.category = item
             self.writingManager.imageIndex = index
             self.writingContentView.categoryView.textField.text = item
             self.writingContentView.categoryButton.isSelected = false
         }
+        
         dropDown.cancelAction = {
             self.writingContentView.categoryButton.isSelected = false
         }
     }
     
-    func initUpdating() {
+    private func initUpdating() {
         if writingManager.isUpdating() {
             writingContentView.titleView.textField.text = writingManager.title
             writingContentView.hostView.textField.text = writingManager.host
@@ -147,30 +145,28 @@ class WritingContentViewController: UIViewController {
             writingContentView.locationView.textField.text = writingManager.location
             
             if !(writingManager.host.isEmpty) {
-                writingContentView.hostView.textField.textColor = .black
-                changeCheckButton(writingContentView.hostView.checkView.checkButton)
+                updateView(writingContentView.hostView)
             } else {
-                writingContentView.hostView.textField.text = placeholer
+                writingContentView.hostView.textField.text = writingManager.hostPlaceholder
             }
             
             if !(writingManager.contact.isEmpty) {
-                writingContentView.contactView.textField.textColor = .black
-                changeCheckButton(writingContentView.contactView.checkView.checkButton)
+                updateView(writingContentView.contactView)
             }
             if !(writingManager.location.isEmpty) {
-                writingContentView.locationView.textField.textColor = .black
-                changeCheckButton(writingContentView.locationView.checkView.checkButton)
+                updateView(writingContentView.locationView)
             }
         }
     }
     
-    // MARK: - Funcs
-    func changeCheckButton(_ button: UIButton) {
-        button.isSelected = !button.isSelected
-        button.updateUI(button.isSelected)
+    // MARK: - Func
+    
+    private func updateView(_ view: WritingTextFieldView) {
+        view.textField.textColor = .black
+        view.checkView.checkButton.updateState()
     }
     
-    func presentCalendar(_ style: Style) {
+    private func presentCalendar(_ style: Style) {
         let vc = CalendarViewController()
         vc.style = style
         vc.delegate = self
@@ -179,15 +175,14 @@ class WritingContentViewController: UIViewController {
         present(vc, animated: true)
     }
     
-    func presentTimePicker(_ style: Style) {
+    private func presentTimePicker(_ style: Style) {
         let vc = TimePickerViewController()
         var time: String?
         
         time = style == .start ? writingManager.startTime : writingManager.endTime
         let subTime = CustomFormatter.subTimeForTimePicker(time!)
         
-        vc.isPM = Int(time!.subStringByIndex(sOffset: 0, eOffset: 2))! < 12
-        ? false : true
+        vc.isPM = Int(time!.subStringByIndex(sOffset: 0, eOffset: 2))! < 12 ? false : true
         
         vc.style = style
         vc.hour = subTime[0]
@@ -198,73 +193,91 @@ class WritingContentViewController: UIViewController {
         present(vc, animated: true)
     }
     
-    // MARK: - Actions
-    @objc func downKeyboard(_ sender: UITapGestureRecognizer) {
+    private func updateHostView() {
+        writingContentView.hostView.textField.text = writingManager.hostPlaceholder
+        writingContentView.hostView.textField.textColor = .customColor(.lightGray)
+        
+        writingManager.host = ""
+    }
+    
+    private func updateDateTime() {
+        writingContentView.eventEndView.dateButton.setAttributedTitle(
+            showUnderline((writingContentView.eventStartView.dateButton.titleLabel?.text)!),
+            for: .normal)
+        writingContentView.eventEndView.timeButton.setAttributedTitle(
+            showUnderline((writingContentView.eventStartView.timeButton.titleLabel?.text)!),
+            for: .normal)
+        
+        writingManager.equalDateTime()
+    }
+    
+    private func updateContactView() {
+        writingContentView.contactView.textField.text = ""
+        writingManager.contact = ""
+    }
+    
+    private func updateLocationView() {
+        writingContentView.locationView.textField.text = ""
+        writingManager.location = ""
+    }
+    
+    // MARK: - Action
+    
+    @objc private func hideKeyboard() {
         writingContentView.endEditing(true)
     }
     
-    @objc func didTapHostCheckButton(_ sender: UIButton) {
-        changeCheckButton(sender)
+    @objc private func didTapHostCheckButton(_ sender: CheckButton) {
+        sender.updateState()
         if sender.isSelected {
-            writingContentView.hostView.textField.text = placeholer
-            writingContentView.hostView.textField.textColor = UIColor.customColor(.lightGray)
-            
-            writingManager.host = ""
+            updateHostView()
         }
     }
     
-    @objc func didTapEqaulCheckButton(_ sender: UIButton) {
-        changeCheckButton(sender)
+    @objc private func didTapEqaulCheckButton(_ sender: CheckButton) {
+        sender.updateState()
         if sender.isSelected {
-            writingContentView.eventEndView.dateButton.setAttributedTitle(
-                showUnderline((writingContentView.eventStartView.dateButton.titleLabel?.text)!),
-                for: .normal)
-            writingContentView.eventEndView.timeButton.setAttributedTitle(
-                showUnderline((writingContentView.eventStartView.timeButton.titleLabel?.text)!),
-                for: .normal)
-            
-            writingManager.equalDateTime()
+            updateDateTime()
         }
     }
     
-    @objc func didTapContactCheckButton(_ sender: UIButton) {
-        changeCheckButton(sender)
+    @objc private func didTapContactCheckButton(_ sender: CheckButton) {
+        sender.updateState()
         if sender.isSelected {
-            writingContentView.contactView.textField.text = ""
-            writingManager.contact = ""
+            updateContactView()
         }
     }
     
-    @objc func didTapLocationCheckButton(_ sender: UIButton) {
-        changeCheckButton(sender)
+    @objc private func didTapLocationCheckButton(_ sender: CheckButton) {
+        sender.updateState()
         if sender.isSelected {
-            writingContentView.locationView.textField.text = ""
-            writingManager.location = ""
+            updateLocationView()
         }
     }
     
-    @objc func didTapCategoryButton(_ sender: UIButton) {
+    @objc private func didTapCategoryButton(_ sender: UIButton) {
         dropDown.show()
         sender.isSelected = !sender.isSelected
     }
     
-    @objc func didTapStartDate(_ sender: UIButton) {
+    @objc private func didTapStartDate() {
         presentCalendar(.start)
     }
     
-    @objc func didTapStartTime(_ sender: UIButton) {
+    @objc private func didTapStartTime() {
         presentTimePicker(.start)
     }
     
-    @objc func didTapEndDate(_ sender: UIButton) {
+    @objc private func didTapEndDate() {
         presentCalendar(.end)
     }
     
-    @objc func didTapEndTime(_ sender: UIButton) {
+    @objc private func didTapEndTime() {
         presentTimePicker(.end)
     }
     
-    @objc func checkValidation(_ sender: Any) {
+    @objc private func checkValidation() {
+        writingContentView.endEditing(true)
         let validation = writingManager.checkEventInfo()
         
         if validation != .success {
@@ -282,10 +295,14 @@ class WritingContentViewController: UIViewController {
             writingContentView.targetView.textField.layer.borderColor = #colorLiteral(red: 0.9664621949, green: 0.2374898791, blue: 0.1274906397, alpha: 1).cgColor
         }
     }
+    
 }
+
+// MARK: - DateSet, TimeSet Delegate
 
 extension WritingContentViewController: DateSetDelegate,
                                         TimeSetDelegate {
+    
     func setDate(date: String, style: Style) {
         style == .start
         ? writingContentView.eventStartView.dateButton
@@ -301,30 +318,28 @@ extension WritingContentViewController: DateSetDelegate,
         : writingContentView.eventEndView.timeButton
             .setAttributedTitle(showUnderline(time), for: .normal)
     }
+    
 }
 
 // MARK: - TextView
+
 extension WritingContentViewController: UITextViewDelegate {
+    
     func textViewDidChange(_ textView: UITextView) {
         switch textView {
         case writingContentView.titleView.textField:
             writingManager.title = textView.text
-            
         case writingContentView.targetView.textField:
             writingManager.target = textView.text
-            
         case writingContentView.hostView.textField:
             writingManager.host = textView.text
-            writingContentView.hostView.checkView.checkButton.updateUI(false)
-            
+            writingContentView.hostView.checkView.checkButton.updateNotCheckedState()
         case writingContentView.contactView.textField:
             writingManager.contact = textView.text
-            writingContentView.contactView.checkView.checkButton.updateUI(false)
-            
+            writingContentView.contactView.checkView.checkButton.updateNotCheckedState()
         case writingContentView.locationView.textField:
             writingManager.location = textView.text
-            writingContentView.locationView.checkView.checkButton.updateUI(false)
-            
+            writingContentView.locationView.checkView.checkButton.updateNotCheckedState()
         default:
             break
         }
@@ -335,10 +350,10 @@ extension WritingContentViewController: UITextViewDelegate {
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        textView.layer.borderColor = CGColor.customColor(.blueGreen)
+        textView.layer.borderColor = .customColor(.blueGreen)
         textView.textColor = .black
         
-        if textView.text == placeholer {
+        if textView.text == writingManager.hostPlaceholder {
             textView.text = ""
         }
     }
@@ -348,29 +363,26 @@ extension WritingContentViewController: UITextViewDelegate {
             textView.text = ""
         }
         
-        textView.layer.borderColor = CGColor.customColor(.defaultGray)
+        textView.layer.borderColor = .customColor(.defaultGray)
         
         switch textView {
         case writingContentView.hostView.textField:
-            if textView.text == "" {
-                textView.text = placeholer
-                textView.textColor = UIColor.customColor(.lightGray)
-                writingContentView.hostView.checkView.checkButton.updateUI(true)
+            if textView.text.isEmpty {
+                textView.text = writingManager.hostPlaceholder
+                textView.textColor = .customColor(.lightGray)
+                writingContentView.hostView.checkView.checkButton.updateCheckedState()
             }
             writingManager.host = textView.text
-            
         case writingContentView.contactView.textField:
-            if textView.text == "" {
-                writingContentView.contactView.checkView.checkButton.updateUI(true)
+            if textView.text.isEmpty {
+                writingContentView.contactView.checkView.checkButton.updateCheckedState()
             }
             writingManager.contact = textView.text
-            
         case writingContentView.locationView.textField:
-            if textView.text == "" {
-                writingContentView.locationView.checkView.checkButton.updateUI(true)
+            if textView.text.isEmpty {
+                writingContentView.locationView.checkView.checkButton.updateCheckedState()
             }
             writingManager.location = textView.text
-            
         default:
             break
         }

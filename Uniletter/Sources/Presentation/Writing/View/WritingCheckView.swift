@@ -7,45 +7,37 @@
 
 import UIKit
 import SnapKit
+import Then
 
-final class WritingCheckView: UIView {
+final class WritingCheckView: BaseView {
     
     // MARK: - UI
-    let label: UILabel = {
-        let label = UILabel()
-        label.writingDefault("없음")
-        
-        return label
-    }()
     
-    lazy var checkButton: UIButton = {
-        let button = UIButton()
-        button.createCheckButton()
-        
-        return button
-    }()
+    lazy var label = UILabel().then {
+        $0.text = "없음"
+        $0.font = .systemFont(ofSize: 13)
+        $0.textColor = .customColor(.defaultGray)
+    }
+    
+    lazy var checkButton = CheckButton()
     
     // MARK: - Init
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .white
-        addViews()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
-        setLayout()
-    }
+    // MARK: - Configure
     
-    // MARK: - Setup
-    func addViews() {
+    override func configureUI() {
         [label, checkButton].forEach { addSubview($0) }
     }
     
-    func setLayout() {
+    override func configureLayout() {
         label.snp.makeConstraints {
             $0.top.bottom.left.equalToSuperview()
             $0.right.equalTo(checkButton.snp.left).offset(-4)

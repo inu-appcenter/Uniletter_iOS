@@ -7,118 +7,97 @@
 
 import UIKit
 import SnapKit
+import Then
 
-final class WritingPictureView: UIView {
+final class WritingPictureView: BaseView {
     
     // MARK: - UI
-    let scrollView = UIScrollView()
     
-    let contentView = UIView()
+    private lazy var scrollView = UIScrollView()
     
-    let titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 18, weight: .bold)
-        label.text = "사진등록"
-        
-        return label
-    }()
+    private lazy var contentView = UIView()
     
-    lazy var imageView: UIImageView = {
-        let imgView = UIImageView()
-        imgView.layer.cornerRadius = 12
-        imgView.layer.borderWidth = 1
-        imgView.layer.borderColor = CGColor.customColor(.lightGray)
-        imgView.image = UIImage(named: "defaultImage")
-        imgView.contentMode = .scaleAspectFill
-        imgView.clipsToBounds = true
-        imgView.isUserInteractionEnabled = true
-        
-        return imgView
-    }()
+    private lazy var defaultLabel = UILabel().then {
+        $0.text = "없음 선택 시 유니레터가 제공하는 이미지가\n등록됩니다."
+        $0.font = .systemFont(ofSize: 14)
+        $0.numberOfLines = 0
+        $0.textColor = .customColor(.darkGray)
+    }
     
-    let defaultLabel: UILabel = {
-        let label = UILabel()
-        label.writingTitle("없음 선택 시 유니레터가 제공하는 이미지가\n등록됩니다.")
-        label.numberOfLines = 0
-        label.textColor = UIColor.customColor(.darkGray)
-        
-        return label
-    }()
+    lazy var titleLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 18, weight: .bold)
+        $0.text = "사진등록"
+    }
+    
+    lazy var imageView = UIImageView().then {
+        $0.layer.cornerRadius = 12
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = .customColor(.lightGray)
+        $0.image = BasicInfo.etc.image
+        $0.clipsToBounds = true
+        $0.isUserInteractionEnabled = true
+    }
     
     lazy var checkView = WritingCheckView()
     
-    let clearView = UIView()
-    
-    let recognizeTapImageView = UITapGestureRecognizer()
+    lazy var recognizeTapImageView = UITapGestureRecognizer()
     
     // MARK: - Init
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .white
-        addViews()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
-        setLayout()
+    // MARK: - Configure
+
+    override func configureView() {
+        imageView.addGestureRecognizer(recognizeTapImageView)
     }
     
-    // MARK: - Setup
-    func addViews() {
-        imageView.addGestureRecognizer(recognizeTapImageView)
-        
+    override func configureUI() {
         [
             titleLabel,
             imageView,
             defaultLabel,
-            checkView,
-            clearView,
+            checkView
         ]
             .forEach { contentView.addSubview($0) }
         
         scrollView.addSubview(contentView)
-        
         addSubview(scrollView)
     }
     
-    func setLayout() {
+    override func configureLayout() {
         scrollView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
         
         contentView.snp.makeConstraints {
-            $0.top.left.right.equalToSuperview()
-            $0.bottom.equalToSuperview().offset(-20)
-            $0.width.equalToSuperview()
+            $0.width.equalTo(scrollView.frameLayoutGuide)
+            $0.top.left.right.equalTo(scrollView.contentLayoutGuide)
+            $0.bottom.equalTo(scrollView.contentLayoutGuide).offset(-52)
         }
         
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(24)
-            $0.left.right.equalToSuperview().inset(20)
+            $0.left.equalToSuperview().offset(20)
         }
         
-        imageView.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(20)
-            $0.left.right.equalTo(titleLabel)
-            $0.height.equalTo(imageView.snp.width).multipliedBy(sqrt(2))
-        }
+        imageView.updateImageViewRatio(.writing, titleLabel.bounds.height)
         
         defaultLabel.snp.makeConstraints {
             $0.top.equalTo(imageView.snp.bottom).offset(8)
-            $0.left.equalTo(titleLabel)
+            $0.bottom.left.equalToSuperview().inset(20)
         }
         
         checkView.snp.makeConstraints {
             $0.top.equalTo(defaultLabel)
-            $0.right.equalTo(titleLabel)
-        }
-        
-        clearView.snp.makeConstraints {
-            $0.top.equalTo(defaultLabel.snp.bottom)
-            $0.bottom.left.right.equalToSuperview()
+            $0.right.equalToSuperview().offset(-20)
         }
     }
+    
 }

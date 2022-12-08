@@ -7,65 +7,47 @@
 
 import UIKit
 import SnapKit
+import Then
 
-final class WritingDateView: UIView {
+final class WritingDateView: BaseView {
     
     // MARK: - UI
-    let titleLabel = UILabel()
     
-    lazy var dateButton: UIButton = {
-        let button = UIButton()
-        button.layer.cornerRadius = 4
-        button.layer.borderWidth = 1
-        button.layer.borderColor = CGColor.customColor(.defaultGray)
-        
-        return button
-    }()
+    lazy var titleLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 14)
+    }
     
-    let bar: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor.customColor(.defaultGray)
-        
-        return view
-    }()
+    lazy var dateButton = createButton()
     
-    lazy var timeButton: UIButton = {
-        let button = UIButton()
-        button.layer.cornerRadius = 4
-        button.layer.borderWidth = 1
-        button.layer.borderColor = CGColor.customColor(.defaultGray)
-        
-        return button
-    }()
+    lazy var timeButton = createButton()
     
+    private let bar = UIView().then {
+        $0.backgroundColor = .customColor(.defaultGray)
+    }
     
     // MARK: - Init
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        addViews()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
-        setLayout()
-    }
+    // MARK: - Configure
     
-    // MARK: - Setup
-    func addViews() {
+    override func configureUI() {
         [
             titleLabel,
             dateButton,
             bar,
-            timeButton,
+            timeButton
         ]
             .forEach { addSubview($0) }
     }
     
-    func setLayout() {
+    override func configureLayout() {
         titleLabel.snp.makeConstraints {
             $0.top.left.equalToSuperview()
             $0.height.equalTo(23)
@@ -92,4 +74,15 @@ final class WritingDateView: UIView {
             $0.right.equalToSuperview()
         }
     }
+    
+    // MARK: - Func
+    
+    private func createButton() -> UIButton {
+        return UIButton().then {
+            $0.layer.cornerRadius = 4
+            $0.layer.borderWidth = 1
+            $0.layer.borderColor = .customColor(.defaultGray)
+        }
+    }
+    
 }

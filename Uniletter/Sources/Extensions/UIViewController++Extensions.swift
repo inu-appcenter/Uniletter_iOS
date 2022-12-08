@@ -9,9 +9,12 @@ import UIKit
 import SnapKit
 import SwiftMessages
 import Toast_Swift
+import Then
 
 extension UIViewController {
-    /// parameter에 넣은 제목대로 네비게이션 바 왼쪽 커스텀
+    
+    // MARK: - Navigation
+    
     func setNavigationTitleAndBackButton(_ title: String) {
         self.navigationItem.title = title
         self.navigationItem.hidesBackButton = true
@@ -28,7 +31,7 @@ extension UIViewController {
         self.navigationItem.leftBarButtonItems = [spacingItem(3), backButton]
     }
     
-    @objc func popViewController() {
+    @objc private func popViewController() {
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -38,6 +41,8 @@ extension UIViewController {
         navigationBarLayer?.shadowOpacity = 0.6
         navigationBarLayer?.shadowOffset = CGSize(width: 0, height: 5)
     }
+    
+    // MARK: - Change Screen
     
     func goToInitialViewController() {
         let homeViewController = UINavigationController(
@@ -50,6 +55,17 @@ extension UIViewController {
     func setModalStyle() {
         self.modalTransitionStyle = .crossDissolve
         self.modalPresentationStyle = .overFullScreen
+    }
+    
+    // MARK: - Alert
+    
+    func presentLoginAlert(_ warning: Warning) {
+        let vc = AlertVC(.login)
+        vc.cancleButtonClosure = {
+            self.presentWaringView(warning)
+        }
+        
+        present(vc, animated: true)
     }
     
     func presentAlertView(_ alert: Alert) {
@@ -95,17 +111,41 @@ extension UIViewController {
         return noticeAlertViewController
     }
     
-    func presentWaringView(_ warningType: Warning) {
+    func presentWaringView(_ type: Warning) {
         let width = UIScreen.main.bounds.width
-        let height = UIScreen.main.bounds.height / 1.3
+        let y = UIScreen.main.bounds.height / 1.25
         
-        let warningViewWidth = width - 40
-        let toastPointX = width / 2
-        let toastPointY = warningType == .writing ? height - 52 : height
+        let warningView = WarningView(frame: CGRect(x: 0, y: 0, width: width - 40, height: 52))
+        warningView.warninglabel.text = type.body
         
-        let warningView = WarningView(frame: CGRect(x: 0, y: 0, width: warningViewWidth, height: 52))
-        warningView.warninglabel.text = warningType.body
-
-        self.view.showToast(warningView, duration: 1.5, point: CGPoint(x: toastPointX, y: toastPointY))
+        view.showToast(
+            warningView,
+            duration: 1.5,
+            point: CGPoint(x: width / 2, y: type == .writing ? y - 92 : y))
     }
+    
+    // MARK: - Notification
+    
+    func postHomeReloadNotification() {
+        NotificationCenter.default.post(
+            name: Notification.Name("HomeReload"),
+            object: nil)
+    }
+    
+    func postLikeNotification(_ id: Int, _ like: Bool) {
+        NotificationCenter.default.post(
+            name: NSNotification.Name("like"),
+            object: nil,
+            userInfo: ["id": id, "like": like])
+    }
+    
+    // MARK: - HyperLink
+    
+    func openURL(_ url: String) {
+        guard let url = URL(string: url) else {
+            return
+        }
+        UIApplication.shared.open(url)
+    }
+    
 }

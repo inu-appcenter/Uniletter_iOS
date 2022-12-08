@@ -7,95 +7,80 @@
 
 import UIKit
 import SnapKit
+import Then
 
-final class NoticeAlertView: UIView {
+final class NoticeAlertView: BaseView {
        
     // MARK: - UI
-    lazy var backgroundView : UIView = {
-        let view = UIView()
-        view.backgroundColor = .black
-        view.layer.opacity = 0.4
-        view.isUserInteractionEnabled = true
-        
-        return view
-    }()
     
-    lazy var alertView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        view.layer.cornerRadius = 10
-        
-        return view
-    }()
+    private lazy var backgroundView = UIView().then {
+        $0.backgroundColor = .black
+        $0.layer.opacity = 0.4
+        $0.isUserInteractionEnabled = true
+    }
     
-    lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 14)
-        label.textColor = UIColor.customColor(.lightGray)
-        label.textAlignment = .center
-        
-        return label
-    }()
+    private lazy var alertView = UIView().then {
+        $0.backgroundColor = .white
+        $0.layer.cornerRadius = 10
+    }
     
-    lazy var bodyLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 14)
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        label.sizeToFit()
-        return label
-    }()
+    private lazy var separatorLine = UIView().then {
+        $0.backgroundColor = .white
+    }
     
-    lazy var okButton: UIButton = {
-        let button = UIButton()
-        
-        button.createCompletionButton("확인")
-        
-        return button
-    }()
+    lazy var titleLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 14)
+        $0.textColor = .customColor(.lightGray)
+        $0.textAlignment = .center
+    }
     
-    lazy var noButton: UIButton = {
-        let button = UIButton()
-        
-        button.createCompletionButton("취소")
-        
-        return button
-    }()
+    lazy var bodyLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 14)
+        $0.textAlignment = .center
+        $0.numberOfLines = 0
+        $0.sizeToFit()
+    }
     
-    let separatorLine: UIView = {
-        let view = UIView()
-        
-        view.backgroundColor = .white
-        
-        return view
-    }()
+    lazy var okButton = UIButton().then {
+        $0.createCompletionButton("확인")
+    }
     
-    let recognizeTapBackground = UITapGestureRecognizer()
+    lazy var noButton = UIButton().then {
+        $0.createCompletionButton("취소")
+    }
+    
+    lazy var recognizeTapBackground = UITapGestureRecognizer()
 
     // MARK: - Init
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configureUI()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Setup
-    func configureUI() {
+    // MARK: - Configure
+    
+    override func configureView() {
+        backgroundColor = .clear
+        backgroundView.addGestureRecognizer(recognizeTapBackground)
+    }
+    
+    override func configureUI() {
         [backgroundView, alertView]
             .forEach { addSubview($0) }
         
         [titleLabel, bodyLabel]
             .forEach { alertView.addSubview($0) }
         
-        backgroundView.addGestureRecognizer(recognizeTapBackground)
-        
         backgroundView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
-        
+    }
+    
+    override func configureLayout() {
         bodyLabel.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(26)
             $0.centerX.equalToSuperview()
@@ -111,55 +96,56 @@ final class NoticeAlertView: UIView {
             $0.top.equalTo(alertView).offset(16)
             $0.centerX.equalToSuperview()
         }
+    }
+    
+    // MARK: - Func
+    
+    private func updateOnlyOKButton() {
+        alertView.addSubview(okButton)
+
+        okButton.snp.makeConstraints {
+            $0.top.equalTo(bodyLabel.snp.bottom).offset(26)
+            $0.centerX.equalToSuperview()
+            $0.leading.equalTo(alertView).offset(16)
+            $0.height.equalTo(44)
+        }
         
+        alertView.snp.makeConstraints {
+            $0.bottom.equalTo(okButton.snp.bottom).inset(-16)
+        }
+    }
+    
+    private func updateOKAndCancelButtons() {
+        [noButton, okButton]
+            .forEach {
+                alertView.addSubview($0)
+                $0.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
+            }
+        
+        noButton.backgroundColor = #colorLiteral(red: 0.8405835032, green: 0.9632034898, blue: 0.9564227462, alpha: 1)
+        noButton.setTitleColor(.customColor(.blueGreen), for: .normal)
+        
+        noButton.snp.makeConstraints {
+            $0.top.equalTo(bodyLabel.snp.bottom).offset(26)
+            $0.leading.equalTo(alertView).offset(16)
+            $0.trailing.equalTo(alertView.snp.centerX)
+            $0.height.equalTo(44)
+        }
+        
+        okButton.snp.makeConstraints {
+            $0.top.equalTo(bodyLabel.snp.bottom).offset(26)
+            $0.leading.equalTo(alertView.snp.centerX)
+            $0.trailing.equalTo(alertView).inset(16)
+            $0.height.equalTo(44)
+        }
+
+        alertView.snp.makeConstraints {
+            $0.bottom.equalTo(noButton.snp.bottom).inset(-16)
+        }
     }
     
     func setViewOptionCount(_ bool: Bool) {
-        if bool {
-            
-            [ noButton,
-              okButton,
-            ] .forEach { alertView.addSubview($0) }
-            
-            noButton.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
-            okButton.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner]
-            
-            noButton.backgroundColor = #colorLiteral(red: 0.8405835032, green: 0.9632034898, blue: 0.9564227462, alpha: 1)
-            noButton.setTitleColor(UIColor.customColor(.blueGreen), for: .normal)
-            
-            noButton.snp.makeConstraints {
-                $0.top.equalTo(bodyLabel.snp.bottom).offset(26)
-                $0.leading.equalTo(alertView).offset(16)
-                $0.trailing.equalTo(alertView.snp.centerX)
-                $0.height.equalTo(44)
-            }
-            
-            okButton.snp.makeConstraints {
-                $0.top.equalTo(bodyLabel.snp.bottom).offset(26)
-                $0.leading.equalTo(alertView.snp.centerX)
-                $0.trailing.equalTo(alertView).inset(16)
-                $0.height.equalTo(44)
-            }
-
-            alertView.snp.makeConstraints {
-                $0.bottom.equalTo(noButton.snp.bottom).inset(-16)
-            }
-            
-        } else {
-            
-            alertView.addSubview(okButton)
-
-            okButton.snp.makeConstraints {
-                $0.top.equalTo(bodyLabel.snp.bottom).offset(26)
-                $0.centerX.equalToSuperview()
-                $0.leading.equalTo(alertView).offset(16)
-                $0.height.equalTo(44)
-            }
-            
-            alertView.snp.makeConstraints {
-                $0.bottom.equalTo(okButton.snp.bottom).inset(-16)
-            }
-        }
+        bool ? updateOKAndCancelButtons() : updateOnlyOKButton()
     }
     
     func setLabelParagraphStyle(_ bodyText: String?) {
@@ -167,7 +153,10 @@ final class NoticeAlertView: UIView {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 5
         paragraphStyle.alignment = .center
-        attrString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attrString.length))
+        attrString.addAttribute(
+            NSAttributedString.Key.paragraphStyle,
+            value: paragraphStyle,
+            range: NSMakeRange(0, attrString.length))
         
         bodyLabel.attributedText = attrString
     }

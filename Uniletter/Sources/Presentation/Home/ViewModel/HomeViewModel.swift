@@ -11,10 +11,13 @@ import Firebase
 final class HomeViewModel {
     
     // MARK: - Property
-    var events = [Event]()
-    var ids = [Int]()
+    
+    private var events: [Event] = [] {
+        didSet { eventIds = events.map { $0.id } }
+    }
+    private var eventIds: [Int] = []
+    private var currentPage = 0
     var isPaging = false
-    var currentPage = 0
     var isPull = false {
         willSet {
             if newValue {
@@ -23,28 +26,18 @@ final class HomeViewModel {
         }
     }
     var categoty = 0 {
-        willSet {
-            removeEvents()
-        }
+        willSet { removeEvents() }
     }
-    var eventStatus = false {
-        willSet {
-            removeEvents()
-        }
+    var eventStatus = true {
+        willSet { removeEvents() }
     }
-    let eventStatusList = ["전체", "진행중"]
-    let categoryList = [
-        "전체",
-        "동아리/소모임",
-        "학생회",
-        "간식나눔",
-        "대회/공모전",
-        "스터디",
-        "구인",
-        "기타"
-    ]
     
-    // MARK: - UI
+    
+    // MARK: - Output
+    
+    let eventStatusList = ["전체", "진행중"]
+    let categoryList = ["전체", "동아리/소모임", "학생회", "간식나눔", "대회/공모전", "스터디", "구인", "기타"]
+    
     var numOfEvents: Int {
         return events.count
     }
@@ -60,36 +53,29 @@ final class HomeViewModel {
         currentPage = 0
     }
     
+    func updateLikes(_ id: Int, _ state: Bool) {
+        guard let index: Int = eventIds.firstIndex(of: id) else {
+            return
+        }
+        events[index].likedByMe = state
+    }
+    
     func likeEvent(_ id: Int) {
-        API.likeEvent(["eventId": id]) {
-            guard let index: Int = self.ids.firstIndex(of: id) else {
-                return
-            }
-            self.events[index].likedByMe = true
+        API.likeEvent(["eventId": id]) { [weak self] in
+            self?.updateLikes(id, true)
         }
     }
     
     func deleteLike(_ id: Int) {
-        API.deleteLikes(data: ["eventId": id]) {
-            guard let index: Int = self.ids.firstIndex(of: id) else {
-                return
-            }
-            self.events[index].likedByMe = false
+        API.deleteLikes(data: ["eventId": id]) { [weak self] in
+            self?.updateLikes(id, false)
         }
-    }
-    
-    func updateBookmarkButton(id: Int, isChecked: Bool) {
-        guard let index: Int = self.ids.firstIndex(of: id) else {
-            return
-        }
-        events[index].likedByMe = isChecked
     }
     
     func loadEvents(completion: @escaping () -> Void) {
         API.getEvents(categoty, eventStatus, currentPage) { events in
             if !events.isEmpty {
                 self.events += events
-                self.ids = self.events.map { $0.id }
                 self.currentPage += 1
                 self.isPaging = false
                 self.isPull = false
@@ -101,13 +87,14 @@ final class HomeViewModel {
     
     func postFCM() {
         Messaging.messaging().token { token, error in
-          if let error = error {
-            print("Error fetching FCM registration token: \(error)")
-          } else if let token = token {
-              API.postFcmToken(["token": token]) {
-                  print("FCM registration token: \(token)")
-              }
-          }
+            if let error = error {
+                print("Error fetching FCM registration token: \(error)")
+            } else if let token = token {
+                API.postFcmToken(["token": token]) {
+                    print("FCM registration token: \(token)")
+                }
+            }
         }
     }
+    
 }

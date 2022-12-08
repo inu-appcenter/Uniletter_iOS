@@ -16,7 +16,7 @@ target 'Uniletter' do
   pod "SwiftMessages"
   pod "Firebase/Messaging"
   pod "Toast-Swift"
-  # Pods for Uniletter
+  pod "Then"
 
   # Delete cocoapods deployment issue
   post_install do |installer|

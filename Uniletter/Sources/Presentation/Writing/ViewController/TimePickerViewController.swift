@@ -6,37 +6,52 @@
 //
 
 import UIKit
+import Then
 
-class TimePickerViewController: UIViewController {
+class TimePickerViewController: BaseViewController {
     
     // MARK: - Property
-    let timePickerView = TimePickerView()
-    let writingManager = WritingManager.shared
+    
+    private let timePickerView = TimePickerView()
+    private let writingManager = WritingManager.shared
+    private let hours = [Int](1...12)
+    private let minutes = [Int](0...11).map { $0 * 5 }
+    private let timeUnits = ["오전", "오후"]
     var style: Style!
     var delegate: TimeSetDelegate?
-    let hours = [Int](1...12)
-    let minutes = [Int](0...11).map { $0 * 5 }
-    let timeUnits = ["오전", "오후"]
     var hour = 6
     var minute = 0
     var timeUnit = "오후"
     var isPM: Bool?
     
     // MARK: - Life cycle
+    
     override func loadView() {
         view = timePickerView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setViewController()
+        configurePickerView()
     }
     
-    // MARK: - Setup
-    func setViewController() {
+    // MARK: - Configure
+    
+    override func configureViewController() {
         timePickerView.titleLabel.text = style == .start
         ? "시작시간 선택" : "마감시간 선택"
         
+        timePickerView.cancleButton.addTarget(
+            self,
+            action: #selector(didTapCancleButton),
+            for: .touchUpInside)
+        timePickerView.okButton.addTarget(
+            self,
+            action: #selector(didTapOKButton),
+            for: .touchUpInside)
+    }
+    
+    private func configurePickerView() {
         timePickerView.pickerView.delegate = self
         timePickerView.pickerView.dataSource = self
         timePickerView.pickerView.selectRow(
@@ -56,15 +71,6 @@ class TimePickerViewController: UIViewController {
                 animated: false)
         }
         
-        timePickerView.cancleButton.addTarget(
-            self,
-            action: #selector(didTapCancleButton(_:)),
-            for: .touchUpInside)
-        timePickerView.okButton.addTarget(
-            self,
-            action: #selector(didTapOKButton(_:)),
-            for: .touchUpInside)
-        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             self.pickerView(
                 self.timePickerView.pickerView,
@@ -79,21 +85,21 @@ class TimePickerViewController: UIViewController {
                 didSelectRow: self.timeUnit == "오후" ? 1 : 0,
                 inComponent: 2)
         }
-        
     }
     
-    // MARK: - Funcs
+    // MARK: - Func
     
-    func formatTime() -> String {
+    private func formatTime() -> String {
         return "\(hour.formatNumbers()):\(minute.formatNumbers())"
     }
     
-    // MARK: - Actions
-    @objc func didTapCancleButton(_ sender: UIButton) {
-        dismiss(animated: true)
+    // MARK: - Action
+    
+    @objc private func didTapCancleButton() {
+        self.dismiss(animated: true)
     }
     
-    @objc func didTapOKButton(_ sender: UIButton) {
+    @objc private func didTapOKButton() {
         delegate?.setTime(
             time: formatTime() + " " + timeUnit,
             style: style)
@@ -107,12 +113,13 @@ class TimePickerViewController: UIViewController {
             writingManager.endTime = formatTime() + ":00"
         }
         
-        dismiss(animated: true)
+        self.dismiss(animated: true)
     }
     
 }
 
 // MARK: - PickerView
+
 extension TimePickerViewController: UIPickerViewDelegate,
                                     UIPickerViewDataSource {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -166,30 +173,24 @@ extension TimePickerViewController: UIPickerViewDelegate,
         pickerView.subviews.forEach {
             $0.backgroundColor = .clear
         }
-        
-        let label: UILabel = {
-            let label = UILabel(frame: CGRect(x: 0, y: 0, width: 56, height: 30))
-            label.font = .systemFont(ofSize: 30)
-            label.layer.cornerRadius = 10
-            label.textColor = UIColor.customColor(.darkGray)
+        return UILabel(frame: CGRect(x: 0, y: 0, width: 56, height: 30)).then {
+            $0.font = .systemFont(ofSize: 30)
+            $0.layer.cornerRadius = 10
+            $0.textColor = .customColor(.darkGray)
             
             switch component {
             case 0:
-                label.text = String(hours[row % hours.count])
-                label.textAlignment = .right
+                $0.text = String(hours[row % hours.count])
+                $0.textAlignment = .right
             case 1:
-                label.text = String(minutes[row % minutes.count])
-                label.textAlignment = .center
+                $0.text = String(minutes[row % minutes.count])
+                $0.textAlignment = .center
             case 2:
-                label.text = timeUnits[row]
-                label.textAlignment = .left
+                $0.text = timeUnits[row]
+                $0.textAlignment = .left
             default: break
             }
-            
-            return label
-        }()
-        
-        return label
+        }
     }
     
 }

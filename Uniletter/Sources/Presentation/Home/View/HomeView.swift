@@ -7,67 +7,72 @@
 
 import UIKit
 import SnapKit
+import Then
 
-final class HomeView: UIView {
+final class HomeView: BaseView {
     
     // MARK: - UI
     
-    lazy var eventStatusButton = createButton("전체")
+    lazy var eventStatusButton = CategoryButton().then {
+        $0.configureButton("진행중")
+    }
     
-    lazy var categoryButton = createButton("카테고리")
+    lazy var categoryButton = CategoryButton().then {
+        $0.configureButton("카테고리")
+    }
     
-    lazy var collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        let margin: CGFloat = 20
-        let itemSpacing: CGFloat = 12
-        
-        let width = (UIScreen.main.bounds.width - margin * 2 - itemSpacing) / 2
-        let height = width * 2
-        layout.itemSize = CGSize(width: width, height: height)
-        layout.sectionInset = UIEdgeInsets(top: 4, left: 20, bottom: 0, right: 20)
-        
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.refreshControl = refreshControl
-        collectionView.register(HomeCell.self, forCellWithReuseIdentifier: HomeCell.identifier)
-        
-        return collectionView
-    }()
+    lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout).then {
+        $0.refreshControl = refreshControl
+        $0.register(HomeCell.self, forCellWithReuseIdentifier: HomeCell.identifier)
+    }
     
-    lazy var refreshControl: UIRefreshControl = {
-        let refreshcontrol = UIRefreshControl()
-        refreshcontrol.tintColor = .clear
-        
-        return refreshcontrol
-    }()
+    lazy var refreshControl = UIRefreshControl().then {
+        $0.tintColor = .clear
+    }
     
-    lazy var writeButton: UIButton = {
+    lazy var writeButton = UIButton().then {
         var config = UIButton.Configuration.filled()
         config.baseBackgroundColor = UIColor.customColor(.lightBlue)
         config.cornerStyle = .capsule
         
-        let button = UIButton()
-        button.configuration = config
-        button.layer.shadowColor = UIColor.lightGray.cgColor
-        button.layer.shadowOpacity = 1.0
-        button.layer.shadowOffset = CGSize(width: 3, height: 3)
-        button.setImage(UIImage(named: "Pencil"), for: .normal)
-        
-        return button
-    }()
+        $0.configuration = config
+        $0.layer.shadowColor = UIColor.lightGray.cgColor
+        $0.layer.shadowOpacity = 1.0
+        $0.layer.shadowOffset = CGSize(width: 3, height: 3)
+        $0.setImage(UIImage(named: "Pencil"), for: .normal)
+    }
     
-    let loadingIndicatorView: UIActivityIndicatorView = {
-        let indicatorView = UIActivityIndicatorView(style: .large)
-        indicatorView.hidesWhenStopped = true
+    lazy var loadingIndicatorView = UIActivityIndicatorView(style: .large).then {
+        $0.hidesWhenStopped = true
+    }
+    
+    private let flowLayout = UICollectionViewFlowLayout().then {
+        let margin: CGFloat = 20
+        let itemSpacing: CGFloat = 12
+        let height = UIScreen.main.bounds.width - margin * 2 - itemSpacing
         
-        return indicatorView
-    }()
+        $0.itemSize = CGSize(width: height / 2, height: height)
+        $0.sectionInset = UIEdgeInsets(top: 4, left: 20, bottom: 0, right: 20)
+    }
+    
+    private let gradientLayer = CAGradientLayer().then {
+        let frame = UIScreen.main.bounds
+        
+        $0.colors = [
+            UIColor(red: 1, green: 1, blue: 1, alpha: 0).cgColor,
+            UIColor(red: 1, green: 1, blue: 1, alpha: 0.3).cgColor,
+            UIColor(red: 1, green: 1, blue: 1, alpha: 0.6).cgColor,
+            UIColor(red: 1, green: 1, blue: 1, alpha: 0.9).cgColor,
+            UIColor(red: 1, green: 1, blue: 1, alpha: 1).cgColor
+        ]
+        
+        $0.frame = CGRect(x: 0, y: frame.height - 115, width: frame.width, height: 115)
+    }
     
     // MARK: - Init
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .white
-        addViews()
-        setLayout()
     }
     
     required init?(coder: NSCoder) {
@@ -75,8 +80,9 @@ final class HomeView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Setup
-    func addViews() {
+    // MARK: - Configure
+    
+    override func configureUI() {
         [
             eventStatusButton,
             categoryButton,
@@ -85,27 +91,11 @@ final class HomeView: UIView {
         ]
             .forEach { addSubview($0) }
         
-        addGradientLayer()
-        
+        layer.addSublayer(gradientLayer)
         addSubview(writeButton)
     }
     
-    func addGradientLayer() {
-        let gradient: CAGradientLayer = CAGradientLayer()
-        gradient.colors = [
-            UIColor(red: 1, green: 1, blue: 1, alpha: 0).cgColor,
-            UIColor(red: 1, green: 1, blue: 1, alpha: 0.3).cgColor,
-            UIColor(red: 1, green: 1, blue: 1, alpha: 0.6).cgColor,
-            UIColor(red: 1, green: 1, blue: 1, alpha: 0.9).cgColor,
-            UIColor(red: 1, green: 1, blue: 1, alpha: 1).cgColor
-        ]
-        let frame = UIScreen.main.bounds
-        
-        gradient.frame = CGRect(x: 0, y: frame.height - 115, width: frame.width, height: 115)
-        layer.addSublayer(gradient)
-    }
-    
-    func setLayout() {
+    override func configureLayout() {
         categoryButton.snp.makeConstraints {
             $0.top.equalTo(safeAreaLayoutGuide).offset(16)
             $0.right.equalToSuperview().offset(-20)
@@ -133,13 +123,4 @@ final class HomeView: UIView {
         }
     }
     
-    // MARK: - Func
-    
-    private func createButton(_ title: String) -> CategoryButton {
-        let button = CategoryButton()
-        button.configureButton(title)
-        button.configuration?.image = UIImage(named: "smallDown")
-        
-        return button
-    }
 }

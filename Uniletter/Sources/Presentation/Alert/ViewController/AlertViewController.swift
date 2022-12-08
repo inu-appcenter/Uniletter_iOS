@@ -7,120 +7,104 @@
 
 import UIKit
 
-final class AlertViewController: UIViewController {
+final class AlertViewController: BaseViewController {
     
     // MARK: - Property
-    let alertView = AlertView()
+    
+    private let alertView = AlertView()
     var alert: Alert?
+    var warning: Warning?
     var alertIsSaveClosure: (() -> Void)?
     var alertIsNotificationClosure: (() -> Void)?
-    var alertIsBlockOffClosure: (() -> Void)?
     var alertIsBlockOnClosure: (() -> Void)?
+    var alertIsBlockOffClosure: (() -> Void)?
+    var alertIsWriteClosure: (() -> Void)?
+    var alertIsDeleteClosure: (() -> Void)?
     var cancleButtonClosure: (() -> Void)?
-    var warning: Warning?
     
     // MARK: - Life cycle
+    
     override func loadView() {
         view = alertView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        setViewController()
     }
     
-    // MARK: - Setup
-    func setViewController() {
+    // MARK: - Configure
+    
+    override func configureViewController() {
         alertView.alertLabel.text = alert?.title
         
         alertView.recognizeTapBackground.addTarget(
             self,
-            action: #selector(dismissViewController(_:)))
-        
+            action: #selector(dismissViewController))
         alertView.cancleButton.addTarget(
             self,
-            action: #selector(didTapCancle(_:)),
+            action: #selector(didTapCancle),
             for: .touchUpInside)
-        
         alertView.okButton.addTarget(
             self,
-            action: #selector(didTapOKButton(_:)),
+            action: #selector(didTapOKButton),
             for: .touchUpInside)
     }
     
-    // MARK: - Actions
-    @objc func dismissViewController(_ sender: Any) {
-        dismiss(animated: true)
-    }
+    // MARK: - Func
     
-    @objc func didTapOKButton(_ sender: UIButton) {
-        guard let alert = alert else {
-            return
-        }
-        
-        switch alert {
-        case .login: alertIsLogin()
-        case .logout: alertIsLogOut()
-        case .report: alertIsReport()
-        case .blockOn: alertIsBlockOn()
-        case .blockOff: alertIsBlockOff()
-        case .delete: alertIsDelete()
-        case .save: alertIsSave()
-        case .notification: alertIsNotification()
-        }
-    }
-    @objc func didTapCancle(_ sender: Any) {
-
-        dismiss(animated: true)
-
-        if let cancleButtonClosure = cancleButtonClosure {
-            cancleButtonClosure()
-        }
-    }
-    
-    func alertIsLogin() {
+    private func alertIsLogin() {
         view.window?.rootViewController = LoginViewController()
         view.window?.rootViewController?.dismiss(animated: false)
     }
     
-    func alertIsLogOut() {
+    private func alertIsLogOut() {
         LoginManager.shared.logout {
             self.goToInitialViewController()
         }
     }
     
-    func alertIsReport() {
-        // TODO: 신고
-    }
-    
-    func alertIsBlockOn() {
-    }
-    
-    func alertIsBlockOff() {
+    private func completeTask() {
+        guard let alert = alert else {
+            return
+        }
         
+        switch alert {
+        case .login:
+            alertIsLogin()
+        case .logout:
+            alertIsLogOut()
+        case .report:
+            // TODO: 신고
+            break
+        case .blockOn:
+            alertIsBlockOnClosure?()
+        case .blockOff:
+            alertIsBlockOffClosure?()
+        case .delete:
+            alertIsDeleteClosure?()
+        case .write:
+            alertIsWriteClosure?()
+        case .save:
+            alertIsSaveClosure?()
+        case .notification:
+            alertIsNotificationClosure?()
+        }
+    }
+    
+    // MARK: - Action
+    
+    @objc private func dismissViewController() {
         self.dismiss(animated: true)
-
-        if let alertIsBlockOffClosure = alertIsBlockOffClosure {
-            alertIsBlockOffClosure()
-        }
     }
     
-    func alertIsDelete() {
-        // TODO: 삭제
+    @objc private func didTapOKButton() {
+        completeTask()
+        self.dismiss(animated: true)
     }
     
-    // 저장 취소
-    func alertIsSave() {
-        if let alertIsSaveClosure = alertIsSaveClosure {
-            alertIsSaveClosure()
-        }
+    @objc private func didTapCancle() {
+        cancleButtonClosure?()
+        self.dismiss(animated: true)
     }
     
-    // 알림 취소
-    func alertIsNotification() {
-        if let alertIsNotificationClosure = alertIsNotificationClosure {
-            alertIsNotificationClosure()
-        }
-    }
 }

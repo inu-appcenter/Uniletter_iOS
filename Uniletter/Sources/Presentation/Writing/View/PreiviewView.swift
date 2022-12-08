@@ -147,7 +147,7 @@ final class PreviewView: UIView {
             $0.bottom.equalTo(scrollView.contentLayoutGuide).offset(-52)
         }
         
-        mainImageView.updateImageViewRatio(false)
+        mainImageView.updateImageViewRatio(.preview)
         
         intervalView1.snp.makeConstraints {
             $0.top.equalTo(mainImageView.snp.bottom).offset(20)

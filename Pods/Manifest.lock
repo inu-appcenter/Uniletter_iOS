@@ -80,6 +80,7 @@ PODS:
   - SwiftMessages (9.0.6):
     - SwiftMessages/App (= 9.0.6)
   - SwiftMessages/App (9.0.6)
+  - Then (3.0.0)
   - Toast-Swift (5.0.1)
 
 DEPENDENCIES:
@@ -92,6 +93,7 @@ DEPENDENCIES:
   - MarqueeLabel
   - SnapKit
   - SwiftMessages
+  - Then
   - Toast-Swift
 
 SPEC REPOS:
@@ -117,6 +119,7 @@ SPEC REPOS:
     - PromisesObjC
     - SnapKit
     - SwiftMessages
+    - Then
     - Toast-Swift
 
 SPEC CHECKSUMS:
@@ -141,8 +144,9 @@ SPEC CHECKSUMS:
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
   SwiftMessages: f0c7ef4705a570ad6c5e208b611f4333e660ed92
+  Then: 844265ae87834bbe1147d91d5d41a404da2ec27d
   Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
 
-PODFILE CHECKSUM: dae72efc5fd696d72122a08910204ed3105c752c
+PODFILE CHECKSUM: c690ea38bd72d58eade05eb82ef881582e44e2c5
 
 COCOAPODS: 1.11.3
