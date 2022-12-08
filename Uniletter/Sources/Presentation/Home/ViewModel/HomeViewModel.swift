@@ -28,7 +28,7 @@ final class HomeViewModel {
     var categoty = 0 {
         willSet { removeEvents() }
     }
-    var eventStatus = false {
+    var eventStatus = true {
         willSet { removeEvents() }
     }
     

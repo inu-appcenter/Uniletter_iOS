@@ -14,7 +14,7 @@ final class HomeView: BaseView {
     // MARK: - UI
     
     lazy var eventStatusButton = CategoryButton().then {
-        $0.configureButton("전체")
+        $0.configureButton("진행중")
     }
     
     lazy var categoryButton = CategoryButton().then {

@@ -97,6 +97,7 @@ final class HomeViewController: BaseViewController {
     private func configureDropDowns() {
         eventStatusDropDown.dataSource = viewModel.eventStatusList
         eventStatusDropDown.anchorView = homeView.eventStatusButton
+        eventStatusDropDown.selectRow(1)
         eventStatusDropDown.selectionAction = { index, item in
             self.homeView.eventStatusButton.changeState(item)
             self.viewModel.eventStatus = index == 1
@@ -106,6 +107,7 @@ final class HomeViewController: BaseViewController {
         
         categoryDropDown.dataSource = viewModel.categoryList
         categoryDropDown.anchorView = homeView.categoryButton
+        categoryDropDown.selectRow(at: 0)
         categoryDropDown.selectionAction = { index, item in
             self.homeView.categoryButton.changeState(item)
             self.viewModel.categoty = index
@@ -118,7 +120,6 @@ final class HomeViewController: BaseViewController {
                 $0.configureDropDownAppearance()
                 $0.cornerRadius = ($0.anchorView?.plainView.frame.height)! / 2
                 $0.bottomOffset = CGPoint(x: 0, y: 40)
-                $0.selectRow(at: 0)
             }
     }
     
