@@ -170,6 +170,8 @@ final class CommentsViewController: BaseViewController {
     }
     
     @objc private func didTapSubmitButton() {
+        hideKeyboard()
+        
         if LoginManager.shared.isLoggedIn {
             writeComments()
         } else {

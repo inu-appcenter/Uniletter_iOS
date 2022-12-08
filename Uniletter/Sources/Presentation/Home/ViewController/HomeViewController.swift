@@ -235,7 +235,7 @@ final class HomeViewController: BaseViewController {
                 self.presentWaringView(.logout)
             }
         } else {
-            presentAlertView(.login)
+            presentLoginAlert(.none)
         }
     }
     

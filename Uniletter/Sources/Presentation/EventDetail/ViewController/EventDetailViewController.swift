@@ -245,7 +245,7 @@ final class EventDetailViewController: BaseViewController {
         if loginManager.isLoggedIn {
             presentTopMoreActionSheet()
         } else {
-            presentLoginAlert(.loginReport)
+            presentLoginAlert(.none)
         }
     }
     

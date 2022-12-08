@@ -33,7 +33,9 @@ enum Warning {
     
     var body: String {
         switch self {
-        case .none, .loginRemembered:
+        case .none:
+            return "로그인을 하셔야 이용 가능합니다."
+        case .loginRemembered:
             return ""
         case .comment:
             return "댓글은 300자 이내로 입력가능합니다."

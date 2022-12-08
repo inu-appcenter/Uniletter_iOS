@@ -179,7 +179,7 @@ class ChangeViewController: UIViewController {
         textField.snp.makeConstraints {
             $0.top.equalTo(userImage.snp.bottom).offset(50)
             $0.leading.equalToSuperview().offset(65)
-            $0.trailing.equalToSuperview().offset(-65)
+            $0.trailing.equalToSuperview().offset(-52)
         }
         
         warningLabel.snp.makeConstraints {
