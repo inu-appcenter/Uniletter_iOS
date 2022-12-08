@@ -13,7 +13,7 @@ final class InfoStackView: UIStackView {
     
     // MARK: - UI
     
-    lazy var categoryLabel = createContentsLabel()
+    lazy var categoryLabel = createMarqueeLabel(false)
     lazy var startLabel = createContentsLabel()
     lazy var endLabel = createContentsLabel()
     
