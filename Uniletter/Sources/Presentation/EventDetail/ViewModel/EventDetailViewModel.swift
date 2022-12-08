@@ -141,6 +141,12 @@ final class EventDetailViewModel {
         }
     }
     
+    func deleteEvent(completion: @escaping () -> Void) {
+        API.deleteEvent(id) { [weak self] in
+            completion()
+        }
+    }
+    
     func deleteLike(completion: @escaping (String) -> Void) {
         API.deleteLikes(data: ["eventId": id]) {
             completion(self.changeLikes(0))

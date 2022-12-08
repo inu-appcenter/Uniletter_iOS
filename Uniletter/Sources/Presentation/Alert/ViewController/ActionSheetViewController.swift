@@ -32,6 +32,8 @@ final class ActionSheetViewController: BaseViewController {
     var notifyBeforeEndCompletionClosure: (() -> Void)?
     var reportEventCompletionClosure: (() -> Void)?
     var reportCommentCompletionClisure: (() -> Void)?
+    var updateEventCompletionClosure: (() -> Void)?
+    var deleteEventcompletionClosure: (() -> Void)?
     var deleteCommentCompletionClosure: (() -> Void)?
     
     // MARK: - Life cycle
@@ -127,18 +129,13 @@ final class ActionSheetViewController: BaseViewController {
     }
     
     private func modifyWriting() {
-        let vc = WritingViewController()
-        vc.event = event
-        let naviVC = UINavigationController(rootViewController: vc)
-        naviVC.modalPresentationStyle = .fullScreen
-        
-        self.present(naviVC, animated: true)
+        self.dismiss(animated: true)
+        updateEventCompletionClosure?()
     }
     
     private func deleteWriting() {
-        API.deleteEvent(eventID!) { [weak self] in
-            self?.goToInitialViewController()
-        }
+        self.dismiss(animated: true)
+        deleteEventcompletionClosure?()
     }
     
     private func blockUserForEvent() {

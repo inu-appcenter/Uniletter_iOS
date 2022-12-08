@@ -143,6 +143,25 @@ final class EventDetailViewController: BaseViewController {
         }
     }
     
+    private func updateEvent() {
+        let vc = WritingViewController()
+        vc.event = viewModel.eventInfo
+        let naviVC = UINavigationController(rootViewController: vc)
+        naviVC.modalPresentationStyle = .fullScreen
+        
+        self.present(naviVC, animated: true)
+    }
+    
+    private func deleteEvent() {
+        let alert = self.AlertVC(.delete)
+        alert.alertIsDeleteClosure = {
+            self.viewModel.deleteEvent {
+                self.presentWaringView(.deleteEvent)
+            }
+        }
+        self.present(alert, animated: true)
+    }
+    
     private func updateLike(_ like: Bool) {
         like
         ? viewModel.likeEvent() { [weak self] text in
@@ -171,11 +190,15 @@ final class EventDetailViewController: BaseViewController {
     
     private func presentTopMoreActionSheet() {
         if viewModel.wroteByMe {
-            let vc = presentActionSheetView(.topForWriter)
-            vc.eventID = id
-            vc.event = viewModel.eventInfo
+            let actionSheet = presentActionSheetView(.topForWriter)
+            actionSheet.updateEventCompletionClosure = {
+                self.updateEvent()
+            }
+            actionSheet.deleteEventcompletionClosure = {
+                self.deleteEvent()
+            }
             
-            self.present(vc, animated: true)
+            self.present(actionSheet, animated: true)
         } else {
             let vc = presentActionSheetView(.topForUser)
             vc.eventID = id
