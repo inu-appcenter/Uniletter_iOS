@@ -52,7 +52,7 @@ final class EventDetailViewModel {
     }
     
     var dateWrote: String {
-        return CustomFormatter.convertISO8601DateToString(event.createdAt, "yyyy.MM.dd")
+        return CustomFormatter.convertISO8601DateToString(event.createdAt, "yyyy.MM.dd", false)
     }
     
     var mainImage: String {

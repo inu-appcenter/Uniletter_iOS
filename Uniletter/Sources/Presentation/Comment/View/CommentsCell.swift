@@ -146,7 +146,8 @@ final class CommentsCell: UITableViewCell {
         contentLabel.text = comment.content
         dateLabel.text = CustomFormatter.convertISO8601DateToString(
             comment.createdAt,
-            "yy. MM. dd HH:mm")
+            "yy. MM. dd HH:mm",
+            false)
         wroteLabel.isHidden = comment.userID == id ? false : true
     }
     
