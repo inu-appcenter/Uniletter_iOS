@@ -31,6 +31,22 @@ extension UIViewController {
         self.navigationItem.leftBarButtonItems = [spacingItem(3), backButton]
     }
     
+    func setNavigationBackButton() {
+        self.navigationItem.hidesBackButton = true
+        
+        let config = UIImage.SymbolConfiguration(
+            pointSize: 18,
+            weight: .semibold)
+        let backButton = UIBarButtonItem(
+            image: UIImage(systemName: "chevron.left", withConfiguration: config)?
+                .withTintColor(.black, renderingMode: .alwaysOriginal),
+            style: .done,
+            target: self,
+            action: #selector(popViewController))
+        
+        self.navigationItem.leftBarButtonItems = [spacingItem(3), backButton]
+    }
+    
     @objc private func popViewController() {
         self.navigationController?.popViewController(animated: true)
     }

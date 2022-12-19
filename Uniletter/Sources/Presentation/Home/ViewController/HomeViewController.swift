@@ -32,6 +32,12 @@ final class HomeViewController: BaseViewController {
         target: self,
         action: #selector(goToInfo))
     
+    private lazy var searchButton = UIBarButtonItem(
+        image: UIImage(named: "Search")?.withRenderingMode(.alwaysOriginal),
+        style: .done,
+        target: self,
+        action: #selector(goToSearch))
+    
     // MARK: - Property
     
     private let homeView = HomeView()
@@ -55,7 +61,7 @@ final class HomeViewController: BaseViewController {
     
     override func configureNavigationBar() {
         self.navigationItem.leftBarButtonItems = [spacingItem(15), topLogo]
-        self.navigationItem.rightBarButtonItems = [spacingItem(10), myInfo]
+        self.navigationItem.rightBarButtonItems = [spacingItem(5), myInfo, spacingItem(5), searchButton]
         
         addNavigationBarBorder()
     }
@@ -246,6 +252,12 @@ final class HomeViewController: BaseViewController {
         } else {
             presentLoginAlert(.loginWriting)
         }
+    }
+    
+    @objc private func goToSearch() {
+        
+        let searchVC = SearchViewController()
+        self.navigationController?.pushViewController(searchVC, animated: true)
     }
     
     @objc private func updateBookmark(_ noti: NSNotification) {

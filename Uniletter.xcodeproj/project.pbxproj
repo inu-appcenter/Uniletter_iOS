@@ -30,6 +30,7 @@
 		2C0DBE6E2881A158004A933A /* BlockListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE6D2881A158004A933A /* BlockListCell.swift */; };
 		2C0DBE702881AC5B004A933A /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE6F2881AC5B004A933A /* Block.swift */; };
 		2C6AB54A28B500A700FF6DC5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2C6AB54928B500A700FF6DC5 /* GoogleService-Info.plist */; };
+		2C7B107B29507C440082994D /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7B107A29507C440082994D /* SearchViewController.swift */; };
 		2C80F388286D997300ECAB60 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C80F387286D997300ECAB60 /* MyPageViewModel.swift */; };
 		2C80F38B286DA01600ECAB60 /* MyPageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C80F38A286DA01500ECAB60 /* MyPageCell.swift */; };
 		2C80F391286DE20000ECAB60 /* MyPageSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C80F390286DE20000ECAB60 /* MyPageSectionView.swift */; };
@@ -156,6 +157,7 @@
 		2C0DBE6F2881AC5B004A933A /* Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
 		2C6AB54928B500A700FF6DC5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2C6AB54B28B5017400FF6DC5 /* UniletterDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UniletterDebug.entitlements; sourceTree = "<group>"; };
+		2C7B107A29507C440082994D /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		2C80F387286D997300ECAB60 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		2C80F38A286DA01500ECAB60 /* MyPageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageCell.swift; sourceTree = "<group>"; };
 		2C80F390286DE20000ECAB60 /* MyPageSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSectionView.swift; sourceTree = "<group>"; };
@@ -274,6 +276,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2C7B107929507C340082994D /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				2C7B107A29507C440082994D /* SearchViewController.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
 		2C80F389286D9FF800ECAB60 /* MyPage */ = {
 			isa = PBXGroup;
 			children = (
@@ -412,6 +422,7 @@
 		763BB5D229180E7500FFAF8B /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				2C7B107929507C340082994D /* Search */,
 				2C969F8B291D3868005D8564 /* Service */,
 				76597B30291D12B800F1561B /* Agree */,
 				763BB5E029180FA000FFAF8B /* Alert */,
@@ -1250,6 +1261,7 @@
 				2CB69D0D287456C60089A922 /* ChangeViewController.swift in Sources */,
 				766F38502872FC3900EC9593 /* NewNoticeViewModel.swift in Sources */,
 				2C0D039C2885ACF60026F3F0 /* ChangeViewModel.swift in Sources */,
+				2C7B107B29507C440082994D /* SearchViewController.swift in Sources */,
 				2C01D080288FDF7800AEF20F /* WarningView.swift in Sources */,
 				2CB8AA32287838EE00BDA358 /* MyEventCell.swift in Sources */,
 				7681D58A286A29970081C644 /* DateFormatter.swift in Sources */,
