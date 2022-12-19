@@ -39,82 +39,25 @@ final class PreviewViewController: UIViewController {
         previewView.infoStackView.endLabel.text = viewModel.endAt
         previewView.infoStackView.targetLabel.text = viewModel.target
         previewView.infoStackView.contactLabel.text = viewModel.contact
+        previewView.infoStackView.linkLabel.attributedText = viewModel.location.convertToHyperLink()
         previewView.bodyContentsTextView.text = viewModel.body
+        previewView.ddayButton.updateDDay(viewModel.dday)
         
         updateImageView()
-        updateDDay(viewModel.dday)
-        convertTextToHyperLink()
         hideSubjects()
     }
     
     // MARK: - Funcs
     
     func hideSubjects() {
-        if viewModel.category == " | " {
-            previewView.infoStackView.validateInfo(.category, true)
-        } else {
-            previewView.infoStackView.validateInfo(.category, false)
-        }
-        
-        if viewModel.target == "" {
-            previewView.infoStackView.validateInfo(.target, true)
-        } else {
-            previewView.infoStackView.validateInfo(.target, false)
-        }
-        
-        if viewModel.contact == "" {
-            previewView.infoStackView.validateInfo(.contact, true)
-        } else {
-            previewView.infoStackView.validateInfo(.contact, false)
-        }
-        
-        if viewModel.location == "" {
-            previewView.infoStackView.validateInfo(.link, true)
-        } else {
-            previewView.infoStackView.validateInfo(.link, false)
-        }
-    }
-    
-    func convertTextToHyperLink() {
-        let link = viewModel.location
-        
-        if link.contains("http") {
-            let attributedString = NSMutableAttributedString(string: link)
-            attributedString.addAttribute(
-                .link,
-                value: NSUnderlineStyle.single.rawValue,
-                range: NSRange(location: 0, length: link.count))
-            
-            previewView.infoStackView.linkLabel.attributedText = attributedString
-        } else {
-            previewView.infoStackView.linkLabel.text = link
-        }
+        previewView.infoStackView.validateInfo()
     }
     
     func updateImageView() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             self.previewView.mainImageView.image = self.preview.mainImage
-            self.previewView.mainImageView.updateImageViewRatio(false)
+            self.previewView.mainImageView.updateImageViewRatio(.preview)
         }
-    }
-    
-    func updateDDay(_ dateStr: String) {
-        let day = dateStr.caculateDateDiff()[0]
-        let min = dateStr.caculateDateDiff()[1]
-        let dday: String
-        
-        if day < 0 || (day == 0 && min < 0) {
-            previewView.ddayButton.configuration?.baseBackgroundColor = UIColor.customColor(.darkGray)
-            dday = "마감"
-        } else {
-            previewView.ddayButton.configuration?.baseBackgroundColor = UIColor.customColor(.blueGreen)
-            dday = day == 0 ? "D-day" : "D-\(day)"
-        }
-        
-        var attributedString = AttributedString(dday)
-        attributedString.font = .systemFont(ofSize: 13)
-        
-        previewView.ddayButton.configuration?.attributedTitle = attributedString
     }
     
 }

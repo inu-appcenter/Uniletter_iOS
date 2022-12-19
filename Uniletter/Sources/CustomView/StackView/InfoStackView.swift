@@ -9,22 +9,13 @@ import UIKit
 import MarqueeLabel
 import SnapKit
 
-enum Subjects: String {
-    case category = "카테고리"
-    case start = "시작일시"
-    case end = "마감일시"
-    case target = "모집대상"
-    case contact = "문의사항"
-    case link = "신청링크"
-}
-
 final class InfoStackView: UIStackView {
     
     // MARK: - UI
     
-    let categoryLabel = DetailContesntsLabel()
-    let startLabel = DetailContesntsLabel()
-    let endLabel = DetailContesntsLabel()
+    lazy var categoryLabel = createMarqueeLabel(false)
+    lazy var startLabel = createContentsLabel()
+    lazy var endLabel = createContentsLabel()
     
     lazy var targetLabel = createMarqueeLabel(false)
     lazy var contactLabel = createMarqueeLabel(false)
@@ -66,18 +57,23 @@ final class InfoStackView: UIStackView {
     
     // MARK: - Func
     
+    private func createContentsLabel() -> UILabel {
+        return UILabel().then {
+            $0.font = .systemFont(ofSize: 16)
+        }
+    }
+    
     private func createMarqueeLabel(_ isLink: Bool) -> MarqueeLabel {
-        let label = MarqueeLabel()
-        label.font = .systemFont(ofSize: 16)
-        label.speed = .duration(20)
-        label.isUserInteractionEnabled = isLink
-        
-        return label
+        return MarqueeLabel().then {
+            $0.font = .systemFont(ofSize: 16)
+            $0.speed = .duration(20)
+            $0.isUserInteractionEnabled = isLink
+        }
     }
     
     private func createStackView(_ subject: Subjects, _ contentsLabel: UILabel) -> UIStackView {
         let subjectLabel = UILabel()
-        subjectLabel.changeDetail(subject.rawValue)
+        subjectLabel.changeDetail(subject.title)
         
         let stackView = UIStackView()
         stackView.spacing = 20
@@ -91,15 +87,9 @@ final class InfoStackView: UIStackView {
         return stackView
     }
     
-    func validateInfo(_ subject: Subjects, _ isHidden: Bool) {
-        switch subject {
-        case .category: categoryStackView.isHidden = isHidden
-        case .start: startStackView.isHidden = isHidden
-        case .end: endStackView.isHidden = isHidden
-        case .target: targetStackView.isHidden = isHidden
-        case .contact: contactStackView.isHidden = isHidden
-        case .link: linkStackView.isHidden = isHidden
-        }
+    func validateInfo() {
+        contactStackView.isHidden = (contactLabel.text?.isEmpty)!
+        linkStackView.isHidden = (linkLabel.text?.isEmpty)!
     }
     
 }

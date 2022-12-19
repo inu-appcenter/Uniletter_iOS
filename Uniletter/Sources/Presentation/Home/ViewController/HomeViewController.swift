@@ -6,66 +6,64 @@
 //
 
 import UIKit
-import GoogleSignIn
+import DropDown
 import Firebase
+import GoogleSignIn
+import Then
 
-final class HomeViewController: UIViewController {
+final class HomeViewController: BaseViewController {
+    
+    // MARK: - UI
+    
+    private let topLogo = UIBarButtonItem().then {
+        let imgView = UIImageView().then {
+            $0.image = UIImage(named: "UniletterLabel")
+            $0.contentMode = .scaleAspectFit
+        }
+        $0.customView = imgView
+    }
+    
+    private lazy var myInfo = UIBarButtonItem(
+        image: UIImage(
+            systemName: "person",
+            withConfiguration: UIImage.SymbolConfiguration(weight: .bold))?
+            .withRenderingMode(.alwaysOriginal),
+        style: .done,
+        target: self,
+        action: #selector(goToInfo))
     
     // MARK: - Property
-    let homeView = HomeView()
-    let viewModel = HomeViewModel()
-    let loginManager = LoginManager.shared
-    var categoryButtons: [CategoryButton] = []
+    
+    private let homeView = HomeView()
+    private let viewModel = HomeViewModel()
+    private let loginManager = LoginManager.shared
+    private let eventStatusDropDown = DropDown()
+    private let categoryDropDown = DropDown()
     
     // MARK: - Life cycle
+    
     override func loadView() {
         view = homeView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setNavigationBar()
-        setViewController()
         checkLogin()
     }
     
-    // MARK: - Setup
-    func setNavigationBar() {
-        let topLogo: UIButton = {
-            let button = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 20))
-            button.setBackgroundImage(
-                UIImage(named: "UniletterLabel"),
-                for: .normal)
-            button.isUserInteractionEnabled = false
-            
-            return button
-        }()
-        
-        let config = UIImage.SymbolConfiguration(weight: .bold)
-        let myInfo = UIBarButtonItem(
-            image: UIImage(
-                systemName: "person", withConfiguration: config)?
-                .withRenderingMode(.alwaysOriginal),
-            style: .done,
-            target: self,
-            action: #selector(goToInfo))
-        
-        self.navigationItem.leftBarButtonItems = [
-            spacingItem(15),
-            UIBarButtonItem(customView: topLogo),
-        ]
-        self.navigationItem.rightBarButtonItems = [
-            spacingItem(10),
-            myInfo,
-        ]
+    // MARK: - Configure
+    
+    override func configureNavigationBar() {
+        self.navigationItem.leftBarButtonItems = [spacingItem(15), topLogo]
+        self.navigationItem.rightBarButtonItems = [spacingItem(10), myInfo]
         
         addNavigationBarBorder()
-        setNavigationGesutre()
     }
     
-    func setViewController() {
+    override func configureViewController() {
         configureCollectionView()
         configureButtons()
+        configureDropDowns()
         configureNotificationCenters()
     }
     
@@ -79,37 +77,50 @@ final class HomeViewController: UIViewController {
     }
     
     private func configureButtons() {
-        homeView.categoryList.resetButton.addTarget(
+        [homeView.eventStatusButton, homeView.categoryButton]
+            .forEach { $0.changeCornerRadius() }
+        
+        homeView.eventStatusButton.addTarget(
             self,
-            action: #selector(didTapResetButton(_:)),
+            action: #selector(didTapEventStatusButton),
             for: .touchUpInside)
-        
-        homeView.categoryList.progressingButton.addTarget(
+        homeView.categoryButton.addTarget(
             self,
-            action: #selector(didTapProgressingButton(_:)),
+            action: #selector(didTapCategoryButtons),
             for: .touchUpInside)
-        
-        [
-            homeView.categoryList.groupButton,
-            homeView.categoryList.councilButton,
-            homeView.categoryList.snacksButton,
-            homeView.categoryList.studyButton,
-            homeView.categoryList.contestButton,
-            homeView.categoryList.offerButton,
-            homeView.categoryList.etcButton
-        ]
-            .forEach {
-                categoryButtons.append($0)
-                $0.addTarget(
-                    self,
-                    action: #selector(didTapCategoryButtons(_:)),
-                    for: .touchUpInside)
-            }
-        
         homeView.writeButton.addTarget(
             self,
-            action: #selector(goToWrite(_:)),
+            action: #selector(goToWrite),
             for: .touchUpInside)
+    }
+    
+    private func configureDropDowns() {
+        eventStatusDropDown.dataSource = viewModel.eventStatusList
+        eventStatusDropDown.anchorView = homeView.eventStatusButton
+        eventStatusDropDown.selectRow(1)
+        eventStatusDropDown.selectionAction = { index, item in
+            self.homeView.eventStatusButton.changeState(item)
+            self.viewModel.eventStatus = index == 1
+            self.scrollToTop()
+            self.fetchEvents()
+        }
+        
+        categoryDropDown.dataSource = viewModel.categoryList
+        categoryDropDown.anchorView = homeView.categoryButton
+        categoryDropDown.selectRow(at: 0)
+        categoryDropDown.selectionAction = { index, item in
+            self.homeView.categoryButton.changeState(item)
+            self.viewModel.categoty = index
+            self.scrollToTop()
+            self.fetchEvents()
+        }
+        
+        [eventStatusDropDown, categoryDropDown]
+            .forEach {
+                $0.configureDropDownAppearance()
+                $0.cornerRadius = ($0.anchorView?.plainView.frame.height)! / 2
+                $0.bottomOffset = CGPoint(x: 0, y: 40)
+            }
     }
     
     private func configureNotificationCenters() {
@@ -128,27 +139,25 @@ final class HomeViewController: UIViewController {
     
     // MARK: - Funcs
     
-    func paging() {
-        viewModel.isPaging = true
-        print("paging")
-        print("page: \(viewModel.currentPage)")
-        fetchEvents()
-    }
-    
-    func fetchEvents() {
+    private func fetchEvents() {
         if !viewModel.isPaging {
             setLoadingIndicator(true)
         }
         
-        viewModel.loadEvents {
+        viewModel.loadEvents { [weak self] in
             DispatchQueue.main.async {
-                self.homeView.collectionView.reloadData()
-                self.setLoadingIndicator(false)
+                self?.homeView.collectionView.reloadData()
+                self?.setLoadingIndicator(false)
             }
         }
     }
     
-    func checkLogin() {
+    private func paging() {
+        viewModel.isPaging = true
+        fetchEvents()
+    }
+    
+    private func checkLogin() {
         if !loginManager.firstLogin {
             loginManager.checkLogin() { [weak self] in
                 self?.fetchEvents()
@@ -172,7 +181,18 @@ final class HomeViewController: UIViewController {
         
     }
     
-    func setLoadingIndicator(_ bool: Bool) {
+    private func updateCellBookmark(_ cell: HomeCell, _ id: Int) {
+        if loginManager.isLoggedIn {
+            let like = cell.bookmarkButton.isSelected
+            
+            cell.bookmarkButton.isSelected = !like
+            like ? viewModel.deleteLike(id) : viewModel.likeEvent(id)
+        } else {
+            presentLoginAlert(.loginLike)
+        }
+    }
+    
+    private func setLoadingIndicator(_ bool: Bool) {
         if bool {
             homeView.loadingIndicatorView.startAnimating()
         } else {
@@ -184,20 +204,28 @@ final class HomeViewController: UIViewController {
     
     private func scrollToTop() {
         homeView.collectionView.scrollToItem(
-            at: IndexPath(item: 0, section: 0),
-            at: .top,
+            at: IndexPath(item: -1, section: 0),
+            at: .init(rawValue: 0),
             animated: true)
     }
     
     // MARK: - Action
     
-    @objc func didPullCollectionView(_ refreshControl: UIRefreshControl) {
-        homeView.collectionView.refreshControl?.endRefreshing()
+    @objc private func didPullCollectionView(_ sender: UIRefreshControl) {
+        sender.endRefreshing()
         viewModel.isPull = true
         fetchEvents()
     }
     
-    @objc func goToInfo(_ sender: UIBarButtonItem) {
+    @objc private func didTapEventStatusButton() {
+        eventStatusDropDown.show()
+    }
+    
+    @objc private func didTapCategoryButtons() {
+        categoryDropDown.show()
+    }
+    
+    @objc private func goToInfo() {
         if loginManager.isLoggedIn {
             let myPageViewController = MyPageViewController()
             self.navigationController?.pushViewController(myPageViewController, animated: true)
@@ -207,117 +235,66 @@ final class HomeViewController: UIViewController {
                 self.presentWaringView(.logout)
             }
         } else {
-            presentAlertView(.login)
+            presentLoginAlert(.none)
         }
     }
     
-    @objc func goToWrite(_ sender: UIButton) {
+    @objc private func goToWrite() {
         if loginManager.isLoggedIn {
-            let writingViewController = WritingViewController()
-            self.navigationController?.pushViewController(writingViewController, animated: true)
+            let vc = WritingViewController()
+            self.navigationController?.pushViewController(vc, animated: true)
         } else {
-            let AlertView = AlertVC(.login)
-            present(AlertView, animated: true)
-
-            AlertView.cancleButtonClosure = {
-                self.presentWaringView(.loginWriting)
-            }
+            presentLoginAlert(.loginWriting)
         }
     }
     
-    @objc func updateBookmark(_ noti: NSNotification) {
+    @objc private func updateBookmark(_ noti: NSNotification) {
         guard let like = noti.userInfo?["like"],
               let id = noti.userInfo?["id"] else {
-            print("실패")
-            
-            return }
+            return
+        }
         
-        viewModel.updateBookmarkButton(id: id as! Int, isChecked: like as! Bool)
+        viewModel.updateLikes(id as! Int, like as! Bool)
         homeView.collectionView.reloadData()
     }
     
-    @objc func reloadCollectionView(_ noti: NSNotification) {
-        fetchEvents()
-    }
-    
-    @objc private func didTapResetButton(_ sender: CategoryButton) {
-        sender.isHidden = true
-        viewModel.categoty = 0
-        viewModel.eventStatus = true
-        
-        categoryButtons
-            .forEach {
-                $0.isSelected = false
-                $0.changeState(false)
-            }
-        
-        fetchEvents()
+    @objc private func reloadCollectionView(_ noti: NSNotification) {
+        viewModel.isPull = true
         scrollToTop()
-    }
-    
-    @objc private func didTapProgressingButton(_ sender: CategoryButton) {
-        
-    }
-    
-    @objc private func didTapCategoryButtons(_ sender: CategoryButton) {
-        categoryButtons
-            .filter {
-                $0.tag != sender.tag
-            }
-            .forEach {
-                $0.isSelected = false
-                $0.changeState(false)
-            }
-        
-        sender.isSelected = !sender.isSelected
-        sender.changeState(sender.isSelected)
-        homeView.categoryList.resetButton.isHidden = !sender.isSelected
-        
-        if sender.isSelected {
-            viewModel.categoty = sender.tag
-            fetchEvents()
-        }
-        
-        scrollToTop()
+        fetchEvents()
     }
 }
 
 // MARK: - CollectionView
+
 extension HomeViewController: UICollectionViewDelegate,
                               UICollectionViewDataSource {
+    
     func collectionView(
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int)
-    -> Int {
+    -> Int
+    {
         return viewModel.numOfEvents
     }
     
     func collectionView(
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath)
-    -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeCell.identifier, for: indexPath) as? HomeCell else { return UICollectionViewCell() }
+    -> UICollectionViewCell
+    {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: HomeCell.identifier,
+            for: indexPath) as? HomeCell else {
+            return UICollectionViewCell()
+        }
         
         if viewModel.numOfEvents > 0 {
             let event = viewModel.infoOfEvent(indexPath.item)
-            cell.setUI(event)
+            cell.updateCell(event)
             
             cell.bookmarkButtonTapHandler = {
-                if self.loginManager.isLoggedIn {
-                    let like = cell.homeCellView.bookmarkButton.isSelected
-                    cell.homeCellView.bookmarkButton.isSelected = !like
-                    if like {
-                        self.viewModel.deleteLike(event.id)
-                    } else {
-                        self.viewModel.likeEvent(event.id)
-                    }
-                } else {
-                    let alertView = self.AlertVC(.login)
-                    self.present(alertView, animated: true)
-                    alertView.cancleButtonClosure = {
-                        self.presentWaringView(.loginLike)
-                    }
-                }
+                self.updateCellBookmark(cell, event.id)
             }
         }
         
@@ -326,31 +303,23 @@ extension HomeViewController: UICollectionViewDelegate,
     
     func collectionView(
         _ collectionView: UICollectionView,
-        didSelectItemAt indexPath: IndexPath) {
-            let eventDetailViewController = EventDetailViewController()
+        didSelectItemAt indexPath: IndexPath)
+    {
+            let vc = EventDetailViewController()
             let event = viewModel.infoOfEvent(indexPath.item)
-            eventDetailViewController.id = event.id
+            vc.id = event.id
             
-            self.navigationController?.pushViewController(eventDetailViewController, animated: true)
-        }
+            self.navigationController?.pushViewController(vc, animated: true)
+    }
     
     func collectionView(
         _ collectionView: UICollectionView,
         willDisplay cell: UICollectionViewCell,
         forItemAt indexPath: IndexPath)
     {
-        let index = indexPath.item
-        
-        if index == viewModel.numOfEvents - 2 && !viewModel.isPaging {
+        if indexPath.item == viewModel.numOfEvents - 2 && !viewModel.isPaging {
             paging()
         }
     }
     
-}
-
-extension HomeViewController: UIGestureRecognizerDelegate {
-    
-    func setNavigationGesutre() {
-        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
-    }
 }

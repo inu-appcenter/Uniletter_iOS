@@ -7,95 +7,75 @@
 
 import UIKit
 import SnapKit
+import Then
 
-final class TwoOptionsActionSheetView: UIView {
+final class TwoOptionsActionSheetView: BaseView {
     
     // MARK: - UI
-    lazy var backgroundView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .black
-        view.layer.opacity = 0.4
-        view.isUserInteractionEnabled = true
-        
-        return view
-    }()
     
-    lazy var cancleButton: UIButton = {
-        let button = UIButton()
-        button.backgroundColor = #colorLiteral(red: 0.8405835032, green: 0.9632034898, blue: 0.9564227462, alpha: 1)
-        button.setTitle("취소", for: .normal)
-        button.setTitleColor(UIColor.customColor(.blueGreen), for: .normal)
-        button.layer.cornerRadius = 10
-        
-        return button
-    }()
+    private lazy var backgroundView = UIView().then {
+        $0.backgroundColor = .black
+        $0.layer.opacity = 0.4
+        $0.isUserInteractionEnabled = true
+    }
     
-    lazy var alertView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.backgroundColor = .white
-        stackView.layer.cornerRadius = 10
-        
-        return stackView
-    }()
+    private lazy var alertView = UIStackView().then {
+        $0.axis = .vertical
+        $0.backgroundColor = .white
+        $0.layer.cornerRadius = 10
+    }
     
-    lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 14)
-        label.textColor = UIColor.customColor(.lightGray)
-        label.textAlignment = .center
-        
-        return label
-    }()
+    private lazy var firstBorder = UIView().then {
+        $0.backgroundColor = #colorLiteral(red: 0.918249011, green: 0.9182489514, blue: 0.9182489514, alpha: 1)
+    }
     
-    lazy var firstButton: UIButton = {
-        let button = UIButton()
-        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
-        button.setTitleColor(UIColor.black, for: .normal)
-        
-        return button
-    }()
+    private lazy var secondBorder = UIView().then {
+        $0.backgroundColor = #colorLiteral(red: 0.918249011, green: 0.9182489514, blue: 0.9182489514, alpha: 1)
+    }
     
-    lazy var secondButton: UIButton = {
-        let button = UIButton()
-        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
-        button.setTitleColor(UIColor.black, for: .normal)
-        
-        return button
-    }()
-
-    lazy var firstBorder: UIView = {
-        let view = UIView()
-        view.backgroundColor = #colorLiteral(red: 0.918249011, green: 0.9182489514, blue: 0.9182489514, alpha: 1)
-        
-        return view
-    }()
+    lazy var cancleButton = UIButton().then {
+        $0.backgroundColor = #colorLiteral(red: 0.8405835032, green: 0.9632034898, blue: 0.9564227462, alpha: 1)
+        $0.setTitle("취소", for: .normal)
+        $0.setTitleColor(.customColor(.blueGreen), for: .normal)
+        $0.layer.cornerRadius = 10
+    }
     
-    lazy var secondBorder: UIView = {
-        let view = UIView()
-        view.backgroundColor = #colorLiteral(red: 0.918249011, green: 0.9182489514, blue: 0.9182489514, alpha: 1)
-        
-        return view
-    }()
+    lazy var titleLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 14)
+        $0.textColor = .customColor(.lightGray)
+        $0.textAlignment = .center
+    }
     
-    let recognizeTapBackground = UITapGestureRecognizer()
+    lazy var firstButton = UIButton().then {
+        $0.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
+        $0.setTitleColor(.black, for: .normal)
+    }
+    
+    lazy var secondButton = UIButton().then {
+        $0.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
+        $0.setTitleColor(.black, for: .normal)
+    }
+    
+    lazy var recognizeTapBackground = UITapGestureRecognizer()
     
     // MARK: - Init
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addViews()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
-        setLayout()
+    // MARK: - Configure
+    
+    override func configureView() {
+        backgroundColor = .clear
+        backgroundView.addGestureRecognizer(recognizeTapBackground)
     }
     
-    // MARK: - Setup
-    func addViews() {
+    override func configureUI() {
         [
             titleLabel,
             firstBorder,
@@ -105,12 +85,11 @@ final class TwoOptionsActionSheetView: UIView {
         ]
             .forEach { alertView.addArrangedSubview($0) }
         
-        [backgroundView, alertView, cancleButton].forEach { addSubview($0) }
-        
-        backgroundView.addGestureRecognizer(recognizeTapBackground)
+        [backgroundView, alertView, cancleButton]
+            .forEach { addSubview($0) }
     }
     
-    func setLayout() {
+    override func configureLayout() {
         backgroundView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
@@ -146,4 +125,5 @@ final class TwoOptionsActionSheetView: UIView {
             $0.height.equalTo(52)
         }
     }
+    
 }

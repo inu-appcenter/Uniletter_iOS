@@ -10,10 +10,18 @@ import UIKit
 final class CommentsViewModel {
     
     // MARK: - Property
-    var comments = [Comment]()
-    var eventID: Int?
     
-    // MARK: - UI
+    private var comments: [Comment] = []
+    private var eventID: Int
+    
+    // MARK: - Init
+    
+    init(_ id: Int) {
+        self.eventID = id
+    }
+    
+    // MARK: - Output
+    
     var numofComments: Int {
         return comments.count
     }
@@ -22,21 +30,19 @@ final class CommentsViewModel {
         return comments[index]
     }
     
-    // MARK: - Write comments
+    // MARK: - Func
+    
+    func loadComments(completion: @escaping () -> Void) {
+        API.getComments(eventID) { [weak self] comments in
+            self?.comments = comments
+            completion()
+        }
+    }
+    
     func writeComments(_ text: String, completion: @escaping () -> Void) {
-        guard let eventID = eventID else { return }
-        
         API.createComment(data: ["eventId": eventID, "content": text]) {
             completion()
         }
     }
     
-    
-    // MARK: - Load data
-    func loadComments(_ id: Int, completion: @escaping () -> Void) {
-        API.getComments(id) { comments in
-            self.comments = comments
-            completion()
-        }
-    }
 }

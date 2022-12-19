@@ -32,19 +32,7 @@ final class PreviewView: UIView {
         return label
     }()
     
-    /// 원 모양을 생성 동시에 하기 위해 버튼으로 구현
-    lazy var ddayButton: UIButton = {
-        var config = UIButton.Configuration.filled()
-        config.baseForegroundColor = .white
-        config.baseBackgroundColor = UIColor.customColor(.blueGreen)
-        config.cornerStyle = .capsule
-        
-        let button = UIButton()
-        button.configuration = config
-        button.isUserInteractionEnabled = false
-        
-        return button
-    }()
+    lazy var ddayButton = DDayButton()
     
     lazy var infoStackView: InfoStackView = {
         let stackView = InfoStackView()
@@ -155,10 +143,11 @@ final class PreviewView: UIView {
         
         contentView.snp.makeConstraints {
             $0.width.equalTo(scrollView.frameLayoutGuide)
-            $0.edges.equalTo(scrollView.contentLayoutGuide)
+            $0.top.left.right.equalTo(scrollView.contentLayoutGuide)
+            $0.bottom.equalTo(scrollView.contentLayoutGuide).offset(-52)
         }
         
-        mainImageView.updateImageViewRatio(false)
+        mainImageView.updateImageViewRatio(.preview)
         
         intervalView1.snp.makeConstraints {
             $0.top.equalTo(mainImageView.snp.bottom).offset(20)

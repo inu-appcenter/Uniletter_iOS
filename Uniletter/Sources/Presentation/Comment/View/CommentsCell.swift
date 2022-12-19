@@ -6,112 +6,81 @@
 //
 
 import UIKit
-import SnapKit
 import Kingfisher
+import SnapKit
+import Then
 
 final class CommentsCell: UITableViewCell {
     
     static let identifier = "commentsCell"
     
     // MARK: - UI
-    let profileImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.clipsToBounds = true
-        
-        return imageView
-    }()
     
-    let nicknameLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 16, weight: .medium)
-        
-        return label
-    }()
+    private lazy var profileImageView = UIImageView().then {
+        $0.layer.cornerRadius = 12
+        $0.clipsToBounds = true
+    }
     
-    let wroteLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 13)
-        label.text = "글쓴이"
-        label.textColor = UIColor.customColor(.blueGreen)
-        label.textAlignment = .center
-        label.layer.cornerRadius = 10.5
-        label.layer.borderColor = CGColor.customColor(.blueGreen)
-        label.layer.borderWidth = 1
-        
-        label.isHidden = true
-        
-        return label
-    }()
+    private lazy var nicknameLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 16, weight: .medium)
+    }
     
-    lazy var moreButton: UIButton = {
-        let button = UIButton()
-        button.setImage(UIImage(named: "ellipsisSmall"), for: .normal)
-        
-        return button
-    }()
+    private lazy var wroteLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 13)
+        $0.text = "글쓴이"
+        $0.textColor = .customColor(.blueGreen)
+        $0.textAlignment = .center
+        $0.layer.cornerRadius = 10.5
+        $0.layer.borderColor = .customColor(.blueGreen)
+        $0.layer.borderWidth = 1
+        $0.isHidden = true
+    }
     
-    let contentLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 16, weight: .thin)
-        label.numberOfLines = 0
-        label.lineBreakMode = .byCharWrapping
-        
-        return label
-    }()
+    private lazy var moreButton = UIButton().then {
+        $0.setImage(UIImage(named: "ellipsisSmall"), for: .normal)
+    }
     
-    let dateLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 11, weight: .light)
-        label.textColor = UIColor.customColor(.darkGray)
-        
-        return label
-    }()
+    private lazy var contentLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 16, weight: .thin)
+        $0.numberOfLines = 0
+        $0.lineBreakMode = .byCharWrapping
+    }
+    
+    private lazy var dateLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 11, weight: .light)
+        $0.textColor = .customColor(.darkGray)
+    }
     
     // MARK: - Property
+    
     var moreButtonTapHandler: (() -> Void)?
     
-    
     // MARK: - Init
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        addViews()
-        setLayout()
-        
-        profileImageView.layer.cornerRadius = 12
-        moreButton.addTarget(
-            self,
-            action: #selector(didTapMoreButton(_:)),
-            for: .touchUpInside)
+        configureCell()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Update
-    func updateUI(comment: Comment, id: Int) {
-        if let imageURL = comment.profileImage,
-            let url = URL(string: imageURL) {
-            profileImageView.kf.setImage(with: url)
-        } else {
-            profileImageView.image = UIImage(named: "UserImage")
-        }
-        nicknameLabel.text = comment.nickname
-        contentLabel.text = comment.content
-        dateLabel.text = CustomFormatter.convertISO8601DateToString(
-            comment.createdAt,
-            "yy. MM. dd HH:mm")
-        wroteLabel.isHidden = comment.userID == id ? false : true
+    // MARK: - Configure
+    
+    private func configureCell() {
+        configureUI()
+        configureLayout()
+        
+        selectionStyle = .none
+        
+        moreButton.addTarget(
+            self,
+            action: #selector(didTapMoreButton(_:)),
+            for: .touchUpInside)
     }
     
-    // MARK: - Actions
-    @objc func didTapMoreButton(_ sender: UIButton) {
-        moreButtonTapHandler?()
-    }
-    
-    // MARK: - Setup
-    func addViews() {
+    private func configureUI() {
         [
             profileImageView,
             nicknameLabel,
@@ -123,7 +92,7 @@ final class CommentsCell: UITableViewCell {
             .forEach { contentView.addSubview($0) }
     }
     
-    func setLayout() {
+    private func configureLayout() {
         profileImageView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(18)
             $0.left.equalToSuperview().offset(20)
@@ -159,4 +128,33 @@ final class CommentsCell: UITableViewCell {
             $0.left.equalToSuperview().offset(20)
         }
     }
+    
+    // MARK: - Func
+    
+    private func updateProfileImage(_ imgURL: String?) {
+        if let imgURL = imgURL,
+           let url = URL(string: imgURL) {
+            profileImageView.kf.setImage(with: url)
+        } else {
+            profileImageView.image = UIImage(named: "UserImage")
+        }
+    }
+    
+    func updateUI(comment: Comment, id: Int) {
+        updateProfileImage(comment.profileImage)
+        nicknameLabel.text = comment.nickname
+        contentLabel.text = comment.content
+        dateLabel.text = CustomFormatter.convertISO8601DateToString(
+            comment.createdAt,
+            "yy. MM. dd HH:mm",
+            false)
+        wroteLabel.isHidden = comment.userID == id ? false : true
+    }
+    
+    // MARK: - Action
+    
+    @objc func didTapMoreButton(_ sender: UIButton) {
+        moreButtonTapHandler?()
+    }
+    
 }

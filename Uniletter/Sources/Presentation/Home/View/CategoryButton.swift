@@ -18,18 +18,12 @@ final class CategoryButton: UIButton {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    // MARK: - Life cycle
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        changeCornerRadius()
-    }
 
-    // MARK: - Setup
+    // MARK: - Configure
     
     func configureButton(_ title: String) {
         var config = UIButton.Configuration.plain()
+        config.image = UIImage(named: "smallDown")
         config.imagePlacement = .trailing
         config.imagePadding = 5
         
@@ -37,29 +31,23 @@ final class CategoryButton: UIButton {
         layer.borderWidth = 1
         layer.borderColor = .customColor(.deepLightGray)
         
-        setTitleColor(.black, for: .normal)
-        setTitleColor(.white, for: .selected)
-        titleLabel?.font = .systemFont(ofSize: 11, weight: .medium)
-        setAttributedTitle(title.changeAttributed(false), for: .normal)
-        setAttributedTitle(title.changeAttributed(true), for: .selected)
+        changeState(title)
         clipsToBounds = true
-        
-        changeState(false)
+        backgroundColor = .white
     }
     
     // MARK: - Func
     
-    func changeCornerRadius() {
-        layer.cornerRadius = frame.height / 2
-        layer.cornerCurve = .circular
+    func changeState(_ title: String) {
+        setAttributedTitle(
+            title.changeCategoryAttributed(),
+            for: .normal)
+        sizeToFit()
     }
     
-    func changeState(_ isSelected: Bool) {
-        backgroundColor = isSelected ? .customColor(.lightBlueGreen) : .white
-        
-        layer.borderColor = isSelected
-        ? .customColor(.lightBlueGreen)
-        : .customColor(.deepLightGray)
+    func changeCornerRadius() {
+        layer.cornerRadius = frame.height / 2
+        layer.cornerCurve = .continuous
     }
     
 }

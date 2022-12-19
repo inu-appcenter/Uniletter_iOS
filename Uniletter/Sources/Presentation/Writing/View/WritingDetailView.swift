@@ -7,65 +7,49 @@
 
 import UIKit
 import SnapKit
+import Then
 
-final class WritingDetailView: UIView {
+final class WritingDetailView: BaseView {
 
     // MARK: - UI
-    let titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 18, weight: .bold)
-        label.text = "상세레터"
-        
-        return label
-    }()
+    
+    private lazy var titleLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 18, weight: .bold)
+        $0.text = "상세레터"
+    }
 
-    let subTitleLabel: UILabel = {
-        let label = UILabel()
-        label.writingTitle("상세 내용을 입력해 주세요.")
-        
-        return label
-    }()
+    private lazy var subTitleLabel = UILabel().then {
+        $0.text = "상세 내용을 입력해 주세요."
+        $0.font = .systemFont(ofSize: 14)
+    }
     
-    lazy var textField: UITextView = {
-        let textView = UITextView()
-        textView.writingTextView()
-        textView.text = "하위 게시물이나 부적절한 언어 사용 시\n유니레터 이용이 어려울 수 있습니다."
-        textView.textColor = UIColor.customColor(.defaultGray)
-        textView.textContainer.lineBreakMode = .byCharWrapping
-        textView.textContainerInset = UIEdgeInsets(
-            top: 16,
-            left: 16,
-            bottom: 16,
-            right: 16)
-        
-        return textView
-    }()
+    lazy var textField = UITextView().then {
+        $0.writingTextView()
+        $0.text = "하위 게시물이나 부적절한 언어 사용 시\n유니레터 이용이 어려울 수 있습니다."
+        $0.textColor = UIColor.customColor(.defaultGray)
+        $0.textContainer.lineBreakMode = .byCharWrapping
+        $0.textContainerInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+    }
     
-    let guideLabel: UILabel = {
-        let label = UILabel()
-        label.writingTitle("8000자 이내로 입력 가능합니다.")
-        label.textColor = UIColor.customColor(.defaultGray)
-        
-        return label
-    }()
+    private lazy var guideLabel = UILabel().then {
+        $0.text = "8000자 이내로 입력 가능합니다."
+        $0.font = .systemFont(ofSize: 14)
+        $0.textColor = UIColor.customColor(.defaultGray)
+    }
     
     // MARK: - Init
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .white
-        addViews()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
-        setLayout()
-    }
+    // MARK: - Configure
     
-    // MARK: - Setup
-    func addViews() {
+    override func configureUI() {
         [
             titleLabel,
             subTitleLabel,
@@ -75,7 +59,7 @@ final class WritingDetailView: UIView {
             .forEach { addSubview($0) }
     }
     
-    func setLayout() {
+    override func configureLayout() {
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(24)
             $0.left.right.equalToSuperview().inset(20)
@@ -97,4 +81,5 @@ final class WritingDetailView: UIView {
             $0.left.right.equalTo(titleLabel)
         }
     }
+    
 }

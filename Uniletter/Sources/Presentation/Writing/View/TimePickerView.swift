@@ -7,71 +7,57 @@
 
 import UIKit
 import SnapKit
+import Then
 
-final class TimePickerView: UIView {
+final class TimePickerView: BaseView {
     
     // MARK: - UI
-    let subView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        view.layer.cornerRadius = 12
-        
-        return view
-    }()
     
-    let titleLabel: UILabel = {
-        let label = UILabel()
-        label.writingTitle("시작시간 선택")
-        
-        return label
-    }()
+    private lazy var subView = UIView().then {
+        $0.backgroundColor = .white
+        $0.layer.cornerRadius = 12
+    }
     
-    let pickerView = UIPickerView()
+    private lazy var selectedView = UIView().then {
+        $0.backgroundColor = #colorLiteral(red: 0, green: 0.6468470693, blue: 0.6219382882, alpha: 1)
+        $0.layer.cornerRadius = 10
+    }
     
-    let selectedView: UIView = {
-        let view = UIView()
-        view.backgroundColor = #colorLiteral(red: 0, green: 0.6468470693, blue: 0.6219382882, alpha: 1)
-        view.layer.cornerRadius = 10
-        
-        return view
-    }()
+    lazy var pickerView = UIPickerView()
     
-    lazy var cancleButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("취소", for: .normal)
-        button.setTitleColor(UIColor.customColor(.lightGray), for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
-        
-        return button
-    }()
+    lazy var titleLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 14)
+    }
     
-    lazy var okButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("확인", for: .normal)
-        button.setTitleColor(UIColor.customColor(.blueGreen), for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
-        
-        return button
-    }()
+    lazy var cancleButton = UIButton().then {
+        $0.setTitle("취소", for: .normal)
+        $0.setTitleColor(.customColor(.lightGray), for: .normal)
+        $0.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
+    }
+    
+    lazy var okButton = UIButton().then {
+        $0.setTitle("확인", for: .normal)
+        $0.setTitleColor(.customColor(.blueGreen), for: .normal)
+        $0.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
+    }
     
     // MARK: - Init
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        backgroundColor = .black.withAlphaComponent(0.3)
-        addViews()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
-        setLayout()
+    // MARK: - Configure
+
+    override func configureView() {
+        backgroundColor = .black.withAlphaComponent(0.3)
     }
     
-    // MARK: - Setup
-    func addViews() {
+    override func configureUI() {
         [
             titleLabel,
             selectedView,
@@ -84,7 +70,7 @@ final class TimePickerView: UIView {
         addSubview(subView)
     }
     
-    func setLayout() {
+    override func configureLayout() {
         subView.snp.makeConstraints {
             $0.center.equalToSuperview()
             $0.left.right.equalToSuperview().inset(20)
@@ -117,6 +103,6 @@ final class TimePickerView: UIView {
             $0.centerY.equalTo(cancleButton)
             $0.right.equalToSuperview().offset(-20)
         }
-        
     }
+    
 }

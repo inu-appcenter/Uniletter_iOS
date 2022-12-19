@@ -20,14 +20,13 @@ class NotiViewModel {
     
     func getAlarm(completion: @escaping() -> Void) {
         API.getAlarm { result in
-            print(result)
             self.notis = result
             completion()
         }
     }
     
     func deleteAlarm(index: Int, completion: @escaping() -> Void) {
-        API.deleteAlarm(data: ["eventId": notis[index].event.id, "setFor": notis[index].setFor]) {
+        API.deleteAlarm(data: ["eventId": notis[index].event.id, "setFor": notis[index].setFor], isDetail: false) {
             completion()
         }
     }

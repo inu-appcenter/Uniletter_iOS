@@ -53,7 +53,7 @@ fileprivate func networking<T: Decodable>(
 fileprivate func uploadNetworking<T: Decodable>(
     urlStr: String,
     method: HTTPMethod,
-    data: Data?,
+    data: Data,
     model: T.Type,
     completion: @escaping(Result<T, AFError>) -> Void) {
         guard let url = URL(string: baseURL + urlStr) else {
@@ -61,13 +61,14 @@ fileprivate func uploadNetworking<T: Decodable>(
             return
         }
         
-        AF.upload(multipartFormData: { multipartFormData in
+        AF.upload(
+            multipartFormData: { multipartFormData in
             multipartFormData.append(
-                data!,
+                data,
                 withName: "file",
-                fileName: "test.jpg",
-                mimeType: "image/jpg")},
-                  to: url)
+                fileName: "image.jpg",
+                mimeType: "image/jpg") },
+            to: url)
         .responseDecodable(of: model.self) { response in
             switch response.result {
             case .success(let result):
@@ -90,9 +91,9 @@ fileprivate func networkingAlert(_ type: Warning, _ isSuccessed: Bool) {
         }
         
         if type == .blockUser {
-           showSuccessToast(vc, type)
+            vc.presentWaringView(type)
         } else if isSuccessed && type != .none && type != .loginRemembered {
-            showSuccessToast(vc, type)
+            vc.presentWaringView(type)
         } else if !isSuccessed && type != .loginRemembered {
             switch type {
             case .cancleBlock,
@@ -102,7 +103,7 @@ fileprivate func networkingAlert(_ type: Warning, _ isSuccessed: Bool) {
                  .deleteEvent,
                  .changeEvent,
                  .createEvent:
-                showSuccessToast(vc, type)
+                vc.presentWaringView(type)
             default:
                 showFailAlert(vc)
             }
@@ -110,39 +111,9 @@ fileprivate func networkingAlert(_ type: Warning, _ isSuccessed: Bool) {
     }
 }
 
-/// 성공 메시지
-fileprivate func showSuccessToast(_ vc: UIViewController,_ type: Warning) {
-    let width = UIScreen.main.bounds.width
-    let height = UIScreen.main.bounds.height / 1.3
-    
-    let warningViewWidth = width - 40
-    let toastPointX = width / 2
-    let toastPointY = type == .writing ? height - 52 : height
-    
-    let warningView = WarningView(frame: CGRect(
-        x: 0,
-        y: 0,
-        width: warningViewWidth,
-        height: 52))
-    warningView.warninglabel.text = type.body
-
-    vc.view.showToast(
-        warningView,
-        duration: 1.5,
-        point: CGPoint(x: toastPointX, y: toastPointY))
-}
-
 /// 실패 메시지
 fileprivate func showFailAlert(_ vc: UIViewController) {
-    let alertVC = UIAlertController(
-        title: "네트워크 연결 상태가 좋지 않거나 네트워킹에 실패하였습니다.\n다시 시도해주세요.",
-        message: nil,
-        preferredStyle: .alert)
-    let cancleAction = UIAlertAction(title: "확인", style: .default)
-    
-    alertVC.addAction(cancleAction)
-    
-    vc.present(alertVC, animated: true)
+    vc.presentNoticeAlertView(noticeAlert: .networkingFail, check: false)
 }
 
 final class API {
@@ -567,7 +538,7 @@ final class API {
     }
     
     /// 행사 알림 삭제하기
-    static func deleteAlarm(data: [String: Any], completion: @escaping() -> Void) {
+    static func deleteAlarm(data: [String: Any], isDetail: Bool, completion: @escaping() -> Void) {
         guard let data = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) else { return }
         
         networking(
@@ -575,7 +546,7 @@ final class API {
             method: .delete,
             data: data,
             model: Noti.self,
-            apiType: .cancleAlarm) { result in
+            apiType: isDetail ? .none : .cancleAlarm) { result in
                 switch result {
                 case .success(_):
                     print("성공")

@@ -9,16 +9,6 @@ import UIKit
 
 extension UIButton {
     
-    func createCheckButton() {
-        self.layer.cornerRadius = 2
-        self.layer.borderWidth = 1
-        self.layer.borderColor = .customColor(.blueGreen)
-        self.backgroundColor = .customColor(.blueGreen)
-        self.setImage(UIImage(), for: .normal)
-        self.setImage(UIImage(named: "check"), for: .selected)
-        self.isSelected = true
-    }
-    
     func createCompletionButton(_ title: String) {
         self.backgroundColor = UIColor.customColor(.blueGreen)
         self.tintColor = .white
@@ -43,14 +33,4 @@ extension UIButton {
         self.setTitle(title, for: .normal)
     }
     
-    // 글쓰기 화면 체크버튼 상태 변경
-    func updateUI(_ isSelected: Bool) {
-        if isSelected {
-            self.backgroundColor = UIColor.customColor(.blueGreen)
-            self.layer.borderColor = CGColor.customColor(.blueGreen)
-        } else{
-            self.backgroundColor = .white
-            self.layer.borderColor = #colorLiteral(red: 0.8980392157, green: 0.8980392157, blue: 0.8980392157, alpha: 1).cgColor
-        }
-    }
 }

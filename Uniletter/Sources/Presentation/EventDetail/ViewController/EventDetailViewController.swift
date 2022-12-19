@@ -8,63 +8,54 @@
 import UIKit
 import Kingfisher
 import SnapKit
+import Then
 
-final class EventDetailViewController: UIViewController {
+final class EventDetailViewController: BaseViewController {
+    
+    // MARK: - UI
+    
+    private lazy var bookmarkButton = BookmarkButton(
+        frame: CGRect(x: 0, y: 0, width: 15, height: 23)).then
+    {
+        $0.addTarget(
+            self,
+            action: #selector(didTapBookmarkButton(_:)),
+            for: .touchUpInside)
+    }
+    
+    private lazy var topMoreButton = UIBarButtonItem(
+        image: UIImage(named: "ellipsis")?.withRenderingMode(.alwaysOriginal),
+        style: .done,
+        target: self,
+        action: #selector(didTapTopMoreButton))
     
     // MARK: - Property
-    let eventDetailView = EventDetailView()
-    let viewModel = EventDetailViewModel()
-    let loginManager = LoginManager.shared
+    
+    private let eventDetailView = EventDetailView()
+    private let loginManager = LoginManager.shared
+    private lazy var viewModel = EventDetailViewModel(id: id)
     var id: Int = 0
-    var bookmarkButton = UIButton()
     var userBlockCompletionClosure: (() -> Void)?
     var userLikeCompletionClosure: (() -> Void)?
     
     // MARK: - Life cycle
+    
     override func loadView() {
         view = eventDetailView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setNavigationBar()
-        setViewController()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         fetchEvents()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        convertProfileImageToCircle()
-    }
+    // MARK: - Configure
     
-    // MARK: - Setup
-    func setNavigationBar() {
+    override func configureNavigationBar() {
         setNavigationTitleAndBackButton("읽어보기")
-        
-        let bookmarkButton: UIButton = {
-            let button = UIButton(frame: CGRect(x: 0, y: 0, width: 15, height: 23))
-            button.setBackgroundImage(
-                UIImage(named: "bookmark"),
-                for: .normal)
-            button.setBackgroundImage(
-                UIImage(named: "bookmarkFill"),
-                for: .selected)
-            button.addTarget(
-                self,
-                action: #selector(didTapBookmarkButton(_:)),
-                for: .touchUpInside)
-            
-            return button
-        }()
-        self.bookmarkButton = bookmarkButton
-        
-        let topMoreButton = UIBarButtonItem(
-            image: UIImage(named: "ellipsis")?.withRenderingMode(.alwaysOriginal),
-            style: .done,
-            target: self,
-            action: #selector(didTapTopMoreButton(_:)))
         
         self.navigationItem.rightBarButtonItems = [
             topMoreButton,
@@ -72,26 +63,35 @@ final class EventDetailViewController: UIViewController {
         ]
     }
     
-    func setViewController() {
+    override func configureViewController() {
         eventDetailView.moreButton.addTarget(
             self,
-            action: #selector(didTapProfileMoreButton(_:)),
+            action: #selector(didTapProfileMoreButton),
             for: .touchUpInside)
         eventDetailView.notificationButton.addTarget(
             self,
-            action: #selector(didTapNotificationButton(_:)),
+            action: #selector(didTapNotificationButton),
             for: .touchUpInside)
         eventDetailView.recognizeTapLink.addTarget(
             self,
-            action: #selector(didTapLabel(_:)))
+            action: #selector(didTapLabel))
         eventDetailView.commentsButton.addTarget(
             self,
-            action: #selector(didTapCommentesLabel(_:)),
+            action: #selector(didTapCommentesLabel),
             for: .touchUpInside)
     }
     
-    // MARK: - Funcs
-    func updateUI() {
+    // MARK: - Func
+    
+    private func fetchEvents() {
+        viewModel.loadEvent { [weak self] in
+            DispatchQueue.main.async {
+                self?.updateUI()
+            }
+        }
+    }
+    
+    private func updateUI() {
         bookmarkButton.isSelected = viewModel.like
         eventDetailView.moreButton.isHidden = viewModel.wroteByMe
         eventDetailView.nicknameLabel.text = viewModel.nickname
@@ -103,34 +103,25 @@ final class EventDetailViewController: UIViewController {
         eventDetailView.infoStackView.endLabel.text = viewModel.endContent
         eventDetailView.infoStackView.targetLabel.text = viewModel.target
         eventDetailView.infoStackView.contactLabel.text = viewModel.contact
+        eventDetailView.infoStackView.linkLabel.attributedText = viewModel.link.convertToHyperLink()
         
         eventDetailView.bodyContentsTextView.text = viewModel.body
         eventDetailView.viewsLabel.text = viewModel.views
         eventDetailView.likeAndCommentsLabel.text = viewModel.likeAndComments
         
+        eventDetailView.notificationButton.updateButton(viewModel.notiState)
+        
         updateProfileImage()
         updateMainImage()
         updateDDay()
-        convertTextToHyperLink()
         hideSubjects()
     }
     
-    func hideSubjects() {
-        if viewModel.categoryContent == " | " {
-            eventDetailView.infoStackView.validateInfo(.category, true)
-        }
-        if viewModel.target == "" {
-            eventDetailView.infoStackView.validateInfo(.target, true)
-        }
-        if viewModel.contact == "" {
-            eventDetailView.infoStackView.validateInfo(.contact, true)
-        }
-        if viewModel.link == "" {
-            eventDetailView.infoStackView.validateInfo(.link, true)
-        }
+    private func hideSubjects() {
+        eventDetailView.infoStackView.validateInfo()
     }
     
-    func updateProfileImage() {
+    private func updateProfileImage() {
         if viewModel.profileImage == "" {
             eventDetailView.profileImageView.image = UIImage(named: "BasicProfileImage")
         } else {
@@ -138,211 +129,160 @@ final class EventDetailViewController: UIViewController {
         }
     }
     
-    func updateMainImage() {
+    private func updateMainImage() {
         eventDetailView.mainImageView.kf.setImage(with: URL(string: viewModel.mainImage)!) { _ in
-            self.eventDetailView.mainImageView.updateImageViewRatio(true)
+            self.eventDetailView.mainImageView.updateImageViewRatio(.detail)
         }
     }
     
-    func updateDDay() {
-        let dateStr = viewModel.endAt
-        let day = dateStr.caculateDateDiff()[0]
-        let min = dateStr.caculateDateDiff()[1]
-        let dday: String
-        let buttonText: String
+    private func updateDDay() {
+        eventDetailView.ddayButton.updateDDay(viewModel.endAt)
         
-        if day < 0 || (day == 0 && min < 0) {
-            eventDetailView.ddayButton.configuration?.baseBackgroundColor = UIColor.customColor(.darkGray)
-            eventDetailView.notificationButton.backgroundColor = UIColor.customColor(.lightGray)
-            
-            dday = "마감"
-            buttonText = "행사 마감"
-        } else {
-            eventDetailView.ddayButton.configuration?.baseBackgroundColor = UIColor.customColor(.blueGreen)
-            eventDetailView.notificationButton.backgroundColor = UIColor.customColor(.blueGreen)
-            
-            dday = day == 0 ? "D-day" : "D-\(day)"
-            buttonText = "알림 신청"
-        }
-        
-        var ddayAttributed = AttributedString(dday)
-        ddayAttributed.font = .systemFont(ofSize: 13)
-        
-        eventDetailView.ddayButton.configuration?.attributedTitle = ddayAttributed
-        eventDetailView.notificationButton.setTitle(buttonText, for: .normal)
-    }
-    
-    func convertProfileImageToCircle() {
-        let imageView = eventDetailView.profileImageView
-        imageView.layer.cornerRadius = imageView.frame.height / 2
-        imageView.clipsToBounds = true
-    }
-    
-    func convertTextToHyperLink() {
-        let link = viewModel.link
-        
-        if link.contains("http") {
-            let attributedString = NSMutableAttributedString(string: link)
-            attributedString.addAttribute(
-                .link,
-                value: NSUnderlineStyle.single.rawValue,
-                range: NSRange(location: 0, length: link.count))
-            
-            eventDetailView.infoStackView.linkLabel.attributedText = attributedString
-        } else {
-            eventDetailView.infoStackView.linkLabel.text = link
+        if eventDetailView.ddayButton.titleLabel?.text == "마감" {
+            eventDetailView.notificationButton.updateButton(.done)
         }
     }
     
-    func fetchEvents() {
-        self.viewModel.loadEvent(self.id) {
-            DispatchQueue.main.async {
-                self.updateUI()
+    private func updateEvent() {
+        let vc = WritingViewController()
+        vc.event = viewModel.eventInfo
+        let naviVC = UINavigationController(rootViewController: vc)
+        naviVC.modalPresentationStyle = .fullScreen
+        
+        self.present(naviVC, animated: true)
+    }
+    
+    private func deleteEvent() {
+        let alert = self.AlertVC(.delete)
+        alert.alertIsDeleteClosure = {
+            self.viewModel.deleteEvent {
+                self.presentWaringView(.deleteEvent)
             }
         }
+        self.present(alert, animated: true)
     }
     
-    func postBlockNotification() {
-        NotificationCenter.default.post(
-            name: Notification.Name("HomeReload"),
-            object: nil)
+    private func updateLike(_ like: Bool) {
+        like
+        ? viewModel.likeEvent() { [weak self] text in
+            self?.eventDetailView.likeAndCommentsLabel.text = text
+        }
+        : viewModel.deleteLike() { [weak self] text in
+            self?.eventDetailView.likeAndCommentsLabel.text = text
+        }
+        
+        postLikeNotification(id, like)
+        userLikeCompletionClosure?()
     }
     
-    // MARK: - Actions
-    @objc func didTapBookmarkButton(_ sender: UIButton) {
+    private func blockUser() {
+        viewModel.postBlock(userId: viewModel.userID) { [weak self] in
+            self?.postHomeReloadNotification()
+            self?.navigationController?.popViewController(animated: true)
+        }
+    }
+    
+    private func deleteNotification() {
+        viewModel.deleteNotification { [weak self] in
+            self?.updateNotificationButton(.deleteNotice)
+        }
+    }
+    
+    private func presentTopMoreActionSheet() {
+        if viewModel.wroteByMe {
+            let actionSheet = presentActionSheetView(.topForWriter)
+            actionSheet.updateEventCompletionClosure = {
+                self.updateEvent()
+            }
+            actionSheet.deleteEventcompletionClosure = {
+                self.deleteEvent()
+            }
+            
+            self.present(actionSheet, animated: true)
+        } else {
+            let vc = presentActionSheetView(.topForUser)
+            vc.eventID = id
+            vc.reportEventCompletionClosure = {
+                self.presentWaringView(.reportEvent)
+            }
+            
+            self.present(vc, animated: false)
+        }
+    }
+    
+    private func presentRequestAlert() {
+        let vc = presentActionSheetView(.notification)
+        vc.eventID = id
+        
+        vc.notifyBeforeStartCompletionClosure = {
+            self.updateNotificationButton(.startNotice)
+        }
+        
+        vc.notifyBeforeEndCompletionClosure = {
+            self.updateNotificationButton(.deadlineNotice)
+        }
+        
+        present(vc, animated: true)
+    }
+    
+    private func updateNotificationButton(_ alert: NoticeAlert) {
+        fetchEvents()
+        presentNoticeAlertView(noticeAlert: alert, check: false)
+    }
+    
+    // MARK: - Action
+    
+    @objc private func didTapBookmarkButton(_ sender: UIButton) {
         if loginManager.isLoggedIn {
             sender.isSelected = !sender.isSelected
-            
-            sender.isSelected
-            ? viewModel.likeEvent() { text in
-                self.eventDetailView.likeAndCommentsLabel.text = text
-            }
-            : viewModel.deleteLike() { text in
-                self.eventDetailView.likeAndCommentsLabel.text = text
-            }
-            
-            NotificationCenter.default.post(
-                name: NSNotification.Name("like"),
-                object: nil,
-                userInfo: ["id": id, "like": sender.isSelected])
-            
-            if let userLikeCompletionClosure = userLikeCompletionClosure {
-                userLikeCompletionClosure()
-            }
-            
+            updateLike(sender.isSelected)
         } else {
-            let AlertView = self.AlertVC(.login)
-            self.present(AlertView, animated: true)
-            AlertView.cancleButtonClosure = {
-                self.presentWaringView(.loginLike)
-            }
+            presentLoginAlert(.loginLike)
         }
     }
     
-    @objc func didTapTopMoreButton(_ sender: UIButton) {
-        let presentActionVC = presentActionSheetView(.topForUser)
-        presentActionVC.eventID = id
+    @objc private func didTapTopMoreButton() {
+        if loginManager.isLoggedIn {
+            presentTopMoreActionSheet()
+        } else {
+            presentLoginAlert(.none)
+        }
+    }
+    
+    @objc private func didTapProfileMoreButton() {
+        let vc = presentActionSheetView(.profile)
         
-        if loginManager.isLoggedIn {
-            if viewModel.wroteByMe {
-                print("내가쓴글")
-                let id = viewModel.event?.id
-                let vc = presentActionSheetView(.topForWriter)
-                
-                vc.eventID = id
-                vc.event = viewModel.event
-                
-                self.present(vc, animated: true)
-            } else {
-                self.present(presentActionVC, animated: false)
-                
-                presentActionVC.reportEventCompletionClosure = {
-                    self.presentWaringView(.reportEvent)
-                }
-            }
-        } else {
-            let presentActionVC = presentActionSheetView(.topForUser)
-            self.present(presentActionVC, animated: true)
-
-            presentActionVC.reportEventCompletionClosure = {
-                let alertView = self.AlertVC(.login)
-                self.present(alertView, animated: true)
-
-                alertView.cancleButtonClosure = {
-                    self.presentWaringView(.loginReport)
-                }
-            }
+        vc.blockUserCompletionClousre = {
+            self.loginManager.isLoggedIn ? self.blockUser() : self.presentLoginAlert(.loginBlock)
         }
+        self.present(vc, animated: true)
     }
     
-    @objc func didTapProfileMoreButton(_ sender: UIButton) {
-        if loginManager.isLoggedIn {
-            
-            let presentActionVC = presentActionSheetView(.profile)
-            self.present(presentActionVC, animated: true)
-            
-            presentActionVC.blockUserCompletionClousre = {
-                self.viewModel.postBlock(userId: self.viewModel.event!.userID) {
-                    self.postBlockNotification()
-                    self.navigationController?.popViewController(animated: true)
-                }
-            }
-        } else {
-            let presentActionVC = presentActionSheetView(.profile)
-            self.present(presentActionVC, animated: true)
-            presentActionVC.blockUserCompletionClousre = {
-                let alertView = self.AlertVC(.login)
-                self.present(alertView, animated: true)
-                
-                alertView.cancleButtonClosure = {
-                    self.presentWaringView(.loginBlock)
-                }
-            }
-        }
-    }
-    
-    @objc func didTapCommentesLabel(_ sender: UIButton) {
+    @objc private func didTapCommentesLabel() {
         let vc = CommentsViewController()
         vc.eventID = id
-        vc.userID = viewModel.event?.userID
+        vc.userID = viewModel.userID
         
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    @objc func didTapNotificationButton(_ sender: UIButton) {
+    @objc private func didTapNotificationButton() {
         if loginManager.isLoggedIn {
-            if viewModel.endAt.caculateDateDiff()[0] > 0 {
-                
-                let vc = presentActionSheetView(.notification)
-                vc.eventID = id
-                
-                present(vc, animated: true)
-                
-                vc.notifyBeforeStartCompletionClosure = {
-//                    self.presentNoticeAlertView(.startNotice)
-                    self.presentNoticeAlertView(noticeAlert: .startNotice, check: false)
-                }
-                
-                vc.notifyBeforeEndCompletionClosure = {
-//                    self.presentNoticeAlertView(.deadlineNotice)
-                    self.presentNoticeAlertView(noticeAlert: .deadlineNotice, check: false)
-                }
+            switch viewModel.notiState {
+            case .request:
+                presentRequestAlert()
+            case .cancel:
+                deleteNotification()
+            case .done:
+                break
             }
-            
         } else {
-            let AlertView = self.AlertVC(.login)
-            self.present(AlertView, animated: true)
-            AlertView.cancleButtonClosure = {
-                self.presentWaringView(.loginNoti)
-            }
+            presentLoginAlert(.loginNoti)
         }
     }
     
-    @objc func didTapLabel(_ sender: UITapGestureRecognizer) {
-        guard let url = URL(string: viewModel.link) else {
-            return
-        }
-        
-        UIApplication.shared.open(url)
+    @objc private func didTapLabel() {
+        openURL(viewModel.link)
     }
+    
 }

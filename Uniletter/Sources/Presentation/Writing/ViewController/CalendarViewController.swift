@@ -8,54 +8,59 @@
 import UIKit
 import FSCalendar
 
-final class CalendarViewController: UIViewController {
+final class CalendarViewController: BaseViewController {
     
     // MARK: - Property
-    let calendarView = CalendarView()
-    let writingManager = WritingManager.shared
+    
+    private let calendarView = CalendarView()
+    private let writingManager = WritingManager.shared
     var delegate: DateSetDelegate?
     var style: Style!
     var selectedDate: Date!
     
     // MARK: - Life cycle
+    
     override func loadView() {
         view = calendarView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setViewController()
+        configureCalendar()
     }
     
-    // MARK: - Setup
-    func setViewController() {
-        calendarView.titleLabel.text = style == .start
-        ? "모집 시작일" : "모집 마감일"
-        
-        formatYearDate(Date())
-        calendarView.calendar.delegate = self
-        calendarView.calendar.dataSource = self
+    // MARK: - Configure
+    
+    override func configureViewController() {
+        calendarView.titleLabel.text = style == .start ? "모집 시작일" : "모집 마감일"
         
         calendarView.leftButton.addTarget(
             self,
-            action: #selector(didTapLeftButton(_:)),
+            action: #selector(didTapLeftButton),
             for: .touchUpInside)
         calendarView.rightButton.addTarget(
             self,
-            action: #selector(didTapRightButton(_:)),
+            action: #selector(didTapRightButton),
             for: .touchUpInside)
-        calendarView.cancleButton.addTarget(
+        calendarView.cancelButton.addTarget(
             self,
-            action: #selector(didTapCancleButton(_:)),
+            action: #selector(didTapCancleButton),
             for: .touchUpInside)
         calendarView.okButton.addTarget(
             self,
-            action: #selector(didTapOKButton(_:)),
+            action: #selector(didTapOKButton),
             for: .touchUpInside)
     }
     
-    // MARK: - Funcs
-    func formatYearDate(_ date: Date) {
+    private func configureCalendar() {
+        formatYearDate(Date())
+        calendarView.calendar.delegate = self
+        calendarView.calendar.dataSource = self
+    }
+    
+    // MARK: - Func
+    
+    private func formatYearDate(_ date: Date) {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "en_US")
         formatter.dateFormat = "YYYY MMMM"
@@ -65,7 +70,7 @@ final class CalendarViewController: UIViewController {
         calendarView.yearMonthLabel.text = result
     }
     
-    func moveCurruntPage(_ moveUp: Bool) {
+    private func moveCurruntPage(_ moveUp: Bool) {
         var currentPage = calendarView.calendar.currentPage
         var dateComponents = DateComponents()
         
@@ -77,27 +82,28 @@ final class CalendarViewController: UIViewController {
         calendarView.calendar.setCurrentPage(currentPage, animated: true)
     }
     
-    func compareDates(_ date: Date) -> Bool {
+   private func compareDates(_ date: Date) -> Bool {
         let first = CustomFormatter.dateToString(date)
         let second = CustomFormatter.dateToString(Date())
         
         return CustomFormatter.subDateString(first) == CustomFormatter.subDateString(second)
     }
     
-    // MARK: - Actions
-    @objc func didTapLeftButton(_ sender: UIButton) {
+    // MARK: - Action
+    
+    @objc private func didTapLeftButton() {
         moveCurruntPage(false)
     }
     
-    @objc func didTapRightButton(_ sender: UIButton) {
+    @objc private func didTapRightButton() {
         moveCurruntPage(true)
     }
     
-    @objc func didTapCancleButton(_ sender: UIButton) {
-        dismiss(animated: true)
+    @objc private func didTapCancleButton() {
+        self.dismiss(animated: true)
     }
     
-    @objc func didTapOKButton(_ sender: UIButton) {
+    @objc private func didTapOKButton() {
         let dateStr = CustomFormatter.dateToString(selectedDate)
         delegate?.setDate(date: CustomFormatter.dateToString(selectedDate), style: style)
         
@@ -107,13 +113,17 @@ final class CalendarViewController: UIViewController {
             writingManager.endDate = dateStr
         }
         
-        dismiss(animated: true)
+        self.dismiss(animated: true)
     }
+    
 }
+
+// MARK: - FSCalendar
 
 extension CalendarViewController: FSCalendarDelegate,
                                   FSCalendarDataSource,
                                   FSCalendarDelegateAppearance {
+    
     func calendar(
         _ calendar: FSCalendar,
         didSelect date: Date,
@@ -162,4 +172,5 @@ extension CalendarViewController: FSCalendarDelegate,
     -> [UIColor]? {
         return [UIColor.red]
     }
+    
 }

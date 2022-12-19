@@ -7,11 +7,16 @@
 
 import UIKit
 
-final class NoticeAlertViewController: UIViewController {
-    let noticeAlertView = NoticeAlertView()
+final class NoticeAlertViewController: BaseViewController {
+    
+    // MARK: - Property
+    
+    private let noticeAlertView = NoticeAlertView()
     var noticeAlert: NoticeAlert?
     var check: Bool = false
     var okButtonCompletionClosure: (() -> Void)?
+    
+    // MARK: - Life cycle
     
     override func loadView() {
         view = noticeAlertView
@@ -19,38 +24,38 @@ final class NoticeAlertViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setViewController()
     }
     
-    func setViewController() {
+    // MARK: - Configure
+    
+    override func configureViewController() {
         noticeAlertView.setViewOptionCount(check)
         noticeAlertView.titleLabel.text = noticeAlert?.title
         noticeAlertView.setLabelParagraphStyle(noticeAlert?.body)
+        
         noticeAlertView.recognizeTapBackground.addTarget(
             self,
-            action: #selector(dismissViewController(_:)))
+            action: #selector(dismissViewController))
         
         noticeAlertView.okButton.addTarget(
             self,
-            action: #selector(okButtonClicked(_:)),
+            action: #selector(okButtonClicked),
             for: .touchUpInside)
         
         noticeAlertView.noButton.addTarget(
             self,
-            action: #selector(dismissViewController(_:)),
+            action: #selector(dismissViewController),
             for: .touchUpInside)
     }
     
-    @objc func dismissViewController(_ sender: Any) {
+    // MARK: - Action
+    
+    @objc private func dismissViewController() {
         dismiss(animated: true)
     }
     
-    @objc func okButtonClicked(_ sender: UIGestureRecognizer) {
-        
+    @objc private func okButtonClicked() {
         dismiss(animated: true)
-        
-        if let okButtonCompletionClosure = okButtonCompletionClosure {
-            okButtonCompletionClosure()
-        }
+        okButtonCompletionClosure?()
     }
 }
