@@ -12,15 +12,13 @@ class SearchView: UIView {
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        let height = UIScreen.main.bounds.width - CGFloat(20) * 2 - CGFloat(12)
         
-        layout.itemSize = CGSize(width: height / 2, height: height)
-        
-        layout.sectionInset = UIEdgeInsets(top: 4, left: 20, bottom: 0, right: 20)
+        layout.itemSize = CGSize(width: UIScreen.main.bounds.size.width, height: 160)
+        layout.minimumLineSpacing = 0
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         
-        collectionView.register(HomeCell.self, forCellWithReuseIdentifier: HomeCell.identifier)
+        collectionView.register(SaveListCell.self, forCellWithReuseIdentifier: SaveListCell.identifier)
         
         return collectionView
     }()

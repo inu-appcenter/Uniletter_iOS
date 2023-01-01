@@ -117,9 +117,10 @@ extension SearchViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeCell.identifier, for: indexPath) as? HomeCell else { return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SaveListCell.identifier, for: indexPath) as? SaveListCell else { return UICollectionViewCell() }
+
         
-        cell.updateCell(viewModel.eventAtIndex(index: indexPath.item))
+        cell.setUI(event: viewModel.eventAtIndex(index: indexPath.item))
         
         return cell
     }
