@@ -106,7 +106,7 @@ final class EventDetailViewModel {
     }
     
     var likeAndComments: String {
-        return "저장\(event.likes) ∙ 댓글 \(event.comments)개"
+        return "저장 \(event.likes) ∙ 댓글 \(event.comments)개"
     }
     
     var notiSetByMe: Bool? {

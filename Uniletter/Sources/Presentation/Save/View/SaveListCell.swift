@@ -64,8 +64,7 @@ class SaveListCell: UICollectionViewCell {
     }
     
     func setUI(event: Event) {
-        guard let url = URL(string: event.imageURL) else { return }
-        self.EventView.eventImage.kf.setImage(with: url)
+        self.EventView.eventImage.fetchImage(event.imageURL, contentView.frame.width, contentView.frame.width * sqrt(2))
         self.EventView.eventBodyLabel.text = event.body
         self.EventView.eventTitleLabel.text = event.title
         self.EventView.commentCountLabel.text = String(event.comments)

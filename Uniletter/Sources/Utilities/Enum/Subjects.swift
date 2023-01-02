@@ -56,7 +56,7 @@ extension Subjects {
         case .contact:
             return "문의사항시 연락방법을 입력해주세요."
         case .link:
-            return "첨부할 URL이 있다면 입력해주세요."
+            return "신청링크(URL) 또는 신청장소를 입력해주세요."
         }
     }
     

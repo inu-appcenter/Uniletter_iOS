@@ -22,15 +22,36 @@ final class HomeViewController: BaseViewController {
         }
         $0.customView = imgView
     }
+
+    private lazy var searchButton: UIButton = {
+        let image = UIImage(named: "Search")
+        
+        let button = UIButton(frame: CGRect(
+            x: 0,
+            y: 0,
+            width: image!.size.width,
+            height: image!.size.height))
+        
+        button.setImage(image, for: .normal)
+        button.addTarget(self, action: #selector(goToSearch), for: .touchUpInside)
+        
+        return button
+    }()
     
-    private lazy var myInfo = UIBarButtonItem(
-        image: UIImage(
-            systemName: "person",
-            withConfiguration: UIImage.SymbolConfiguration(weight: .bold))?
-            .withRenderingMode(.alwaysOriginal),
-        style: .done,
-        target: self,
-        action: #selector(goToInfo))
+    private lazy var myInfoButton: UIButton = {
+        let image = UIImage(named: "person")
+        
+        let button = UIButton(frame: CGRect(
+            x: 0,
+            y: 0,
+            width: image!.size.width,
+            height: image!.size.height))
+        
+        button.setImage(image, for: .normal)
+        button.addTarget(self, action: #selector(goToInfo), for: .touchUpInside)
+        
+        return button
+    }()
     
     // MARK: - Property
     
@@ -54,9 +75,12 @@ final class HomeViewController: BaseViewController {
     // MARK: - Configure
     
     override func configureNavigationBar() {
+        let searchButtonItem = UIBarButtonItem(customView: searchButton)
+        let infoButtonItem = UIBarButtonItem(customView: myInfoButton)
+
         self.navigationItem.leftBarButtonItems = [spacingItem(15), topLogo]
-        self.navigationItem.rightBarButtonItems = [spacingItem(10), myInfo]
-        
+        self.navigationItem.rightBarButtonItems = [spacingItem(15), infoButtonItem, spacingItem(20), searchButtonItem]
+    
         addNavigationBarBorder()
     }
     
@@ -246,6 +270,12 @@ final class HomeViewController: BaseViewController {
         } else {
             presentLoginAlert(.loginWriting)
         }
+    }
+    
+    @objc private func goToSearch() {
+        
+        let searchVC = SearchViewController()
+        self.navigationController?.pushViewController(searchVC, animated: true)
     }
     
     @objc private func updateBookmark(_ noti: NSNotification) {
