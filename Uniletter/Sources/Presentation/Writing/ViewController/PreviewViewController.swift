@@ -39,15 +39,23 @@ final class PreviewViewController: UIViewController {
         previewView.infoStackView.endLabel.text = viewModel.endAt
         previewView.infoStackView.targetLabel.text = viewModel.target
         previewView.infoStackView.contactLabel.text = viewModel.contact
-        previewView.infoStackView.linkLabel.attributedText = viewModel.location.convertToHyperLink()
         previewView.bodyContentsTextView.text = viewModel.body
         previewView.ddayButton.updateDDay(viewModel.dday)
         
         updateImageView()
+        updateLink()
         hideSubjects()
     }
     
     // MARK: - Funcs
+    
+    private func updateLink() {
+        previewView.infoStackView.linkSubjectLabel.text = viewModel.location.validateHyperLink()
+        ? "신청링크"
+        : "신청장소"
+        
+        previewView.infoStackView.linkLabel.attributedText = viewModel.location.convertToHyperLink()
+    }
     
     func hideSubjects() {
         previewView.infoStackView.validateInfo()

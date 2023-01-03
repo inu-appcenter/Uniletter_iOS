@@ -142,7 +142,7 @@ final class EventDetailViewModel {
     }
     
     func deleteEvent(completion: @escaping () -> Void) {
-        API.deleteEvent(id) { [weak self] in
+        API.deleteEvent(id) {
             completion()
         }
     }

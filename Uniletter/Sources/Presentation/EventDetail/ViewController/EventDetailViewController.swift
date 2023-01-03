@@ -103,7 +103,6 @@ final class EventDetailViewController: BaseViewController {
         eventDetailView.infoStackView.endLabel.text = viewModel.endContent
         eventDetailView.infoStackView.targetLabel.text = viewModel.target
         eventDetailView.infoStackView.contactLabel.text = viewModel.contact
-        eventDetailView.infoStackView.linkLabel.attributedText = viewModel.link.convertToHyperLink()
         
         eventDetailView.bodyContentsTextView.text = viewModel.body
         eventDetailView.viewsLabel.text = viewModel.views
@@ -114,7 +113,16 @@ final class EventDetailViewController: BaseViewController {
         updateProfileImage()
         updateMainImage()
         updateDDay()
+        updateLink()
         hideSubjects()
+    }
+    
+    private func updateLink() {
+        eventDetailView.infoStackView.linkSubjectLabel.text = viewModel.link.validateHyperLink()
+        ? "신청링크"
+        : "신청장소"
+        
+        eventDetailView.infoStackView.linkLabel.attributedText = viewModel.link.convertToHyperLink()
     }
     
     private func hideSubjects() {
