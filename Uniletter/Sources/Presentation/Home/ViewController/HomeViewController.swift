@@ -335,11 +335,11 @@ extension HomeViewController: UICollectionViewDelegate,
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath)
     {
-            let vc = EventDetailViewController()
-            let event = viewModel.infoOfEvent(indexPath.item)
-            vc.id = event.id
-            
-            self.navigationController?.pushViewController(vc, animated: true)
+        let vc = EventDetailViewController()
+        let event = viewModel.infoOfEvent(indexPath.item)
+        vc.id = event.id
+        
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     func collectionView(
@@ -349,6 +349,16 @@ extension HomeViewController: UICollectionViewDelegate,
     {
         if indexPath.item == viewModel.numOfEvents - 2 && !viewModel.isPaging {
             paging()
+        }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let translation = scrollView.panGestureRecognizer.translation(in: scrollView.superview)
+        
+        if translation.y > 0 {  // Up
+            homeView.showTopView()
+        } else {                // Down
+            homeView.hideTopView()
         }
     }
     
