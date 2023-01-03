@@ -68,7 +68,11 @@ final class EventDetailViewModel {
     }
     
     var categoryContent: String {
-        return "\(event.category) | \(event.host ?? "")"
+        if let host = event.host {
+            return "\(event.category) | \(host)"
+        } else {
+            return "\(event.category)"
+        }
     }
     
     var startContent: String {
