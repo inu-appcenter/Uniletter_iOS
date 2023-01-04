@@ -5,8 +5,9 @@
 //  Created by 권오준 on 2022/06/27.
 //
 
-import UIKit
 import AuthenticationServices
+import Siren
+import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -21,6 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.rootViewController = LaunchViewController()
         window?.makeKeyAndVisible()
         
+        configureUpdateAlert()
         presentInitViewController()
     }
 
@@ -95,6 +97,14 @@ extension SceneDelegate {
                 self.window?.rootViewController = navigationController
             }
         }
+    }
+    
+    private func configureUpdateAlert() {
+        let siren = Siren.shared
+        siren.apiManager = APIManager(country: .korea)
+        siren.presentationManager = PresentationManager(forceLanguageLocalization: .korean)
+        siren.rulesManager = RulesManager(globalRules: .annoying)
+        siren.wail()
     }
     
 }
