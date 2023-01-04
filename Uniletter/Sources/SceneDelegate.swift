@@ -103,7 +103,7 @@ extension SceneDelegate {
         let siren = Siren.shared
         siren.apiManager = APIManager(country: .korea)
         siren.presentationManager = PresentationManager(forceLanguageLocalization: .korean)
-        siren.rulesManager = RulesManager(globalRules: .annoying)
+        siren.rulesManager = RulesManager(globalRules: .default)
         siren.wail()
     }
     
