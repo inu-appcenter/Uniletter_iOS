@@ -64,6 +64,9 @@ final class EventDetailViewController: BaseViewController {
     }
     
     override func configureViewController() {
+        eventDetailView.bodyContentsTextView.dataDetectorTypes = [.link, .phoneNumber, .address]
+        eventDetailView.bodyContentsTextView.delegate = self
+        
         eventDetailView.moreButton.addTarget(
             self,
             action: #selector(didTapProfileMoreButton),
@@ -74,7 +77,7 @@ final class EventDetailViewController: BaseViewController {
             for: .touchUpInside)
         eventDetailView.recognizeTapLink.addTarget(
             self,
-            action: #selector(didTapLabel))
+            action: #selector(didTapURL))
         eventDetailView.commentsButton.addTarget(
             self,
             action: #selector(didTapCommentesLabel),
@@ -122,7 +125,7 @@ final class EventDetailViewController: BaseViewController {
         ? "신청링크"
         : "신청장소"
         
-        eventDetailView.infoStackView.linkLabel.attributedText = viewModel.link.convertToHyperLink()
+        eventDetailView.infoStackView.linkLabel.attributedText = viewModel.link.convertToLink()
     }
     
     private func hideSubjects() {
@@ -289,8 +292,24 @@ final class EventDetailViewController: BaseViewController {
         }
     }
     
-    @objc private func didTapLabel() {
+    @objc private func didTapURL() {
         openURL(viewModel.link)
+    }
+    
+}
+
+// MARK: - TextView
+
+extension EventDetailViewController: UITextViewDelegate {
+    
+    func textView(
+        _ textView: UITextView,
+        shouldInteractWith URL: URL,
+        in characterRange: NSRange,
+        interaction: UITextItemInteraction)
+    -> Bool
+    {
+        return true
     }
     
 }

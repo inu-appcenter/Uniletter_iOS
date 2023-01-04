@@ -37,10 +37,10 @@ extension String {
     }
     
     func validateHyperLink() -> Bool {
-        return self.contains("http") || self.contains("bit")
+        return URL(string: self) != nil
     }
     
-    func convertToHyperLink() -> NSMutableAttributedString {
+    func convertToLink() -> NSMutableAttributedString {
         let attributedString = NSMutableAttributedString(string: self)
         
         if validateHyperLink() {
