@@ -27,6 +27,7 @@ enum Address {
     case users              // 사용자
     case reports            // 신고
     case deleteMe           // 회원탈퇴
+    case searchEvent        // 이벤트 검색
     
     var url: String {
         switch self {
@@ -51,6 +52,7 @@ enum Address {
         case .users: return "users/"    // +id
         case .reports: return "reports" // + eventId
         case .deleteMe: return "delete-me"
+        case .searchEvent: return "events-by-search"
         }
     }
 }
