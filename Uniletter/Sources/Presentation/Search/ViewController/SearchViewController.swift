@@ -58,7 +58,6 @@ final class SearchViewController: UIViewController {
         configureUI()
         configureNavigationBar()
         configureDropdowns()
-        fetchEvent()
     }
     
     // MARK: - Objc Functions
@@ -98,7 +97,6 @@ extension SearchViewController {
             self.searchView.eventStatusButton.changeState(item)
             self.viewModel.eventStatus = index == 1
             self.scrollToTop()
-            self.fetchEvent()
         }
         
         categoryDropDown.dataSource = viewModel.categoryList
@@ -108,7 +106,6 @@ extension SearchViewController {
             self.searchView.categoryButton.changeState(item)
             self.viewModel.categoty = index
             self.scrollToTop()
-            self.fetchEvent()
         }
         
         [eventStatusDropDown, categoryDropDown]
@@ -127,7 +124,7 @@ extension SearchViewController {
     }
     
     func fetchEvent() {
-        viewModel.searchEvent {
+        viewModel.fetchEvent {
             DispatchQueue.main.async {
                 self.searchView.collectionView.reloadData()
             }
@@ -166,7 +163,6 @@ extension SearchViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         let index = indexPath.row
         
-        print(index)
         if index == viewModel.numOfEvents - 1 && !viewModel.isLast {
             fetchEvent()
         }
@@ -211,8 +207,8 @@ extension SearchViewController: UISearchBarDelegate {
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        viewModel.searchContent = searchBar.text!
         dismissKeyborad()
-        
-        print(searchBar.text!)
+        fetchEvent()
     }
 }

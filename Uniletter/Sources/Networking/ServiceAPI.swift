@@ -344,6 +344,7 @@ final class API {
     static func searchEvent(content: String, pageNum: Int, completion: @escaping([Event]) -> Void) {
         
         let urlString = Address.searchEvent.url + "?content=\(content)&pageNum=\(pageNum)&pageSize=\(6)"
+        
         let encodeStr = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         
         networking(

@@ -23,6 +23,7 @@ class SearchView: UIView {
         
         collectionView.register(SaveListCell.self, forCellWithReuseIdentifier: SaveListCell.identifier)
         
+        collectionView.alwaysBounceVertical = true
         return collectionView
     }()
     
