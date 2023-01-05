@@ -43,6 +43,10 @@ class SearchViewModel {
         isLast = false
     }
     
+    func updateBookMarkByDetailVC(index: Int, isLiked: Bool) {
+        events[index].likedByMe = isLiked
+    }
+    
     func updateBookMark(index: Int, isLiked: Bool) {
     
         events[index].likedByMe = !isLiked

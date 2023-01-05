@@ -36,7 +36,7 @@ final class EventDetailViewController: BaseViewController {
     private lazy var viewModel = EventDetailViewModel(id: id)
     var id: Int = 0
     var userBlockCompletionClosure: (() -> Void)?
-    var userLikeCompletionClosure: (() -> Void)?
+    var userLikeCompletionClosure: ((Bool) -> Void)?
     
     // MARK: - Life cycle
     
@@ -183,7 +183,7 @@ final class EventDetailViewController: BaseViewController {
         }
         
         postLikeNotification(id, like)
-        userLikeCompletionClosure?()
+        userLikeCompletionClosure?(like)
     }
     
     private func blockUser() {

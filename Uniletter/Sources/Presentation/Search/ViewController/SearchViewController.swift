@@ -143,10 +143,13 @@ extension SearchViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         let detailVC = EventDetailViewController()
-        
         detailVC.id = viewModel.events[indexPath.item].id
-        
         self.navigationController?.pushViewController(detailVC, animated: true)
+        
+        detailVC.userLikeCompletionClosure = {
+            self.viewModel.updateBookMarkByDetailVC(index: indexPath.item, isLiked: $0)
+            self.searchView.collectionView.reloadData()
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
@@ -187,8 +190,8 @@ extension SearchViewController: UICollectionViewDataSource {
         
         cell.bookMarkClosure = {
             if self.loginManager.isLoggedIn {
-                cell.bookMarkButton.isSelected = !event.likedByMe!
-                self.viewModel.updateBookMark(index: indexPath.item, isLiked: event.likedByMe!)
+                self.viewModel.updateBookMark(index: indexPath.item, isLiked: cell.bookMarkButton.isSelected)
+                cell.bookMarkButton.isSelected = !cell.bookMarkButton.isSelected
             }
         }
 
