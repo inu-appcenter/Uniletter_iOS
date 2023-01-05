@@ -18,10 +18,12 @@ final class SearchViewController: UIViewController {
         searchBar.frame = CGRect(x: 0, y: 0, width: navigationController!.view.frame.size
             .width - 70, height: 0)
         searchBar.placeholder = "검색어를 입력해주세요."
+        searchBar.searchTextField.font = UIFont.systemFont(ofSize: 14)
         searchBar.setImage(
             UIImage(),
             for: UISearchBar.Icon.search,
             state: .normal)
+        searchBar.becomeFirstResponder()
         return searchBar
     }()
     
@@ -97,7 +99,10 @@ extension SearchViewController {
     func configureNavigationBar() {
         setNavigationBackButton()
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: searchBar)
+        let searchBarWrapper = SearchBarContainerView(customSearchBar: searchBar)
+        
+        searchBarWrapper.frame = CGRect(x: 0, y: 0, width: self.navigationController!.view.frame.size.width - 70, height: 30)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: searchBarWrapper)
     }
     
     func fetchEvent() {
