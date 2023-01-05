@@ -15,10 +15,9 @@ final class SearchViewController: UIViewController {
     
     lazy var searchBar: UISearchBar = {
         var searchBar = UISearchBar()
-        
-        searchBar.frame = CGRect(x: 0, y: 0, width: 250, height: 0)
+        searchBar.frame = CGRect(x: 0, y: 0, width: navigationController!.view.frame.size
+            .width - 70, height: 0)
         searchBar.placeholder = "검색어를 입력해주세요."
-        searchBar.searchTextField.font = .systemFont(ofSize: 14)
         searchBar.setImage(
             UIImage(),
             for: UISearchBar.Icon.search,
@@ -43,12 +42,6 @@ final class SearchViewController: UIViewController {
         configureUI()
         configureNavigationBar()
         configureDropdowns()
-    }
-    
-    // MARK: - Objc Functions
-    
-    @objc func cancleButtonClick() {
-        // TODO: - 취소버튼 눌렀을 때 기능 추가
     }
 }
 
@@ -103,8 +96,8 @@ extension SearchViewController {
     
     func configureNavigationBar() {
         setNavigationBackButton()
-
-        self.navigationItem.titleView = searchBar
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: searchBar)
     }
     
     func fetchEvent() {
