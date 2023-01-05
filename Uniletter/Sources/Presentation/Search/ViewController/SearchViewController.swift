@@ -141,7 +141,12 @@ extension SearchViewController {
 
 extension SearchViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // TODO: []
+        
+        let detailVC = EventDetailViewController()
+        
+        detailVC.id = viewModel.events[indexPath.item].id
+        
+        self.navigationController?.pushViewController(detailVC, animated: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
