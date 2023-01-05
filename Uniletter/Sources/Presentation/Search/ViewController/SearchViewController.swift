@@ -26,22 +26,6 @@ final class SearchViewController: UIViewController {
         return searchBar
     }()
     
-    lazy var cancleButtonItem: UIBarButtonItem = {
-        var buttonItem = UIBarButtonItem(title: "취소")
-        
-        buttonItem.setTitleTextAttributes(
-            [.font: UIFont.systemFont(ofSize: 14),
-             .foregroundColor: UIColor.customColor(.darkGray)],
-            for: .normal)
-
-        buttonItem.setTitleTextAttributes(
-            [.font: UIFont.systemFont(ofSize: 14),
-             .foregroundColor: UIColor.customColor(.darkGray)],
-            for: .highlighted)
-        
-        return buttonItem
-    }()
-    
     private let searchView = SearchView()
     private let viewModel = SearchViewModel()
     private let loginManager = LoginManager.shared
@@ -121,7 +105,6 @@ extension SearchViewController {
         setNavigationBackButton()
 
         self.navigationItem.titleView = searchBar
-        self.navigationItem.rightBarButtonItem = cancleButtonItem
     }
     
     func fetchEvent() {
