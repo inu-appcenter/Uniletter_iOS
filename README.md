@@ -1,8 +1,8 @@
 # Uniletter_iOS
-유니레터 iOS
 
-<img width="192" alt="logo" src="https://user-images.githubusercontent.com/75382687/176232693-a045051f-e9ae-40a5-a24a-3690a81f5b11.png">
-<a href="https://apps.apple.com/kr/app/%EC%9C%A0%EB%8B%88%EB%A0%88%ED%84%B0/id6444344639">유니레터(앱스토어)</a>
+<a href="https://apps.apple.com/kr/app/%EC%9C%A0%EB%8B%88%EB%A0%88%ED%84%B0/id6444344639"><img width="192" alt="logo" src="https://user-images.githubusercontent.com/75382687/176232693-a045051f-e9ae-40a5-a24a-3690a81f5b11.png"></a>
+
+_해당 이미지 클릭 시 앱스토어로 이동합니다._
 
 ## 구성원
 
@@ -43,8 +43,11 @@
 >> Presentation
 >>> 여러 화면의 View, ViewController, ViewModel 파일들
 
+>> CustomView
+>>> 여러 화면에서 쓰이는 Costom View, ViewController 파일들
+
 >> Utilities
->>> 유틸리티 파일들
+>>> 유틸리티(Custom Enum, DateFormatter 등) 파일들
 
 >> Model
 >>> 다양한 Model 구조체 파일들
@@ -64,15 +67,24 @@
 
 ## 업데이트 로그
 
-### 2022.12.01 v1.1.0
-- <b>이벤트, 저장 목록 페이징</b>
+### 2022.12.08 v.1.2.0
+- <b>`이벤트 진행 여부, 카테고리 필터링 추가`</b>
+- Then 라이브러리 추가
+- 특정 상황에서 발생하는 크래시 수정
+- url로 받아오는 이벤트 썸네일 크기 축소 -> 메모리 사용량 대폭 감소
+- 사진 등록 시 이미지뷰 크기 동적으로 변경
+- UI 일부 수정
+
+
+### 2022.11.30 v1.1.0
+- <b>`이벤트, 저장 목록 페이징 추가`</b>
 - 글쓰기 이미지 등록 안내 문구 수정
 - 댓글창 테이블뷰 바로 보이게 수정
 - 이미지 비율 수정
 - UI 일부 수정
 
 ### 2022.11.18 v1.0.0
-- 배포 완료
+- <b>`배포 완료`</b>
 
 ## 라이센스
 유니레터는 MIT 라이센스가 적용됩니다. [이곳](/LICENSE)에서 확인해주세요.

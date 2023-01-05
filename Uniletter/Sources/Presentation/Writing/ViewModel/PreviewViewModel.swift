@@ -20,7 +20,11 @@ final class PreviewViewModel {
     }
     
     var category: String {
-        return self.preview.category + " | " + self.preview.host
+        if preview.host.isEmpty {
+            return preview.category
+        } else {
+            return preview.category + " | " + preview.host
+        }
     }
     
     var startAt: String {

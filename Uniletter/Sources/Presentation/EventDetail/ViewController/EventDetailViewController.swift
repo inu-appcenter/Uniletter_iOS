@@ -64,6 +64,9 @@ final class EventDetailViewController: BaseViewController {
     }
     
     override func configureViewController() {
+        eventDetailView.bodyContentsTextView.dataDetectorTypes = [.link, .phoneNumber, .address]
+        eventDetailView.bodyContentsTextView.delegate = self
+        
         eventDetailView.moreButton.addTarget(
             self,
             action: #selector(didTapProfileMoreButton),
@@ -74,7 +77,7 @@ final class EventDetailViewController: BaseViewController {
             for: .touchUpInside)
         eventDetailView.recognizeTapLink.addTarget(
             self,
-            action: #selector(didTapLabel))
+            action: #selector(didTapURL))
         eventDetailView.commentsButton.addTarget(
             self,
             action: #selector(didTapCommentesLabel),
@@ -103,7 +106,6 @@ final class EventDetailViewController: BaseViewController {
         eventDetailView.infoStackView.endLabel.text = viewModel.endContent
         eventDetailView.infoStackView.targetLabel.text = viewModel.target
         eventDetailView.infoStackView.contactLabel.text = viewModel.contact
-        eventDetailView.infoStackView.linkLabel.attributedText = viewModel.link.convertToHyperLink()
         
         eventDetailView.bodyContentsTextView.text = viewModel.body
         eventDetailView.viewsLabel.text = viewModel.views
@@ -114,7 +116,16 @@ final class EventDetailViewController: BaseViewController {
         updateProfileImage()
         updateMainImage()
         updateDDay()
+        updateLink()
         hideSubjects()
+    }
+    
+    private func updateLink() {
+        eventDetailView.infoStackView.linkSubjectLabel.text = viewModel.link.validateHyperLink()
+        ? "신청링크"
+        : "신청장소"
+        
+        eventDetailView.infoStackView.linkLabel.attributedText = viewModel.link.convertToLink()
     }
     
     private func hideSubjects() {
@@ -281,8 +292,24 @@ final class EventDetailViewController: BaseViewController {
         }
     }
     
-    @objc private func didTapLabel() {
+    @objc private func didTapURL() {
         openURL(viewModel.link)
+    }
+    
+}
+
+// MARK: - TextView
+
+extension EventDetailViewController: UITextViewDelegate {
+    
+    func textView(
+        _ textView: UITextView,
+        shouldInteractWith URL: URL,
+        in characterRange: NSRange,
+        interaction: UITextItemInteraction)
+    -> Bool
+    {
+        return true
     }
     
 }

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import DropDown
 import SnapKit
 
 final class SearchViewController: UIViewController {
@@ -43,6 +44,8 @@ final class SearchViewController: UIViewController {
     
     let searchView = SearchView()
     let viewModel = SearchViewModel()
+    private let eventStatusDropDown = DropDown()
+    private let categoryDropDown = DropDown()
 
     // MARK: - LifeCycle
     
@@ -54,6 +57,7 @@ final class SearchViewController: UIViewController {
         super.viewDidLoad()
         configureUI()
         configureNavigationBar()
+        configureDropdowns()
         fetchEvent()
     }
     
@@ -72,6 +76,47 @@ extension SearchViewController {
         searchView.collectionView.dataSource = self
         searchView.collectionView.delegate = self
         searchBar.delegate = self
+        
+        [searchView.eventStatusButton, searchView.categoryButton]
+            .forEach { $0.changeCornerRadius() }
+        
+        searchView.eventStatusButton.addTarget(
+            self,
+            action: #selector(didTapEventStatusButton),
+            for: .touchUpInside)
+        searchView.categoryButton.addTarget(
+            self,
+            action: #selector(didTapCategoryButtons),
+            for: .touchUpInside)
+    }
+    
+    func configureDropdowns() {
+        eventStatusDropDown.dataSource = viewModel.eventStatusList
+        eventStatusDropDown.anchorView = searchView.eventStatusButton
+        eventStatusDropDown.selectRow(1)
+        eventStatusDropDown.selectionAction = { index, item in
+            self.searchView.eventStatusButton.changeState(item)
+            self.viewModel.eventStatus = index == 1
+            self.scrollToTop()
+            self.fetchEvent()
+        }
+        
+        categoryDropDown.dataSource = viewModel.categoryList
+        categoryDropDown.anchorView = searchView.categoryButton
+        categoryDropDown.selectRow(at: 0)
+        categoryDropDown.selectionAction = { index, item in
+            self.searchView.categoryButton.changeState(item)
+            self.viewModel.categoty = index
+            self.scrollToTop()
+            self.fetchEvent()
+        }
+        
+        [eventStatusDropDown, categoryDropDown]
+            .forEach {
+                $0.configureDropDownAppearance()
+                $0.cornerRadius = ($0.anchorView?.plainView.frame.height)! / 2
+                $0.bottomOffset = CGPoint(x: 0, y: 40)
+            }
     }
     
     func configureNavigationBar() {
@@ -88,6 +133,27 @@ extension SearchViewController {
             }
         }
     }
+    
+    private func scrollToTop() {
+        searchView.collectionView.scrollToItem(
+            at: IndexPath(item: -1, section: 0),
+            at: .init(rawValue: 0),
+            animated: true)
+    }
+}
+
+// MARK: - Actions
+
+extension SearchViewController {
+    
+    @objc private func didTapEventStatusButton() {
+        eventStatusDropDown.show()
+    }
+    
+    @objc private func didTapCategoryButtons() {
+        categoryDropDown.show()
+    }
+    
 }
 
 // MARK: - UICollectionViewDelegate
@@ -103,6 +169,16 @@ extension SearchViewController: UICollectionViewDelegate {
         print(index)
         if index == viewModel.numOfEvents - 1 && !viewModel.isLast {
             fetchEvent()
+        }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let translation = scrollView.panGestureRecognizer.translation(in: scrollView.superview)
+        
+        if translation.y > 0 {  // Up
+            searchView.showTopView()
+        } else {                // Down
+            searchView.hideTopView()
         }
     }
 }

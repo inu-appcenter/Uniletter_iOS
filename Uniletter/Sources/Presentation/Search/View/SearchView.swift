@@ -7,8 +7,11 @@
 
 import Foundation
 import SnapKit
+import Then
 
 class SearchView: UIView {
+    
+    // MARK: - UI
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -22,6 +25,20 @@ class SearchView: UIView {
         
         return collectionView
     }()
+    
+    lazy var eventStatusButton = CategoryButton().then {
+        $0.configureButton("진행중")
+    }
+    
+    lazy var categoryButton = CategoryButton().then {
+        $0.configureButton("카테고리")
+    }
+    
+    lazy var topView = UIView()
+    
+    // MARK: - Property
+    
+    private var isScrolling = false
     
     // MARK: - Init
     
@@ -38,11 +55,58 @@ class SearchView: UIView {
 extension SearchView {
     
     func configureUI() {
-        addSubview(collectionView)
+        [eventStatusButton, categoryButton]
+            .forEach { topView.addSubview($0) }
+        
+        [topView, collectionView]
+            .forEach { addSubview($0) }
+        
+        topView.snp.makeConstraints {
+            $0.top.equalTo(safeAreaLayoutGuide)
+            $0.left.right.equalToSuperview()
+            $0.height.equalTo(64)
+        }
+        
+        categoryButton.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.right.equalToSuperview().offset(-20)
+            $0.height.equalToSuperview().multipliedBy(0.5)
+        }
+        
+        eventStatusButton.snp.makeConstraints {
+            $0.centerY.height.equalTo(categoryButton)
+            $0.right.equalTo(categoryButton.snp.left).offset(-4)
+        }
         
         collectionView.snp.makeConstraints {
-            $0.top.equalTo(safeAreaLayoutGuide).offset(16)
+            $0.top.equalTo(topView.snp.bottom)
             $0.leading.trailing.bottom.equalToSuperview()
         }
+    }
+    
+    // MARK: - Func
+    
+    private func updateTopViewHeight(_ isShow: Bool) {
+        if !isScrolling {
+            isScrolling = true
+            
+            topView.snp.updateConstraints {
+                $0.height.equalTo(isShow ? 64 : 0)
+            }
+            
+            UIView.animate(withDuration: 0.3, animations: {
+                self.layoutIfNeeded()
+            }) { _ in
+                self.isScrolling = false
+            }
+        }
+    }
+    
+    func showTopView() {
+        updateTopViewHeight(true)
+    }
+    
+    func hideTopView() {
+        updateTopViewHeight(false)
     }
 }

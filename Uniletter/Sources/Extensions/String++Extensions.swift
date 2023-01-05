@@ -36,10 +36,14 @@ extension String {
         return [diff, time]
     }
     
-    func convertToHyperLink() -> NSMutableAttributedString {
+    func validateHyperLink() -> Bool {
+        return URL(string: self) != nil
+    }
+    
+    func convertToLink() -> NSMutableAttributedString {
         let attributedString = NSMutableAttributedString(string: self)
         
-        if self.contains("http") || self.contains("bit") {
+        if validateHyperLink() {
             attributedString.addAttribute(
                 .link,
                 value: NSUnderlineStyle.single.rawValue,

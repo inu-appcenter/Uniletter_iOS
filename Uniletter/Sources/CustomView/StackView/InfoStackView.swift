@@ -28,6 +28,8 @@ final class InfoStackView: UIStackView {
     lazy var contactStackView = createStackView(.contact, contactLabel)
     lazy var linkStackView = createStackView(.link, linkLabel)
     
+    lazy var linkSubjectLabel = UILabel()
+    
     // MARK: - Init
     
     override init(frame: CGRect) {
@@ -74,6 +76,10 @@ final class InfoStackView: UIStackView {
     private func createStackView(_ subject: Subjects, _ contentsLabel: UILabel) -> UIStackView {
         let subjectLabel = UILabel()
         subjectLabel.changeDetail(subject.title)
+        
+        if subject == .link {
+            linkSubjectLabel = subjectLabel
+        }
         
         let stackView = UIStackView()
         stackView.spacing = 20
