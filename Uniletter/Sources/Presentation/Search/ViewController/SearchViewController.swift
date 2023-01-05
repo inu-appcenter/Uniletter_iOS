@@ -42,8 +42,9 @@ final class SearchViewController: UIViewController {
         return buttonItem
     }()
     
-    let searchView = SearchView()
-    let viewModel = SearchViewModel()
+    private let searchView = SearchView()
+    private let viewModel = SearchViewModel()
+    private let loginManager = LoginManager.shared
     private let eventStatusDropDown = DropDown()
     private let categoryDropDown = DropDown()
 
@@ -192,8 +193,17 @@ extension SearchViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SaveListCell.identifier, for: indexPath) as? SaveListCell else { return UICollectionViewCell() }
 
         
-        cell.setUI(event: viewModel.eventAtIndex(index: indexPath.item))
+        let event = viewModel.eventAtIndex(index: indexPath.item)
         
+        cell.setUI(event: event)
+        
+        cell.bookMarkClosure = {
+            if self.loginManager.isLoggedIn {
+                cell.bookMarkButton.isSelected = !event.likedByMe!
+                self.viewModel.updateBookMark(index: indexPath.item, isLiked: event.likedByMe!)
+            }
+        }
+
         return cell
     }
 }

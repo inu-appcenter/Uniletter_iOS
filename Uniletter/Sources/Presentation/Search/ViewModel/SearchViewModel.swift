@@ -43,6 +43,33 @@ class SearchViewModel {
         isLast = false
     }
     
+    func updateBookMark(index: Int, isLiked: Bool) {
+    
+        events[index].likedByMe = !isLiked
+        
+        if isLiked {
+            API.deleteLikes(data: ["eventId": events[index].id]) {
+                NotificationCenter.default.post(
+                    name: NSNotification.Name("like"),
+                    object: nil,
+                    userInfo: [
+                        "id": self.events[index].id,
+                        "like": false
+                    ])
+            }
+        } else {
+            API.likeEvent(["eventId": events[index].id]) {
+                NotificationCenter.default.post(
+                    name: NSNotification.Name("like"),
+                    object: nil,
+                    userInfo: [
+                        "id": self.events[index].id,
+                        "like": true
+                    ])
+            }
+        }
+    }
+    
     func fetchEvent(completion: @escaping() -> Void) {
         API.searchEvent(content: self.searchContent, pageNum: pageNum) { result in
             if !result.isEmpty {

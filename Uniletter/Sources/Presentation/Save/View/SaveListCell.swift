@@ -16,14 +16,9 @@ class SaveListCell: UICollectionViewCell {
     
     var bookMarkClosure: (() -> Void)?
     
-    lazy var bookMarkButton: UIButton = {
+    lazy var bookMarkButton: BookmarkButton = {
         
-        var config = UIButton.Configuration.plain()
-        config.image = UIImage(systemName: "bookmark.fill")
-        
-        let button = UIButton(configuration: config)
-        
-        button.tintColor = UIColor.customColor(.yellow)
+        let button = BookmarkButton()
         
         button.addTarget(self, action: #selector(bookMarkButtonClicked(_:)), for: .touchUpInside)
         
@@ -64,13 +59,30 @@ class SaveListCell: UICollectionViewCell {
     }
     
     func setUI(event: Event) {
-        self.EventView.eventImage.fetchImage(event.imageURL, contentView.frame.width, contentView.frame.width * sqrt(2))
+        self.EventView.eventImage.fetchImage(event.imageURL, 85, 120)
         self.EventView.eventBodyLabel.text = event.body
         self.EventView.eventTitleLabel.text = event.title
         self.EventView.commentCountLabel.text = String(event.comments)
+//
+        if let isLike = event.likedByMe {
+            if isLike {
+                bookMarkButton.isSelected = true
+            } else {
+                bookMarkButton.isSelected = false
+            }
+        }
+    }
+    
+    func updateBookMark() {
+        if bookMarkButton.isSelected {
+            bookMarkButton.isSelected = false
+        } else {
+            bookMarkButton.isSelected = true
+        }
     }
     
     @objc func bookMarkButtonClicked(_ sender: UIGestureRecognizer) {
+        
         if let bookMarkClosure = bookMarkClosure {
             bookMarkClosure()
         }
