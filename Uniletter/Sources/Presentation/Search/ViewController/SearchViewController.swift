@@ -72,7 +72,7 @@ extension SearchViewController {
     func configureDropdowns() {
         eventStatusDropDown.dataSource = viewModel.eventStatusList
         eventStatusDropDown.anchorView = searchView.eventStatusButton
-        eventStatusDropDown.selectRow(1)
+        eventStatusDropDown.selectRow(at: 0)
         eventStatusDropDown.selectionAction = { index, item in
             self.searchView.eventStatusButton.changeState(item)
             self.viewModel.eventStatus = index == 1
