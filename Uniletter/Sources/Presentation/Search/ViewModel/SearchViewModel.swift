@@ -21,7 +21,7 @@ class SearchViewModel {
         willSet { removeEvents() }
     }
     
-    var eventStatus = true {
+    var eventStatus = false {
         willSet { removeEvents() }
     }
     
