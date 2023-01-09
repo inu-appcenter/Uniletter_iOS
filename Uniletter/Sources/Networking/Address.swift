@@ -52,7 +52,7 @@ enum Address {
         case .users: return "users/"    // +id
         case .reports: return "reports" // + eventId
         case .deleteMe: return "delete-me"
-        case .searchEvent: return "events-by-search"
+        case .searchEvent: return "events-by-search-with-filtering"
         }
     }
 }

@@ -341,9 +341,10 @@ final class API {
             }
     }
     
-    static func searchEvent(content: String, pageNum: Int, completion: @escaping([Event]) -> Void) {
+    /// 이벤트 검색하기
+    static func searchEvent(category: Int, eventStatus: Bool, content: String, pageNum: Int, completion: @escaping([Event]) -> Void) {
         
-        let urlString = Address.searchEvent.url + "?content=\(content)&pageNum=\(pageNum)&pageSize=\(6)"
+        let urlString = Address.searchEvent.url + "?categoryId=\(category)&eventStatus=\(eventStatus)&content=\(content)&pageNum=\(pageNum)&pageSize=\(6)"
         
         let encodeStr = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         

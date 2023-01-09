@@ -55,7 +55,6 @@ extension SearchViewController {
         searchView.collectionView.dataSource = self
         searchView.collectionView.delegate = self
         searchBar.delegate = self
-        
         [searchView.eventStatusButton, searchView.categoryButton]
             .forEach { $0.changeCornerRadius() }
         
@@ -77,6 +76,7 @@ extension SearchViewController {
             self.searchView.eventStatusButton.changeState(item)
             self.viewModel.eventStatus = index == 1
             self.scrollToTop()
+            self.filterEvent()
         }
         
         categoryDropDown.dataSource = viewModel.categoryList
@@ -86,6 +86,7 @@ extension SearchViewController {
             self.searchView.categoryButton.changeState(item)
             self.viewModel.categoty = index
             self.scrollToTop()
+            self.filterEvent()
         }
         
         [eventStatusDropDown, categoryDropDown]
@@ -94,6 +95,8 @@ extension SearchViewController {
                 $0.cornerRadius = ($0.anchorView?.plainView.frame.height)! / 2
                 $0.bottomOffset = CGPoint(x: 0, y: 40)
             }
+        
+        searchView.hideTopView()
     }
     
     func configureNavigationBar() {
@@ -107,6 +110,14 @@ extension SearchViewController {
     
     func fetchEvent() {
         viewModel.fetchEvent {
+            DispatchQueue.main.async {
+                self.searchView.collectionView.reloadData()
+            }
+        }
+    }
+    
+    func filterEvent() {
+        viewModel.filterEvent {
             DispatchQueue.main.async {
                 self.searchView.collectionView.reloadData()
             }
@@ -209,5 +220,6 @@ extension SearchViewController: UISearchBarDelegate {
         viewModel.searchContent = searchBar.text!
         dismissKeyborad()
         fetchEvent()
+        searchView.showTopView()
     }
 }

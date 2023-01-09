@@ -74,8 +74,20 @@ class SearchViewModel {
         }
     }
     
+    func filterEvent(completion: @escaping() -> Void) {
+        API.searchEvent(category: categoty, eventStatus: eventStatus, content: searchContent, pageNum: pageNum) { result in
+            if !result.isEmpty {
+                self.events += result
+                self.pageNum += 1
+            } else {
+                self.isLast = true
+            }
+            completion()
+        }
+    }
+    
     func fetchEvent(completion: @escaping() -> Void) {
-        API.searchEvent(content: self.searchContent, pageNum: pageNum) { result in
+        API.searchEvent(category: 0, eventStatus: false, content: searchContent, pageNum: pageNum) { result in
             if !result.isEmpty {
                 self.events += result
                 self.pageNum += 1
