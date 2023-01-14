@@ -15,35 +15,21 @@ final class SearchViewController: UIViewController {
     
     lazy var searchBar: UISearchBar = {
         var searchBar = UISearchBar()
-        
-        searchBar.frame = CGRect(x: 0, y: 0, width: 250, height: 0)
+        searchBar.frame = CGRect(x: 0, y: 0, width: navigationController!.view.frame.size
+            .width - 70, height: 0)
         searchBar.placeholder = "검색어를 입력해주세요."
-        searchBar.searchTextField.font = .systemFont(ofSize: 14)
+        searchBar.searchTextField.font = UIFont.systemFont(ofSize: 14)
         searchBar.setImage(
             UIImage(),
             for: UISearchBar.Icon.search,
             state: .normal)
+        searchBar.becomeFirstResponder()
         return searchBar
     }()
     
-    lazy var cancleButtonItem: UIBarButtonItem = {
-        var buttonItem = UIBarButtonItem(title: "취소")
-        
-        buttonItem.setTitleTextAttributes(
-            [.font: UIFont.systemFont(ofSize: 14),
-             .foregroundColor: UIColor.customColor(.darkGray)],
-            for: .normal)
-
-        buttonItem.setTitleTextAttributes(
-            [.font: UIFont.systemFont(ofSize: 14),
-             .foregroundColor: UIColor.customColor(.darkGray)],
-            for: .highlighted)
-        
-        return buttonItem
-    }()
-    
-    let searchView = SearchView()
-    let viewModel = SearchViewModel()
+    private let searchView = SearchView()
+    private let viewModel = SearchViewModel()
+    private let loginManager = LoginManager.shared
     private let eventStatusDropDown = DropDown()
     private let categoryDropDown = DropDown()
 
@@ -58,13 +44,6 @@ final class SearchViewController: UIViewController {
         configureUI()
         configureNavigationBar()
         configureDropdowns()
-        fetchEvent()
-    }
-    
-    // MARK: - Objc Functions
-    
-    @objc func cancleButtonClick() {
-        // TODO: - 취소버튼 눌렀을 때 기능 추가
     }
 }
 
@@ -76,7 +55,6 @@ extension SearchViewController {
         searchView.collectionView.dataSource = self
         searchView.collectionView.delegate = self
         searchBar.delegate = self
-        
         [searchView.eventStatusButton, searchView.categoryButton]
             .forEach { $0.changeCornerRadius() }
         
@@ -93,12 +71,12 @@ extension SearchViewController {
     func configureDropdowns() {
         eventStatusDropDown.dataSource = viewModel.eventStatusList
         eventStatusDropDown.anchorView = searchView.eventStatusButton
-        eventStatusDropDown.selectRow(1)
+        eventStatusDropDown.selectRow(at: 0)
         eventStatusDropDown.selectionAction = { index, item in
             self.searchView.eventStatusButton.changeState(item)
             self.viewModel.eventStatus = index == 1
             self.scrollToTop()
-            self.fetchEvent()
+            self.filterEvent()
         }
         
         categoryDropDown.dataSource = viewModel.categoryList
@@ -108,7 +86,7 @@ extension SearchViewController {
             self.searchView.categoryButton.changeState(item)
             self.viewModel.categoty = index
             self.scrollToTop()
-            self.fetchEvent()
+            self.filterEvent()
         }
         
         [eventStatusDropDown, categoryDropDown]
@@ -117,17 +95,29 @@ extension SearchViewController {
                 $0.cornerRadius = ($0.anchorView?.plainView.frame.height)! / 2
                 $0.bottomOffset = CGPoint(x: 0, y: 40)
             }
+        
+        searchView.hideTopView()
     }
     
     func configureNavigationBar() {
         setNavigationBackButton()
-
-        self.navigationItem.titleView = searchBar
-        self.navigationItem.rightBarButtonItem = cancleButtonItem
+        
+        let searchBarWrapper = SearchBarContainerView(customSearchBar: searchBar)
+        
+        searchBarWrapper.frame = CGRect(x: 0, y: 0, width: self.navigationController!.view.frame.size.width - 70, height: 30)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: searchBarWrapper)
     }
     
     func fetchEvent() {
-        viewModel.searchEvent {
+        viewModel.fetchEvent {
+            DispatchQueue.main.async {
+                self.searchView.collectionView.reloadData()
+            }
+        }
+    }
+    
+    func filterEvent() {
+        viewModel.filterEvent {
             DispatchQueue.main.async {
                 self.searchView.collectionView.reloadData()
             }
@@ -160,13 +150,20 @@ extension SearchViewController {
 
 extension SearchViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // TODO: []
+        
+        let detailVC = EventDetailViewController()
+        detailVC.id = viewModel.events[indexPath.item].id
+        self.navigationController?.pushViewController(detailVC, animated: true)
+        
+        detailVC.userLikeCompletionClosure = {
+            self.viewModel.updateBookMarkByDetailVC(index: indexPath.item, isLiked: $0)
+            self.searchView.collectionView.reloadData()
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         let index = indexPath.row
         
-        print(index)
         if index == viewModel.numOfEvents - 1 && !viewModel.isLast {
             fetchEvent()
         }
@@ -196,8 +193,17 @@ extension SearchViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SaveListCell.identifier, for: indexPath) as? SaveListCell else { return UICollectionViewCell() }
 
         
-        cell.setUI(event: viewModel.eventAtIndex(index: indexPath.item))
+        let event = viewModel.eventAtIndex(index: indexPath.item)
         
+        cell.setUI(event: event)
+        
+        cell.bookMarkClosure = {
+            if self.loginManager.isLoggedIn {
+                self.viewModel.updateBookMark(index: indexPath.item, isLiked: cell.bookMarkButton.isSelected)
+                cell.bookMarkButton.isSelected = !cell.bookMarkButton.isSelected
+            }
+        }
+
         return cell
     }
 }
@@ -211,8 +217,9 @@ extension SearchViewController: UISearchBarDelegate {
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        viewModel.searchContent = searchBar.text!
         dismissKeyborad()
-        
-        print(searchBar.text!)
+        fetchEvent()
+        searchView.showTopView()
     }
 }

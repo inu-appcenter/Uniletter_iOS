@@ -23,11 +23,12 @@ class SearchView: UIView {
         
         collectionView.register(SaveListCell.self, forCellWithReuseIdentifier: SaveListCell.identifier)
         
+        collectionView.alwaysBounceVertical = true
         return collectionView
     }()
     
     lazy var eventStatusButton = CategoryButton().then {
-        $0.configureButton("진행중")
+        $0.configureButton("전체")
     }
     
     lazy var categoryButton = CategoryButton().then {
@@ -64,13 +65,13 @@ extension SearchView {
         topView.snp.makeConstraints {
             $0.top.equalTo(safeAreaLayoutGuide)
             $0.left.right.equalToSuperview()
-            $0.height.equalTo(64)
+            $0.height.equalTo(48)
         }
-        
+
         categoryButton.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
+            $0.top.equalTo(16)
             $0.right.equalToSuperview().offset(-20)
-            $0.height.equalToSuperview().multipliedBy(0.5)
+            $0.height.equalTo(32)
         }
         
         eventStatusButton.snp.makeConstraints {
@@ -91,7 +92,7 @@ extension SearchView {
             isScrolling = true
             
             topView.snp.updateConstraints {
-                $0.height.equalTo(isShow ? 64 : 0)
+                $0.height.equalTo(isShow ? 48 : 0)
             }
             
             UIView.animate(withDuration: 0.3, animations: {
