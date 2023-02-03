@@ -152,7 +152,10 @@ final class WritingContentViewController: BaseViewController {
             
             if !(writingManager.contact.isEmpty) {
                 updateView(writingContentView.contactView)
+            } else {
+                writingContentView.contactView.textField.text = writingManager.contanctPlaceholder
             }
+            
             if !(writingManager.location.isEmpty) {
                 updateView(writingContentView.locationView)
             }
@@ -193,13 +196,6 @@ final class WritingContentViewController: BaseViewController {
         present(vc, animated: true)
     }
     
-    private func updateHostView() {
-        writingContentView.hostView.textField.text = writingManager.hostPlaceholder
-        writingContentView.hostView.textField.textColor = .customColor(.lightGray)
-        
-        writingManager.host = ""
-    }
-    
     private func updateDateTime() {
         writingContentView.eventEndView.dateButton.setAttributedTitle(
             showUnderline((writingContentView.eventStartView.dateButton.titleLabel?.text)!),
@@ -211,8 +207,17 @@ final class WritingContentViewController: BaseViewController {
         writingManager.equalDateTime()
     }
     
+    private func updateHostView() {
+        writingContentView.hostView.textField.text = writingManager.hostPlaceholder
+        writingContentView.hostView.textField.textColor = .customColor(.lightGray)
+        
+        writingManager.host = ""
+    }
+    
     private func updateContactView() {
-        writingContentView.contactView.textField.text = ""
+        writingContentView.contactView.textField.text = writingManager.contanctPlaceholder
+        writingContentView.contactView.textField.textColor = .customColor(.lightGray)
+        
         writingManager.contact = ""
     }
     
@@ -353,7 +358,8 @@ extension WritingContentViewController: UITextViewDelegate {
         textView.layer.borderColor = .customColor(.blueGreen)
         textView.textColor = .black
         
-        if textView.text == writingManager.hostPlaceholder {
+        if textView.text == writingManager.hostPlaceholder ||
+            textView.text == writingManager.contanctPlaceholder {
             textView.text = ""
         }
     }
@@ -375,6 +381,8 @@ extension WritingContentViewController: UITextViewDelegate {
             writingManager.host = textView.text
         case writingContentView.contactView.textField:
             if textView.text.isEmpty {
+                textView.text = writingManager.contanctPlaceholder
+                textView.textColor = .customColor(.lightGray)
                 writingContentView.contactView.checkView.checkButton.updateCheckedState()
             }
             writingManager.contact = textView.text
