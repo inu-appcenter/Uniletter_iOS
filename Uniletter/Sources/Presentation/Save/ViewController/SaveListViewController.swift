@@ -103,8 +103,9 @@ extension SaveListViewController: UICollectionViewDelegate, UICollectionViewData
         navigationController?.pushViewController(EventDetailVC, animated: true)
         
         EventDetailVC.userLikeCompletionClosure = {
-            self.saveListViewModel.deleteLikeEvent(EventDetailVC.id)
+            $0 ? self.saveListViewModel.likeEvent(index: indexPath.item, id: EventDetailVC.id) : self.saveListViewModel.deleteLikeEvent(EventDetailVC.id)
             self.collectionView.reloadData()
+
         }
     }
 }

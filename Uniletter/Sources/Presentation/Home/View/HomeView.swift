@@ -21,6 +21,8 @@ final class HomeView: BaseView {
         $0.configureButton("카테고리")
     }
     
+    lazy var topView = UIView()
+    
     lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout).then {
         $0.refreshControl = refreshControl
         $0.register(HomeCell.self, forCellWithReuseIdentifier: HomeCell.identifier)
@@ -69,6 +71,10 @@ final class HomeView: BaseView {
         $0.frame = CGRect(x: 0, y: frame.height - 115, width: frame.width, height: 115)
     }
     
+    // MARK: - Property
+    
+    private var isScrolling = false
+    
     // MARK: - Init
     
     override init(frame: CGRect) {
@@ -83,9 +89,11 @@ final class HomeView: BaseView {
     // MARK: - Configure
     
     override func configureUI() {
+        [eventStatusButton, categoryButton]
+            .forEach { topView.addSubview($0) }
+        
         [
-            eventStatusButton,
-            categoryButton,
+            topView,
             collectionView,
             loadingIndicatorView,
         ]
@@ -96,19 +104,25 @@ final class HomeView: BaseView {
     }
     
     override func configureLayout() {
+        topView.snp.makeConstraints {
+            $0.top.equalTo(safeAreaLayoutGuide)
+            $0.left.right.equalToSuperview()
+            $0.height.equalTo(64)
+        }
+        
         categoryButton.snp.makeConstraints {
-            $0.top.equalTo(safeAreaLayoutGuide).offset(16)
+            $0.centerY.equalToSuperview()
             $0.right.equalToSuperview().offset(-20)
-            $0.height.equalTo(32)
+            $0.height.equalToSuperview().multipliedBy(0.5)
         }
         
         eventStatusButton.snp.makeConstraints {
-            $0.top.height.equalTo(categoryButton)
+            $0.centerY.height.equalTo(categoryButton)
             $0.right.equalTo(categoryButton.snp.left).offset(-4)
         }
         
         collectionView.snp.makeConstraints {
-            $0.top.equalTo(categoryButton.snp.bottom).offset(16)
+            $0.top.equalTo(topView.snp.bottom)
             $0.left.right.bottom.equalToSuperview()
         }
         
@@ -123,4 +137,29 @@ final class HomeView: BaseView {
         }
     }
     
+    // MARK: - Func
+    
+    private func updateTopViewHeight(_ isShow: Bool) {
+        if !isScrolling {
+            isScrolling = true
+            
+            topView.snp.updateConstraints {
+                $0.height.equalTo(isShow ? 64 : 0)
+            }
+            
+            UIView.animate(withDuration: 0.3, animations: {
+                self.layoutIfNeeded()
+            }) { _ in
+                self.isScrolling = false
+            }
+        }
+    }
+    
+    func showTopView() {
+        updateTopViewHeight(true)
+    }
+    
+    func hideTopView() {
+        updateTopViewHeight(false)
+    }
 }

@@ -76,6 +76,7 @@ PODS:
   - nanopb/decode (2.30909.0)
   - nanopb/encode (2.30909.0)
   - PromisesObjC (2.1.1)
+  - Siren (6.1.0)
   - SnapKit (5.6.0)
   - SwiftMessages (9.0.6):
     - SwiftMessages/App (= 9.0.6)
@@ -91,6 +92,7 @@ DEPENDENCIES:
   - GoogleSignIn
   - Kingfisher
   - MarqueeLabel
+  - Siren
   - SnapKit
   - SwiftMessages
   - Then
@@ -117,6 +119,7 @@ SPEC REPOS:
     - MarqueeLabel
     - nanopb
     - PromisesObjC
+    - Siren
     - SnapKit
     - SwiftMessages
     - Then
@@ -142,11 +145,12 @@ SPEC CHECKSUMS:
   MarqueeLabel: 02f5ac8fd6877c94564556cb93fa86c70c08baeb
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
+  Siren: d46253bcfca19f80c98ce54b3f5f5094a6346bd4
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
   SwiftMessages: f0c7ef4705a570ad6c5e208b611f4333e660ed92
   Then: 844265ae87834bbe1147d91d5d41a404da2ec27d
   Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
 
-PODFILE CHECKSUM: c690ea38bd72d58eade05eb82ef881582e44e2c5
+PODFILE CHECKSUM: 22e84e1d03d52eadd91aba65d00b7f961cef4bef
 
 COCOAPODS: 1.11.3

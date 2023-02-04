@@ -68,7 +68,11 @@ final class EventDetailViewModel {
     }
     
     var categoryContent: String {
-        return "\(event.category) | \(event.host ?? "")"
+        if let host = event.host {
+            return "\(event.category) | \(host)"
+        } else {
+            return "\(event.category)"
+        }
     }
     
     var startContent: String {
@@ -106,7 +110,7 @@ final class EventDetailViewModel {
     }
     
     var likeAndComments: String {
-        return "저장\(event.likes) ∙ 댓글 \(event.comments)개"
+        return "저장 \(event.likes) ∙ 댓글 \(event.comments)개"
     }
     
     var notiSetByMe: Bool? {
@@ -142,7 +146,7 @@ final class EventDetailViewModel {
     }
     
     func deleteEvent(completion: @escaping () -> Void) {
-        API.deleteEvent(id) { [weak self] in
+        API.deleteEvent(id) {
             completion()
         }
     }

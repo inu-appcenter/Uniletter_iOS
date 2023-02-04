@@ -32,6 +32,13 @@ final class PreviewViewController: UIViewController {
     // MARK: - Setup
     
     func setViewController() {
+        previewView.bodyContentsTextView.dataDetectorTypes = [.link, .phoneNumber, .address]
+        previewView.bodyContentsTextView.delegate = self
+        
+        previewView.recognizeTapLink.addTarget(
+            self,
+            action: #selector(didTapURL))
+        
         previewView.titleLabel.text = viewModel.title
         
         previewView.infoStackView.categoryLabel.text = viewModel.category
@@ -39,15 +46,24 @@ final class PreviewViewController: UIViewController {
         previewView.infoStackView.endLabel.text = viewModel.endAt
         previewView.infoStackView.targetLabel.text = viewModel.target
         previewView.infoStackView.contactLabel.text = viewModel.contact
-        previewView.infoStackView.linkLabel.attributedText = viewModel.location.convertToHyperLink()
+        
         previewView.bodyContentsTextView.text = viewModel.body
         previewView.ddayButton.updateDDay(viewModel.dday)
         
         updateImageView()
+        updateLink()
         hideSubjects()
     }
     
-    // MARK: - Funcs
+    // MARK: - Func
+    
+    private func updateLink() {
+        previewView.infoStackView.linkSubjectLabel.text = viewModel.location.validateHyperLink()
+        ? "신청링크"
+        : "신청장소"
+        
+        previewView.infoStackView.linkLabel.attributedText = viewModel.location.convertToLink()
+    }
     
     func hideSubjects() {
         previewView.infoStackView.validateInfo()
@@ -58,6 +74,28 @@ final class PreviewViewController: UIViewController {
             self.previewView.mainImageView.image = self.preview.mainImage
             self.previewView.mainImageView.updateImageViewRatio(.preview)
         }
+    }
+    
+    // MARK: - Action
+    
+    @objc private func didTapURL() {
+        openURL(viewModel.location)
+    }
+    
+}
+
+// MARK: - TextView
+
+extension PreviewViewController: UITextViewDelegate {
+    
+    func textView(
+        _ textView: UITextView,
+        shouldInteractWith URL: URL,
+        in characterRange: NSRange,
+        interaction: UITextItemInteraction)
+    -> Bool
+    {
+        return true
     }
     
 }

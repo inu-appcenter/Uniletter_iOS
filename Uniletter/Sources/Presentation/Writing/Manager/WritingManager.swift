@@ -40,6 +40,7 @@ final class WritingManager {
     
     let categories = ["동아리/소모임", "학생회", "간식나눔", "대회/공모전", "스터디", "구인", "기타"]
     let hostPlaceholder = "ex)총학생회, 디자인학부"
+    let contanctPlaceholder = "ex)010-1234-5678 / uniletter@gmail.com"
     let detailPlaceholder = "하위 게시물이나 부적절한 언어 사용 시\n유니레터 이용이 어려울 수 있습니다."
     
     // MARK: - Output

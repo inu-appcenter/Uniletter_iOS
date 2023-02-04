@@ -61,4 +61,21 @@ class SaveListViewModel {
             $0.id != id
         }
     }
+    
+    func likeEvent(index: Int, id: Int) {
+            
+        API.likeEvent(["eventId": id]) {
+            NotificationCenter.default.post(
+                name: NSNotification.Name("like"),
+                object: nil,
+                userInfo: [
+                    "id": id,
+                    "like": true
+            ])
+        }
+        
+        API.getEventOne(id) { result in
+            self.event.insert(result, at: index)
+        }
+    }
 }

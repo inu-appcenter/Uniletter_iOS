@@ -30,6 +30,10 @@
 		2C0DBE6E2881A158004A933A /* BlockListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE6D2881A158004A933A /* BlockListCell.swift */; };
 		2C0DBE702881AC5B004A933A /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE6F2881AC5B004A933A /* Block.swift */; };
 		2C6AB54A28B500A700FF6DC5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2C6AB54928B500A700FF6DC5 /* GoogleService-Info.plist */; };
+		2C74F567296740B40014DCFB /* SearchBarContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C74F566296740B40014DCFB /* SearchBarContainerView.swift */; };
+		2C79F6BD2961D4E400A457FA /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C79F6B82961D4E300A457FA /* SearchView.swift */; };
+		2C79F6BE2961D4E400A457FA /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C79F6BA2961D4E300A457FA /* SearchViewController.swift */; };
+		2C79F6BF2961D4E400A457FA /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C79F6BC2961D4E300A457FA /* SearchViewModel.swift */; };
 		2C80F388286D997300ECAB60 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C80F387286D997300ECAB60 /* MyPageViewModel.swift */; };
 		2C80F38B286DA01600ECAB60 /* MyPageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C80F38A286DA01500ECAB60 /* MyPageCell.swift */; };
 		2C80F391286DE20000ECAB60 /* MyPageSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C80F390286DE20000ECAB60 /* MyPageSectionView.swift */; };
@@ -156,6 +160,10 @@
 		2C0DBE6F2881AC5B004A933A /* Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
 		2C6AB54928B500A700FF6DC5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2C6AB54B28B5017400FF6DC5 /* UniletterDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UniletterDebug.entitlements; sourceTree = "<group>"; };
+		2C74F566296740B40014DCFB /* SearchBarContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarContainerView.swift; sourceTree = "<group>"; };
+		2C79F6B82961D4E300A457FA /* SearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		2C79F6BA2961D4E300A457FA /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		2C79F6BC2961D4E300A457FA /* SearchViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		2C80F387286D997300ECAB60 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		2C80F38A286DA01500ECAB60 /* MyPageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageCell.swift; sourceTree = "<group>"; };
 		2C80F390286DE20000ECAB60 /* MyPageSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSectionView.swift; sourceTree = "<group>"; };
@@ -274,6 +282,41 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2C79F6B72961D4E300A457FA /* View */ = {
+			isa = PBXGroup;
+			children = (
+				2C79F6B82961D4E300A457FA /* SearchView.swift */,
+				2C74F566296740B40014DCFB /* SearchBarContainerView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		2C79F6B92961D4E300A457FA /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				2C79F6BA2961D4E300A457FA /* SearchViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		2C79F6BB2961D4E300A457FA /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				2C79F6BC2961D4E300A457FA /* SearchViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		2C7B107929507C340082994D /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				2C79F6B72961D4E300A457FA /* View */,
+				2C79F6B92961D4E300A457FA /* ViewController */,
+				2C79F6BB2961D4E300A457FA /* ViewModel */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
 		2C80F389286D9FF800ECAB60 /* MyPage */ = {
 			isa = PBXGroup;
 			children = (
@@ -412,6 +455,7 @@
 		763BB5D229180E7500FFAF8B /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				2C7B107929507C340082994D /* Search */,
 				2C969F8B291D3868005D8564 /* Service */,
 				76597B30291D12B800F1561B /* Agree */,
 				763BB5E029180FA000FFAF8B /* Alert */,
@@ -1255,6 +1299,7 @@
 				7681D58A286A29970081C644 /* DateFormatter.swift in Sources */,
 				7610DD7728848BD300CA03BC /* WritingDateView.swift in Sources */,
 				2CB69D0B287443870089A922 /* MeInfo.swift in Sources */,
+				2C74F567296740B40014DCFB /* SearchBarContainerView.swift in Sources */,
 				7610DD73288456A300CA03BC /* WritingDetailViewController.swift in Sources */,
 				763BB60E291813BF00FFAF8B /* Report.swift in Sources */,
 				769AEB39287C25CE00C697FC /* CommentsViewController.swift in Sources */,
@@ -1302,11 +1347,13 @@
 				2CB8AA3428787D3900BDA358 /* MyCommentViewModel.swift in Sources */,
 				76993A38293F5B3400AD3461 /* Subjects.swift in Sources */,
 				7610DD6B288432F100CA03BC /* WritingDetailView.swift in Sources */,
+				2C79F6BF2961D4E400A457FA /* SearchViewModel.swift in Sources */,
 				7681D57028698EC60081C644 /* HomeCell.swift in Sources */,
 				2C0DBE5C28801484004A933A /* SaveListViewModel.swift in Sources */,
 				2C0DBE6C2881A13E004A933A /* BlockListViewModel.swift in Sources */,
 				2C0DBE662881591B004A933A /* NoticeAlertView.swift in Sources */,
 				2C01D0862890219400AEF20F /* LicenseViewModel.swift in Sources */,
+				2C79F6BE2961D4E400A457FA /* SearchViewController.swift in Sources */,
 				7623918B288C38DB00790775 /* TimePickerViewController.swift in Sources */,
 				765BCA122868CA1B0098BBF2 /* LoginViewController.swift in Sources */,
 				7610DD6128841F1500CA03BC /* WritingPictureView.swift in Sources */,
@@ -1330,6 +1377,7 @@
 				76E7DD76292E78C100CF21DC /* InfoStackView.swift in Sources */,
 				2C01D08A2890284700AEF20F /* LicenseInfoViewController.swift in Sources */,
 				7610DD652884299A00CA03BC /* WritingCheckView.swift in Sources */,
+				2C79F6BD2961D4E400A457FA /* SearchView.swift in Sources */,
 				76AC78382872053100D303C4 /* AlertView.swift in Sources */,
 				2C0DBE5E28813FC3004A933A /* NotiListVIewController.swift in Sources */,
 				765DCDB32868DCD300961EA8 /* HomeView.swift in Sources */,

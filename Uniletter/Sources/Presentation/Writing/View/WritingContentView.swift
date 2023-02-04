@@ -151,6 +151,9 @@ final class WritingContentView: BaseView {
             case .host:
                 $0.textField.text = "ex)총학생회, 디자인학부"
                 $0.textField.textColor = .customColor(.lightGray)
+            case .contact:
+                $0.textField.text = "ex)010-1234-5678 / uniletter@gmail.com"
+                $0.textField.textColor = .customColor(.lightGray)
             case .category:
                 $0.textField.text = "카테고리 선택"
                 $0.textField.isUserInteractionEnabled = false

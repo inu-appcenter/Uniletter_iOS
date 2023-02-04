@@ -341,6 +341,28 @@ final class API {
             }
     }
     
+    /// 이벤트 검색하기
+    static func searchEvent(category: Int, eventStatus: Bool, content: String, pageNum: Int, completion: @escaping([Event]) -> Void) {
+        
+        let urlString = Address.searchEvent.url + "?categoryId=\(category)&eventStatus=\(eventStatus)&content=\(content)&pageNum=\(pageNum)&pageSize=\(6)"
+        
+        let encodeStr = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        
+        networking(
+            urlStr: encodeStr,
+            method: .get,
+            data: nil,
+            model: [Event].self,
+            apiType: .none) { result in
+                switch result {
+                case .success(let events):
+                    completion(events)
+                case .failure(let error):
+                    print(error)
+                }
+            }
+    }
+    
     // MARK: - Comments
     
     /// 댓글 전체 받아오기
