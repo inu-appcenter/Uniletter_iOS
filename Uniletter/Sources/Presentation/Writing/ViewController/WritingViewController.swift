@@ -261,5 +261,12 @@ final class WritingViewController: BaseViewController {
     @objc private func didTapLoadButton() {
         let loadVC = LoadViewController()
         self.navigationController?.pushViewController(loadVC, animated: true)
+        
+        loadVC.loadEventCompletionClosure = {
+            self.writingManager.loadEventFromSave($0)
+            self.contentViewController.updateContentFromSave()
+            self.pictureViewController.updateImageViewFromSave()
+            self.detailViewController.updateDetailFromSave()
+        }
     }
 }

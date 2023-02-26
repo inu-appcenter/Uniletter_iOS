@@ -17,6 +17,7 @@ enum Alert {
     case write
     case save
     case notification
+    case load
     
     var title: String {
         switch self {
@@ -29,6 +30,7 @@ enum Alert {
         case .write: return "정말 작성 하시겠습니까?"
         case .save: return "저장을 취소 하시겠습니까?"
         case .notification: return "알림을 취소 하시겠습니까?"
+        case .load: return "선택한 임시글을 삭제하시겠습니까?"
         }
     }
 }
@@ -45,6 +47,7 @@ enum NoticeAlert {
     case pushAlarm
     case networkingFail
     case uploadImage
+    case loadEvent
     
     var title: String {
         switch self {
@@ -59,6 +62,7 @@ enum NoticeAlert {
         case .pushAlarm: return "새로운 행사 알림"
         case .uploadImage: return "용량 초과 오류"
         case .networkingFail: return "네트워크 오류"
+        case .loadEvent: return "임시 저장 불러오기"
         }
     }
     
@@ -75,6 +79,7 @@ enum NoticeAlert {
         case .pushAlarm: return "알림 허용이 차단되어 있습니다.\n새로운 행사 알림을 받으시려면 알림 허용을 해주세요"
         case .uploadImage: return "8MB 이하의 사진만 첨부할 수 있습니다."
         case .networkingFail: return "네트워크 연결 상태가 좋지 않거나,\n네트워킹에 실패하였습니다.\n다시 시도해주세요."
+        case .loadEvent: return "임시글을 불러오면\n작성 중인 글은 사라집니다.\n선택한 글을 불러오시겠습니까?"
         }
     }
 }

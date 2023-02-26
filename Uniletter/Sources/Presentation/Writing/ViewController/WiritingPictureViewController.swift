@@ -59,6 +59,18 @@ final class WritingPictureViewController: BaseViewController {
         }
     }
     
+    func updateImageViewFromSave() {
+        guard let url = URL(string: writingManager.imageURL!) else {
+            return
+        }
+            
+        writingPictureView.imageView.kf.setImage(with: url) { _ in
+            self.updateImageViewRatio()
+        }
+            
+        updateCheckButton()
+    }
+    
     // MARK: - Func
     
     private func updateImageViewRatio() {

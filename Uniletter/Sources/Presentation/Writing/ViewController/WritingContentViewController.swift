@@ -162,6 +162,32 @@ final class WritingContentViewController: BaseViewController {
         }
     }
     
+    func updateContentFromSave() {
+        writingContentView.titleView.textField.text = writingManager.title
+        writingContentView.hostView.textField.text = writingManager.host
+        writingContentView.categoryView.textField.text = writingManager.category
+        writingContentView.targetView.textField.text = writingManager.target
+        writingContentView.contactView.textField.text = writingManager.contact
+        writingContentView.locationView.textField.text = writingManager.location
+        
+        
+        if !(writingManager.host.isEmpty) {
+            updateView(writingContentView.hostView)
+        } else {
+            writingContentView.hostView.textField.text = writingManager.hostPlaceholder
+        }
+        
+        if !(writingManager.contact.isEmpty) {
+            updateView(writingContentView.contactView)
+        } else {
+            writingContentView.contactView.textField.text = writingManager.contanctPlaceholder
+        }
+        
+        if !(writingManager.location.isEmpty) {
+            updateView(writingContentView.locationView)
+        }
+    }
+    
     // MARK: - Func
     
     private func updateView(_ view: WritingTextFieldView) {

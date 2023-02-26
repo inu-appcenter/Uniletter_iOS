@@ -41,6 +41,17 @@ final class WritingDetailViewController: BaseViewController {
             }
         }
     }
+    
+    func updateDetailFromSave() {
+        writingDetailView.textField.text = writingManager.body
+        checkText = writingManager.body
+        
+        if !(writingManager.body.isEmpty) {
+            writingDetailView.textField.textColor = .black
+        } else {
+            writingDetailView.textField.text = writingManager.detailPlaceholder
+        }
+    }
 }
 
 // MARK: - TextView
@@ -49,7 +60,7 @@ extension WritingDetailViewController: UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
         textView.isScrollEnabled = textView.frame.height >= 280 ? true : false
-        
+        writingManager.body = textView.text
         if textView.text.count > 8000 {
             textView.deleteBackward()
         }

@@ -187,6 +187,38 @@ final class WritingManager {
         }
     }
     
+    func loadEventFromSave(_ event: SavedEvent) {
+        title = event.title
+        host = event.host!
+        category = event.category!
+        target = event.target
+        startDate = event.startDate!
+        startTime = event.startTime!
+        endDate = event.endDate!
+        endTime = event.endTime!
+        contact = event.concat!
+        location = event.location!
+        body = event.body!
+        
+        if let imageUUID = event.imageUUID {
+            imageURL = baseURL + Address.images.url + "/" + imageUUID
+            self.imageUUID = imageUUID
+        } else {
+            imageUUID = ""
+            imageURL = ""
+        }
+        
+        imageType = .custom
+    
+        BasicInfo.allCases.forEach {
+            if $0.uuid == event.imageUUID {
+                imageIndex = $0.rawValue
+                imageType = .basic
+            }
+        }
+        
+    }
+    
     func saveEvent() {
         let entity = NSEntityDescription.entity(forEntityName: "SavedEvent", in: context)
         
@@ -202,6 +234,9 @@ final class WritingManager {
             save.setValue(self.startTime, forKey: "startTime")
             save.setValue(self.target, forKey: "target")
             save.setValue(self.title, forKey: "title")
+            save.setValue(self.imageURL, forKey: "imageURL")
+            save.setValue(self.imageUUID, forKey: "imageUUID")
+            save.setValue(self.body, forKey: "body")
             save.setValue(CustomFormatter.nowTimeToString(), forKey: "saveDate")
             do {
                 try context.save()

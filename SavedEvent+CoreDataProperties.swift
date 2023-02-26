@@ -28,6 +28,10 @@ extension SavedEvent {
     @NSManaged public var location: String?
     @NSManaged public var image: Data?
     @NSManaged public var saveDate: String?
+    @NSManaged public var body: String?
+    @NSManaged public var imageUUID: String?
+    @NSManaged public var imageURL: String?
+
 
 
 }

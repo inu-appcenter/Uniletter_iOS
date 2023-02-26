@@ -11,7 +11,7 @@ class LoadViewController: BaseViewController {
 
     // MARK: - Manager
     
-    let wiritingManager = WritingManager.shared
+    var wiritingManager = WritingManager.shared
     
     // MARK: - ViewModel
     
@@ -19,6 +19,8 @@ class LoadViewController: BaseViewController {
     
     // MARK: - Properties
     
+    var loadEventCompletionClosure: ((SavedEvent) -> Void)?
+
     // MARK: - UI Component
     
     let tableView = UITableView(frame: .zero, style: .plain).then {
@@ -61,8 +63,17 @@ extension LoadViewController: UITableViewDelegate {
         return 70
     }
     
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let noticeAlertVC = getNoticeAlertVC(noticeAlert: .loadEvent, check: true)
+        
+        present(noticeAlertVC, animated: true)
+        
+
+        noticeAlertVC.okButtonCompletionClosure = {
+            self.navigationController?.popViewController(animated: true)
+            self.loadEventCompletionClosure?(self.viewModel.eventForIndex(indexPath.item))
+        }
+    }
 }
 
 // MARK: - UITableVIewDataSource
@@ -78,8 +89,12 @@ extension LoadViewController: UITableViewDataSource {
         cell.updateUI(viewModel.eventForIndex(indexPath.item))
         
         cell.deleteButtonClosure = {
-            self.viewModel.deleteEventForIndex(indexPath.item)
-            self.tableView.reloadData()
+            let alertVC = self.AlertVC(.load)
+            self.present(alertVC, animated: true)
+            alertVC.alertIsLoadClosure = {
+                self.viewModel.deleteEventForIndex(indexPath.item)
+                self.tableView.reloadData()
+            }
         }
         
         return cell
