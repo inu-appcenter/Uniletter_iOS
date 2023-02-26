@@ -7,6 +7,7 @@
         <attribute name="endTime" optional="YES" attributeType="String"/>
         <attribute name="host" optional="YES" attributeType="String"/>
         <attribute name="location" optional="YES" attributeType="String"/>
+        <attribute name="saveDate" optional="YES" attributeType="String"/>
         <attribute name="startDate" optional="YES" attributeType="String"/>
         <attribute name="startTime" optional="YES" attributeType="String"/>
         <attribute name="target" optional="YES" attributeType="String"/>

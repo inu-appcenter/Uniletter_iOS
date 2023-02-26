@@ -202,6 +202,7 @@ final class WritingManager {
             save.setValue(self.startTime, forKey: "startTime")
             save.setValue(self.target, forKey: "target")
             save.setValue(self.title, forKey: "title")
+            save.setValue(CustomFormatter.nowTimeToString(), forKey: "saveDate")
             do {
                 try context.save()
             } catch {
@@ -217,6 +218,16 @@ final class WritingManager {
         } catch {
             print("임시 저장 목록 가져오기 실패")
             return []
+        }
+    }
+    
+    func deleteEvent(_ event: SavedEvent) {
+        self.context.delete(event)
+        
+        do {
+            try self.context.save()
+        } catch {
+            print("해당 임시 저장 삭제 실패")
         }
     }
     

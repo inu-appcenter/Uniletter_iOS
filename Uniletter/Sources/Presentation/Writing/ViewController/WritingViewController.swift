@@ -255,7 +255,6 @@ final class WritingViewController: BaseViewController {
     }
     
     @objc private func didTapSaveButton() {
-
         writingManager.saveEvent()
     }
     

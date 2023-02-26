@@ -46,13 +46,8 @@ class LoadListTableViewCell: UITableViewCell {
         return button
     }()
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        configreUI()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    override func layoutSubviews() {
+        configureUI()
     }
     
     @objc func deleteButtonClicked(_ sender: UIGestureRecognizer) {
@@ -61,7 +56,7 @@ class LoadListTableViewCell: UITableViewCell {
         }
     }
 
-    func configreUI() {
+    func configureUI() {
         [   dateLabel,
             titleLabel,
             deleteButton
@@ -83,5 +78,10 @@ class LoadListTableViewCell: UITableViewCell {
             $0.width.equalTo(80)
             $0.height.equalTo(21)
         }
+    }
+    
+    func updateUI(_ event: SavedEvent) {
+        titleLabel.text = event.title
+        dateLabel.text = event.saveDate
     }
 }
