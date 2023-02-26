@@ -63,9 +63,17 @@ final class WritingPictureViewController: BaseViewController {
         guard let url = URL(string: writingManager.imageURL!) else {
             return
         }
-            
+        
         writingPictureView.imageView.kf.setImage(with: url) { _ in
             self.updateImageViewRatio()
+        }
+        
+        KingfisherManager.shared.retrieveImage(with: url) { result in
+            let image = try? result.get().image
+            
+            if let image = image {
+                self.writingManager.mainImage = image
+            }
         }
             
         updateCheckButton()
