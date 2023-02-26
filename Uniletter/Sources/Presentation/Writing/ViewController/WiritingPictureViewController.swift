@@ -68,6 +68,8 @@ final class WritingPictureViewController: BaseViewController {
             self.updateImageViewRatio()
         }
         
+        print(url)
+        
         KingfisherManager.shared.retrieveImage(with: url) { result in
             let image = try? result.get().image
             

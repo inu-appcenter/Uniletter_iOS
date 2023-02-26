@@ -200,14 +200,9 @@ final class WritingManager {
         location = event.location!
         body = event.body!
         
-        if let imageUUID = event.imageUUID {
-            imageURL = baseURL + Address.images.url + "/" + imageUUID
-            self.imageUUID = imageUUID
-        } else {
-            imageUUID = ""
-            imageURL = ""
-        }
-        
+        imageUUID = event.imageUUID!.isEmpty ? basicImage : event.imageUUID!
+        imageURL = baseURL + Address.images.url + "/" + imageUUID!
+
         imageType = .custom
     
         BasicInfo.allCases.forEach {

@@ -214,6 +214,7 @@ final class WritingViewController: BaseViewController {
     
     private func setLoadButton() {
         loadButton.setTitle("불러오기(\(writingManager.reloadCount))", for: .normal)
+        loadButton.isHidden = writingManager.reloadCount > 0 ? false : true
 
     }
 
