@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 import Then
+import CoreData
 
 final class WritingViewController: BaseViewController {
     
@@ -173,19 +174,28 @@ final class WritingViewController: BaseViewController {
                 $0.tintColor = .black
             }
          
-            let reloadButton = UIButton().then {
-                $0.setTitle("불러오기", for: .normal)
+            let loadButton = UIButton().then {
+                $0.setTitle("불러오기(\(writingManager.reloadCount))", for: .normal)
                 $0.titleLabel?.font = .systemFont(ofSize: 14)
                 $0.setTitleColor(.black, for: .normal)
                 $0.tintColor = .black
             }
+
+            loadButton.isHidden = writingManager.reloadCount > 0 ? false : true
                         
-            reloadButton.isHidden = true // 임시저장값 있으면 false로 설정
+            saveButton.addTarget(
+                self,
+                action: #selector(didTapSaveButton),
+                for: .touchUpInside)
+            
+            loadButton.addTarget(
+                self, action: #selector(didTapLoadButton),
+                for: .touchUpInside)
             
             let saveItem = UIBarButtonItem(customView: saveButton)
-            let reloadItem = UIBarButtonItem(customView: reloadButton)
+            let loadItem = UIBarButtonItem(customView: loadButton)
             
-            self.navigationItem.rightBarButtonItems = [saveItem, reloadItem]
+            self.navigationItem.rightBarButtonItems = [saveItem, loadItem]
         }
     }
 
@@ -244,4 +254,13 @@ final class WritingViewController: BaseViewController {
         }
     }
     
+    @objc private func didTapSaveButton() {
+
+        writingManager.saveEvent()
+    }
+    
+    @objc private func didTapLoadButton() {
+        let loadVC = LoadViewController()
+        self.navigationController?.pushViewController(loadVC, animated: true)
+    }
 }

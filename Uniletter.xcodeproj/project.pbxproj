@@ -33,6 +33,7 @@
 		2C724E3529AB83DB0057D9B4 /* EventModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2C724E3329AB83DB0057D9B4 /* EventModel.xcdatamodeld */; };
 		2C724E4429AB89590057D9B4 /* SavedEvent+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C724E4229AB89590057D9B4 /* SavedEvent+CoreDataClass.swift */; };
 		2C724E4529AB89590057D9B4 /* SavedEvent+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C724E4329AB89590057D9B4 /* SavedEvent+CoreDataProperties.swift */; };
+		2C724E4729AB9D2F0057D9B4 /* LoadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C724E4629AB9D2F0057D9B4 /* LoadViewController.swift */; };
 		2C74F567296740B40014DCFB /* SearchBarContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C74F566296740B40014DCFB /* SearchBarContainerView.swift */; };
 		2C79F6BD2961D4E400A457FA /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C79F6B82961D4E300A457FA /* SearchView.swift */; };
 		2C79F6BE2961D4E400A457FA /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C79F6BA2961D4E300A457FA /* SearchViewController.swift */; };
@@ -166,6 +167,7 @@
 		2C724E3429AB83DB0057D9B4 /* EventModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = EventModel.xcdatamodel; sourceTree = "<group>"; };
 		2C724E4229AB89590057D9B4 /* SavedEvent+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SavedEvent+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
 		2C724E4329AB89590057D9B4 /* SavedEvent+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SavedEvent+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
+		2C724E4629AB9D2F0057D9B4 /* LoadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadViewController.swift; sourceTree = "<group>"; };
 		2C74F566296740B40014DCFB /* SearchBarContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarContainerView.swift; sourceTree = "<group>"; };
 		2C79F6B82961D4E300A457FA /* SearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		2C79F6BA2961D4E300A457FA /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -415,6 +417,7 @@
 				769F6E6728A8F66A00619269 /* PreviewViewController.swift */,
 				76239188288AFDC000790775 /* CalendarViewController.swift */,
 				7623918A288C38DB00790775 /* TimePickerViewController.swift */,
+				2C724E4629AB9D2F0057D9B4 /* LoadViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -1357,6 +1360,7 @@
 				2C0D039A288596EE0026F3F0 /* PrivacyPolicyCell.swift in Sources */,
 				2C0DBE5A28800B29004A933A /* MyEventView.swift in Sources */,
 				2C80F391286DE20000ECAB60 /* MyPageSectionView.swift in Sources */,
+				2C724E4729AB9D2F0057D9B4 /* LoadViewController.swift in Sources */,
 				76FCB545286C253900AC4F70 /* EventDetailViewController.swift in Sources */,
 				76FCB543286B955F00AC4F70 /* Colors++Extensions.swift in Sources */,
 				7681D5822869F46A0081C644 /* ServiceAPI.swift in Sources */,
