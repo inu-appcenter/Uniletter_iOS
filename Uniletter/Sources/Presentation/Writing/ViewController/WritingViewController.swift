@@ -255,6 +255,11 @@ final class WritingViewController: BaseViewController {
     }
     
     @objc private func didTapSaveButton() {
+        
+        let noticeVC = getNoticeAlertVC(noticeAlert: .saveEvent, check: false)
+        
+        present(noticeVC, animated: true)
+        
         writingManager.saveEvent()
     }
     
