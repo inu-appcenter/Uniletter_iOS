@@ -59,6 +59,11 @@ final class WritingViewController: BaseViewController {
         configureContainerView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        setLoadButton()
+    }
+    
     // MARK: - Configure
     
     override func configureNavigationBar() {
@@ -184,8 +189,7 @@ final class WritingViewController: BaseViewController {
     
     private func addSaveButton() {
         if isSaved! {
-            loadButton.setTitle("불러오기(\(writingManager.reloadCount))", for: .normal)
-            
+            setLoadButton()
             loadButton.isHidden = writingManager.reloadCount > 0 ? false : true
                         
             saveButton.addTarget(
@@ -197,11 +201,20 @@ final class WritingViewController: BaseViewController {
                 self, action: #selector(didTapLoadButton),
                 for: .touchUpInside)
             
+            loadButton.snp.makeConstraints {
+                $0.width.equalTo(75)
+            }
+            
             let saveItem = UIBarButtonItem(customView: saveButton)
             let loadItem = UIBarButtonItem(customView: loadButton)
             
             self.navigationItem.rightBarButtonItems = [saveItem, loadItem]
         }
+    }
+    
+    private func setLoadButton() {
+        loadButton.setTitle("불러오기(\(writingManager.reloadCount))", for: .normal)
+
     }
 
     @objc private func popViewcontroller() {
@@ -261,11 +274,11 @@ final class WritingViewController: BaseViewController {
     
     @objc private func didTapSaveButton() {
         
+        writingManager.saveEvent()
+        setLoadButton()
         let noticeVC = getNoticeAlertVC(noticeAlert: .saveEvent, check: false)
         
         present(noticeVC, animated: true)
-        
-        writingManager.saveEvent()
     }
     
     @objc private func didTapLoadButton() {
