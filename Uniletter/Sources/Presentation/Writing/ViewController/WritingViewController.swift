@@ -35,6 +35,7 @@ final class WritingViewController: BaseViewController {
     private let writingManager = WritingManager.shared
     private var page = 0
     var event: Event?
+    var isSaved: Bool? = false
     
     // MARK: - Life cycle
     
@@ -49,6 +50,7 @@ final class WritingViewController: BaseViewController {
         setNavigationTitleAndBackButton(event == nil ? "레터등록" : "레터수정")
         addNavigationBarBorder()
         self.navigationItem.leftBarButtonItems?[1].action = #selector(popViewcontroller)
+        addSaveButton()
     }
     
     override func configureViewController() {
@@ -162,8 +164,31 @@ final class WritingViewController: BaseViewController {
         }
     }
     
-    // MARK: - Action
-    
+    private func addSaveButton() {
+        if isSaved! {
+            let saveButton = UIButton().then {
+                $0.setTitle("임시저장", for: .normal)
+                $0.titleLabel?.font = .systemFont(ofSize: 14)
+                $0.setTitleColor(.black, for: .normal)
+                $0.tintColor = .black
+            }
+         
+            let reloadButton = UIButton().then {
+                $0.setTitle("불러오기", for: .normal)
+                $0.titleLabel?.font = .systemFont(ofSize: 14)
+                $0.setTitleColor(.black, for: .normal)
+                $0.tintColor = .black
+            }
+                        
+            reloadButton.isHidden = true // 임시저장값 있으면 false로 설정
+            
+            let saveItem = UIBarButtonItem(customView: saveButton)
+            let reloadItem = UIBarButtonItem(customView: reloadButton)
+            
+            self.navigationItem.rightBarButtonItems = [saveItem, reloadItem]
+        }
+    }
+
     @objc private func popViewcontroller() {
         if event == nil {
             self.navigationController?.popViewController(animated: true)
