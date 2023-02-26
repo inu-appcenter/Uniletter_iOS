@@ -38,6 +38,20 @@ final class WritingViewController: BaseViewController {
     var event: Event?
     var isSaved: Bool? = false
     
+    let saveButton = UIButton().then {
+        $0.setTitle("임시저장", for: .normal)
+        $0.titleLabel?.font = .systemFont(ofSize: 14)
+        $0.setTitleColor(.black, for: .normal)
+        $0.tintColor = .black
+    }
+ 
+    let loadButton = UIButton().then {
+//        $0.setTitle("불러오기(\(writingManager.reloadCount))", for: .normal)
+        $0.titleLabel?.font = .systemFont(ofSize: 14)
+        $0.setTitleColor(.black, for: .normal)
+        $0.tintColor = .black
+    }
+    
     // MARK: - Life cycle
     
     override func viewDidLoad() {
@@ -132,6 +146,9 @@ final class WritingViewController: BaseViewController {
     private func changePreviewTitle(_ bool: Bool) {
         if event == nil {
             self.title = bool ? "미리보기" : "레터등록"
+            self.loadButton.isHidden = bool ? true : false
+            self.saveButton.isHidden = bool ? true : false
+
         } else {
             self.title = bool ? "미리보기" : "레터수정"
         }
@@ -167,20 +184,8 @@ final class WritingViewController: BaseViewController {
     
     private func addSaveButton() {
         if isSaved! {
-            let saveButton = UIButton().then {
-                $0.setTitle("임시저장", for: .normal)
-                $0.titleLabel?.font = .systemFont(ofSize: 14)
-                $0.setTitleColor(.black, for: .normal)
-                $0.tintColor = .black
-            }
-         
-            let loadButton = UIButton().then {
-                $0.setTitle("불러오기(\(writingManager.reloadCount))", for: .normal)
-                $0.titleLabel?.font = .systemFont(ofSize: 14)
-                $0.setTitleColor(.black, for: .normal)
-                $0.tintColor = .black
-            }
-
+            loadButton.setTitle("불러오기(\(writingManager.reloadCount))", for: .normal)
+            
             loadButton.isHidden = writingManager.reloadCount > 0 ? false : true
                         
             saveButton.addTarget(
