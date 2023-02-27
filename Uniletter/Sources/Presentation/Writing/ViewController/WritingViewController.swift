@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 import Then
+import CoreData
 
 final class WritingViewController: BaseViewController {
     
@@ -35,6 +36,21 @@ final class WritingViewController: BaseViewController {
     private let writingManager = WritingManager.shared
     private var page = 0
     var event: Event?
+    var isSaved: Bool? = false
+    
+    let saveButton = UIButton().then {
+        $0.setTitle("임시저장", for: .normal)
+        $0.titleLabel?.font = .systemFont(ofSize: 14)
+        $0.setTitleColor(.black, for: .normal)
+        $0.tintColor = .black
+    }
+ 
+    let loadButton = UIButton().then {
+//        $0.setTitle("불러오기(\(writingManager.reloadCount))", for: .normal)
+        $0.titleLabel?.font = .systemFont(ofSize: 14)
+        $0.setTitleColor(.black, for: .normal)
+        $0.tintColor = .black
+    }
     
     // MARK: - Life cycle
     
@@ -43,12 +59,18 @@ final class WritingViewController: BaseViewController {
         configureContainerView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        setLoadButton()
+    }
+    
     // MARK: - Configure
     
     override func configureNavigationBar() {
         setNavigationTitleAndBackButton(event == nil ? "레터등록" : "레터수정")
         addNavigationBarBorder()
         self.navigationItem.leftBarButtonItems?[1].action = #selector(popViewcontroller)
+        addSaveButton()
     }
     
     override func configureViewController() {
@@ -129,6 +151,9 @@ final class WritingViewController: BaseViewController {
     private func changePreviewTitle(_ bool: Bool) {
         if event == nil {
             self.title = bool ? "미리보기" : "레터등록"
+            self.loadButton.isHidden = bool ? true : false
+            self.saveButton.isHidden = bool ? true : false
+
         } else {
             self.title = bool ? "미리보기" : "레터수정"
         }
@@ -162,8 +187,37 @@ final class WritingViewController: BaseViewController {
         }
     }
     
-    // MARK: - Action
+    private func addSaveButton() {
+        if isSaved! {
+            setLoadButton()
+            loadButton.isHidden = writingManager.reloadCount > 0 ? false : true
+                        
+            saveButton.addTarget(
+                self,
+                action: #selector(didTapSaveButton),
+                for: .touchUpInside)
+            
+            loadButton.addTarget(
+                self, action: #selector(didTapLoadButton),
+                for: .touchUpInside)
+            
+            loadButton.snp.makeConstraints {
+                $0.width.equalTo(75)
+            }
+            
+            let saveItem = UIBarButtonItem(customView: saveButton)
+            let loadItem = UIBarButtonItem(customView: loadButton)
+            
+            self.navigationItem.rightBarButtonItems = [saveItem, loadItem]
+        }
+    }
     
+    private func setLoadButton() {
+        loadButton.setTitle("불러오기(\(writingManager.reloadCount))", for: .normal)
+        loadButton.isHidden = writingManager.reloadCount > 0 ? false : true
+
+    }
+
     @objc private func popViewcontroller() {
         if event == nil {
             self.navigationController?.popViewController(animated: true)
@@ -219,4 +273,24 @@ final class WritingViewController: BaseViewController {
         }
     }
     
+    @objc private func didTapSaveButton() {
+        
+        writingManager.saveEvent()
+        setLoadButton()
+        let noticeVC = getNoticeAlertVC(noticeAlert: .saveEvent, check: false)
+        
+        present(noticeVC, animated: true)
+    }
+    
+    @objc private func didTapLoadButton() {
+        let loadVC = LoadViewController()
+        self.navigationController?.pushViewController(loadVC, animated: true)
+        
+        loadVC.loadEventCompletionClosure = {
+            self.writingManager.loadEventFromSave($0)
+            self.contentViewController.updateContentFromSave()
+            self.pictureViewController.updateImageViewFromSave()
+            self.detailViewController.updateDetailFromSave()
+        }
+    }
 }

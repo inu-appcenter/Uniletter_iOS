@@ -119,4 +119,10 @@ final class CustomFormatter {
         }
     }
     
+    static func nowTimeToString() -> String {
+        let dateformatter = DateFormatter()
+        dateformatter.dateFormat = "Y/M/dd/HH:mm"
+        return dateformatter.string(from: Date())
+    }
+    
 }

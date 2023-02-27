@@ -21,6 +21,7 @@ final class AlertViewController: BaseViewController {
     var alertIsWriteClosure: (() -> Void)?
     var alertIsDeleteClosure: (() -> Void)?
     var cancleButtonClosure: (() -> Void)?
+    var alertIsLoadClosure: (() -> Void)?
     
     // MARK: - Life cycle
     
@@ -88,6 +89,8 @@ final class AlertViewController: BaseViewController {
             alertIsSaveClosure?()
         case .notification:
             alertIsNotificationClosure?()
+        case .load:
+            alertIsLoadClosure?()
         }
     }
     
