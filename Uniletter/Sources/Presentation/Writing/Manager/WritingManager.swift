@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 final class WritingManager {
     
@@ -42,6 +43,30 @@ final class WritingManager {
     let hostPlaceholder = "ex)총학생회, 디자인학부"
     let contanctPlaceholder = "ex)010-1234-5678 / uniletter@gmail.com"
     let detailPlaceholder = "하위 게시물이나 부적절한 언어 사용 시\n유니레터 이용이 어려울 수 있습니다."
+    
+    var persistentContainer: NSPersistentContainer = {
+        let container = NSPersistentContainer(name: "EventModel")
+        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+            if let error = error as NSError? {
+                print("실패요")
+                fatalError("Unresolved error \(error), \(error.userInfo)")
+            }
+        })
+        return container
+    }()
+    
+    var context: NSManagedObjectContext {
+        return self.persistentContainer.viewContext
+    }
+    
+    var reloadCount: Int {
+        do {
+            let count = try self.context.count(for: SavedEvent.fetchRequest())
+            return count
+        } catch {
+            return 0
+        }
+    }
     
     // MARK: - Output
     
@@ -159,6 +184,85 @@ final class WritingManager {
                 imageIndex = $0.rawValue
                 imageType = .basic
             }
+        }
+    }
+    
+    func loadEventFromSave(_ event: SavedEvent) {
+        title = event.title
+        host = event.host!
+        category = event.category!
+        target = event.target
+        startDate = event.startDate!
+        startTime = event.startTime!
+        endDate = event.endDate!
+        endTime = event.endTime!
+        contact = event.concat!
+        location = event.location!
+        body = event.body!
+        
+        
+        if let imageUUID = event.imageUUID {
+            self.imageUUID = imageUUID.isEmpty ? basicImage : imageUUID
+        } else {
+            self.imageUUID = basicImage
+        }
+        
+        imageURL = baseURL + Address.images.url + "/" + imageUUID!
+        imageType = .custom
+    
+        BasicInfo.allCases.forEach {
+            if $0.uuid == event.imageUUID {
+                imageIndex = $0.rawValue
+                imageType = .basic
+            }
+        }
+        
+    }
+    
+    func saveEvent() {
+        let entity = NSEntityDescription.entity(forEntityName: "SavedEvent", in: context)
+        
+        if let entity = entity {
+            let save = NSManagedObject(entity: entity, insertInto: context)
+            save.setValue(self.category, forKey: "category")
+            save.setValue(self.contact, forKey: "concat")
+            save.setValue(self.endDate, forKey: "endDate")
+            save.setValue(self.endTime, forKey: "endTime")
+            save.setValue(self.host, forKey: "host")
+            save.setValue(self.location, forKey: "location")
+            save.setValue(self.startDate, forKey: "startDate")
+            save.setValue(self.startTime, forKey: "startTime")
+            save.setValue(self.target, forKey: "target")
+            save.setValue(self.title, forKey: "title")
+            save.setValue(self.imageURL, forKey: "imageURL")
+            save.setValue(self.imageUUID, forKey: "imageUUID")
+            save.setValue(self.body, forKey: "body")
+            save.setValue(CustomFormatter.nowTimeToString(), forKey: "saveDate")
+            do {
+                try context.save()
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    func fetchEvent() -> [SavedEvent] {
+        do {
+            let events = try self.context.fetch(SavedEvent.fetchRequest())
+            return events
+        } catch {
+            print("임시 저장 목록 가져오기 실패")
+            return []
+        }
+    }
+    
+    func deleteEvent(_ event: SavedEvent) {
+        self.context.delete(event)
+        
+        do {
+            try self.context.save()
+        } catch {
+            print("해당 임시 저장 삭제 실패")
         }
     }
     

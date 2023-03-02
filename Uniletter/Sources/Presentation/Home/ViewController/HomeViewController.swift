@@ -266,6 +266,7 @@ final class HomeViewController: BaseViewController {
     @objc private func goToWrite() {
         if loginManager.isLoggedIn {
             let vc = WritingViewController()
+            vc.isSaved = true
             self.navigationController?.pushViewController(vc, animated: true)
         } else {
             presentLoginAlert(.loginWriting)

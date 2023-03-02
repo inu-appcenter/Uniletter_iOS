@@ -29,7 +29,13 @@
 		2C0DBE6C2881A13E004A933A /* BlockListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE6B2881A13E004A933A /* BlockListViewModel.swift */; };
 		2C0DBE6E2881A158004A933A /* BlockListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE6D2881A158004A933A /* BlockListCell.swift */; };
 		2C0DBE702881AC5B004A933A /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0DBE6F2881AC5B004A933A /* Block.swift */; };
+		2C4041CB29ABA6EB009247E7 /* LoadListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4041CA29ABA6EB009247E7 /* LoadListViewModel.swift */; };
 		2C6AB54A28B500A700FF6DC5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2C6AB54928B500A700FF6DC5 /* GoogleService-Info.plist */; };
+		2C724E3529AB83DB0057D9B4 /* EventModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2C724E3329AB83DB0057D9B4 /* EventModel.xcdatamodeld */; };
+		2C724E4429AB89590057D9B4 /* SavedEvent+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C724E4229AB89590057D9B4 /* SavedEvent+CoreDataClass.swift */; };
+		2C724E4529AB89590057D9B4 /* SavedEvent+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C724E4329AB89590057D9B4 /* SavedEvent+CoreDataProperties.swift */; };
+		2C724E4729AB9D2F0057D9B4 /* LoadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C724E4629AB9D2F0057D9B4 /* LoadViewController.swift */; };
+		2C724E4929AB9F6A0057D9B4 /* LoadListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C724E4829AB9F6A0057D9B4 /* LoadListTableViewCell.swift */; };
 		2C74F567296740B40014DCFB /* SearchBarContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C74F566296740B40014DCFB /* SearchBarContainerView.swift */; };
 		2C79F6BD2961D4E400A457FA /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C79F6B82961D4E300A457FA /* SearchView.swift */; };
 		2C79F6BE2961D4E400A457FA /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C79F6BA2961D4E300A457FA /* SearchViewController.swift */; };
@@ -158,8 +164,14 @@
 		2C0DBE6B2881A13E004A933A /* BlockListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockListViewModel.swift; sourceTree = "<group>"; };
 		2C0DBE6D2881A158004A933A /* BlockListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockListCell.swift; sourceTree = "<group>"; };
 		2C0DBE6F2881AC5B004A933A /* Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
+		2C4041CA29ABA6EB009247E7 /* LoadListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadListViewModel.swift; sourceTree = "<group>"; };
 		2C6AB54928B500A700FF6DC5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2C6AB54B28B5017400FF6DC5 /* UniletterDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UniletterDebug.entitlements; sourceTree = "<group>"; };
+		2C724E3429AB83DB0057D9B4 /* EventModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = EventModel.xcdatamodel; sourceTree = "<group>"; };
+		2C724E4229AB89590057D9B4 /* SavedEvent+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SavedEvent+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		2C724E4329AB89590057D9B4 /* SavedEvent+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SavedEvent+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
+		2C724E4629AB9D2F0057D9B4 /* LoadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadViewController.swift; sourceTree = "<group>"; };
+		2C724E4829AB9F6A0057D9B4 /* LoadListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadListTableViewCell.swift; sourceTree = "<group>"; };
 		2C74F566296740B40014DCFB /* SearchBarContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarContainerView.swift; sourceTree = "<group>"; };
 		2C79F6B82961D4E300A457FA /* SearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		2C79F6BA2961D4E300A457FA /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -282,6 +294,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2C724E3029AB83A80057D9B4 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				2C724E4229AB89590057D9B4 /* SavedEvent+CoreDataClass.swift */,
+				2C724E4329AB89590057D9B4 /* SavedEvent+CoreDataProperties.swift */,
+				2C724E3329AB83DB0057D9B4 /* EventModel.xcdatamodeld */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
 		2C79F6B72961D4E300A457FA /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -385,6 +407,7 @@
 				76239186288AFDB100790775 /* CalendarView.swift */,
 				7623918C288C38ED00790775 /* TimePickerView.swift */,
 				76E7DD73292E54E700CF21DC /* PreiviewView.swift */,
+				2C724E4829AB9F6A0057D9B4 /* LoadListTableViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -399,6 +422,7 @@
 				769F6E6728A8F66A00619269 /* PreviewViewController.swift */,
 				76239188288AFDC000790775 /* CalendarViewController.swift */,
 				7623918A288C38DB00790775 /* TimePickerViewController.swift */,
+				2C724E4629AB9D2F0057D9B4 /* LoadViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -415,6 +439,7 @@
 			isa = PBXGroup;
 			children = (
 				76B0B98F28E301640083ED06 /* PreviewViewModel.swift */,
+				2C4041CA29ABA6EB009247E7 /* LoadListViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1011,6 +1036,7 @@
 		765BCA162868CA840098BBF2 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				2C724E3029AB83A80057D9B4 /* CoreData */,
 				764386622874020100375CE6 /* Managers */,
 				763BB5D229180E7500FFAF8B /* Presentation */,
 				76993A34293F4B1300AD3461 /* CustomView */,
@@ -1305,6 +1331,7 @@
 				769AEB39287C25CE00C697FC /* CommentsViewController.swift in Sources */,
 				76ACABEE28ACEF0400B961C4 /* Preview.swift in Sources */,
 				7610DD6F2884568000CA03BC /* WiritingPictureViewController.swift in Sources */,
+				2C724E4429AB89590057D9B4 /* SavedEvent+CoreDataClass.swift in Sources */,
 				7610DD6D28843F8F00CA03BC /* WritingTextFieldView.swift in Sources */,
 				764386642874021600375CE6 /* LoginManager.swift in Sources */,
 				76239187288AFDB100790775 /* CalendarView.swift in Sources */,
@@ -1336,9 +1363,11 @@
 				7681D57D2869ECDF0081C644 /* Event.swift in Sources */,
 				76AC783E2872D7FB00D303C4 /* TwoOptionsActionSheetView.swift in Sources */,
 				765DCDB12868DBF800961EA8 /* HomeViewController.swift in Sources */,
+				2C4041CB29ABA6EB009247E7 /* LoadListViewModel.swift in Sources */,
 				2C0D039A288596EE0026F3F0 /* PrivacyPolicyCell.swift in Sources */,
 				2C0DBE5A28800B29004A933A /* MyEventView.swift in Sources */,
 				2C80F391286DE20000ECAB60 /* MyPageSectionView.swift in Sources */,
+				2C724E4729AB9D2F0057D9B4 /* LoadViewController.swift in Sources */,
 				76FCB545286C253900AC4F70 /* EventDetailViewController.swift in Sources */,
 				76FCB543286B955F00AC4F70 /* Colors++Extensions.swift in Sources */,
 				7681D5822869F46A0081C644 /* ServiceAPI.swift in Sources */,
@@ -1349,6 +1378,7 @@
 				7610DD6B288432F100CA03BC /* WritingDetailView.swift in Sources */,
 				2C79F6BF2961D4E400A457FA /* SearchViewModel.swift in Sources */,
 				7681D57028698EC60081C644 /* HomeCell.swift in Sources */,
+				2C724E4929AB9F6A0057D9B4 /* LoadListTableViewCell.swift in Sources */,
 				2C0DBE5C28801484004A933A /* SaveListViewModel.swift in Sources */,
 				2C0DBE6C2881A13E004A933A /* BlockListViewModel.swift in Sources */,
 				2C0DBE662881591B004A933A /* NoticeAlertView.swift in Sources */,
@@ -1372,6 +1402,7 @@
 				2CB8AA302878384300BDA358 /* MyCommentViewController.swift in Sources */,
 				2C0DBE5828800A29004A933A /* SaveListCell.swift in Sources */,
 				76E7DD74292E54E700CF21DC /* PreiviewView.swift in Sources */,
+				2C724E3529AB83DB0057D9B4 /* EventModel.xcdatamodeld in Sources */,
 				76993A2B293DCA7C00AD3461 /* BaseView.swift in Sources */,
 				2C969F932920E1F1005D8564 /* Subscribing.swift in Sources */,
 				76E7DD76292E78C100CF21DC /* InfoStackView.swift in Sources */,
@@ -1400,6 +1431,7 @@
 				2C0DBE6828815CA6004A933A /* NoticeAlertViewController.swift in Sources */,
 				2C0DBE702881AC5B004A933A /* Block.swift in Sources */,
 				2C0DBE6228814308004A933A /* NotiViewModel.swift in Sources */,
+				2C724E4529AB89590057D9B4 /* SavedEvent+CoreDataProperties.swift in Sources */,
 				2C80F388286D997300ECAB60 /* MyPageViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1626,6 +1658,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		2C724E3329AB83DB0057D9B4 /* EventModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				2C724E3429AB83DB0057D9B4 /* EventModel.xcdatamodel */,
+			);
+			currentVersion = 2C724E3429AB83DB0057D9B4 /* EventModel.xcdatamodel */;
+			path = EventModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 765BC9F12868C00C0098BBF2 /* Project object */;
 }
